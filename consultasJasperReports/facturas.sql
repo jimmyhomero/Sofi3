@@ -1,0 +1,1 @@
+SELECT facturas.* ,usuarios.Nombres as usuario, clientes.Nombres as cliente, clientes.Cedula as ruc from facturas inner join clientes on clientes.Codigo=facturas.Clientes_codigo inner JOIN usuarios on usuarios.codigo= facturas.Usuarios_Codigo where facturas.codigo=62 order BY facturas.secuencia

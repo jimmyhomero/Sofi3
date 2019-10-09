@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="648" pageHeight="864" orientation="Landscape" columnWidth="608" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="6406d97a-bee5-47b7-9a32-3c3a12479dab">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="numeroFactura" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     datosempresa.`codigo` AS datosempresa_codigo,
+     datosempresa.`ruc` AS datosempresa_ruc,
+     datosempresa.`nombre` AS datosempresa_nombre,
+     datosempresa.`telefono` AS datosempresa_telefono,
+     datosempresa.`celular` AS datosempresa_celular,
+     datosempresa.`mail` AS datosempresa_mail,
+     datosempresa.`direccion` AS datosempresa_direccion,
+     datosempresa.`slogan` AS datosempresa_slogan,
+     datosempresa.`cedula2` AS datosempresa_cedula2,
+     datosempresa.`nombre2` AS datosempresa_nombre2,
+     datosempresa.`direccion2` AS datosempresa_direccion2,
+     datosempresa.`telefono2` AS datosempresa_telefono2,
+     datosempresa.`observacion` AS datosempresa_observacion,
+     datosempresa.`imagen` AS datosempresa_imagen,
+     detalleproforma.`codigo` AS detalleproforma_codigo,
+     detalleproforma.`cantidad` AS detalleproforma_cantidad,
+     detalleproforma.`detalle` AS detalleproforma_detalle,
+     detalleproforma.`iva` AS detalleproforma_iva,
+     detalleproforma.`descuento` AS detalleproforma_descuento,
+     detalleproforma.`valorUnitario` AS detalleproforma_valorUnitario,
+     detalleproforma.`valorTotal` AS detalleproforma_valorTotal,
+     detalleproforma.`proforma_Codigo` AS detalleproforma_proforma_Codigo,
+     detalleproforma.`Productos_Codigo` AS detalleproforma_Productos_Codigo,
+     detalleproforma.`Observaciones` AS detalleproforma_Observaciones,
+     proformas.`Codigo` AS proformas_Codigo,
+     proformas.`fecha` AS proformas_fecha,
+     proformas.`hora` AS proformas_hora,
+     proformas.`iva` AS proformas_iva,
+     proformas.`Iva_valor` AS proformas_Iva_valor,
+     proformas.`subtotaI_con_iva` AS proformas_subtotaI_con_iva,
+     proformas.`subtotal_sin_iva` AS proformas_subtotal_sin_iva,
+     proformas.`total` AS proformas_total,
+     proformas.`utilidad` AS proformas_utilidad,
+     proformas.`tipo_documento` AS proformas_tipo_documento,
+     proformas.`descuento` AS proformas_descuento,
+     proformas.`Clientes_codigo` AS proformas_Clientes_codigo,
+     proformas.`Usuarios_Codigo` AS proformas_Usuarios_Codigo,
+     proformas.`Equipo` AS proformas_Equipo,
+     proformas.`secuencia` AS proformas_secuencia,
+     proformas.`anulada` AS proformas_anulada,
+     proformas.`fechain` AS proformas_fechain,
+     usuarios.`codigo` AS usuarios_codigo,
+     usuarios.`Cedula` AS usuarios_Cedula,
+     usuarios.`Nombres` AS usuarios_Nombres,
+     usuarios.`Telefono` AS usuarios_Telefono,
+     usuarios.`Celular` AS usuarios_Celular,
+     usuarios.`mail` AS usuarios_mail,
+     usuarios.`Direccion` AS usuarios_Direccion,
+     usuarios.`Usuario` AS usuarios_Usuario,
+     usuarios.`password` AS usuarios_password,
+     usuarios.`Estado` AS usuarios_Estado,
+     usuarios.`Tipo_Usuario_codigo` AS usuarios_Tipo_Usuario_codigo,
+     clientes.`codigo` AS clientes_codigo,
+     clientes.`Cedula` AS clientes_Cedula,
+     clientes.`Nombres` AS clientes_Nombres,
+     clientes.`Telefono` AS clientes_Telefono,
+     clientes.`Celular` AS clientes_Celular,
+     clientes.`mail` AS clientes_mail,
+     clientes.`Direccion` AS clientes_Direccion,
+     clientes.`Provincia` AS clientes_Provincia,
+     clientes.`Ciudad` AS clientes_Ciudad,
+     clientes.`Nacionalidad` AS clientes_Nacionalidad,
+     clientes.`PagoPredeterminado` AS clientes_PagoPredeterminado,
+     clientes.`TipoCliente` AS clientes_TipoCliente,
+     clientes.`VendedorPredeterminado` AS clientes_VendedorPredeterminado,
+     clientes.`Observaciones` AS clientes_Observaciones
+FROM
+     `proformas` proformas INNER JOIN `detalleproforma` detalleproforma ON proformas.`Codigo` = detalleproforma.`proforma_Codigo`
+     INNER JOIN `usuarios` usuarios ON proformas.`Usuarios_Codigo` = usuarios.`codigo`
+     INNER JOIN `clientes` clientes ON proformas.`Clientes_codigo` = clientes.`codigo`,
+     `datosempresa` datosempresa where proformas.secuencia=$P{numeroFactura}]]>
+	</queryString>
+	<field name="datosempresa_codigo" class="java.lang.Integer"/>
+	<field name="datosempresa_ruc" class="java.lang.String"/>
+	<field name="datosempresa_nombre" class="java.lang.String"/>
+	<field name="datosempresa_telefono" class="java.lang.String"/>
+	<field name="datosempresa_celular" class="java.lang.String"/>
+	<field name="datosempresa_mail" class="java.lang.String"/>
+	<field name="datosempresa_direccion" class="java.lang.String"/>
+	<field name="datosempresa_slogan" class="java.lang.String"/>
+	<field name="datosempresa_cedula2" class="java.lang.String"/>
+	<field name="datosempresa_nombre2" class="java.lang.String"/>
+	<field name="datosempresa_direccion2" class="java.lang.String"/>
+	<field name="datosempresa_telefono2" class="java.lang.String"/>
+	<field name="datosempresa_observacion" class="java.lang.String"/>
+	<field name="datosempresa_imagen" class="java.lang.Object"/>
+	<field name="detalleproforma_codigo" class="java.lang.Integer"/>
+	<field name="detalleproforma_cantidad" class="java.lang.String"/>
+	<field name="detalleproforma_detalle" class="java.lang.String"/>
+	<field name="detalleproforma_iva" class="java.lang.String"/>
+	<field name="detalleproforma_descuento" class="java.lang.String"/>
+	<field name="detalleproforma_valorUnitario" class="java.lang.String"/>
+	<field name="detalleproforma_valorTotal" class="java.lang.String"/>
+	<field name="detalleproforma_proforma_Codigo" class="java.lang.Integer"/>
+	<field name="detalleproforma_Productos_Codigo" class="java.lang.Integer"/>
+	<field name="detalleproforma_Observaciones" class="java.lang.String"/>
+	<field name="proformas_Codigo" class="java.lang.Integer"/>
+	<field name="proformas_fecha" class="java.sql.Date"/>
+	<field name="proformas_hora" class="java.sql.Timestamp"/>
+	<field name="proformas_iva" class="java.lang.String"/>
+	<field name="proformas_Iva_valor" class="java.lang.String"/>
+	<field name="proformas_subtotaI_con_iva" class="java.lang.String"/>
+	<field name="proformas_subtotal_sin_iva" class="java.lang.String"/>
+	<field name="proformas_total" class="java.lang.String"/>
+	<field name="proformas_utilidad" class="java.lang.String"/>
+	<field name="proformas_tipo_documento" class="java.lang.String"/>
+	<field name="proformas_descuento" class="java.lang.String"/>
+	<field name="proformas_Clientes_codigo" class="java.lang.Integer"/>
+	<field name="proformas_Usuarios_Codigo" class="java.lang.Integer"/>
+	<field name="proformas_Equipo" class="java.lang.String"/>
+	<field name="proformas_secuencia" class="java.lang.String"/>
+	<field name="proformas_anulada" class="java.lang.Boolean"/>
+	<field name="proformas_fechain" class="java.lang.String"/>
+	<field name="usuarios_codigo" class="java.lang.Integer"/>
+	<field name="usuarios_Cedula" class="java.lang.String"/>
+	<field name="usuarios_Nombres" class="java.lang.String"/>
+	<field name="usuarios_Telefono" class="java.lang.String"/>
+	<field name="usuarios_Celular" class="java.lang.String"/>
+	<field name="usuarios_mail" class="java.lang.String"/>
+	<field name="usuarios_Direccion" class="java.lang.String"/>
+	<field name="usuarios_Usuario" class="java.lang.String"/>
+	<field name="usuarios_password" class="java.lang.String"/>
+	<field name="usuarios_Estado" class="java.lang.String"/>
+	<field name="usuarios_Tipo_Usuario_codigo" class="java.lang.Integer"/>
+	<field name="clientes_codigo" class="java.lang.Integer"/>
+	<field name="clientes_Cedula" class="java.lang.String"/>
+	<field name="clientes_Nombres" class="java.lang.String"/>
+	<field name="clientes_Telefono" class="java.lang.String"/>
+	<field name="clientes_Celular" class="java.lang.String"/>
+	<field name="clientes_mail" class="java.lang.String"/>
+	<field name="clientes_Direccion" class="java.lang.String"/>
+	<field name="clientes_Provincia" class="java.lang.String"/>
+	<field name="clientes_Ciudad" class="java.lang.String"/>
+	<field name="clientes_Nacionalidad" class="java.lang.String"/>
+	<field name="clientes_PagoPredeterminado" class="java.lang.Integer"/>
+	<field name="clientes_TipoCliente" class="java.lang.Integer"/>
+	<field name="clientes_VendedorPredeterminado" class="java.lang.Integer"/>
+	<field name="clientes_Observaciones" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="26" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="26" backcolor="#FCFFFA" uuid="fe1f0885-af97-48cb-b8f4-29247091d36c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="7" y="0" width="31" height="13" uuid="2ce5d2ea-ff31-4fe7-b99c-f41d8b5a920b"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUC:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="38" y="0" width="159" height="13" uuid="1d5e76f7-5bca-4a45-ac53-6471c62f1b85"/>
+				<textFieldExpression><![CDATA[$F{datosempresa_ruc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="13" width="159" height="13" uuid="d0f5abd7-90de-403f-86e1-ae3e81b37083"/>
+				<textFieldExpression><![CDATA[$F{datosempresa_nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="13" width="63" height="13" uuid="dc966659-3338-4df2-b731-18233c3c46e5"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMPRESA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="305" y="0" width="184" height="11" uuid="39b93c10-1f30-4c40-8fe5-59e8768edcb9"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{datosempresa_telefono}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="263" y="11" width="42" height="11" uuid="a55abe9a-1f19-4515-b5b7-d94d1994ff2e"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Direccion:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="305" y="11" width="184" height="11" uuid="edf7665d-c907-48b6-9d52-c4f04f6ffbd2"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{datosempresa_direccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="263" y="0" width="42" height="11" uuid="63221a9e-5d3c-4ce6-aa41-264a29e36a5e"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telefono:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="83" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="83" backcolor="#C9F6F8" uuid="426c4b51-82cc-428f-aa89-c44d78189b53"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="0" y="3" width="280" height="77" uuid="1a11ae77-7e83-4258-b2ac-89f462d3a8a8"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="7" y="3" width="42" height="11" uuid="87857573-f0f5-477c-8c59-83439d27d469"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CI/RUC:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="49" y="3" width="100" height="11" uuid="df3713de-3448-44ff-90f4-22a0c88c6227"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clientes_Cedula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="15" width="42" height="11" uuid="335dce91-028e-4c85-928c-a2b86e083041"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="49" y="14" width="148" height="11" uuid="dd5d1b13-0b78-4f78-9d13-d5047a1c718f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clientes_Nombres}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="26" width="42" height="11" uuid="959df93a-4fe5-4618-85c3-141d21d4d77f"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telefono:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="26" width="100" height="11" uuid="56bdfd2e-526f-4dd0-b2dd-ec9ee0139aa6"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clientes_Telefono}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="37" width="42" height="11" uuid="a35c2e2f-e72f-40a7-8e25-5852e2c1ad97"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Direccion:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="37" width="147" height="11" uuid="e3c5472c-c141-4c29-82ff-61a020fdc63d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clientes_Direccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="52" width="42" height="11" uuid="a9abfce2-7be0-4c16-ba83-2aea0656ac38"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vendedor:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="52" width="100" height="11" uuid="95a799cf-7b23-4a26-805c-06002386385c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuarios_Nombres}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="10">
+				<reportElement x="280" y="3" width="275" height="76" uuid="7fd0d682-b48d-4ee1-9a7c-9d262f11b0a7"/>
+			</rectangle>
+			<textField>
+				<reportElement x="351" y="6" width="100" height="15" uuid="b2265c9c-5114-428d-93a9-1357afcfc6e5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proformas_secuencia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="6" width="61" height="15" uuid="3dd87f43-6663-434a-af53-b25c6cf8e292"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FACTURA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="365" y="25" width="174" height="32" uuid="78c5f234-bc9e-4eb5-bbbf-8e817031a7b1"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proformas_total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="25" width="72" height="32" uuid="8e9e44cd-f949-415e-9769-716c450cd196"/>
+				<textElement textAlignment="Right">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="331" y="63" width="100" height="11" uuid="e4d51733-e5c5-4f47-a12c-c636c5d0cf7c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proformas_hora}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="289" y="63" width="42" height="11" uuid="e4b6b0af-fb35-4b45-b85d-c539edce6509"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[fECHA:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="5" width="23" height="12" uuid="95c42ac8-3d72-4ce6-9ed4-da26abf094cb"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="5" width="43" height="12" uuid="cfdde4c8-e127-4f0a-903d-a59e48e17925"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CODIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="5" width="188" height="12" uuid="7838cc22-dd09-40cb-a9eb-6bde94cc31cd"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DETALLE DE PRODUCTOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="263" y="5" width="43" height="12" uuid="da0bf337-a20b-4f84-81e3-14d4d975706c"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="5" width="43" height="12" uuid="e034264a-f81b-45cd-978e-91a97c0cf67f"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCUENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="5" width="41" height="12" uuid="98442c4f-3486-411a-94fc-bcbc256b6c5f"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BIEDEGA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="392" y="5" width="49" height="12" uuid="457b9e3f-9837-4c8f-a5fa-3638225333c1"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRECIO UNITARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="451" y="5" width="88" height="12" uuid="d9e6022c-1d50-4705-abcc-8d4503535c80"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRECIO TOTAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="23" height="11" uuid="d91c65ba-6aad-4e8f-bdfe-e02f95885687"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="0" width="43" height="11" uuid="315aca5e-a8cf-44fd-84e7-f79db49e2b60"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detalleproforma_Productos_Codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="0" width="188" height="11" uuid="20f45a3d-de52-43d8-a94d-077fb3c7fc3b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detalleproforma_detalle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="267" y="0" width="38" height="11" uuid="bd5e6216-7d57-4b2c-b438-bab2fde32802"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detalleproforma_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="308" y="0" width="43" height="11" uuid="4796a937-639e-4863-b8a4-a0d172ead9e1"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detalleproforma_descuento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="351" y="0" width="41" height="11" uuid="aa106d52-4459-4be3-9db5-023b4ad3b3b3"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="392" y="0" width="49" height="11" uuid="a29a410a-c4bf-495b-bdf1-1b9e9cec5685"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detalleproforma_valorUnitario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="451" y="0" width="88" height="11" uuid="5882c91d-ea58-4d56-8282-f298900c8f4d"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detalleproforma_valorTotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="78" splitType="Stretch">
+			<textField>
+				<reportElement x="451" y="0" width="86" height="11" uuid="ceca8d44-188e-4f7e-b9aa-d7dedb6095f4"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement x="308" y="0" width="100" height="11" uuid="95c35ef8-1134-404f-985d-2ded8fac44a6"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Sub Total ICE 15%]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="451" y="10" width="88" height="11" uuid="1581de7f-8bf4-4f8c-b7ed-9dcadccd2ba0"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proformas_subtotaI_con_iva}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="308" y="10" width="100" height="11" uuid="8165eaf5-143b-4f78-bf16-3720bea8747c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Sub IVA 12%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="20" width="100" height="11" uuid="296dc1cd-f655-42c5-bea8-67a86b23da7b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Sub IVA 0%]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="451" y="20" width="88" height="11" uuid="b38a61a6-6ce0-499f-baac-0ee67c65917f"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proformas_subtotal_sin_iva}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="451" y="30" width="88" height="11" uuid="af467ab8-efb5-49bd-9543-90a5d3165cb8"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proformas_subtotaI_con_iva}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="308" y="30" width="100" height="11" uuid="38d678cb-7a51-4b94-82aa-854a5104e5ce"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Sub Total]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="451" y="40" width="88" height="11" uuid="acf5965b-c681-4eb9-b9ae-d9825d6ca39c"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement x="308" y="40" width="100" height="11" uuid="eae15ce0-87d6-4351-a71b-47a75a151704"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ICE 15%]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="451" y="50" width="88" height="11" uuid="9dc8ae0e-1401-4e77-b7e6-4ffa52da289f"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proformas_Iva_valor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="308" y="50" width="100" height="11" uuid="b0a451c1-4212-4c94-b878-297d0b9c6a9b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[IVA 12%]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="451" y="60" width="88" height="11" uuid="46d96e3e-3516-4a41-850e-fc94a6be138b"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proformas_total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="308" y="60" width="100" height="11" uuid="d40c094b-5b4c-4603-90a4-f762d545afbd"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL A PAGAR]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

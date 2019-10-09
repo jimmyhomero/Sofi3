@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.2-b608 (trunk-7979; 2015-01-21T12:50:19+0000) JAXWS-RI/2.2.11-b150120.1832 JAXWS-API/2.2.12 JAXB-RI/2.2.12-b141219.1637 JAXB-API/2.2.13-b141020.1521 svn-revision#unknown. --><xs:schema xmlns:tns="http://ws.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://ws.com/">
+
+<xs:element name="getFechaAutorizacion" type="tns:getFechaAutorizacion"/>
+
+<xs:element name="getFechaAutorizacionResponse" type="tns:getFechaAutorizacionResponse"/>
+
+<xs:element name="getXMLAutorizado" type="tns:getXMLAutorizado"/>
+
+<xs:element name="getXMLAutorizadoResponse" type="tns:getXMLAutorizadoResponse"/>
+
+<xs:element name="receiptXMLIn" type="tns:receiptXMLIn"/>
+
+<xs:element name="receiptXMLInResponse" type="tns:receiptXMLInResponse"/>
+
+<xs:element name="searchAuthorization" type="tns:searchAuthorization"/>
+
+<xs:element name="searchAuthorizationResponse" type="tns:searchAuthorizationResponse"/>
+
+<xs:complexType name="getXMLAutorizado">
+<xs:sequence>
+<xs:element name="ClaveAcceso" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getXMLAutorizadoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getFechaAutorizacion">
+<xs:sequence>
+<xs:element name="claveAcceso" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getFechaAutorizacionResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="receiptXMLIn">
+<xs:sequence>
+<xs:element name="receiptXML" type="xs:string" minOccurs="0"/>
+<xs:element name="user" type="xs:string" minOccurs="0"/>
+<xs:element name="password" type="xs:string" minOccurs="0"/>
+<xs:element name="email" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="receiptXMLInResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:response" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="response">
+<xs:sequence>
+<xs:element name="response" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="searchAuthorization">
+<xs:sequence>
+<xs:element name="ruc" type="xs:string" minOccurs="0"/>
+<xs:element name="tipoDocumento" type="xs:string" minOccurs="0"/>
+<xs:element name="establecimiento" type="xs:string" minOccurs="0"/>
+<xs:element name="puntoEmision" type="xs:string" minOccurs="0"/>
+<xs:element name="secuencial" type="xs:string" minOccurs="0"/>
+<xs:element name="codigoSucursal" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="searchAuthorizationResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:respuesta" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="respuesta">
+<xs:sequence>
+<xs:element name="autorizacion_sri" type="xs:string" minOccurs="0"/>
+<xs:element name="estado" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha_autorizacion" type="xs:string" minOccurs="0"/>
+<xs:element name="mensaje_sri" type="xs:string" minOccurs="0"/>
+<xs:element name="serieFactura" type="xs:string" minOccurs="0"/>
+<xs:element name="tipo_Documento" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

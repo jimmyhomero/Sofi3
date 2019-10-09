@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="totalesCaja_subreport1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="edad8623-aea5-46a9-ac2d-d7c7b42c0ba5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     cajasdetalle.`codigo` AS cajasdetalle_codigo,
+     cajasdetalle.`detalle` AS cajasdetalle_detalle,
+     cajasdetalle.`VALOR` AS cajasdetalle_VALOR,
+     cajasdetalle.`TIPO` AS cajasdetalle_TIPO,
+     cajasdetalle.`DOCUMENTO` AS cajasdetalle_DOCUMENTO,
+     cajasdetalle.`Descripcion` AS cajasdetalle_Descripcion,
+     cajasdetalle.`fecha` AS cajasdetalle_fecha,
+     cajasdetalle.`CodigoDocumento` AS cajasdetalle_CodigoDocumento,
+     cajasdetalle.`Cajas_Codigo` AS cajasdetalle_Cajas_Codigo
+FROM
+     `cajasdetalle` cajasdetalle]]>
+	</queryString>
+	<field name="cajasdetalle_codigo" class="java.lang.Integer"/>
+	<field name="cajasdetalle_detalle" class="java.lang.String"/>
+	<field name="cajasdetalle_VALOR" class="java.lang.String"/>
+	<field name="cajasdetalle_TIPO" class="java.lang.String"/>
+	<field name="cajasdetalle_DOCUMENTO" class="java.lang.String"/>
+	<field name="cajasdetalle_Descripcion" class="java.lang.String"/>
+	<field name="cajasdetalle_fecha" class="java.sql.Timestamp"/>
+	<field name="cajasdetalle_CodigoDocumento" class="java.lang.Integer"/>
+	<field name="cajasdetalle_Cajas_Codigo" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

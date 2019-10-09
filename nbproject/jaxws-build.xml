@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+        *** GENERATED FROM jax-ws.xml - DO NOT EDIT !                             ***
+        *** TO MODIFY wsimport options USE Web Service node -> Edit WS Attributes ***
+        *** TO CHANGE TARGETS GENERATED TO jaxws-build.xml COPY THOSE             ***
+        *** TARGETS TO ../build.xml AND MODIFY THAT FILE INSTEAD                  ***
+
+        --><project xmlns:xalan="http://xml.apache.org/xslt" xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3" xmlns:jaxws="http://www.netbeans.org/ns/jax-ws/1">
+    <!--
+                ===================
+                JAX-WS WSIMPORT SECTION
+                ===================
+            -->
+    <target name="wsimport-init" depends="init">
+        <mkdir dir="${build.generated.sources.dir}/jax-ws"/>
+        <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
+            <classpath path="${libs.jaxws21.classpath}"/>
+        </taskdef>
+    </target>
+    <target name="wsimport-client-WSElectro" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/WSElectro"/>
+        <property name="wsdl-WSElectro" location="xml-resources/web-service-references/WSElectro/wsdl/compueconomia.com.ec_8080/WSElectro/WSElectro.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/WSElectro" destdir="${build.generated.dir}/jax-wsCache/WSElectro" wsdl="${wsdl-WSElectro}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://compueconomia.com.ec:8080/WSElectro/WSElectro?wsdl" xnocompile="true" xendorsed="true" package="com.ws.electro.cliente">
+            <depends file="${wsdl-WSElectro}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/WSElectro"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/WSElectro">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-WSElectro" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/WSElectro"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/com/ws/electro/cliente"/>
+    </target>
+    <target name="wsimport-client-WSElectro_1" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/WSElectro_1"/>
+        <property name="wsdl-WSElectro_1" location="xml-resources/web-service-references/WSElectro_1/wsdl/app.cosmobelleza.com.ec_8080/WSElectro/WSElectro.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/WSElectro_1" destdir="${build.generated.dir}/jax-wsCache/WSElectro_1" wsdl="${wsdl-WSElectro_1}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://app.cosmobelleza.com.ec:8080/WSElectro/WSElectro?wsdl" xnocompile="true" xendorsed="true" package="com.ws.cosmobelleza">
+            <depends file="${wsdl-WSElectro_1}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/WSElectro_1"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/WSElectro_1">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-WSElectro_1" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/WSElectro_1"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/com/ws/cosmobelleza"/>
+    </target>
+    <target name="wsimport-client-WSElectro_2" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/WSElectro_2"/>
+        <property name="wsdl-WSElectro_2" location="xml-resources/web-service-references/WSElectro_2/wsdl/localhost_8080/WSElectro/WSElectro.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/WSElectro_2" destdir="${build.generated.dir}/jax-wsCache/WSElectro_2" wsdl="${wsdl-WSElectro_2}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/WSElectro/WSElectro?wsdl" xnocompile="true" xendorsed="true" package="com.ws.localhost">
+            <depends file="${wsdl-WSElectro_2}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/WSElectro_2"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/WSElectro_2">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-WSElectro_2" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/WSElectro_2"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/com/ws/localhost"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-WSElectro, wsimport-client-WSElectro_1, wsimport-client-WSElectro_2"/>
+</project>

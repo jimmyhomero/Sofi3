@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cabecera" language="groovy" pageWidth="481" pageHeight="141" columnWidth="481" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="55a1773f-3242-4999-988e-2186be0899a4">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="275"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="NOMBRE_REPORTE_S" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     datosempresa.`codigo` AS datosempresa_codigo,
+     datosempresa.`ruc` AS datosempresa_ruc,
+     datosempresa.`nombre` AS datosempresa_nombre,
+     datosempresa.`telefono` AS datosempresa_telefono,
+     datosempresa.`celular` AS datosempresa_celular,
+     datosempresa.`mail` AS datosempresa_mail,
+     datosempresa.`direccion` AS datosempresa_direccion,
+     datosempresa.`slogan` AS datosempresa_slogan
+FROM
+     `datosempresa` datosempresa]]>
+	</queryString>
+	<field name="datosempresa_codigo" class="java.lang.Integer"/>
+	<field name="datosempresa_ruc" class="java.lang.String"/>
+	<field name="datosempresa_nombre" class="java.lang.String"/>
+	<field name="datosempresa_telefono" class="java.lang.String"/>
+	<field name="datosempresa_celular" class="java.lang.String"/>
+	<field name="datosempresa_mail" class="java.lang.String"/>
+	<field name="datosempresa_direccion" class="java.lang.String"/>
+	<field name="datosempresa_slogan" class="java.lang.String"/>
+	<title>
+		<band height="134" splitType="Stretch">
+			<textField>
+				<reportElement x="46" y="63" width="100" height="11" uuid="6ee2daa1-5cbb-442b-b6d4-637f723487f8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{datosempresa_ruc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="63" width="26" height="11" uuid="701461d6-1112-4d0e-b181-f8b8f1162ec5"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUC:]]></text>
+			</staticText>
+			<image>
+				<reportElement x="20" y="4" width="190" height="56" uuid="43f4e2d1-7f4b-4d45-8ef9-6414f39a7eb5"/>
+			</image>
+			<staticText>
+				<reportElement x="20" y="74" width="43" height="11" uuid="ca9edd2d-4d81-43ec-a621-9f15f301bedd"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMPRESA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="63" y="74" width="100" height="11" uuid="2b48e0fe-cb08-4c53-a7a9-a78066bcc914"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{datosempresa_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="63" y="97" width="113" height="11" uuid="5bb9c667-538c-4cfb-88d2-2c9d8c90b2fe"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{datosempresa_direccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="85" width="54" height="11" uuid="cb9b0763-824b-4f28-96a2-607c2f716eb7"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TELEFONOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="97" width="43" height="11" uuid="3afb3835-6026-420e-9459-60937600f506"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIRECCION:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="76" y="85" width="100" height="11" uuid="3463ce4c-39ca-4e80-9767-0c60c7e69c17"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{datosempresa_telefono}==$F{datosempresa_celular}?$F{datosempresa_celular}:$F{datosempresa_telefono}+"-"+$F{datosempresa_celular}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="21" y="108" width="43" height="11" uuid="b2ddad1b-2414-4025-90f7-45b110b80dcd"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[E-MAIL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="64" y="108" width="113" height="11" uuid="1595db20-3bff-46f9-a35f-fdab0571524a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{datosempresa_mail}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="119" width="481" height="15" uuid="c85ccfb1-c711-4461-ac1f-3b431292e3e2"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NOMBRE_REPORTE_S}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="358" y="4" width="80" height="11" uuid="5f520ffb-47f4-4a05-8d53-bd4e2154775a"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="438" y="4" width="40" height="11" uuid="b07ff998-1016-482d-a1f1-c13706d27382"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="344" y="15" width="120" height="11" uuid="d07aee94-c2e8-471a-8bc3-3c60c1d5a303"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

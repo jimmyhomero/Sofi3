@@ -1,0 +1,1 @@
+SELECT f.*, (SELECT c.nombres FROM clientes c WHERE f.Clientes_codigo= c.codigo )AS NombreCliente ,(SELECT u.nombres FROM Usuarios u WHERE f.Usuarios_codigo = u.codigo ) AS nombreUsuario, d.detalle from facturas f INNER JOIN detallefactura d on f.Codigo=d.Factura_Codigo WHERE f.Codigo=25

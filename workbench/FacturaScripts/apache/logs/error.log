@@ -1,0 +1,22 @@
+[Sat Sep 30 10:44:53.866141 2017] [ssl:warn] [pid 3868:tid 628] AH01909: www.example.com:443:0 server certificate does NOT include an ID which matches the server name
+[Sat Sep 30 10:44:53.957702 2017] [ssl:warn] [pid 3868:tid 628] AH01909: www.example.com:443:0 server certificate does NOT include an ID which matches the server name
+[Sat Sep 30 10:44:53.976798 2017] [mpm_winnt:notice] [pid 3868:tid 628] AH00455: Apache/2.4.27 (Win32) OpenSSL/1.0.2l PHP/7.0.23 configured -- resuming normal operations
+[Sat Sep 30 10:44:53.976798 2017] [mpm_winnt:notice] [pid 3868:tid 628] AH00456: Apache Lounge VC14 Server built: Jul  9 2017 11:48:22
+[Sat Sep 30 10:44:53.976798 2017] [core:notice] [pid 3868:tid 628] AH00094: Command line: 'c:\\users\\neora\\desktop\\xampp\\apache\\bin\\httpd.exe -d C:/Users/neora/Desktop/xampp/apache'
+[Sat Sep 30 10:44:53.978015 2017] [mpm_winnt:notice] [pid 3868:tid 628] AH00418: Parent: Created child process 8784
+[Sat Sep 30 10:44:54.502413 2017] [ssl:warn] [pid 8784:tid 260] AH01909: www.example.com:443:0 server certificate does NOT include an ID which matches the server name
+[Sat Sep 30 10:44:54.590693 2017] [ssl:warn] [pid 8784:tid 260] AH01909: www.example.com:443:0 server certificate does NOT include an ID which matches the server name
+[Sat Sep 30 10:44:54.606939 2017] [mpm_winnt:notice] [pid 8784:tid 260] AH00354: Child: Starting 150 worker threads.
+[Sat Sep 30 11:18:37.633955 2017] [ssl:warn] [pid 10712:tid 604] AH01909: www.example.com:443:0 server certificate does NOT include an ID which matches the server name
+[Sat Sep 30 11:18:37.668100 2017] [core:warn] [pid 10712:tid 604] AH00098: pid file C:/Users/neora/Desktop/FacturaScripts/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Sat Sep 30 11:18:37.742299 2017] [ssl:warn] [pid 10712:tid 604] AH01909: www.example.com:443:0 server certificate does NOT include an ID which matches the server name
+[Sat Sep 30 11:18:37.759346 2017] [mpm_winnt:notice] [pid 10712:tid 604] AH00455: Apache/2.4.27 (Win32) OpenSSL/1.0.2l PHP/7.0.23 configured -- resuming normal operations
+[Sat Sep 30 11:18:37.759346 2017] [mpm_winnt:notice] [pid 10712:tid 604] AH00456: Apache Lounge VC14 Server built: Jul  9 2017 11:48:22
+[Sat Sep 30 11:18:37.759346 2017] [core:notice] [pid 10712:tid 604] AH00094: Command line: 'apache\\bin\\httpd.exe -d C:/Users/neora/Desktop/FacturaScripts/apache -f conf\\httpd.conf'
+[Sat Sep 30 11:18:37.760349 2017] [mpm_winnt:notice] [pid 10712:tid 604] AH00418: Parent: Created child process 1288
+[Sat Sep 30 11:18:38.123070 2017] [ssl:warn] [pid 1288:tid 196] AH01909: www.example.com:443:0 server certificate does NOT include an ID which matches the server name
+[Sat Sep 30 11:18:38.216322 2017] [ssl:warn] [pid 1288:tid 196] AH01909: www.example.com:443:0 server certificate does NOT include an ID which matches the server name
+[Sat Sep 30 11:18:38.239385 2017] [mpm_winnt:notice] [pid 1288:tid 196] AH00354: Child: Starting 150 worker threads.
+[Sat Sep 30 11:18:46.573117 2017] [mpm_winnt:notice] [pid 10712:tid 604] AH00422: Parent: Received shutdown signal -- Shutting down the server.
+[Sat Sep 30 11:18:48.574996 2017] [mpm_winnt:notice] [pid 1288:tid 196] AH00364: Child: All worker threads have exited.
+[Sat Sep 30 11:18:48.616424 2017] [mpm_winnt:notice] [pid 10712:tid 604] AH00430: Parent: Child process 1288 exited successfully.

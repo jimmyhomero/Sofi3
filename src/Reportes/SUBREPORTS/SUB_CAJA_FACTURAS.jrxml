@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Cajas1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3d52c572-470f-48d6-96cd-053e8051ec38">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     cajasdetalle.`codigo` AS cajasdetalle_codigo,
+     cajasdetalle.`detalle` AS cajasdetalle_detalle,
+     cajasdetalle.`VALOR` AS cajasdetalle_VALOR,
+     cajasdetalle.`TIPO` AS cajasdetalle_TIPO,
+     cajasdetalle.`DOCUMENTO` AS cajasdetalle_DOCUMENTO,
+     cajasdetalle.`Descripcion` AS cajasdetalle_Descripcion,
+     cajasdetalle.`fecha` AS cajasdetalle_fecha,
+     cajasdetalle.`CodigoDocumento` AS cajasdetalle_CodigoDocumento,
+     cajasdetalle.`Cajas_Codigo` AS cajasdetalle_Cajas_Codigo,
+     cajas.`codigo` AS cajas_codigo,
+     cajas.`caja` AS cajas_caja,
+     cajas.`descripcion` AS cajas_descripcion,
+     cajas.`estado` AS cajas_estado,
+     cajas.`fechaApertura` AS cajas_fechaApertura,
+     cajas.`fechaCierre` AS cajas_fechaCierre,
+     cajas.`saldoInicial` AS cajas_saldoInicial,
+     cajas.`totalcierre` AS cajas_totalcierre,
+(SELECT SUM(cajasdetalle.VALOR)
+FROM `cajas` cajas INNER JOIN `cajasdetalle` cajasdetalle ON cajas.`codigo` = cajasdetalle.`Cajas_Codigo` WHERE cajas.codigo=1 AND cajasdetalle.documento="FACTURA" ORDER BY cajasdetalle.`DOCUMENTO`) as total,
+     cajas.`cajero` AS cajas_cajero
+FROM     `cajas` cajas INNER JOIN `cajasdetalle` cajasdetalle ON cajas.`codigo` = cajasdetalle.`Cajas_Codigo` WHERE cajas.codigo=1 and cajasdetalle.documento="FACTURA"  order by cajasdetalle.`DOCUMENTO`]]>
+	</queryString>
+	<field name="cajasdetalle_codigo" class="java.lang.Integer"/>
+	<field name="cajasdetalle_detalle" class="java.lang.String"/>
+	<field name="cajasdetalle_VALOR" class="java.lang.String"/>
+	<field name="cajasdetalle_TIPO" class="java.lang.String"/>
+	<field name="cajasdetalle_DOCUMENTO" class="java.lang.String"/>
+	<field name="cajasdetalle_Descripcion" class="java.lang.String"/>
+	<field name="cajasdetalle_fecha" class="java.sql.Timestamp"/>
+	<field name="cajasdetalle_CodigoDocumento" class="java.lang.Integer"/>
+	<field name="cajasdetalle_Cajas_Codigo" class="java.lang.Integer"/>
+	<field name="cajas_codigo" class="java.lang.Integer"/>
+	<field name="cajas_caja" class="java.lang.String"/>
+	<field name="cajas_descripcion" class="java.lang.String"/>
+	<field name="cajas_estado" class="java.lang.Boolean"/>
+	<field name="cajas_fechaApertura" class="java.sql.Date"/>
+	<field name="cajas_fechaCierre" class="java.sql.Date"/>
+	<field name="cajas_saldoInicial" class="java.lang.Double"/>
+	<field name="cajas_totalcierre" class="java.lang.Double"/>
+	<field name="total" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cajas_cajero" class="java.lang.String"/>
+	<group name="TIPO MOVIMIENTO">
+		<groupExpression><![CDATA[$F{cajasdetalle_TIPO}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<textField>
+					<reportElement x="0" y="0" width="555" height="13" uuid="83ccc32e-d5de-4371-9181-d5bd3240f8ab"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{cajasdetalle_TIPO}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="17">
+				<staticText>
+					<reportElement x="353" y="1" width="100" height="15" forecolor="#FF0000" uuid="109eb344-41cd-4b07-9ffd-42d0495ff50c"/>
+					<text><![CDATA[TOTAL SUMA:  ]]></text>
+				</staticText>
+				<textField pattern="###0.00">
+					<reportElement x="455" y="2" width="100" height="15" uuid="8549fb0b-2aea-43cb-9ba6-0b39bdfc528a"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="16" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="13" backcolor="#999999" uuid="cfc337c5-a78e-43af-9779-c88999839abf"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="2" y="0" width="100" height="12" uuid="7630367a-a448-4eb0-8e71-d013c6c8b745"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[TIPO DOCUMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="0" width="269" height="12" uuid="a9616c7c-dc1f-4fd2-84d1-c106125ffeac"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[DETALLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="371" y="0" width="100" height="12" uuid="ca4b6cfd-9a87-4c4a-b504-f18e0d64b8f9"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="471" y="0" width="84" height="12" uuid="6bebef51-8a03-4fb9-8679-0b7950cb243b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement x="1" y="0" width="100" height="11" uuid="362588e8-3cdb-4b85-bcfc-d361af862e47"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cajasdetalle_DOCUMENTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="269" height="11" uuid="ee94f695-1c2c-4f72-adc6-fd736f0cae5f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cajasdetalle_detalle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="369" y="0" width="100" height="11" uuid="ad9b6688-07b5-4a84-9565-40e89737d2d2"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cajasdetalle_VALOR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="468" y="0" width="84" height="11" uuid="62bd7cc5-de6a-4cd8-9823-28ab6e256016"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cajasdetalle_fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+</jasperReport>

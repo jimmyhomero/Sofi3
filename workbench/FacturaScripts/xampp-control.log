@@ -1,0 +1,66 @@
+10:52:21  [main] 	Initializing Control Panel
+10:52:21  [main] 	Windows Version:  Pro  64-bit
+10:52:21  [main] 	XAMPP Version: 7.0.23
+10:52:21  [main] 	Control Panel Version: 3.2.2  [ Compiled: Nov 12th 2015 ]
+10:52:21  [main] 	You are not running with administrator rights! This will work for
+10:52:21  [main] 	most application stuff but whenever you do something with services
+10:52:21  [main] 	there will be a security dialogue or things will break! So think 
+10:52:21  [main] 	about running this application with administrator rights!
+10:52:21  [main] 	XAMPP Installation Directory: "c:\users\neora\desktop\xampp\"
+10:52:21  [main] 	Checking for prerequisites
+10:52:21  [main] 	All prerequisites found
+10:52:21  [main] 	Initializing Modules
+10:52:21  [Apache] 	XAMPP Apache is already running on port 80
+10:52:21  [Apache] 	XAMPP Apache is already running on port 443
+10:52:21  [mysql] 	XAMPP MySQL is already running on port 3306
+10:52:21  [main] 	The FileZilla module is disabled
+10:52:21  [main] 	The Mercury module is disabled
+10:52:21  [main] 	Starting Check-Timer
+10:52:21  [main] 	Control Panel Ready
+10:52:24  [Apache] 	Attempting to stop Apache (PID: 3868)
+10:52:24  [Apache] 	Attempting to stop Apache (PID: 8784)
+10:52:24  [Apache] 	Status change detected: stopped
+10:52:27  [mysql] 	Attempting to stop MySQL app...
+10:52:27  [mysql] 	Status change detected: stopped
+10:52:31  [main] 	Deinitializing Modules
+10:52:31  [main] 	Deinitializing Control Panel
+
+10:44:44  [main] 	Initializing Control Panel
+10:44:44  [main] 	Windows Version:  Pro  64-bit
+10:44:44  [main] 	XAMPP Version: 7.0.23
+10:44:44  [main] 	Control Panel Version: 3.2.2  [ Compiled: Nov 12th 2015 ]
+10:44:44  [main] 	You are not running with administrator rights! This will work for
+10:44:44  [main] 	most application stuff but whenever you do something with services
+10:44:44  [main] 	there will be a security dialogue or things will break! So think 
+10:44:44  [main] 	about running this application with administrator rights!
+10:44:44  [main] 	XAMPP Installation Directory: "c:\users\neora\desktop\xampp\"
+10:44:44  [main] 	Checking for prerequisites
+10:44:45  [main] 	All prerequisites found
+10:44:45  [main] 	Initializing Modules
+10:44:45  [main] 	The FileZilla module is disabled
+10:44:45  [main] 	The Mercury module is disabled
+10:44:45  [main] 	Starting Check-Timer
+10:44:45  [main] 	Control Panel Ready
+10:44:49  [mysql] 	Attempting to start MySQL app...
+10:44:49  [mysql] 	Status change detected: running
+10:44:53  [Apache] 	Attempting to start Apache app...
+10:44:53  [Apache] 	Status change detected: running
+10:52:24  [Apache] 	Status change detected: stopped
+10:52:24  [Apache] 	Error: Apache shutdown unexpectedly.
+10:52:24  [Apache] 	This may be due to a blocked port, missing dependencies, 
+10:52:24  [Apache] 	improper privileges, a crash, or a shutdown by another method.
+10:52:24  [Apache] 	Press the Logs button to view error logs and check
+10:52:24  [Apache] 	the Windows Event Viewer for more clues
+10:52:24  [Apache] 	If you need more help, copy and post this
+10:52:24  [Apache] 	entire log window on the forums
+10:52:27  [mysql] 	Status change detected: stopped
+10:52:27  [mysql] 	Error: MySQL shutdown unexpectedly.
+10:52:27  [mysql] 	This may be due to a blocked port, missing dependencies, 
+10:52:27  [mysql] 	improper privileges, a crash, or a shutdown by another method.
+10:52:27  [mysql] 	Press the Logs button to view error logs and check
+10:52:27  [mysql] 	the Windows Event Viewer for more clues
+10:52:27  [mysql] 	If you need more help, copy and post this
+10:52:27  [mysql] 	entire log window on the forums
+10:52:54  [main] 	Deinitializing Modules
+10:52:54  [main] 	Deinitializing Control Panel
+

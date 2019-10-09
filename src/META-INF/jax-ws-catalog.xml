@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://compueconomia.com.ec:8080/WSElectro/WSElectro?wsdl" uri="wsdl/compueconomia.com.ec_8080/WSElectro/WSElectro.wsdl"/>
+    <system systemId="http://compueconomia.com.ec:8080/WSElectro/WSElectro?xsd=1" uri="wsdl/compueconomia.com.ec_8080/WSElectro/WSElectro.xsd_1.xsd"/>
+</catalog>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><xs:schema targetNamespace="http://service.unomas.ec/" version="1.0" xmlns:tns="http://service.unomas.ec/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="changeKey" type="tns:changeKey"/>
+
+  <xs:element name="changeKeyResponse" type="tns:changeKeyResponse"/>
+
+  <xs:element name="changeSignature" type="tns:changeSignature"/>
+
+  <xs:element name="changeSignatureResponse" type="tns:changeSignatureResponse"/>
+
+  <xs:element name="download" type="tns:download"/>
+
+  <xs:element name="downloadResponse" type="tns:downloadResponse"/>
+
+  <xs:element name="sendDoc" type="tns:sendDoc"/>
+
+  <xs:element name="sendDocResponse" type="tns:sendDocResponse"/>
+
+  <xs:element name="upload" type="tns:upload"/>
+
+  <xs:element name="uploadResponse" type="tns:uploadResponse"/>
+
+  <xs:element name="validate" type="tns:validate"/>
+
+  <xs:element name="validateResponse" type="tns:validateResponse"/>
+
+  <xs:complexType name="changeSignature">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" nillable="true" type="xs:base64Binary"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="changeSignatureResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="download">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="downloadResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" nillable="true" type="xs:base64Binary"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="changeKey">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="changeKeyResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="upload">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" nillable="true" type="xs:base64Binary"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="uploadResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="sendDoc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="sendDocResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="validate">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="validateResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://compueconomia.com.ec:8080/WSElectro/WSElectro?wsdl" uri="xml-resources/web-service-references/WSElectro/wsdl/compueconomia.com.ec_8080/WSElectro/WSElectro.wsdl"/>
+    <system systemId="http://compueconomia.com.ec:8080/WSElectro/WSElectro?xsd=1" uri="xml-resources/web-service-references/WSElectro/wsdl/compueconomia.com.ec_8080/WSElectro/WSElectro.xsd_1.xsd"/>
+    <system systemId="http://app.cosmobelleza.com.ec:8080/WSElectro/WSElectro?wsdl" uri="xml-resources/web-service-references/WSElectro_1/wsdl/app.cosmobelleza.com.ec_8080/WSElectro/WSElectro.wsdl"/>
+    <system systemId="http://app.cosmobelleza.com.ec:8080/WSElectro/WSElectro?xsd=1" uri="xml-resources/web-service-references/WSElectro_1/wsdl/app.cosmobelleza.com.ec_8080/WSElectro/WSElectro.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/WSElectro/WSElectro?wsdl" uri="xml-resources/web-service-references/WSElectro_2/wsdl/localhost_8080/WSElectro/WSElectro.wsdl"/>
+    <system systemId="http://localhost:8080/WSElectro/WSElectro?xsd=1" uri="xml-resources/web-service-references/WSElectro_2/wsdl/localhost_8080/WSElectro/WSElectro.xsd_1.xsd"/>
+</catalog>

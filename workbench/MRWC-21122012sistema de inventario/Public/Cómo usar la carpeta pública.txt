@@ -1,0 +1,11 @@
+La carpeta Public te permite compartir archivos individuales en tu Dropbox. Cualquier archivo que pongas en esta carpeta tendrá un enlace de Internet para que lo puedas compartir (incluso con usuarios sin Dropbox).
+
+Primer paso:  Coloca un archivo en la carpeta Public.
+
+Segundo paso:  Haz clic derecho en este archivo, luego elige Dropbox > Copiar enlace público. Esto copia un enlace de Internet a tu archivo que puedes pegar en cualquier lado: correos electrónicos, mensajes instantáneos, blogs, etc. 
+
+¡Eso es todo! Para compartir tu archivo, simplemente envía el enlace a un amigo. 
+
+¡Disfruta Dropbox!
+- El equipo de Dropbox
+

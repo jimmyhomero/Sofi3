@@ -1,0 +1,2 @@
+keytool -import -v -trustcacerts -alias server-alias -file c:\i\cerrtsri.cer -keystore C:\Program Files\Java\jdk1.8.0_144\jre\lib\security\cacerts -keypass changeit -storepass changeit
+keytool -import -keystore "C:\Program Files\Java\jdk1.8.0_144\jre\lib\security\cacerts" -file c:\i\cerrtsri.cer -alias CA_SIR_Consulta -storepass changeit

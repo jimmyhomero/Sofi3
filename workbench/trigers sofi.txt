@@ -1,0 +1,31 @@
+// actualiza inventario despues de hacer una venta o al añadir los registros del detallefactura una venta
+
+CREATE TRIGGER `UpdateInventario` AFTER INSERT ON `detallefactura`
+ FOR EACH ROW UPDATE productos
+     SET productos.cantidad = productos.cantidad - NEW.cantidad
+   WHERE productos.codigo = NEW.Productos_Codigo
+
+////// actualiza inventario despues de eliminarlos registros del detallefactura una venta
+CREATE TRIGGER `UpdateInventarioonDelte` AFTER DELETE ON `detallefactura`
+ FOR EACH ROW UPDATE productos
+     SET productos.cantidad = productos.cantidad + old.cantidad
+   WHERE productos.codigo = old.Productos_Codigo
+///elimina los registros de la tabla detalle facturas que esten relaconadas a la factura a eliminarse
+CREATE TRIGGER `EliminarFactura` BEFORE DELETE ON `facturas`
+ FOR EACH ROW DELETE from detallefactura WHERE detallefactura.Factura_Codigo = old.codigo
+
+
+CREATE TRIGGER `UpdateInventarioOnTickets` AFTER INSERT ON `detalleticket`
+ FOR EACH ROW UPDATE productos
+     SET productos.cantidad = productos.cantidad - NEW.cantidad
+   WHERE productos.codigo = NEW.Productos_Codigo
+
+CREATE TRIGGER `UpdateInventarioonDelteOnTickets` AFTER DELETE ON `detalleticket`
+ FOR EACH ROW UPDATE productos
+     SET productos.cantidad = productos.cantidad + old.cantidad
+   WHERE productos.codigo = old.Productos_Codigo
+
+CREATE TRIGGER `EliminarDetalleTicketAntesDeEliminarLaFactira` BEFORE DELETE ON `Tickets`
+ FOR EACH ROW DELETE from detalleticket WHERE detalleticket.Ticket_Codigo = old.codigo
+
+/////

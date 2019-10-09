@@ -1,0 +1,12 @@
+precios  CREATE TABLE `precios` (                                 
+           `codigo` INT(11) NOT NULL AUTO_INCREMENT,              
+           `nombre` VARCHAR(500) DEFAULT NULL,                    
+           `valor` DOUBLE DEFAULT '0',                            
+           PRIMARY KEY (`codigo`)                                 
+         ) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1  
+/*[23:31:09][  62 ms]*/ INSERT INTO `precios`(`codigo`,`nombre`,`valor`) VALUES ( NULL,'PRECIO A','0');
+/*[23:31:14][ 110 ms]*/ INSERT INTO `precios`(`codigo`,`nombre`,`valor`) VALUES ( NULL,'PRECIO B','0');
+/*[23:31:18][  78 ms]*/ INSERT INTO `precios`(`codigo`,`nombre`,`valor`) VALUES ( NULL,'PRECIO C','0');
+/*[23:31:23][  63 ms]*/ UPDATE `precios` SET `codigo`='1',`nombre`='PRECIO A',`valor`='5' WHERE `codigo`='1';
+/*[23:31:26][  78 ms]*/ UPDATE `precios` SET `codigo`='2',`nombre`='PRECIO B',`valor`='10' WHERE `codigo`='2';
+/*[23:31:29][  78 ms]*/ UPDATE `precios` SET `codigo`='3',`nombre`='PRECIO C',`valor`='20' WHERE `codigo`='3';

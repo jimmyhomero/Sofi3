@@ -1,0 +1,2139 @@
+/*
+SQLyog Enterprise - MySQL GUI v8.05 
+MySQL - 5.5.5-10.1.25-MariaDB : Database - aaaa
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+/*Table structure for table `bancos` */
+
+DROP TABLE IF EXISTS `bancos`;
+
+CREATE TABLE `bancos` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(500) DEFAULT NULL,
+  `sucursal` varchar(500) DEFAULT NULL,
+  `cuenta` varchar(50) DEFAULT NULL,
+  `tipo` char(1) DEFAULT NULL,
+  `documento` varchar(20) DEFAULT NULL,
+  `documento2` varchar(50) DEFAULT NULL,
+  `valor` double DEFAULT NULL,
+  `saldo` double DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+/*Data for the table `bancos` */
+
+insert  into `bancos`(`codigo`,`nombre`,`sucursal`,`cuenta`,`tipo`,`documento`,`documento2`,`valor`,`saldo`) values (1,'PICHINCHA','INDIO COLORADO','2100053433','C',NULL,NULL,NULL,100);
+
+/*Table structure for table `bodegas` */
+
+DROP TABLE IF EXISTS `bodegas`;
+
+CREATE TABLE `bodegas` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `bodegaID` varchar(45) DEFAULT NULL,
+  `bodega` varchar(145) DEFAULT NULL,
+  `descripcion` varchar(245) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+/*Data for the table `bodegas` */
+
+insert  into `bodegas`(`codigo`,`bodegaID`,`bodega`,`descripcion`) values (1,'1','Principal','BodegaPrincipal');
+insert  into `bodegas`(`codigo`,`bodegaID`,`bodega`,`descripcion`) values (2,'2','QUITO','bodega2');
+insert  into `bodegas`(`codigo`,`bodegaID`,`bodega`,`descripcion`) values (3,'3','MANA','bodega3');
+insert  into `bodegas`(`codigo`,`bodegaID`,`bodega`,`descripcion`) values (4,'4','PORTOVIEJO','bodega4');
+insert  into `bodegas`(`codigo`,`bodegaID`,`bodega`,`descripcion`) values (5,'5','SANTO DOMINGO','bodega5');
+insert  into `bodegas`(`codigo`,`bodegaID`,`bodega`,`descripcion`) values (6,'6','BELGICA','bodega6');
+insert  into `bodegas`(`codigo`,`bodegaID`,`bodega`,`descripcion`) values (7,'7','PARIS','bodega7');
+insert  into `bodegas`(`codigo`,`bodegaID`,`bodega`,`descripcion`) values (8,'8','INES',NULL);
+
+/*Table structure for table `cajas` */
+
+DROP TABLE IF EXISTS `cajas`;
+
+CREATE TABLE `cajas` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `caja` varchar(95) DEFAULT NULL,
+  `descripcion` varchar(345) DEFAULT NULL,
+  `estado` tinyint(1) DEFAULT '0',
+  `fechaApertura` date DEFAULT NULL,
+  `fechaCierre` date DEFAULT NULL,
+  `saldoInicial` double DEFAULT '0',
+  `totalcierre` double DEFAULT NULL,
+  `cajero` varchar(85) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+/*Data for the table `cajas` */
+
+insert  into `cajas`(`codigo`,`caja`,`descripcion`,`estado`,`fechaApertura`,`fechaCierre`,`saldoInicial`,`totalcierre`,`cajero`) values (1,'CAJA GENERAL','CAJA GENERAL ',1,'2017-11-05','2018-04-01',0,NULL,NULL);
+insert  into `cajas`(`codigo`,`caja`,`descripcion`,`estado`,`fechaApertura`,`fechaCierre`,`saldoInicial`,`totalcierre`,`cajero`) values (2,'CAJA QUITO','CAJA QUITO',1,'2017-11-07','2018-04-01',0,0,NULL);
+insert  into `cajas`(`codigo`,`caja`,`descripcion`,`estado`,`fechaApertura`,`fechaCierre`,`saldoInicial`,`totalcierre`,`cajero`) values (3,'CAJA LOJA','CAJA LOJA',1,NULL,NULL,0,NULL,NULL);
+
+/*Table structure for table `cajasdetalle` */
+
+DROP TABLE IF EXISTS `cajasdetalle`;
+
+CREATE TABLE `cajasdetalle` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `detalle` varchar(245) DEFAULT NULL,
+  `VALOR` varchar(45) DEFAULT NULL,
+  `TIPO` varchar(45) DEFAULT NULL,
+  `DOCUMENTO` varchar(45) DEFAULT NULL,
+  `Descripcion` varchar(245) DEFAULT NULL,
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CodigoDocumento` int(11) DEFAULT NULL,
+  `Cajas_Codigo` int(11) NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=latin1;
+
+/*Data for the table `cajasdetalle` */
+
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (1,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-08 12:48:17',1,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (2,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','16.7','INGRESO ','TICKET','---','2018-04-08 12:55:44',2,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (3,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','16.7','INGRESO ','TICKET','---','2018-04-08 12:57:19',3,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (4,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','16.7','INGRESO ','TICKET','---','2018-04-08 22:01:48',4,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (5,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','31.7','INGRESO ','TICKET','---','2018-04-08 22:04:06',5,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (6,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','16.7','INGRESO ','TICKET','---','2018-04-08 22:07:17',6,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (7,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','16.7','INGRESO ','TICKET','---','2018-04-08 22:13:57',7,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (8,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','16.7','INGRESO ','TICKET','---','2018-04-08 22:19:07',8,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (9,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','900.0','INGRESO ','TICKET','---','2018-04-08 22:20:30',9,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (10,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','482.1','INGRESO ','TICKET','---','2018-04-08 22:22:21',10,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (11,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','562.4','INGRESO ','TICKET','---','2018-04-08 22:23:25',11,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (12,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','102.0','INGRESO ','TICKET','---','2018-04-08 22:23:51',12,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (13,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','5.2','INGRESO ','TICKET','---','2018-04-08 22:25:50',13,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (14,'INGRESO POR FACURA TICKET - EFECTIVO # 000000001 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.4','INGRESO ','TICKET','---','2018-04-08 22:30:43',14,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (15,'INGRESO POR FACURA TICKET - EFECTIVO # 000000002 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','15.0','INGRESO ','TICKET','---','2018-04-08 22:50:05',15,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (16,'INGRESO POR FACURA TICKET - EFECTIVO # 000000003 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','15.0','INGRESO ','TICKET','---','2018-04-08 22:50:26',16,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (17,'INGRESO POR FACURA TICKET - EFECTIVO # 000000004 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','15.0','INGRESO ','TICKET','---','2018-04-08 22:56:47',17,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (18,'INGRESO POR FACURA TICKET - EFECTIVO # 000000005 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','16.7','INGRESO ','TICKET','---','2018-04-08 23:46:55',18,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (19,'INGRESO POR FACURA TICKET - EFECTIVO # 000000006 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','16.7','INGRESO ','TICKET','---','2018-04-08 23:52:31',19,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (20,'INGRESO POR FACURA TICKET - EFECTIVO # 000000007 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','5.2','INGRESO ','TICKET','---','2018-04-08 23:57:42',20,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (21,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000002 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','FACTURA','---','2018-04-08 23:58:24',1,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (22,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000003 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','FACTURA','---','2018-04-09 00:00:14',2,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (23,'INGRESO POR FACURA TICKET - EFECTIVO # 000000008 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','15.0','INGRESO ','TICKET','---','2018-04-09 12:00:29',22,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (24,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000004 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','15.0','INGRESO ','FACTURA','---','2018-04-09 12:01:14',3,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (25,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000005 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','16.7','INGRESO ','FACTURA','---','2018-04-09 12:03:10',4,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (26,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000006 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','15.0','INGRESO ','FACTURA','---','2018-04-09 12:09:55',5,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (27,'INGRESO POR FACURA TICKET - EFECTIVO # 000000010 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','15.0','INGRESO ','TICKET','---','2018-04-09 17:53:42',24,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (28,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000009 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','5.0','INGRESO ','FACTURA','---','2018-04-11 16:27:17',6,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (29,'INGRESO POR FACURA TICKET - EFECTIVO # 000000012 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-12 14:11:25',26,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (30,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000010 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','18.0','INGRESO ','FACTURA','---','2018-04-12 14:12:55',7,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (31,'INGRESO POR FACURA TICKET - EFECTIVO # 000000014 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','TICKET','---','2018-04-12 14:45:31',28,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (32,'INGRESO POR FACURA TICKET - EFECTIVO # 000000015 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-12 15:14:42',29,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (33,'INGRESO POR FACURA TICKET - EFECTIVO # 000000016 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','26.5','INGRESO ','TICKET','---','2018-04-12 15:25:30',30,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (34,'INGRESO POR FACURA TICKET - EFECTIVO # 000000017 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-12 17:13:23',31,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (35,'INGRESO POR FACURA TICKET - EFECTIVO # 000000018 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','28.2','INGRESO ','TICKET','---','2018-04-12 17:15:50',32,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (36,'INGRESO POR FACURA TICKET - EFECTIVO # 000000019 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','19.7','INGRESO ','TICKET','---','2018-04-12 23:57:52',33,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (37,'INGRESO POR FACURA TICKET - EFECTIVO # 000000020 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','16.7','INGRESO ','TICKET','---','2018-04-12 23:58:49',34,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (38,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000011 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','FACTURA','---','2018-04-13 00:00:47',8,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (39,'INGRESO POR FACURA TICKET - EFECTIVO # 000000022 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-13 00:07:29',36,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (40,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000012 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','FACTURA','---','2018-04-13 00:07:46',9,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (41,'INGRESO POR FACURA TICKET - EFECTIVO # 000000024 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-13 00:13:13',38,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (42,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000013 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','FACTURA','---','2018-04-13 00:17:19',10,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (43,'INGRESO POR FACURA TICKET - EFECTIVO # 000000026 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-13 07:39:02',40,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (44,'INGRESO POR FACURA TICKET - EFECTIVO # 000000027 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','TICKET','---','2018-04-13 07:41:54',41,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (45,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000014 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','15.0','INGRESO ','FACTURA','---','2018-04-13 07:42:22',11,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (46,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000015 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','FACTURA','---','2018-04-13 07:45:23',12,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (47,'INGRESO POR FACURA TICKET - EFECTIVO # 000000030 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','TICKET','---','2018-04-13 08:02:59',44,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (48,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000016 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','FACTURA','---','2018-04-13 08:03:15',13,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (49,'INGRESO POR FACURA TICKET - EFECTIVO # 000000032 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','TICKET','---','2018-04-13 08:07:46',46,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (50,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000017 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','FACTURA','---','2018-04-13 08:08:17',14,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (51,'INGRESO POR FACURA TICKET - EFECTIVO # 000000034 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','TICKET','---','2018-04-13 14:40:36',48,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (52,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000018 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','FACTURA','---','2018-04-13 14:41:18',15,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (53,'INGRESO POR FACURA TICKET - EFECTIVO # 000000036 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','TICKET','---','2018-04-13 15:25:58',50,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (54,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000019 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.5','INGRESO ','FACTURA','---','2018-04-13 15:26:14',16,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (55,'INGRESO POR FACURA TICKET - EFECTIVO # 000000037 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-13 15:46:40',52,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (56,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000020 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','FACTURA','---','2018-04-13 15:46:51',17,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (57,'INGRESO POR FACURA TICKET - EFECTIVO # 000000040 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-13 16:20:28',55,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (58,'INGRESO POR FACURA TICKET - EFECTIVO # 000000041 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-14 10:51:25',56,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (59,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000021 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','18.5','INGRESO ','FACTURA','---','2018-04-14 10:51:53',18,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (60,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000022 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','FACTURA','---','2018-04-14 11:23:11',19,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (61,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000023 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','15.0','INGRESO ','FACTURA','---','2018-04-14 11:26:28',20,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (62,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000024 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','FACTURA','---','2018-04-14 11:50:55',21,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (63,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000025 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','FACTURA','---','2018-04-14 11:57:45',22,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (64,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000026 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','FACTURA','---','2018-04-14 12:13:23',23,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (65,'INGRESO POR FACURA TICKET - EFECTIVO # 000000046 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-14 12:16:22',61,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (66,'INGRESO POR FACURA TICKET - EFECTIVO # 000000047 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','TICKET','---','2018-04-14 12:18:11',62,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (67,'INGRESO POR FACURA TICKET - EFECTIVO # 000000048 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','TICKET','---','2018-04-14 12:20:48',63,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (68,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000027 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','15.0','INGRESO ','FACTURA','---','2018-04-14 12:21:46',24,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (69,'INGRESO POR FACURA TICKET - EFECTIVO # 000000049 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','43.7','INGRESO ','TICKET','---','2018-04-14 12:50:57',64,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (70,'INGRESO POR FACURA TICKET - EFECTIVO # 000000050 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-14 12:53:18',65,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (71,'INGRESO POR FACURA TICKET - EFECTIVO # 000000051 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','TICKET','---','2018-04-14 13:06:01',66,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (72,'INGRESO POR FACURA TICKET - EFECTIVO # 000000052 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1503.0','INGRESO ','TICKET','---','2018-04-14 13:07:56',67,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (73,'INGRESO POR FACURA TICKET - EFECTIVO # 000000053 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','13200.0','INGRESO ','TICKET','---','2018-04-14 13:10:04',68,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (74,'INGRESO POR FACURA TICKET - EFECTIVO # 000000054 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3000.0','INGRESO ','TICKET','---','2018-04-14 13:18:08',69,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (75,'INGRESO POR FACURA TICKET - EFECTIVO # 000000055 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-14 13:36:35',70,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (76,'INGRESO POR FACURA TICKET - EFECTIVO # 000000056 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.5','INGRESO ','TICKET','---','2018-04-14 13:42:52',71,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (77,'INGRESO POR FACURA TICKET - EFECTIVO # 000000057 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','524.0','INGRESO ','TICKET','---','2018-04-14 13:43:37',72,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (78,'INGRESO POR FACURA FACTURA - CREDITO # 001-001-000000028 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','FACTURA','---','2018-04-14 13:47:37',25,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (79,' EGRESO MANUAL DE CAJA JIMM DESDE EQUIPO: DESKTOP-OQEODUI','50.0','EGRESO ','INGRESO MANUAL DE CAJA ','KK','2018-04-15 20:21:13',0,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (80,' EGRESO MANUAL DE CAJA JIMM DESDE EQUIPO: DESKTOP-OQEODUI','20.0','EGRESO ','INGRESO MANUAL DE CAJA ','mm','2018-04-15 21:20:39',0,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (81,' EGRESO MANUAL DE CAJA JIMM DESDE EQUIPO: DESKTOP-OQEODUI','20.0','EGRESO ',' EGRESO MANUAL DE CAJA ','HHHH','2018-04-15 21:23:49',0,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (82,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000029 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','31.7','INGRESO ','FACTURA','---','2018-04-18 15:41:36',26,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (83,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000030 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','31.7','INGRESO ','FACTURA','---','2018-04-18 16:03:43',27,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (84,'INGRESO POR FACURA TICKET - EFECTIVO # 000000058 EN EQUIPO: OPTIMUS USUARIO: JIMM','15.0','INGRESO ','TICKET','---','2018-04-19 18:10:55',73,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (85,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000001 EN EQUIPO: OPTIMUS USUARIO: JIMM','1.7','INGRESO ','FACTURA','---','2018-04-19 18:12:23',28,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (86,'INGRESO POR FACURA TICKET - EFECTIVO # 000000059 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-21 10:36:47',74,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (87,'INGRESO POR FACURA TICKET - EFECTIVO # 000000060 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-21 10:48:12',75,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (88,'INGRESO POR FACURA TICKET - EFECTIVO # 000000061 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','15.0','INGRESO ','TICKET','---','2018-04-21 11:35:21',76,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (89,'INGRESO POR FACURA TICKET - EFECTIVO # 000000062 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-21 11:38:42',77,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (90,'INGRESO POR FACURA TICKET - EFECTIVO # 000000063 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','TICKET','---','2018-04-21 11:40:08',78,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (91,'INGRESO POR FACURA TICKET - EFECTIVO # 000000064 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-21 11:41:59',79,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (92,'INGRESO POR FACURA TICKET - EFECTIVO # 000000065 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-21 11:43:54',80,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (93,'INGRESO POR FACURA TICKET - EFECTIVO # 000000066 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-21 11:45:48',81,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (94,'INGRESO POR FACURA TICKET - EFECTIVO # 000000067 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','TICKET','---','2018-04-21 11:47:41',82,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (95,'INGRESO POR FACURA TICKET - EFECTIVO # 000000068 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','TICKET','---','2018-04-21 12:12:03',83,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (96,'INGRESO POR FACURA TICKET - EFECTIVO # 000000069 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','TICKET','---','2018-04-21 12:26:05',84,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (97,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000031 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','FACTURA','---','2018-04-21 12:26:33',29,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (98,'INGRESO POR FACURA TICKET - EFECTIVO # 000000070 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','TICKET','---','2018-04-21 12:31:22',85,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (99,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000032 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','15.0','INGRESO ','FACTURA','---','2018-04-21 12:31:39',30,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (100,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000033 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','3.0','INGRESO ','FACTURA','---','2018-04-21 12:32:59',31,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (101,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000034 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','21.5','INGRESO ','FACTURA','---','2018-04-21 12:35:55',32,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (102,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000035 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','43.7','INGRESO ','FACTURA','---','2018-04-21 12:51:58',33,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (103,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000036 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','31.7','INGRESO ','FACTURA','---','2018-04-21 12:53:42',34,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (104,'INGRESO POR FACURA FACTURA - EFECTIVO # 001-001-000000037 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','1.7','INGRESO ','FACTURA','---','2018-04-23 07:51:05',35,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (105,'ABONO - VENTA  TICKET - CREDITO # 000000071 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM - SALDO: 0.7','1.0','INGRESO ','TICKET','---','2018-05-22 15:55:24',86,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (106,'SALDO - VENTA  TICKET - CREDITO # 000000071 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM - SALDO: 0.7','0.7','INGRESO ','TICKET','---','2018-05-22 15:55:24',86,1);
+insert  into `cajasdetalle`(`codigo`,`detalle`,`VALOR`,`TIPO`,`DOCUMENTO`,`Descripcion`,`fecha`,`CodigoDocumento`,`Cajas_Codigo`) values (107,'INGRESO POR FACURA TICKET - CREDITO # 000000072 EN EQUIPO: DESKTOP-OQEODUI USUARIO: JIMM','15.0','INGRESO ','TICKET','---','2018-05-22 15:56:15',87,1);
+
+/*Table structure for table `categorias` */
+
+DROP TABLE IF EXISTS `categorias`;
+
+CREATE TABLE `categorias` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `categoria` varchar(200) DEFAULT NULL,
+  `descripcion` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+/*Data for the table `categorias` */
+
+insert  into `categorias`(`codigo`,`categoria`,`descripcion`) values (1,'LAPTOP','AUTO');
+
+/*Table structure for table `ch` */
+
+DROP TABLE IF EXISTS `ch`;
+
+CREATE TABLE `ch` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `cliente` varchar(500) DEFAULT NULL,
+  `valor` varchar(500) DEFAULT NULL,
+  `cobro` varchar(500) DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `referencia` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+/*Data for the table `ch` */
+
+insert  into `ch`(`codigo`,`cliente`,`valor`,`cobro`,`date`,`referencia`) values (1,'sdfsd','2342','sdfsdf','2018-05-20 22:13:59',NULL);
+
+/*Table structure for table `cheques` */
+
+DROP TABLE IF EXISTS `cheques`;
+
+CREATE TABLE `cheques` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `codigo_banco` int(11) DEFAULT NULL,
+  `fecha_emision` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_cobro` date DEFAULT NULL,
+  `valor` double DEFAULT NULL,
+  `paguese_a` varchar(500) DEFAULT NULL,
+  `titular_chequera` varchar(500) DEFAULT NULL,
+  `numero` int(11) DEFAULT NULL,
+  `referencia` varchar(500) DEFAULT NULL,
+  `codigo_cliente` int(11) DEFAULT NULL,
+  `codigo_proveedor` int(11) DEFAULT NULL,
+  `estado` char(1) DEFAULT NULL,
+  PRIMARY KEY (`codigo`),
+  KEY `fk_cheques_bancos1_idx` (`codigo_banco`),
+  CONSTRAINT `fk_cheques_bancos1` FOREIGN KEY (`codigo_banco`) REFERENCES `bancos` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+/*Data for the table `cheques` */
+
+insert  into `cheques`(`codigo`,`codigo_banco`,`fecha_emision`,`fecha_cobro`,`valor`,`paguese_a`,`titular_chequera`,`numero`,`referencia`,`codigo_cliente`,`codigo_proveedor`,`estado`) values (1,1,'2018-05-14 22:04:36','0000-00-00',200,'jimmy carrion',NULL,105,NULL,NULL,NULL,'p');
+insert  into `cheques`(`codigo`,`codigo_banco`,`fecha_emision`,`fecha_cobro`,`valor`,`paguese_a`,`titular_chequera`,`numero`,`referencia`,`codigo_cliente`,`codigo_proveedor`,`estado`) values (2,1,'2018-05-14 22:04:48','0000-00-00',15,NULL,NULL,255,NULL,NULL,NULL,'c');
+
+/*Table structure for table `clientes` */
+
+DROP TABLE IF EXISTS `clientes`;
+
+CREATE TABLE `clientes` (
+  `codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `Cedula` varchar(50) NOT NULL,
+  `Nombres` varchar(200) NOT NULL,
+  `Telefono` varchar(200) DEFAULT NULL,
+  `Celular` varchar(200) DEFAULT NULL,
+  `mail` varchar(200) DEFAULT NULL,
+  `Direccion` varchar(350) DEFAULT NULL,
+  `Provincia` varchar(100) DEFAULT NULL,
+  `Ciudad` varchar(100) DEFAULT NULL,
+  `Nacionalidad` varchar(100) DEFAULT NULL,
+  `PagoPredeterminado` int(100) DEFAULT NULL,
+  `TipoCliente` int(100) DEFAULT NULL,
+  `VendedorPredeterminado` int(100) DEFAULT NULL,
+  `Observaciones` varchar(400) DEFAULT NULL,
+  `Nacimiento` varchar(20) DEFAULT NULL,
+  `genero` varchar(10) DEFAULT NULL,
+  `huella` varchar(25) DEFAULT NULL,
+  `estadoCivil` varchar(30) DEFAULT NULL,
+  `empresa` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`codigo`),
+  UNIQUE KEY `Cedula` (`Cedula`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+
+/*Data for the table `clientes` */
+
+insert  into `clientes`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`PagoPredeterminado`,`TipoCliente`,`VendedorPredeterminado`,`Observaciones`,`Nacimiento`,`genero`,`huella`,`estadoCivil`,`empresa`) values (1,'1722239967001','CARRION TORRES JIMMY HOMERO','','0992669329','','SANTO DOMINGO DE LOS TSACHILAS / SANTO DOMINGO / SANTO DOMINGO / SAN MIGUEL LOTE 145 Y AV. QUITO',' SANTO DOMINGO ',' SANTO DOMINGO ','ECUATORIANA',0,0,0,NULL,'1000-01-01','N/A','N/A','ACT',NULL);
+insert  into `clientes`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`PagoPredeterminado`,`TipoCliente`,`VendedorPredeterminado`,`Observaciones`,`Nacimiento`,`genero`,`huella`,`estadoCivil`,`empresa`) values (2,'2390021227001','IMPORTADORA Y DISTRIBUIDORA COSMO BELLEZA IMPOCOSMOBELLEZA S.A.','','0992669329','','SANTO DOMINGO DE LOS TSACHILAS / SANTO DOMINGO / SANTO DOMINGO DE LOS COLORADOS / AV. 29 DE MAYO SN Y LOJA',' SANTO DOMINGO ',' SANTO DOMINGO DE LOS COLORADOS ','ECUATORIANA',0,0,0,NULL,'1000-01-01','N/A','N/A','',NULL);
+insert  into `clientes`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`PagoPredeterminado`,`TipoCliente`,`VendedorPredeterminado`,`Observaciones`,`Nacimiento`,`genero`,`huella`,`estadoCivil`,`empresa`) values (4,'1.718792656E9','MAYTE FREIRE','2.3741085E7','','','EL EMPALME','STO DGO','STO DGO',NULL,0,0,0,'RUTA4\n','1000-01-01','null',NULL,NULL,NULL);
+insert  into `clientes`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`PagoPredeterminado`,`TipoCliente`,`VendedorPredeterminado`,`Observaciones`,`Nacimiento`,`genero`,`huella`,`estadoCivil`,`empresa`) values (5,'1.718554569E9','PAMELA BURRIN','','9.8756936E7','pamelov@hotmail.com','3 DE DICIEMBRE','MANABI','PORTOVIEJO',NULL,0,0,0,'RUTA4\nMala cliente no credito','1000-01-01','null',NULL,NULL,NULL);
+insert  into `clientes`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`PagoPredeterminado`,`TipoCliente`,`VendedorPredeterminado`,`Observaciones`,`Nacimiento`,`genero`,`huella`,`estadoCivil`,`empresa`) values (13,'1717148371','QUINTANA ALBI√ëO SHEICY ELIZABETH','0991878881','','','KM 4 1/2 VIA QUEVEDO','STO DGO TSACHIL/SANTO DOMINGO/ABRAHAM CALAZACON','','',1,1,1,NULL,'','','','',NULL);
+insert  into `clientes`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`PagoPredeterminado`,`TipoCliente`,`VendedorPredeterminado`,`Observaciones`,`Nacimiento`,`genero`,`huella`,`estadoCivil`,`empresa`) values (15,'17222d','CARRION TORRES JIMMY HOMERO','','','','COOP STA MARTHA SN COOP STA MA','STO DGO TSACHIL/SANTO DOMINGO/RIO VERDE','','ECUATORIANA',0,0,0,NULL,'21-03-1988','M','V2343V2242','SOLTERO',NULL);
+insert  into `clientes`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`PagoPredeterminado`,`TipoCliente`,`VendedorPredeterminado`,`Observaciones`,`Nacimiento`,`genero`,`huella`,`estadoCivil`,`empresa`) values (16,'1722423967001','GETIAL GETIAL RICARDO MIGUEL','','','','SANTO DOMINGO DE LOS TSACHILAS / SANTO DOMINGO / SANTO DOMINGO DE LOS COLORADOS / AV. QUITO 516 Y AMBATO Y LATACUNGA',' SANTO DOMINGO ',' SANTO DOMINGO DE LOS COLORADOS ','ECUATORIANA',0,0,0,NULL,'1000-01-01','N/A','N/A','ACT',NULL);
+insert  into `clientes`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`PagoPredeterminado`,`TipoCliente`,`VendedorPredeterminado`,`Observaciones`,`Nacimiento`,`genero`,`huella`,`estadoCivil`,`empresa`) values (17,'9999999999999','COSUMIDOR FINAL','999999999','999999999',NULL,'CONSUMIDOR DINAL',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert  into `clientes`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`PagoPredeterminado`,`TipoCliente`,`VendedorPredeterminado`,`Observaciones`,`Nacimiento`,`genero`,`huella`,`estadoCivil`,`empresa`) values (19,'2350994394','ZAMBRANO RODRIGUEZ KEVIN JAVIER','','0986732037','','URB CIUDAD VERDE SN','STO DGO TSACHIL/SANTO DOMINGO/RIO VERDE','','ECUATORIANA',0,0,0,NULL,'23-12-1999','M','V4343V4242','SOLTERO',NULL);
+insert  into `clientes`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`PagoPredeterminado`,`TipoCliente`,`VendedorPredeterminado`,`Observaciones`,`Nacimiento`,`genero`,`huella`,`estadoCivil`,`empresa`) values (20,'1717148371001','QUINTANA ALBI√ëO SHEICY ELIZABETH','','','','SANTO DOMINGO DE LOS TSACHILAS / SANTO DOMINGO / SANTO DOMINGO / B LOTE 23',' SANTO DOMINGO ',' SANTO DOMINGO ','ECUATORIANA',0,0,0,NULL,'1000-01-01','N/A','N/A','ACT',NULL);
+
+/*Table structure for table `color` */
+
+DROP TABLE IF EXISTS `color`;
+
+CREATE TABLE `color` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `color` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+/*Data for the table `color` */
+
+insert  into `color`(`codigo`,`color`) values (1,'NEGRO');
+insert  into `color`(`codigo`,`color`) values (2,'AZUL');
+insert  into `color`(`codigo`,`color`) values (3,'VERDE');
+insert  into `color`(`codigo`,`color`) values (4,'AMARILLO');
+insert  into `color`(`codigo`,`color`) values (5,'ROJO');
+insert  into `color`(`codigo`,`color`) values (6,'GRIS');
+insert  into `color`(`codigo`,`color`) values (7,'PLOMO');
+insert  into `color`(`codigo`,`color`) values (8,'LILA');
+insert  into `color`(`codigo`,`color`) values (9,'NARANJA');
+insert  into `color`(`codigo`,`color`) values (10,'ROSADO');
+
+/*Table structure for table `compras` */
+
+DROP TABLE IF EXISTS `compras`;
+
+CREATE TABLE `compras` (
+  `Codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `fecha` date DEFAULT NULL,
+  `hora` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `iva` varchar(10) DEFAULT NULL,
+  `Iva_valor` varchar(45) DEFAULT NULL,
+  `subtotaI_con_iva` varchar(45) DEFAULT NULL,
+  `subtotal_sin_iva` varchar(45) DEFAULT NULL,
+  `total` varchar(45) DEFAULT NULL,
+  `utilidad` varchar(45) DEFAULT NULL,
+  `tipo_documentoID` varchar(5) DEFAULT NULL,
+  `tipo_documento` varchar(45) DEFAULT NULL,
+  `descuento` varchar(45) DEFAULT NULL,
+  `Usuarios_Codigo` int(100) NOT NULL,
+  `Equipo` varchar(75) DEFAULT NULL,
+  `secuencia` varchar(45) DEFAULT NULL,
+  `anulada` tinyint(1) NOT NULL DEFAULT '0',
+  `fechain` varchar(45) DEFAULT NULL,
+  `calveAcceso` varchar(100) DEFAULT NULL,
+  `estado` int(1) NOT NULL DEFAULT '0',
+  `DescripcionElectronica` varchar(100) DEFAULT NULL,
+  `autorizado` int(1) NOT NULL DEFAULT '0',
+  `establecimiento` varchar(10) DEFAULT NULL,
+  `ptoEmision` varchar(10) DEFAULT NULL,
+  `secfactura` varchar(50) DEFAULT NULL,
+  `formaPago` varchar(50) DEFAULT NULL,
+  `efectivo` double DEFAULT NULL,
+  `cambio` double DEFAULT NULL,
+  `Proveedores_codigo` int(100) NOT NULL,
+  `nota_codigo` int(11) DEFAULT NULL,
+  `Autorizacion` varchar(75) DEFAULT NULL,
+  `sustento` varchar(200) DEFAULT NULL,
+  `sustentoID` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`Codigo`,`Proveedores_codigo`),
+  KEY `fk_Factura_usuarios1_idx` (`Usuarios_Codigo`),
+  KEY `fk_facturas_copy1_Proveedores1_idx` (`Proveedores_codigo`),
+  CONSTRAINT `fk_Factura_usuarios10` FOREIGN KEY (`Usuarios_Codigo`) REFERENCES `usuarios` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_facturas_copy1_Proveedores1` FOREIGN KEY (`Proveedores_codigo`) REFERENCES `proveedores` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+/*Data for the table `compras` */
+
+insert  into `compras`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documentoID`,`tipo_documento`,`descuento`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`,`Proveedores_codigo`,`nota_codigo`,`Autorizacion`,`sustento`,`sustentoID`) values (1,'2018-03-15','2018-03-15 21:52:22','12.0','3.75','31.25','0.00','35.00','8.100000000000001','1','Factura','0.00',4,'DESKTOP-OQEODUI','001-001-002255632',0,'2018-03-15 00:00:00','000100100122255555522',0,NULL,0,'001','001','002255632','EFECTIVO',0,0,2,NULL,NULL,'Cr√É¬©dito Tributario para declaraci√É¬≥n de IVA (servicios y bienes distintos de inventarios y activos fijos)','01');
+insert  into `compras`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documentoID`,`tipo_documento`,`descuento`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`,`Proveedores_codigo`,`nota_codigo`,`Autorizacion`,`sustento`,`sustentoID`) values (2,'2018-03-15','2018-03-15 21:53:23','12.0','27.32','227.68','0.00','255.00','57.8','1','Factura','0.00',4,'DESKTOP-OQEODUI','001-001-002255632',0,'2018-03-15 00:00:00','000100100122255555522',0,NULL,0,'001','001','002255632','EFECTIVO',0,0,2,NULL,NULL,'Cr√É¬©dito Tributario para declaraci√É¬≥n de IVA (servicios y bienes distintos de inventarios y activos fijos)','01');
+insert  into `compras`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documentoID`,`tipo_documento`,`descuento`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`,`Proveedores_codigo`,`nota_codigo`,`Autorizacion`,`sustento`,`sustentoID`) values (3,'2018-04-11','2018-04-11 16:25:39','12.0','2.14','17.86','0.00','20.00','5.0','1','Factura','0.00',4,'DESKTOP-OQEODUI','001-002-0000002',0,'2018-04-11 00:00:00','25555542222255555',0,NULL,0,'001','002','0000002','EFECTIVO',0,0,3,NULL,NULL,'Cr√É¬©dito Tributario para declaraci√É¬≥n de IVA (servicios y bienes distintos de inventarios y activos fijos)','01');
+insert  into `compras`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documentoID`,`tipo_documento`,`descuento`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`,`Proveedores_codigo`,`nota_codigo`,`Autorizacion`,`sustento`,`sustentoID`) values (4,'2018-04-03','2018-04-22 19:31:53','12.0','5.36','44.64','0.00','50.00','-50.0','1','Factura','0.00',4,'DESKTOP-OQEODUI','001-001-0002',0,'2018-04-03 00:00:00','001-001-0012225555555',0,NULL,0,'001','001','0002','EFECTIVO',0,0,2,NULL,NULL,'Cr√É¬©dito Tributario para declaraci√É¬≥n de IVA (servicios y bienes distintos de inventarios y activos fijos)','01');
+insert  into `compras`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documentoID`,`tipo_documento`,`descuento`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`,`Proveedores_codigo`,`nota_codigo`,`Autorizacion`,`sustento`,`sustentoID`) values (5,'2018-04-22','2018-04-22 20:08:18','12.0','857.14','7142.86','0.00','8000.00','-1000.0','1','Factura','0.00',4,'DESKTOP-OQEODUI','001-001-000000009',0,'2018-04-22 00:00:00','8888',0,NULL,0,'001','001','000000009','EFECTIVO',0,0,2,NULL,NULL,'Cr√É¬©dito Tributario para declaraci√É¬≥n de IVA (servicios y bienes distintos de inventarios y activos fijos)','01');
+insert  into `compras`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documentoID`,`tipo_documento`,`descuento`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`,`Proveedores_codigo`,`nota_codigo`,`Autorizacion`,`sustento`,`sustentoID`) values (6,'2018-04-22','2018-04-22 20:34:13','12.0','64.29','535.71','0.00','600.00','-7971.43','1','Factura','0.00',4,'DESKTOP-OQEODUI','001-001-000000001',0,'2018-04-22 00:00:00','0000000',0,NULL,0,'001','001','000000001','EFECTIVO',0,0,4,NULL,NULL,'Cr√É¬©dito Tributario para declaraci√É¬≥n de IVA (servicios y bienes distintos de inventarios y activos fijos)','01');
+insert  into `compras`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documentoID`,`tipo_documento`,`descuento`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`,`Proveedores_codigo`,`nota_codigo`,`Autorizacion`,`sustento`,`sustentoID`) values (7,'2018-04-22','2018-04-22 20:49:35','12.0','675.00','5625.00','0.00','6300.00','-6300.0','1','Factura','0.00',4,'DESKTOP-OQEODUI','001-001-0000000008',0,'2018-04-22 00:00:00','222222222222222',0,NULL,0,'001','001','0000000008','EFECTIVO',0,0,2,NULL,NULL,'Cr√É¬©dito Tributario para declaraci√É¬≥n de IVA (servicios y bienes distintos de inventarios y activos fijos)','01');
+insert  into `compras`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documentoID`,`tipo_documento`,`descuento`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`,`Proveedores_codigo`,`nota_codigo`,`Autorizacion`,`sustento`,`sustentoID`) values (8,'2018-03-01','2018-04-22 21:02:47','12.0','26.79','223.21','0.00','250.00','-50.0','1','Factura','0.00',4,'DESKTOP-OQEODUI','001-001-0000000005',0,'2018-03-01 00:00:00','4444',0,NULL,0,'001','001','0000000005','EFECTIVO',0,0,2,NULL,NULL,'Cr√É¬©dito Tributario para declaraci√É¬≥n de IVA (servicios y bienes distintos de inventarios y activos fijos)','01');
+insert  into `compras`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documentoID`,`tipo_documento`,`descuento`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`,`Proveedores_codigo`,`nota_codigo`,`Autorizacion`,`sustento`,`sustentoID`) values (9,'2018-05-04','2018-05-06 13:44:04','12.0','10.18','84.82','0.00','95.00','-5.0','1','Factura','0.00',4,'DESKTOP-OQEODUI','001-001-111',0,'2018-05-04 00:00:00','11111111',0,NULL,0,'001','001','111','EFECTIVO',0,0,4,NULL,NULL,'Cr√É¬©dito Tributario para declaraci√É¬≥n de IVA (servicios y bienes distintos de inventarios y activos fijos)','01');
+insert  into `compras`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documentoID`,`tipo_documento`,`descuento`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`,`Proveedores_codigo`,`nota_codigo`,`Autorizacion`,`sustento`,`sustentoID`) values (10,'2018-05-06','2018-05-06 13:46:47','12.0','53.57','446.43','0.00','500.00','400.0','1','Factura','0.00',4,'DESKTOP-OQEODUI','001-001-002',0,'2018-05-06 00:00:00','444444',0,NULL,0,'001','001','002','EFECTIVO',0,0,4,NULL,NULL,'Cr√É¬©dito Tributario para declaraci√É¬≥n de IVA (servicios y bienes distintos de inventarios y activos fijos)','01');
+
+/*Table structure for table `config` */
+
+DROP TABLE IF EXISTS `config`;
+
+CREATE TABLE `config` (
+  `codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) DEFAULT NULL,
+  `valor1` varchar(45) DEFAULT '1',
+  `valor2` varchar(45) DEFAULT NULL,
+  `valor3` varchar(45) DEFAULT NULL,
+  `valor4` varchar(45) DEFAULT NULL,
+  `valor5` varchar(45) DEFAULT NULL,
+  `valor6` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`codigo`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+
+/*Data for the table `config` */
+
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (1,'IVA','12',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (2,'UTILIDAD','30',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (3,'MONEDA','DOALRES AMERICANOS',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (4,'PERMITIR FACTURAR SIN STCOCK','SI',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (6,'NUMERO DE VECES QUE SE IMPRIMIRA FACTURA','1',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (7,'DOCUMENTO PREDETERMINADO','TICKET',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (8,'DIR_CONFIG','ASDASD',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (9,'SERVIDOR','192.168.1.1',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (10,'ELECTRONICA','NO',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (11,'FE_SOLO_FIRMA_DOC','0',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (12,'PERIODO','2018',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (13,'GENERADOS','C:\\Sofi\\electronica\\generados',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (14,'FIRMADOS','C:\\Sofi\\electronica\\firmados',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (15,'AUTORIZADOS','C:\\Sofi\\electronica\\autorizados',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (16,'GENERADOS_SHEYLA','C:\\Sofi\\electronica\\generados_sheyla',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (17,'LOGO_ELECTRONICA','C:\\Sofi\\electronica\\logo.png',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (18,'FIRMA','C:\\Sofi\\electronica\\firma.p12',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (19,'PKPASSWORD','C:\\Sofi\\electronica\\clave.txt',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (20,'CACERT','C:\\Sofi\\electronica\\cacerts',NULL,NULL,NULL,NULL,NULL);
+insert  into `config`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`) values (21,'METODO DE VALORACION DE INVENTARIO','U.E.P.S',NULL,NULL,NULL,NULL,NULL);
+
+/*Table structure for table `config_equipos` */
+
+DROP TABLE IF EXISTS `config_equipos`;
+
+CREATE TABLE `config_equipos` (
+  `codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) DEFAULT NULL,
+  `valor1` varchar(45) DEFAULT NULL,
+  `valor2` varchar(45) DEFAULT NULL,
+  `valor3` varchar(45) DEFAULT NULL,
+  `valor4` varchar(45) DEFAULT NULL,
+  `valor5` varchar(45) DEFAULT NULL,
+  `valor6` varchar(45) DEFAULT NULL,
+  `equipos_Codigo` int(100) NOT NULL,
+  PRIMARY KEY (`codigo`),
+  KEY `fk_config_equipos_equipos1_idx` (`equipos_Codigo`),
+  CONSTRAINT `fk_config_equipos_equipos1` FOREIGN KEY (`equipos_Codigo`) REFERENCES `equipos` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+
+/*Data for the table `config_equipos` */
+
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (1,'IMPRESORA TICKETS','\\\\10.123.1.250\\Generic / Text Only',NULL,NULL,NULL,NULL,NULL,20);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (2,'IMPRESORA FACTURAS','\\\\10.123.1.250\\EPSON L380 Series',NULL,NULL,NULL,NULL,NULL,20);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (3,'FORMA DE PAGO PREDETERMINADA','EFECTIVO',NULL,NULL,NULL,NULL,NULL,20);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (4,'BODEGA PREDETERMINADA EN COMPRA','1-Principal',NULL,NULL,NULL,NULL,NULL,20);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (5,'BODEGA PREDETERMINADA EN VENTA','1-Principal',NULL,NULL,NULL,NULL,NULL,20);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (7,'VER IMAAGEN ','No Asignada',NULL,NULL,NULL,NULL,NULL,20);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (8,'FACTURA TIRILLAS O CON FORMATO','GRANDE',NULL,NULL,NULL,NULL,NULL,20);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (9,'TICKET TIRILLAS O CON FORMATO','GRANDE',NULL,NULL,NULL,NULL,NULL,20);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (10,'PROFORMA TIRILLAS O CON FORMATO','GRANDE',NULL,NULL,NULL,NULL,NULL,20);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (11,'IMPRESORA TICKETS','No Asignada',NULL,NULL,NULL,NULL,NULL,21);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (12,'IMPRESORA FACTURAS','No Asignada',NULL,NULL,NULL,NULL,NULL,21);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (13,'FORMA DE PAGO PREDETERMINADA','EFECTIVO',NULL,NULL,NULL,NULL,NULL,21);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (14,'BODEGA PREDETERMINADA EN COMPRA','1-Principal',NULL,NULL,NULL,NULL,NULL,21);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (15,'BODEGA PREDETERMINADA EN VENTA','1-Principal',NULL,NULL,NULL,NULL,NULL,21);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (16,'IMPRESORA TICKETS','No Asignada',NULL,NULL,NULL,NULL,NULL,21);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (17,'VER IMAAGEN ','No Asignada',NULL,NULL,NULL,NULL,NULL,21);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (18,'IMPRESORA TICKETS','No Asignada',NULL,NULL,NULL,NULL,NULL,22);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (19,'IMPRESORA FACTURAS','No Asignada',NULL,NULL,NULL,NULL,NULL,22);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (20,'FORMA DE PAGO PREDETERMINADA','No Asignada',NULL,NULL,NULL,NULL,NULL,22);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (21,'BODEGA PREDETERMINADA EN COMPRA','1-Principal',NULL,NULL,NULL,NULL,NULL,22);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (22,'BODEGA PREDETERMINADA EN VENTA','1-Principal',NULL,NULL,NULL,NULL,NULL,22);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (23,'IMPRESORA TICKETS','No Asignada',NULL,NULL,NULL,NULL,NULL,22);
+insert  into `config_equipos`(`codigo`,`nombre`,`valor1`,`valor2`,`valor3`,`valor4`,`valor5`,`valor6`,`equipos_Codigo`) values (24,'VER IMAAGEN ','No Asignada',NULL,NULL,NULL,NULL,NULL,22);
+
+/*Table structure for table `config_usuarios` */
+
+DROP TABLE IF EXISTS `config_usuarios`;
+
+CREATE TABLE `config_usuarios` (
+  `codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) DEFAULT NULL,
+  `valor1` varchar(45) DEFAULT NULL,
+  `valor2` varchar(45) DEFAULT NULL,
+  `valor3` varchar(45) DEFAULT NULL,
+  `valor4` varchar(45) DEFAULT NULL,
+  `valor5` varchar(45) DEFAULT NULL,
+  `valor6` varchar(45) DEFAULT NULL,
+  `Usuarios_codigo` int(11) DEFAULT NULL,
+  PRIMARY KEY (`codigo`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`),
+  KEY `fk_config_Usuarios_usuarios1_idx` (`Usuarios_codigo`),
+  CONSTRAINT `fk_config_Usuarios_usuarios1` FOREIGN KEY (`Usuarios_codigo`) REFERENCES `usuarios` (`Tipo_Usuario_codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `config_usuarios` */
+
+/*Table structure for table `cxc` */
+
+DROP TABLE IF EXISTS `cxc`;
+
+CREATE TABLE `cxc` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `tipo` varchar(55) DEFAULT NULL,
+  `descripcion` varchar(345) DEFAULT NULL,
+  `total` varchar(45) DEFAULT NULL,
+  `abono` varchar(45) DEFAULT NULL,
+  `saldo` varchar(45) DEFAULT NULL,
+  `facturas_codigo` int(11) NOT NULL,
+  `formasPagoV_codigo` int(11) DEFAULT NULL,
+  `fechaVencimiento` date DEFAULT NULL,
+  `diasCredito` varchar(45) DEFAULT NULL,
+  `diasAtrazo` varchar(45) DEFAULT NULL,
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Clientes_Codigo` int(11) NOT NULL,
+  PRIMARY KEY (`codigo`),
+  KEY `fk_Pagos_facturas1_idx` (`facturas_codigo`),
+  KEY `fk_Pagos_formasPagoV1_idx` (`formasPagoV_codigo`),
+  CONSTRAINT `fk_Pagos_facturas1` FOREIGN KEY (`facturas_codigo`) REFERENCES `facturas` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Pagos_formasPagoV1` FOREIGN KEY (`formasPagoV_codigo`) REFERENCES `formaspagov` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+/*Data for the table `cxc` */
+
+insert  into `cxc`(`codigo`,`tipo`,`descripcion`,`total`,`abono`,`saldo`,`facturas_codigo`,`formasPagoV_codigo`,`fechaVencimiento`,`diasCredito`,`diasAtrazo`,`fecha`,`Clientes_Codigo`) values (1,'FACTURA','FACTURA -- FORMA DE PAGO : CREDITO DESDE : DESKTOP-OQEODUI','1.70','0.0','1.7',25,2,'2018-05-14','30',NULL,'2018-04-14 13:47:37',2);
+
+/*Table structure for table `cxp` */
+
+DROP TABLE IF EXISTS `cxp`;
+
+CREATE TABLE `cxp` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `tipo` varchar(55) DEFAULT NULL,
+  `descripcion` varchar(345) DEFAULT NULL,
+  `total` varchar(45) DEFAULT NULL,
+  `abono` varchar(45) DEFAULT NULL,
+  `saldo` varchar(45) DEFAULT NULL,
+  `compras_codigo` int(11) NOT NULL,
+  `formasPagoc_codigo` int(11) DEFAULT NULL,
+  `fechaVencimiento` date DEFAULT NULL,
+  `diasCredito` varchar(45) DEFAULT NULL,
+  `diasAtrazo` varchar(45) DEFAULT NULL,
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `proveedores_Codigo` int(11) NOT NULL,
+  PRIMARY KEY (`codigo`),
+  KEY `fk_Pagos_compras1_idx` (`compras_codigo`),
+  KEY `fk_Pagos_formasPagoc1_idx` (`formasPagoc_codigo`),
+  CONSTRAINT `fk_Pagos_compras1` FOREIGN KEY (`compras_codigo`) REFERENCES `compras` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Pagos_formasPagoV1f` FOREIGN KEY (`formasPagoc_codigo`) REFERENCES `formaspagoc` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `cxp` */
+
+/*Table structure for table `datosempresa` */
+
+DROP TABLE IF EXISTS `datosempresa`;
+
+CREATE TABLE `datosempresa` (
+  `codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `ruc` varchar(45) DEFAULT NULL,
+  `nombre` varchar(75) DEFAULT NULL,
+  `telefono` varchar(45) DEFAULT NULL,
+  `celular` varchar(45) DEFAULT NULL,
+  `mail` varchar(45) DEFAULT NULL,
+  `direccion` varchar(85) DEFAULT NULL,
+  `slogan` varchar(45) DEFAULT NULL,
+  `cedula2` varchar(45) DEFAULT NULL,
+  `nombre2` varchar(45) DEFAULT NULL,
+  `direccion2` varchar(45) DEFAULT NULL,
+  `telefono2` varchar(45) DEFAULT NULL,
+  `observacion` varchar(145) DEFAULT NULL,
+  `imagen` longblob,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Data for the table `datosempresa` */
+
+insert  into `datosempresa`(`codigo`,`ruc`,`nombre`,`telefono`,`celular`,`mail`,`direccion`,`slogan`,`cedula2`,`nombre2`,`direccion2`,`telefono2`,`observacion`,`imagen`) values (2,'1722239967001','COMPUECONOMIA','0992669329','0992669329','homer_loading@homail.com','Santo Domingo','LO MISMO PERO MAS BARATO','1722239967','JImmy Carrion','cooperativa gran colombia','3700917','observacion','observacion');
+
+/*Table structure for table `detallecompra` */
+
+DROP TABLE IF EXISTS `detallecompra`;
+
+CREATE TABLE `detallecompra` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `cantidad` varchar(45) DEFAULT NULL,
+  `detalle` varchar(500) DEFAULT NULL,
+  `iva` varchar(45) DEFAULT NULL,
+  `descuento` varchar(45) DEFAULT NULL,
+  `valorUnitario` varchar(45) DEFAULT NULL,
+  `valorTotal` varchar(45) DEFAULT NULL,
+  `Productos_Codigo` int(100) DEFAULT NULL,
+  `Observaciones` varchar(245) DEFAULT NULL,
+  `compras_codigo` int(11) NOT NULL,
+  PRIMARY KEY (`codigo`),
+  KEY `fk_DetalleFactura_Productos1_idx` (`Productos_Codigo`),
+  KEY `fk_detallecompra_compras1_idx` (`compras_codigo`),
+  CONSTRAINT `fk_DetalleFactura_Productos10` FOREIGN KEY (`Productos_Codigo`) REFERENCES `productos` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_detallecompra_compras1` FOREIGN KEY (`compras_codigo`) REFERENCES `compras` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+/*Data for the table `detallecompra` */
+
+insert  into `detallecompra`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Productos_Codigo`,`Observaciones`,`compras_codigo`) values (1,'10','YOGURT TONY','3.75','0','3.12','31.25',37,NULL,1);
+insert  into `detallecompra`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Productos_Codigo`,`Observaciones`,`compras_codigo`) values (2,'10','MR POLLO 3 LIBRAS','15.27','5','13.39','127.23',38,NULL,2);
+insert  into `detallecompra`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Productos_Codigo`,`Observaciones`,`compras_codigo`) values (3,'20','YOGURT TONY','7.50','0','3.12','62.50',37,NULL,2);
+insert  into `detallecompra`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Productos_Codigo`,`Observaciones`,`compras_codigo`) values (4,'25','LECHE CONDENSADA','4.55','0','1.52','37.95',36,NULL,2);
+insert  into `detallecompra`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Productos_Codigo`,`Observaciones`,`compras_codigo`) values (5,'10','LECHE CONDENSADA','2.14','0','1.79','17.86',36,NULL,3);
+insert  into `detallecompra`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Productos_Codigo`,`Observaciones`,`compras_codigo`) values (6,'10','PORTATIL DEL CORE I7','857.14','0','714.29','7142.86',43,NULL,5);
+insert  into `detallecompra`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Productos_Codigo`,`Observaciones`,`compras_codigo`) values (7,'1','PORTATIL DEL CORE I7','64.29','0','535.71','535.71',43,NULL,6);
+insert  into `detallecompra`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Productos_Codigo`,`Observaciones`,`compras_codigo`) values (8,'21','PORTATIL DEL CORE I7','675.00','0','267.86','5625.00',43,NULL,7);
+insert  into `detallecompra`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Productos_Codigo`,`Observaciones`,`compras_codigo`) values (9,'1','PORTATIL DEL CORE I7','26.79','0','223.21','223.21',43,NULL,8);
+insert  into `detallecompra`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Productos_Codigo`,`Observaciones`,`compras_codigo`) values (10,'10.0','IMPRESORA EPSON PCI','53.57','0','44.64','446.43',41,NULL,10);
+
+/*Table structure for table `detallefactura` */
+
+DROP TABLE IF EXISTS `detallefactura`;
+
+CREATE TABLE `detallefactura` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `cantidad` varchar(45) DEFAULT NULL,
+  `detalle` varchar(500) DEFAULT NULL,
+  `iva` varchar(45) DEFAULT NULL,
+  `descuento` varchar(45) DEFAULT NULL,
+  `valorUnitario` varchar(45) DEFAULT NULL,
+  `valorTotal` varchar(45) DEFAULT NULL,
+  `Factura_Codigo` int(100) NOT NULL,
+  `Productos_Codigo` int(100) DEFAULT NULL,
+  `Observaciones` varchar(245) DEFAULT NULL,
+  PRIMARY KEY (`codigo`,`Factura_Codigo`),
+  KEY `fk_DetalleFactura_Factura1_idx` (`Factura_Codigo`),
+  KEY `fk_DetalleFactura_Productos1_idx` (`Productos_Codigo`),
+  CONSTRAINT `fk_DetalleFactura_Factura1` FOREIGN KEY (`Factura_Codigo`) REFERENCES `facturas` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_DetalleFactura_Productos1` FOREIGN KEY (`Productos_Codigo`) REFERENCES `productos` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
+
+/*Data for the table `detallefactura` */
+
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (1,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',1,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (2,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',2,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (3,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',3,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (4,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',4,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (5,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',4,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (6,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',5,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (7,'1','LECHE CONDENSADA','0.54','0','4.46','4.46',6,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (8,'1','MIGUEL','0.32','0','2.68','2.68',7,39,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (9,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',7,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (10,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',8,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (11,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',9,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (12,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',10,39,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (13,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',11,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (14,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',12,39,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (15,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',13,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (16,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',14,39,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (17,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',15,39,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (18,'1','YOGURT TONY','0.38','0','3.12','3.12',16,37,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (19,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',17,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (20,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',18,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (21,'1','YOGURT TONY','0.38','0','3.12','3.12',18,37,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (22,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',19,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (23,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',20,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (24,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',21,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (25,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',22,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (26,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',23,39,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (27,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',24,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (28,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',25,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (29,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',26,39,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (30,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',26,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (31,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',26,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (32,'1','SAPOLIO 6 EN 1','0.91','0','7.59','7.59',26,40,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (33,'1','YOGURT TONY','0.38','0','3.12','3.12',26,37,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (34,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',27,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (35,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',27,39,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (36,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',27,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (37,'1','SAPOLIO 6 EN 1','0.91','0','7.59','7.59',27,40,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (38,'1','YOGURT TONY','0.38','0','3.12','3.12',27,37,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (39,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',28,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (40,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',29,39,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (41,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',30,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (42,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',31,39,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (43,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',32,39,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (44,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',32,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (45,'1','YOGURT TONY','0.38','0','3.12','3.12',32,37,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (46,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',33,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (47,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',33,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (48,'1','SAPOLIO 6 EN 1','0.91','0','7.59','7.59',33,40,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (49,'1','YOGURT TONY','0.38','0','3.12','3.12',33,37,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (50,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',33,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (51,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',34,36,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (52,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',34,39,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (53,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',34,38,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (54,'1','SAPOLIO 6 EN 1','0.91','0','7.59','7.59',34,40,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (55,'1','YOGURT TONY','0.38','0','3.12','3.12',34,37,NULL);
+insert  into `detallefactura`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`Factura_Codigo`,`Productos_Codigo`,`Observaciones`) values (56,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',35,36,NULL);
+
+/*Table structure for table `detalleproforma` */
+
+DROP TABLE IF EXISTS `detalleproforma`;
+
+CREATE TABLE `detalleproforma` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `cantidad` varchar(45) DEFAULT NULL,
+  `detalle` varchar(500) DEFAULT NULL,
+  `iva` varchar(45) DEFAULT NULL,
+  `descuento` varchar(45) DEFAULT NULL,
+  `valorUnitario` varchar(45) DEFAULT NULL,
+  `valorTotal` varchar(45) DEFAULT NULL,
+  `proforma_Codigo` int(100) NOT NULL,
+  `Productos_Codigo` int(100) DEFAULT NULL,
+  `Observaciones` varchar(245) DEFAULT NULL,
+  PRIMARY KEY (`codigo`,`proforma_Codigo`),
+  KEY `fk_Detalleproforma_proforma1_idx` (`proforma_Codigo`),
+  KEY `fk_Detalleproforma_Productos1_idx` (`Productos_Codigo`),
+  CONSTRAINT `fk_Detalleproforma_Productos1` FOREIGN KEY (`Productos_Codigo`) REFERENCES `productos` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Detalleproforma_proforma1` FOREIGN KEY (`proforma_Codigo`) REFERENCES `proformas` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+
+/*Data for the table `detalleproforma` */
+
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (1,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',1,36,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (2,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',1,36,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (3,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',1,36,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (4,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',1,38,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (5,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',2,38,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (6,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',3,36,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (7,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',4,36,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (8,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',5,38,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (9,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',6,38,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (10,'1','YOGURT TONY','0.38','0','3.12','3.12',7,37,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (11,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',8,38,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (12,'1','MIGUEL','0.32','0','2.68','2.68',9,39,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (13,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',10,39,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (14,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',11,36,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (15,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',11,39,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (16,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',12,39,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (17,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',13,39,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (18,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',13,38,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (19,'1','SAPOLIO 6 EN 1','0.91','0','7.59','7.59',13,40,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (20,'1','YOGURT TONY','0.38','0','3.12','3.12',13,37,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (21,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',13,36,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (22,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',14,36,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (23,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',14,39,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (24,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',14,38,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (25,'1','SAPOLIO 6 EN 1','0.91','0','7.59','7.59',14,40,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (26,'1','YOGURT TONY','0.38','0','3.12','3.12',14,37,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (27,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',15,36,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (28,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',15,39,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (29,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',15,38,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (30,'1','SAPOLIO 6 EN 1','0.91','0','7.59','7.59',15,40,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (31,'1','YOGURT TONY','0.38','0','3.12','3.12',15,37,NULL);
+insert  into `detalleproforma`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`proforma_Codigo`,`Productos_Codigo`,`Observaciones`) values (32,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',16,36,NULL);
+
+/*Table structure for table `detalleretencion` */
+
+DROP TABLE IF EXISTS `detalleretencion`;
+
+CREATE TABLE `detalleretencion` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `ejercicio` varchar(45) DEFAULT NULL,
+  `base` double DEFAULT NULL,
+  `impuesto` varchar(45) DEFAULT NULL,
+  `id` varchar(45) DEFAULT NULL,
+  `porcentaje` double DEFAULT NULL,
+  `Retencion_codigo` int(11) NOT NULL,
+  `retenido` double DEFAULT NULL,
+  PRIMARY KEY (`codigo`,`Retencion_codigo`),
+  KEY `fk_detalleRetencion_Retencion1_idx` (`Retencion_codigo`),
+  CONSTRAINT `fk_detalleRetencion_Retencion1` FOREIGN KEY (`Retencion_codigo`) REFERENCES `retencion` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `detalleretencion` */
+
+/*Table structure for table `detalleticket` */
+
+DROP TABLE IF EXISTS `detalleticket`;
+
+CREATE TABLE `detalleticket` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `cantidad` varchar(45) DEFAULT NULL,
+  `detalle` varchar(500) DEFAULT NULL,
+  `iva` varchar(45) DEFAULT NULL,
+  `descuento` varchar(45) DEFAULT NULL,
+  `valorUnitario` varchar(45) DEFAULT NULL,
+  `valorTotal` varchar(45) DEFAULT NULL,
+  `ticket_Codigo` int(100) NOT NULL,
+  `Productos_Codigo` int(100) DEFAULT NULL,
+  `Observaciones` varchar(245) DEFAULT NULL,
+  PRIMARY KEY (`codigo`,`ticket_Codigo`),
+  KEY `fk_Detalleticket_ticket1_idx` (`ticket_Codigo`),
+  KEY `fk_Detalleticket_Productos1_idx` (`Productos_Codigo`),
+  CONSTRAINT `fk_Detalleticket_Productos1` FOREIGN KEY (`Productos_Codigo`) REFERENCES `productos` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Detalleticket_ticket1` FOREIGN KEY (`ticket_Codigo`) REFERENCES `tickets` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
+
+/*Data for the table `detalleticket` */
+
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (1,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',1,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (2,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',2,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (3,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',3,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (4,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',4,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (5,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',5,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (6,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',6,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (7,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',7,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (8,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',8,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (9,'10','MR POLLO 3 LIBRAS','16.07','0','13.39','133.93',9,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (10,'25','MR POLLO 3 LIBRAS','40.18','0','13.39','334.82',10,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (11,'35','MR POLLO 3 LIBRAS','56.25','0','13.39','468.75',11,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (12,'10','LECHE CONDENSADA','1.82','0','1.52','15.18',12,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (13,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',13,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (14,'1','YOGURT TONY','0.38','0','3.12','3.12',13,37,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (15,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',14,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (16,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',14,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (17,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',15,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (18,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',16,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (19,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',17,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (20,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',18,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (21,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',18,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (22,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',19,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (23,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',19,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (24,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',20,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (25,'1','YOGURT TONY','0.38','0','3.12','3.12',20,37,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (26,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',22,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (27,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',24,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (28,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',26,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (29,'1','MIGUEL','0.32','0','2.68','2.68',28,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (30,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',29,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (31,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',30,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (32,'1','SAPOLIO 6 EN 1','0.91','0','7.59','7.59',30,40,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (33,'1','MIGUEL','0.32','0','2.68','2.68',30,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (34,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',31,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (35,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',32,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (36,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',32,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (37,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',32,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (38,'1','SAPOLIO 6 EN 1','0.91','0','7.59','7.59',32,40,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (39,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',33,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (40,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',33,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (41,'1','SAPOLIO 6 EN 1','0.91','0','7.59','7.59',33,40,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (42,'1','YOGURT TONY','0.38','0','3.12','3.12',33,37,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (43,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',33,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (44,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',34,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (45,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',34,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (46,'1','SAPOLIO 6 EN 1','0.91','0','7.59','7.59',34,40,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (47,'1','YOGURT TONY','0.38','0','3.12','3.12',34,37,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (48,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',36,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (49,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',38,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (50,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',40,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (51,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',41,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (52,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',44,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (53,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',46,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (54,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',48,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (55,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',50,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (56,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',52,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (57,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',55,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (58,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',56,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (59,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',61,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (60,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',62,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (61,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',63,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (62,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',64,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (63,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',64,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (64,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',64,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (65,'1','SAPOLIO 6 EN 1','0.91','0','7.59','7.59',64,40,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (66,'1','YOGURT TONY','0.38','0','3.12','3.12',64,37,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (67,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',65,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (68,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',66,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (69,'1','MIGUEL GETIAL EL PILASDE LA CASA','161.04','0','1341.96','1341.96',67,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (70,'1100','MIGUEL GETIAL EL PILASDE LA CASA','1414.29','0','10.71','11785.71',68,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (71,'1','MIGUEL GETIAL EL PILASDE LA CASA','321.43','0','2678.57','2678.57',69,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (72,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',70,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (73,'1','YOGURT TONY','0.38','0','3.12','3.12',71,37,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (74,'10','LECHE CONDENSADA','1.82','0','1.52','15.18',72,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (75,'11','MIGUEL GETIAL EL PILASDE LA CASA','3.54','0','2.68','29.46',72,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (76,'15','SAPOLIO 6 EN 1','13.66','0','7.59','113.84',72,40,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (77,'99','YOGURT TONY','37.13','0','3.12','309.37',72,37,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (78,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',73,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (79,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',74,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (80,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',75,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (81,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',76,38,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (82,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',77,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (83,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',78,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (84,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',79,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (85,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',80,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (86,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',81,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (87,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',82,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (88,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',83,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (89,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',84,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (90,'1','MIGUEL GETIAL EL PILASDE LA CASA','0.32','0','2.68','2.68',85,39,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (91,'1','LECHE CONDENSADA','0.18','0','1.52','1.52',86,36,NULL);
+insert  into `detalleticket`(`codigo`,`cantidad`,`detalle`,`iva`,`descuento`,`valorUnitario`,`valorTotal`,`ticket_Codigo`,`Productos_Codigo`,`Observaciones`) values (92,'1','MR POLLO 3 LIBRAS','1.61','0','13.39','13.39',87,38,NULL);
+
+/*Table structure for table `equipos` */
+
+DROP TABLE IF EXISTS `equipos`;
+
+CREATE TABLE `equipos` (
+  `Codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `NombreReal` varchar(45) DEFAULT NULL,
+  `nombreSoft` varchar(80) DEFAULT NULL,
+  `Ubicacion` varchar(45) DEFAULT NULL,
+  `Descripcion` varchar(245) DEFAULT NULL,
+  `usuario` varchar(45) DEFAULT NULL,
+  `responsable` varchar(145) DEFAULT NULL,
+  `serie` varchar(545) DEFAULT NULL,
+  `secuencia1` varchar(45) DEFAULT NULL,
+  `secuencia2` varchar(45) DEFAULT NULL,
+  `secuencia3` varchar(45) DEFAULT NULL,
+  `ip` varchar(45) DEFAULT NULL,
+  `Cajas_Codigo` int(11) NOT NULL,
+  `Cajas_nombre` varchar(100) NOT NULL,
+  PRIMARY KEY (`Codigo`),
+  UNIQUE KEY `NombreReal` (`NombreReal`),
+  UNIQUE KEY `nombreSof` (`nombreSoft`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+
+/*Data for the table `equipos` */
+
+insert  into `equipos`(`Codigo`,`NombreReal`,`nombreSoft`,`Ubicacion`,`Descripcion`,`usuario`,`responsable`,`serie`,`secuencia1`,`secuencia2`,`secuencia3`,`ip`,`Cajas_Codigo`,`Cajas_nombre`) values (20,'DESKTOP-OQEODUI','ventas ',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'192.168.56.1',1,'CAJA GENERAL');
+insert  into `equipos`(`Codigo`,`NombreReal`,`nombreSoft`,`Ubicacion`,`Descripcion`,`usuario`,`responsable`,`serie`,`secuencia1`,`secuencia2`,`secuencia3`,`ip`,`Cajas_Codigo`,`Cajas_nombre`) values (21,'optimus','optimis',NULL,NULL,NULL,NULL,NULL,'001','001','000000001','127.0.1.1',1,'CAJA GENERAL');
+insert  into `equipos`(`Codigo`,`NombreReal`,`nombreSoft`,`Ubicacion`,`Descripcion`,`usuario`,`responsable`,`serie`,`secuencia1`,`secuencia2`,`secuencia3`,`ip`,`Cajas_Codigo`,`Cajas_nombre`) values (22,'opoerador-VirtualBox','ubuntu vbox',NULL,NULL,NULL,NULL,NULL,'001','001','000000001','127.0.1.1',1,'CAJA GENERAL');
+
+/*Table structure for table `facturas` */
+
+DROP TABLE IF EXISTS `facturas`;
+
+CREATE TABLE `facturas` (
+  `Codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `fecha` date DEFAULT NULL,
+  `hora` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `iva` varchar(10) DEFAULT NULL,
+  `Iva_valor` varchar(45) DEFAULT NULL,
+  `subtotaI_con_iva` varchar(45) DEFAULT NULL,
+  `subtotal_sin_iva` varchar(45) DEFAULT NULL,
+  `total` varchar(45) DEFAULT NULL,
+  `utilidad` varchar(45) DEFAULT NULL,
+  `tipo_documento` varchar(45) DEFAULT NULL,
+  `descuento` varchar(45) DEFAULT NULL,
+  `Clientes_codigo` int(100) NOT NULL,
+  `Usuarios_Codigo` int(100) NOT NULL,
+  `Equipo` varchar(75) DEFAULT NULL,
+  `secuencia` varchar(45) DEFAULT NULL,
+  `anulada` tinyint(1) NOT NULL DEFAULT '0',
+  `fechain` varchar(45) DEFAULT NULL,
+  `calveAcceso` varchar(100) DEFAULT NULL,
+  `estado` int(1) NOT NULL DEFAULT '0',
+  `DescripcionElectronica` varchar(100) DEFAULT NULL,
+  `autorizado` int(1) NOT NULL DEFAULT '0',
+  `establecimiento` varchar(10) DEFAULT NULL,
+  `ptoEmision` varchar(10) DEFAULT NULL,
+  `secfactura` varchar(10) DEFAULT NULL,
+  `formaPago` varchar(50) DEFAULT NULL,
+  `efectivo` double DEFAULT NULL,
+  `cambio` double DEFAULT NULL,
+  PRIMARY KEY (`Codigo`),
+  KEY `fk_Factura_Clientes1_idx` (`Clientes_codigo`),
+  KEY `fk_Factura_usuarios1_idx` (`Usuarios_Codigo`),
+  CONSTRAINT `fk_Factura_Clientes1` FOREIGN KEY (`Clientes_codigo`) REFERENCES `clientes` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Factura_usuarios1` FOREIGN KEY (`Usuarios_Codigo`) REFERENCES `usuarios` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+
+/*Data for the table `facturas` */
+
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (1,'2018-04-08','2018-04-08 23:58:24','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000002',0,'2018-04-08 00:00:00','0804201801172223996700110010010000000020018794116',0,NULL,0,'001','001','000000002','EFECTIVO',3,1.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (2,'2018-04-09','2018-04-09 00:00:14','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000003',0,'2018-04-09 00:00:00','0904201801172223996700110010010000000030018794116',0,NULL,0,'001','001','000000003','EFECTIVO',2,0.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (3,'2018-04-09','2018-04-09 12:01:14','12.0','1.61','13.39','0.00','15.00','4.41','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000004',0,'2018-04-09 00:00:00','0904201801172223996700110010010000000040018794111',0,NULL,0,'001','001','000000004','EFECTIVO',21,6);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (4,'2018-04-09','2018-04-09 12:03:10','12.0','1.79','14.91','0.00','16.70','4.61','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000005',0,'2018-04-09 00:00:00','0904201801172223996700110010010000000050018794117',0,NULL,0,'001','001','000000005','EFECTIVO',17,0.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (5,'2018-04-09','2018-04-09 12:09:55','12.0','1.61','13.39','0.00','15.00','4.41','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000006',0,'2018-04-09 00:00:00','0904201801172223996700110010010000000060018794112',0,NULL,0,'001','001','000000006','EFECTIVO',20,5);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (6,'2018-04-11','2018-04-11 16:27:17','12.0','0.54','4.46','0.00','5.00','3.5','FACTURA','0.00',16,4,'DESKTOP-OQEODUI','001-001-000000009',0,'2018-04-11 00:00:00','1104201801172223996700110010010000000090018794116',0,NULL,0,'001','001','000000009','EFECTIVO',6,1);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (7,'2018-04-12','2018-04-12 14:12:55','12.0','1.93','16.07','0.00','18.00','6.42','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000010',0,'2018-04-12 00:00:00','1204201801172223996700110010010000000100018794116',0,NULL,0,'001','001','000000010','EFECTIVO',20,2);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (8,'2018-04-12','2018-04-13 00:00:47','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000011',0,'2018-04-12 00:00:00','1204201801172223996700110010010000000110018794111',0,NULL,0,'001','001','000000011','EFECTIVO',2,0.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (9,'2018-04-13','2018-04-13 00:07:46','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000012',0,'2018-04-13 00:00:00','1304201801172223996700110010010000000120018794111',0,NULL,0,'001','001','000000012','EFECTIVO',2,0.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (10,'2018-04-13','2018-04-13 00:17:19','12.0','0.32','2.68','0.00','3.00','2.01','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000013',0,'2018-04-13 00:00:00','1304201801172223996700110010010000000130018794117',0,NULL,0,'001','001','000000013','EFECTIVO',3,0);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (11,'2018-04-13','2018-04-13 07:42:22','12.0','1.61','13.39','0.00','15.00','4.41','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000014',0,'2018-04-13 00:00:00','1304201801172223996700110010010000000140018794112',0,NULL,0,'001','001','000000014','EFECTIVO',20,5);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (12,'2018-04-13','2018-04-13 07:45:23','12.0','0.32','2.68','0.00','3.00','2.01','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000015',0,'2018-04-13 00:00:00','1304201801172223996700110010010000000150018794118',0,NULL,0,'001','001','000000015','EFECTIVO',3,0);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (13,'2018-04-13','2018-04-13 08:03:15','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000016',0,'2018-04-13 00:00:00','1304201801172223996700110010010000000160018794113',0,NULL,0,'001','001','000000016','EFECTIVO',2,0.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (14,'2018-04-13','2018-04-13 08:08:17','12.0','0.32','2.68','0.00','3.00','2.01','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000017',0,'2018-04-13 00:00:00','1304201801172223996700110010010000000170018794119',0,NULL,0,'001','001','000000017','EFECTIVO',3,0);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (15,'2018-04-13','2018-04-13 14:41:18','12.0','0.32','2.68','0.00','3.00','2.01','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000018',0,'2018-04-13 00:00:00','1304201801172223996700110010010000000180018794114',0,NULL,0,'001','001','000000018','EFECTIVO',3,0);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (16,'2018-04-13','2018-04-13 15:26:14','12.0','0.38','3.12','0.00','3.50','0.81','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000019',0,'2018-04-13 00:00:00','1304201801172223996700110010010000000190018794111',0,NULL,0,'001','001','000000019','EFECTIVO',4,0.5);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (17,'2018-04-13','2018-04-13 15:46:51','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000020',0,'2018-04-13 00:00:00','1304201801172223996700110010010000000200018794115',0,NULL,0,'001','001','000000020','EFECTIVO',3,1.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (18,'2018-04-14','2018-04-14 10:51:53','12.0','1.98','16.52','0.00','18.50','5.220000000000001','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000021',0,'2018-04-14 00:00:00','1404201801172223996700110010010000000210018794115',0,NULL,0,'001','001','000000021','EFECTIVO',18.5,0);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (19,'2018-04-14','2018-04-14 11:23:11','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000022',0,'2018-04-14 00:00:00','1404201801172223996700110010010000000220018794110',0,NULL,0,'001','001','000000022','EFECTIVO',2,0.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (20,'2018-04-14','2018-04-14 11:26:28','12.0','1.61','13.39','0.00','15.00','4.41','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000023',0,'2018-04-14 00:00:00','1404201801172223996700110010010000000230018794116',0,NULL,0,'001','001','000000023','EFECTIVO',16,1);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (21,'2018-04-14','2018-04-14 11:50:55','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000024',0,'2018-04-14 00:00:00','1404201801172223996700110010010000000240018794111',0,NULL,0,'001','001','000000024','EFECTIVO',2,0.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (22,'2018-04-14','2018-04-14 11:57:45','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000025',0,'2018-04-14 00:00:00','1404201801172223996700110010010000000250018794117',0,NULL,0,'001','001','000000025','EFECTIVO',2,0.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (23,'2018-04-14','2018-04-14 12:13:23','12.0','0.32','2.68','0.00','3.00','2.01','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000026',0,'2018-04-14 00:00:00','1404201801172223996700110010010000000260018794112',0,NULL,0,'001','001','000000026','EFECTIVO',3,0);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (24,'2018-04-14','2018-04-14 12:21:46','12.0','1.61','13.39','0.00','15.00','4.41','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000027',0,'2018-04-14 00:00:00','1404201801172223996700110010010000000270018794118',0,NULL,0,'001','001','000000027','EFECTIVO',15,0);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (25,'2018-04-14','2018-04-14 13:47:37','12.0','0.00','0.00','0.00','1.70','0.19999999999999996','FACTURA','0.00',2,4,'DESKTOP-OQEODUI','001-001-000000028',0,'2018-04-14 00:00:00','1404201801172223996700110010010000000280018794113',0,NULL,0,'001','001','000000028','CREDITO',0,0);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (26,'2018-04-18','2018-04-18 15:41:35','12.0','3.40','28.30','0.00','31.70','10.930000000000001','FACTURA','0.00',13,5,'DESKTOP-OQEODUI','001-001-000000029',0,'2018-04-18 00:00:00','1804201801172223996700110010010000000290018794117',0,NULL,0,'001','001','000000029','EFECTIVO',32,0.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (27,'2018-04-18','2018-04-18 16:03:42','12.0','3.40','28.30','0.00','31.70','10.930000000000001','FACTURA','0.00',4,4,'DESKTOP-OQEODUI','001-001-000000030',0,'2018-04-18 00:00:00','1804201801172223996700110010010000000300018794112',0,NULL,0,'001','001','000000030','EFECTIVO',32,0.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (28,'2018-04-19','2018-04-19 18:12:22','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',19,4,'optimus','001-001-000000001',0,'2018-04-19 00:00:00',NULL,0,NULL,0,'001','001','000000001','EFECTIVO',2,0.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (29,'2018-04-21','2018-04-21 12:26:33','12.0','0.32','2.68','0.00','3.00','2.01','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000031',0,'2018-04-21 00:00:00',NULL,0,NULL,0,'001','001','000000031','EFECTIVO',3,0);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (30,'2018-04-21','2018-04-21 12:31:38','12.0','1.61','13.39','0.00','15.00','4.41','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000032',0,'2018-04-21 00:00:00',NULL,0,NULL,0,'001','001','000000032','EFECTIVO',15,0);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (31,'2018-04-21','2018-04-21 12:32:59','12.0','0.32','2.68','0.00','3.00','2.01','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000033',0,'2018-04-21 00:00:00',NULL,0,NULL,0,'001','001','000000033','EFECTIVO',3,0);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (32,'2018-04-21','2018-04-21 12:35:54','12.0','2.30','19.20','0.00','21.50','7.23','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000034',0,'2018-04-21 00:00:00',NULL,0,NULL,0,'001','001','000000034','EFECTIVO',22,0.5);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (33,'2018-04-21','2018-04-21 12:51:58','12.0','4.68','39.02','0.00','43.70','13.33','FACTURA','0.00',2,4,'DESKTOP-OQEODUI','001-001-000000035',0,'2018-04-21 00:00:00',NULL,0,NULL,0,'001','001','000000035','EFECTIVO',50,6.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (34,'2018-04-21','2018-04-21 12:53:42','12.0','3.40','28.30','0.00','31.70','10.930000000000001','FACTURA','0.00',2,4,'DESKTOP-OQEODUI','001-001-000000036',0,'2018-04-21 00:00:00',NULL,0,NULL,0,'001','001','000000036','EFECTIVO',32,0.3);
+insert  into `facturas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`,`autorizado`,`establecimiento`,`ptoEmision`,`secfactura`,`formaPago`,`efectivo`,`cambio`) values (35,'2018-04-23','2018-04-23 07:51:05','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','001-001-000000037',0,'2018-04-23 00:00:00',NULL,0,NULL,0,'001','001','000000037','EFECTIVO',3,1.3);
+
+/*Table structure for table `formaspagoc` */
+
+DROP TABLE IF EXISTS `formaspagoc`;
+
+CREATE TABLE `formaspagoc` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `FormaPago` varchar(45) DEFAULT NULL,
+  `descripcion` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+/*Data for the table `formaspagoc` */
+
+insert  into `formaspagoc`(`codigo`,`FormaPago`,`descripcion`) values (1,'EFECTIVO',NULL);
+insert  into `formaspagoc`(`codigo`,`FormaPago`,`descripcion`) values (2,'CREDITO',NULL);
+insert  into `formaspagoc`(`codigo`,`FormaPago`,`descripcion`) values (3,'TRANSFERENCIA',NULL);
+insert  into `formaspagoc`(`codigo`,`FormaPago`,`descripcion`) values (4,'MIXTO',NULL);
+
+/*Table structure for table `formaspagov` */
+
+DROP TABLE IF EXISTS `formaspagov`;
+
+CREATE TABLE `formaspagov` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `FormaPago` varchar(45) DEFAULT NULL,
+  `descripcion` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+/*Data for the table `formaspagov` */
+
+insert  into `formaspagov`(`codigo`,`FormaPago`,`descripcion`) values (1,'EFECTIVO',NULL);
+insert  into `formaspagov`(`codigo`,`FormaPago`,`descripcion`) values (2,'CREDITO',NULL);
+insert  into `formaspagov`(`codigo`,`FormaPago`,`descripcion`) values (3,'TRANSFERENCIA',NULL);
+insert  into `formaspagov`(`codigo`,`FormaPago`,`descripcion`) values (4,'VOUCHER',NULL);
+insert  into `formaspagov`(`codigo`,`FormaPago`,`descripcion`) values (5,'MIXTO',NULL);
+insert  into `formaspagov`(`codigo`,`FormaPago`,`descripcion`) values (6,'CHEQUE',NULL);
+
+/*Table structure for table `kardex` */
+
+DROP TABLE IF EXISTS `kardex`;
+
+CREATE TABLE `kardex` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `fecha` date DEFAULT NULL,
+  `fechaevento` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `bodega` varchar(45) DEFAULT NULL,
+  `detalle` varchar(300) DEFAULT NULL,
+  `incantidad` varchar(45) DEFAULT NULL,
+  `incosto` varchar(45) DEFAULT NULL,
+  `inpvp` varchar(45) DEFAULT NULL,
+  `outcantidad` varchar(45) DEFAULT NULL,
+  `outcosto` varchar(45) DEFAULT NULL,
+  `outpvp` varchar(45) DEFAULT NULL,
+  `saldocantidad` varchar(45) DEFAULT NULL,
+  `saldocosto` varchar(45) DEFAULT NULL,
+  `saldopvp` varchar(45) DEFAULT NULL,
+  `productos_Codigo` int(11) NOT NULL,
+  PRIMARY KEY (`codigo`),
+  KEY `fk_KARDEX_productos1_idx` (`productos_Codigo`),
+  CONSTRAINT `fk_KARDEX_productos1` FOREIGN KEY (`productos_Codigo`) REFERENCES `productos` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=utf8;
+
+/*Data for the table `kardex` */
+
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (16,'2018-03-15','2018-03-15 21:49:50','1','INVENTARIO INICIAL IMPORTADO ','0.0','1.50','1.7','0',NULL,NULL,'0.0','1.8','3.5',36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (17,'2018-03-15','2018-03-15 21:49:51','1','INVENTARIO INICIAL IMPORTADO ','12.0','2.69','3.5','0',NULL,NULL,'12.0','','',37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (18,'2018-03-15','2018-03-15 21:49:51','1','INVENTARIO INICIAL IMPORTADO ','1.0','10.59','15.0','0',NULL,NULL,'1.0','17.0','',38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (19,'2018-03-15','2018-03-15 21:52:22','3','INGRESO -- Factura 001-001-002255632','10','2.69','3.5','0',NULL,NULL,NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (20,'2018-03-15','2018-03-15 21:53:23','3','INGRESO -- Factura 001-001-002255632','10','10.59','15.0','0',NULL,NULL,NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (21,'2018-03-15','2018-03-15 21:53:24','3','INGRESO -- Factura 001-001-002255632','20','2.69','3.5','0',NULL,NULL,NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (22,'2018-03-15','2018-03-15 21:53:24','3','INGRESO -- Factura 001-001-002255632','25','1.50','1.7','0',NULL,NULL,NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (23,'2018-04-08','2018-04-08 12:48:17','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (24,'2018-04-08','2018-04-08 12:55:44','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (25,'2018-04-08','2018-04-08 12:57:19','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (26,'2018-04-08','2018-04-08 22:01:48','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (27,'2018-04-08','2018-04-08 22:04:08','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (28,'2018-04-08','2018-04-08 22:08:02','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (29,'2018-04-08','2018-04-08 22:13:58','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (30,'2018-04-08','2018-04-08 22:19:18','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (31,'2018-04-08','2018-04-08 22:20:36','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'10','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (32,'2018-04-08','2018-04-08 22:22:34','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'25','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (33,'2018-04-08','2018-04-08 22:23:25','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'35','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (34,'2018-04-08','2018-04-08 22:23:54','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'10','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (35,'2018-04-08','2018-04-08 22:25:51','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (36,'2018-04-08','2018-04-08 22:25:52','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'1','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (37,'2018-04-08','2018-04-08 22:30:44','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (38,'2018-04-08','2018-04-08 22:30:45','1','SALIDA -- TICKET 000000001','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (39,'2018-04-08','2018-04-08 22:50:06','1','SALIDA -- TICKET 000000002','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (40,'2018-04-08','2018-04-08 22:50:27','1','SALIDA -- TICKET 000000003','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (41,'2018-04-08','2018-04-08 22:56:48','1','SALIDA -- TICKET 000000004','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (42,'2018-04-08','2018-04-08 23:46:56','1','SALIDA -- TICKET 000000005','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (43,'2018-04-08','2018-04-08 23:46:57','1','SALIDA -- TICKET 000000005','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (44,'2018-04-08','2018-04-08 23:52:32','1','SALIDA -- TICKET 000000006','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (45,'2018-04-08','2018-04-08 23:52:33','1','SALIDA -- TICKET 000000006','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (46,'2018-04-08','2018-04-08 23:57:43','1','SALIDA -- TICKET 000000007','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (47,'2018-04-08','2018-04-08 23:57:44','1','SALIDA -- TICKET 000000007','0',NULL,NULL,'1','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (48,'2018-04-08','2018-04-08 23:58:25','1','SALIDA -- FACTURA 001-001-000000002','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (49,'2018-04-09','2018-04-09 00:00:14','1','SALIDA -- FACTURA 001-001-000000003','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (50,'2018-04-09','2018-04-09 12:00:29','1','SALIDA -- TICKET 000000008','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (51,'2018-04-09','2018-04-09 12:01:14','1','SALIDA -- FACTURA 001-001-000000004','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (52,'2018-04-09','2018-04-09 12:03:11','1','SALIDA -- FACTURA 001-001-000000005','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (53,'2018-04-09','2018-04-09 12:03:11','1','SALIDA -- FACTURA 001-001-000000005','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (54,'2018-04-09','2018-04-09 12:09:55','1','SALIDA -- FACTURA 001-001-000000006','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (55,'2018-04-09','2018-04-09 17:53:43','1','SALIDA -- TICKET 000000010','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (56,'2018-04-11','2018-04-11 16:25:40','1','INGRESO -- Factura 001-002-0000002','10','1.50','2','0',NULL,NULL,NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (57,'2018-04-11','2018-04-11 16:27:17','1','SALIDA -- FACTURA 001-001-000000009','0',NULL,NULL,'1','1.50','5',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (58,'2018-04-12','2018-04-12 14:11:25','1','SALIDA -- TICKET 000000012','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (59,'2018-04-12','2018-04-12 14:12:56','1','SALIDA -- FACTURA 001-001-000000010','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (60,'2018-04-12','2018-04-12 14:12:56','1','SALIDA -- FACTURA 001-001-000000010','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (61,'2018-04-12','2018-04-12 14:45:31','1','SALIDA -- TICKET 000000014','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (62,'2018-04-12','2018-04-12 15:14:42','1','SALIDA -- TICKET 000000015','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (63,'2018-04-12','2018-04-12 15:25:30','1','SALIDA -- TICKET 000000016','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (64,'2018-04-12','2018-04-12 15:25:30','1','SALIDA -- TICKET 000000016','0',NULL,NULL,'1','5','8,50',NULL,NULL,NULL,40);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (65,'2018-04-12','2018-04-12 15:25:30','1','SALIDA -- TICKET 000000016','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (66,'2018-04-12','2018-04-12 17:13:23','1','SALIDA -- TICKET 000000017','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (67,'2018-04-12','2018-04-12 17:15:50','1','SALIDA -- TICKET 000000018','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (68,'2018-04-12','2018-04-12 17:15:50','1','SALIDA -- TICKET 000000018','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (69,'2018-04-12','2018-04-12 17:15:50','1','SALIDA -- TICKET 000000018','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (70,'2018-04-12','2018-04-12 17:15:50','1','SALIDA -- TICKET 000000018','0',NULL,NULL,'1','5','8,50',NULL,NULL,NULL,40);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (71,'2018-04-12','2018-04-12 23:57:52','1','SALIDA -- TICKET 000000019','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (72,'2018-04-12','2018-04-12 23:57:52','1','SALIDA -- TICKET 000000019','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (73,'2018-04-12','2018-04-12 23:57:52','1','SALIDA -- TICKET 000000019','0',NULL,NULL,'1','5','8,50',NULL,NULL,NULL,40);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (74,'2018-04-12','2018-04-12 23:57:53','1','SALIDA -- TICKET 000000019','0',NULL,NULL,'1','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (75,'2018-04-12','2018-04-12 23:57:53','1','SALIDA -- TICKET 000000019','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (76,'2018-04-12','2018-04-12 23:58:49','1','SALIDA -- TICKET 000000020','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (77,'2018-04-12','2018-04-12 23:58:49','1','SALIDA -- TICKET 000000020','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (78,'2018-04-12','2018-04-12 23:58:49','1','SALIDA -- TICKET 000000020','0',NULL,NULL,'1','5','8,50',NULL,NULL,NULL,40);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (79,'2018-04-12','2018-04-12 23:58:49','1','SALIDA -- TICKET 000000020','0',NULL,NULL,'1','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (80,'2018-04-12','2018-04-13 00:00:47','1','SALIDA -- FACTURA 001-001-000000011','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (81,'2018-04-13','2018-04-13 00:07:29','1','SALIDA -- TICKET 000000022','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (82,'2018-04-13','2018-04-13 00:07:46','1','SALIDA -- FACTURA 001-001-000000012','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (83,'2018-04-13','2018-04-13 00:13:13','1','SALIDA -- TICKET 000000024','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (84,'2018-04-13','2018-04-13 00:17:19','1','SALIDA -- FACTURA 001-001-000000013','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (85,'2018-04-13','2018-04-13 07:39:02','1','SALIDA -- TICKET 000000026','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (86,'2018-04-13','2018-04-13 07:41:54','1','SALIDA -- TICKET 000000027','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (87,'2018-04-13','2018-04-13 07:42:23','1','SALIDA -- FACTURA 001-001-000000014','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (88,'2018-04-13','2018-04-13 07:45:24','1','SALIDA -- FACTURA 001-001-000000015','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (89,'2018-04-13','2018-04-13 08:02:59','1','SALIDA -- TICKET 000000030','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (90,'2018-04-13','2018-04-13 08:03:15','1','SALIDA -- FACTURA 001-001-000000016','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (91,'2018-04-13','2018-04-13 08:07:46','1','SALIDA -- TICKET 000000032','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (92,'2018-04-13','2018-04-13 08:08:18','1','SALIDA -- FACTURA 001-001-000000017','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (93,'2018-04-13','2018-04-13 14:40:36','1','SALIDA -- TICKET 000000034','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (94,'2018-04-13','2018-04-13 14:41:18','1','SALIDA -- FACTURA 001-001-000000018','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (95,'2018-04-13','2018-04-13 15:25:58','1','SALIDA -- TICKET 000000036','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (96,'2018-04-13','2018-04-13 15:26:14','1','SALIDA -- FACTURA 001-001-000000019','0',NULL,NULL,'1','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (97,'2018-04-13','2018-04-13 15:46:40','1','SALIDA -- TICKET 000000037','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (98,'2018-04-13','2018-04-13 15:46:52','1','SALIDA -- FACTURA 001-001-000000020','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (99,'2018-04-13','2018-04-13 16:21:11','1','SALIDA -- TICKET 000000040','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (100,'2018-04-14','2018-04-14 10:51:25','1','SALIDA -- TICKET 000000041','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (101,'2018-04-14','2018-04-14 10:51:54','1','SALIDA -- FACTURA 001-001-000000021','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (102,'2018-04-14','2018-04-14 10:51:54','1','SALIDA -- FACTURA 001-001-000000021','0',NULL,NULL,'1','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (103,'2018-04-14','2018-04-14 11:23:11','1','SALIDA -- FACTURA 001-001-000000022','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (104,'2018-04-14','2018-04-14 11:26:28','1','SALIDA -- FACTURA 001-001-000000023','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (105,'2018-04-14','2018-04-14 11:50:55','1','SALIDA -- FACTURA 001-001-000000024','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (106,'2018-04-14','2018-04-14 11:57:46','1','SALIDA -- FACTURA 001-001-000000025','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (107,'2018-04-14','2018-04-14 12:13:24','1','SALIDA -- FACTURA 001-001-000000026','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (108,'2018-04-14','2018-04-14 12:16:22','1','SALIDA -- TICKET 000000046','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (109,'2018-04-14','2018-04-14 12:18:11','1','SALIDA -- TICKET 000000047','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (110,'2018-04-14','2018-04-14 12:20:48','1','SALIDA -- TICKET 000000048','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (111,'2018-04-14','2018-04-14 12:21:47','1','SALIDA -- FACTURA 001-001-000000027','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (112,'2018-04-14','2018-04-14 12:50:57','1','SALIDA -- TICKET 000000049','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (113,'2018-04-14','2018-04-14 12:50:57','1','SALIDA -- TICKET 000000049','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (114,'2018-04-14','2018-04-14 12:50:57','1','SALIDA -- TICKET 000000049','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (115,'2018-04-14','2018-04-14 12:50:57','1','SALIDA -- TICKET 000000049','0',NULL,NULL,'1','5','8,50',NULL,NULL,NULL,40);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (116,'2018-04-14','2018-04-14 12:50:58','1','SALIDA -- TICKET 000000049','0',NULL,NULL,'1','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (117,'2018-04-14','2018-04-14 12:53:18','1','SALIDA -- TICKET 000000050','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (118,'2018-04-14','2018-04-14 13:06:01','1','SALIDA -- TICKET 000000051','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (119,'2018-04-14','2018-04-14 13:07:56','1','SALIDA -- TICKET 000000052','0',NULL,NULL,'1','0.99','1503.00',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (120,'2018-04-14','2018-04-14 13:10:04','1','SALIDA -- TICKET 000000053','0',NULL,NULL,'1100','0.99','12',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (121,'2018-04-14','2018-04-14 13:18:08','1','SALIDA -- TICKET 000000054','0',NULL,NULL,'1','0.99','3000.00',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (122,'2018-04-14','2018-04-14 13:36:35','1','SALIDA -- TICKET 000000055','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (123,'2018-04-14','2018-04-14 13:42:52','1','SALIDA -- TICKET 000000056','0',NULL,NULL,'1','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (124,'2018-04-14','2018-04-14 13:43:37','1','SALIDA -- TICKET 000000057','0',NULL,NULL,'10','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (125,'2018-04-14','2018-04-14 13:43:37','1','SALIDA -- TICKET 000000057','0',NULL,NULL,'11','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (126,'2018-04-14','2018-04-14 13:43:37','1','SALIDA -- TICKET 000000057','0',NULL,NULL,'15','5','8.5',NULL,NULL,NULL,40);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (127,'2018-04-14','2018-04-14 13:43:38','1','SALIDA -- TICKET 000000057','0',NULL,NULL,'99','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (128,'2018-04-14','2018-04-14 13:47:38','1','SALIDA -- FACTURA 001-001-000000028','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (129,'2018-04-18','2018-04-18 15:41:36','1','SALIDA -- FACTURA 001-001-000000029','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (130,'2018-04-18','2018-04-18 15:41:39','1','SALIDA -- FACTURA 001-001-000000029','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (131,'2018-04-18','2018-04-18 15:41:40','1','SALIDA -- FACTURA 001-001-000000029','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (132,'2018-04-18','2018-04-18 15:41:40','1','SALIDA -- FACTURA 001-001-000000029','0',NULL,NULL,'1','5','8,50',NULL,NULL,NULL,40);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (133,'2018-04-18','2018-04-18 15:41:42','1','SALIDA -- FACTURA 001-001-000000029','0',NULL,NULL,'1','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (134,'2018-04-18','2018-04-18 16:03:45','1','SALIDA -- FACTURA 001-001-000000030','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (135,'2018-04-18','2018-04-18 16:03:45','1','SALIDA -- FACTURA 001-001-000000030','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (136,'2018-04-18','2018-04-18 16:03:45','1','SALIDA -- FACTURA 001-001-000000030','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (137,'2018-04-18','2018-04-18 16:03:46','1','SALIDA -- FACTURA 001-001-000000030','0',NULL,NULL,'1','5','8,50',NULL,NULL,NULL,40);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (138,'2018-04-18','2018-04-18 16:03:47','1','SALIDA -- FACTURA 001-001-000000030','0',NULL,NULL,'1','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (139,'2018-04-19','2018-04-19 18:10:55','1','SALIDA -- TICKET 000000058','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (140,'2018-04-19','2018-04-19 18:12:23','1','SALIDA -- FACTURA 001-001-000000001','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (141,'2018-04-21','2018-04-21 10:36:47','1','SALIDA -- TICKET 000000059','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (142,'2018-04-21','2018-04-21 10:48:12','1','SALIDA -- TICKET 000000060','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (143,'2018-04-21','2018-04-21 11:35:21','1','SALIDA -- TICKET 000000061','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (144,'2018-04-21','2018-04-21 11:38:42','1','SALIDA -- TICKET 000000062','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (145,'2018-04-21','2018-04-21 11:40:08','1','SALIDA -- TICKET 000000063','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (146,'2018-04-21','2018-04-21 11:41:59','1','SALIDA -- TICKET 000000064','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (147,'2018-04-21','2018-04-21 11:43:55','1','SALIDA -- TICKET 000000065','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (148,'2018-04-21','2018-04-21 11:45:48','1','SALIDA -- TICKET 000000066','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (149,'2018-04-21','2018-04-21 11:47:41','1','SALIDA -- TICKET 000000067','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (150,'2018-04-21','2018-04-21 12:12:03','1','SALIDA -- TICKET 000000068','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (151,'2018-04-21','2018-04-21 12:26:05','1','SALIDA -- TICKET 000000069','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (152,'2018-04-21','2018-04-21 12:26:34','1','SALIDA -- FACTURA 001-001-000000031','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (153,'2018-04-21','2018-04-21 12:31:22','1','SALIDA -- TICKET 000000070','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (154,'2018-04-21','2018-04-21 12:31:39','1','SALIDA -- FACTURA 001-001-000000032','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (155,'2018-04-21','2018-04-21 12:33:00','1','SALIDA -- FACTURA 001-001-000000033','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (156,'2018-04-21','2018-04-21 12:35:55','1','SALIDA -- FACTURA 001-001-000000034','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (157,'2018-04-21','2018-04-21 12:35:55','1','SALIDA -- FACTURA 001-001-000000034','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (158,'2018-04-21','2018-04-21 12:35:55','1','SALIDA -- FACTURA 001-001-000000034','0',NULL,NULL,'1','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (159,'2018-04-21','2018-04-21 12:51:59','1','SALIDA -- FACTURA 001-001-000000035','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (160,'2018-04-21','2018-04-21 12:51:59','1','SALIDA -- FACTURA 001-001-000000035','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (161,'2018-04-21','2018-04-21 12:51:59','1','SALIDA -- FACTURA 001-001-000000035','0',NULL,NULL,'1','5','8,50',NULL,NULL,NULL,40);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (162,'2018-04-21','2018-04-21 12:51:59','1','SALIDA -- FACTURA 001-001-000000035','0',NULL,NULL,'1','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (163,'2018-04-21','2018-04-21 12:51:59','1','SALIDA -- FACTURA 001-001-000000035','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (164,'2018-04-21','2018-04-21 12:53:42','1','SALIDA -- FACTURA 001-001-000000036','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (165,'2018-04-21','2018-04-21 12:53:42','1','SALIDA -- FACTURA 001-001-000000036','0',NULL,NULL,'1','0.99','3',NULL,NULL,NULL,39);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (166,'2018-04-21','2018-04-21 12:53:42','1','SALIDA -- FACTURA 001-001-000000036','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (167,'2018-04-21','2018-04-21 12:53:43','1','SALIDA -- FACTURA 001-001-000000036','0',NULL,NULL,'1','5','8,50',NULL,NULL,NULL,40);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (168,'2018-04-21','2018-04-21 12:53:43','1','SALIDA -- FACTURA 001-001-000000036','0',NULL,NULL,'1','2.69','3.5',NULL,NULL,NULL,37);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (169,'2018-04-22','2018-04-22 20:08:18','1','INGRESO -- Factura 001-001-000000009','10','900','800','0',NULL,NULL,NULL,NULL,NULL,43);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (170,'2018-04-22','2018-04-22 20:34:13','1','INGRESO -- Factura 001-001-000000001','1','8571.43','600','0',NULL,NULL,NULL,NULL,NULL,43);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (171,'2018-04-22','2018-04-22 20:49:35','1','INGRESO -- Factura 001-001-0000000008','21','600.00','300','0',NULL,NULL,NULL,NULL,NULL,43);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (172,'2018-03-01','2018-04-22 21:02:47','1','INGRESO -- Factura 001-001-0000000005','1','300.00','250','0',NULL,NULL,NULL,NULL,NULL,43);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (173,'2018-04-23','2018-04-23 07:51:05','1','SALIDA -- FACTURA 001-001-000000037','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (174,'2018-05-06','2018-05-06 13:46:47','1','INGRESO -- Factura 001-001-002','10.0','10','50.0','0',NULL,NULL,NULL,NULL,NULL,41);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (175,'2018-05-22','2018-05-22 15:55:24','1','SALIDA -- TICKET 000000071','0',NULL,NULL,'1','1.50','1.7',NULL,NULL,NULL,36);
+insert  into `kardex`(`codigo`,`fecha`,`fechaevento`,`bodega`,`detalle`,`incantidad`,`incosto`,`inpvp`,`outcantidad`,`outcosto`,`outpvp`,`saldocantidad`,`saldocosto`,`saldopvp`,`productos_Codigo`) values (176,'2018-05-22','2018-05-22 15:56:15','1','SALIDA -- TICKET 000000072','0',NULL,NULL,'1','10.59','15.0',NULL,NULL,NULL,38);
+
+/*Table structure for table `logs` */
+
+DROP TABLE IF EXISTS `logs`;
+
+CREATE TABLE `logs` (
+  `codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `evento` varchar(200) DEFAULT NULL,
+  `descripcion` varchar(300) DEFAULT NULL,
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `logs` */
+
+/*Table structure for table `marcas` */
+
+DROP TABLE IF EXISTS `marcas`;
+
+CREATE TABLE `marcas` (
+  `Codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `Marca` varchar(45) DEFAULT NULL,
+  `Descripcion` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`Codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+/*Data for the table `marcas` */
+
+insert  into `marcas`(`Codigo`,`Marca`,`Descripcion`) values (1,'DEL VALLE','AUTO');
+insert  into `marcas`(`Codigo`,`Marca`,`Descripcion`) values (2,'GENERAL','AUTO');
+insert  into `marcas`(`Codigo`,`Marca`,`Descripcion`) values (3,'LEXMARK','AUTO');
+insert  into `marcas`(`Codigo`,`Marca`,`Descripcion`) values (4,'TONY','AUTO');
+insert  into `marcas`(`Codigo`,`Marca`,`Descripcion`) values (5,'MR POLLO','AUTO-IMPORTADO');
+insert  into `marcas`(`Codigo`,`Marca`,`Descripcion`) values (6,'DELL','AUTO');
+insert  into `marcas`(`Codigo`,`Marca`,`Descripcion`) values (7,'MIGUEL','AUTO');
+insert  into `marcas`(`Codigo`,`Marca`,`Descripcion`) values (8,'SAPOLIO','AUTO');
+insert  into `marcas`(`Codigo`,`Marca`,`Descripcion`) values (9,'DFSDF','AUTO');
+
+/*Table structure for table `modelos` */
+
+DROP TABLE IF EXISTS `modelos`;
+
+CREATE TABLE `modelos` (
+  `Codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `Modelo` varchar(75) NOT NULL,
+  `Descripcion` varchar(105) DEFAULT NULL,
+  `Marcas_Codigo` int(100) DEFAULT NULL,
+  PRIMARY KEY (`Codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+/*Data for the table `modelos` */
+
+insert  into `modelos`(`Codigo`,`Modelo`,`Descripcion`,`Marcas_Codigo`) values (1,'JUGOS DE FRUTA','AUTO',1);
+insert  into `modelos`(`Codigo`,`Modelo`,`Descripcion`,`Marcas_Codigo`) values (2,'GENERAL','AUTO',2);
+insert  into `modelos`(`Codigo`,`Modelo`,`Descripcion`,`Marcas_Codigo`) values (3,'LACTEOS','AUTO',4);
+insert  into `modelos`(`Codigo`,`Modelo`,`Descripcion`,`Marcas_Codigo`) values (4,'CARNES','AUTO-IMPORTADAO',5);
+insert  into `modelos`(`Codigo`,`Modelo`,`Descripcion`,`Marcas_Codigo`) values (5,'INSPIRON','AUTO',6);
+insert  into `modelos`(`Codigo`,`Modelo`,`Descripcion`,`Marcas_Codigo`) values (6,'GETIAL','AUTO',7);
+insert  into `modelos`(`Codigo`,`Modelo`,`Descripcion`,`Marcas_Codigo`) values (7,'AROMATIZANTE','AUTO',8);
+insert  into `modelos`(`Codigo`,`Modelo`,`Descripcion`,`Marcas_Codigo`) values (8,'PORTATIL','AUTO',6);
+
+/*Table structure for table `permisos` */
+
+DROP TABLE IF EXISTS `permisos`;
+
+CREATE TABLE `permisos` (
+  `codigo` int(200) NOT NULL AUTO_INCREMENT,
+  `Permiso` varchar(45) NOT NULL,
+  `Tipos_Usuarios_codigo` int(100) NOT NULL,
+  PRIMARY KEY (`codigo`,`Tipos_Usuarios_codigo`),
+  KEY `fk_Permisos_Tipos_de Usuarios_idx` (`Tipos_Usuarios_codigo`),
+  CONSTRAINT `fk_Permisos_Tipos_de Usuarios` FOREIGN KEY (`Tipos_Usuarios_codigo`) REFERENCES `tipos_usuarios` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `permisos` */
+
+/*Table structure for table `plan` */
+
+DROP TABLE IF EXISTS `plan`;
+
+CREATE TABLE `plan` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `id` varchar(45) DEFAULT NULL,
+  `cuenta` varchar(200) DEFAULT NULL,
+  `id1` varchar(45) DEFAULT NULL,
+  `id2` varchar(45) DEFAULT NULL,
+  `id3` varchar(45) DEFAULT NULL,
+  `debe` double DEFAULT NULL,
+  `haber` double DEFAULT NULL,
+  `saldo` double DEFAULT NULL,
+  `descripcion` varchar(405) DEFAULT NULL,
+  `plan_codigo` int(11) DEFAULT NULL,
+  PRIMARY KEY (`codigo`),
+  KEY `fk_plan_plan_idx` (`plan_codigo`),
+  CONSTRAINT `fk_plan_plan` FOREIGN KEY (`plan_codigo`) REFERENCES `plan` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `plan` */
+
+/*Table structure for table `precios` */
+
+DROP TABLE IF EXISTS `precios`;
+
+CREATE TABLE `precios` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(500) DEFAULT NULL,
+  `valor` double DEFAULT '0',
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+/*Data for the table `precios` */
+
+insert  into `precios`(`codigo`,`nombre`,`valor`) values (1,'PVP',0);
+
+/*Table structure for table `productos` */
+
+DROP TABLE IF EXISTS `productos`;
+
+CREATE TABLE `productos` (
+  `Codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `producto` varchar(145) NOT NULL,
+  `codigoAlterno` varchar(45) DEFAULT NULL,
+  `codigoBarras` varchar(45) DEFAULT NULL,
+  `base` double DEFAULT NULL,
+  `costo` varchar(45) DEFAULT NULL,
+  `impuesto` varchar(20) DEFAULT NULL,
+  `iva12` double DEFAULT NULL,
+  `iva14` double DEFAULT NULL,
+  `iva0` double DEFAULT NULL,
+  `ice` double DEFAULT NULL,
+  `ProductoOServicio` int(11) DEFAULT NULL,
+  `costoConIVA` double DEFAULT NULL,
+  `utilidad` varchar(45) DEFAULT NULL,
+  `pvp` varchar(45) DEFAULT NULL,
+  `cantidad` int(45) DEFAULT NULL,
+  `unidades` varchar(45) DEFAULT NULL,
+  `ubicacion` varchar(45) DEFAULT NULL,
+  `observacion` varchar(245) DEFAULT NULL,
+  `minimo` varchar(45) DEFAULT NULL,
+  `maximo` varchar(45) DEFAULT NULL,
+  `garantia` varchar(245) DEFAULT NULL,
+  `serie` varchar(100) DEFAULT NULL,
+  `imagen` longblob,
+  `Modelos_Codigo` int(100) NOT NULL,
+  `Modelos_Marcas_Codigo` int(100) NOT NULL,
+  `b1` varchar(45) DEFAULT '0',
+  `b2` varchar(45) DEFAULT '0',
+  `b3` varchar(45) DEFAULT '0',
+  `b4` varchar(45) DEFAULT '0',
+  `b5` varchar(45) DEFAULT '0',
+  `b6` varchar(45) DEFAULT '0',
+  `b7` varchar(45) DEFAULT '0',
+  `b8` varchar(45) DEFAULT '0',
+  `b9` varchar(45) DEFAULT '0',
+  `b10` varchar(45) DEFAULT '0',
+  `b11` varchar(45) DEFAULT '0',
+  `b12` varchar(45) DEFAULT '0',
+  `b13` varchar(45) DEFAULT '0',
+  `b14` varchar(45) DEFAULT '0',
+  `b16` varchar(45) DEFAULT '0',
+  `b17` varchar(45) DEFAULT '0',
+  `b18` varchar(45) DEFAULT '0',
+  `b19` varchar(45) DEFAULT '0',
+  `b20` varchar(45) DEFAULT '0',
+  `p1` double DEFAULT '0',
+  `p2` double DEFAULT '0',
+  `p3` double DEFAULT '0',
+  `p4` double DEFAULT '0',
+  `p5` double DEFAULT '0',
+  `p6` double DEFAULT '0',
+  `p7` double DEFAULT '0',
+  `p9` double DEFAULT '0',
+  `p10` double DEFAULT '0',
+  PRIMARY KEY (`Codigo`,`Modelos_Codigo`,`Modelos_Marcas_Codigo`),
+  UNIQUE KEY `producto` (`producto`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
+
+/*Data for the table `productos` */
+
+insert  into `productos`(`Codigo`,`producto`,`codigoAlterno`,`codigoBarras`,`base`,`costo`,`impuesto`,`iva12`,`iva14`,`iva0`,`ice`,`ProductoOServicio`,`costoConIVA`,`utilidad`,`pvp`,`cantidad`,`unidades`,`ubicacion`,`observacion`,`minimo`,`maximo`,`garantia`,`serie`,`imagen`,`Modelos_Codigo`,`Modelos_Marcas_Codigo`,`b1`,`b2`,`b3`,`b4`,`b5`,`b6`,`b7`,`b8`,`b9`,`b10`,`b11`,`b12`,`b13`,`b14`,`b16`,`b17`,`b18`,`b19`,`b20`,`p1`,`p2`,`p3`,`p4`,`p5`,`p6`,`p7`,`p9`,`p10`) values (36,'LECHE CONDENSADA','111475.0','1.23123131313E11',1.34,'1.50','IVA 12.0',0.16,NULL,0,NULL,1,NULL,'0.20','1.7',-56,'SIXPACK',NULL,'1 - Predeterminada del prodcuto LECHE CONDENSADA desde el archivo de importacion',NULL,NULL,NULL,NULL,NULL,3,4,'-64','0','25','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',20,33.33,133.33,0,0,0,0,0,0);
+insert  into `productos`(`Codigo`,`producto`,`codigoAlterno`,`codigoBarras`,`base`,`costo`,`impuesto`,`iva12`,`iva14`,`iva0`,`ice`,`ProductoOServicio`,`costoConIVA`,`utilidad`,`pvp`,`cantidad`,`unidades`,`ubicacion`,`observacion`,`minimo`,`maximo`,`garantia`,`serie`,`imagen`,`Modelos_Codigo`,`Modelos_Marcas_Codigo`,`b1`,`b2`,`b3`,`b4`,`b5`,`b6`,`b7`,`b8`,`b9`,`b10`,`b11`,`b12`,`b13`,`b14`,`b16`,`b17`,`b18`,`b19`,`b20`,`p1`,`p2`,`p3`,`p4`,`p5`,`p6`,`p7`,`p9`,`p10`) values (37,'YOGURT TONY','CA-5589','1.23123123123E11',2.4,'2.69','IVA 12.0',0.29,NULL,0,NULL,1,NULL,'0.81','3.5',-105,'',NULL,'1 - Predeterminada del prodcuto YOGURT TONY desde el archivo de importacion',NULL,NULL,NULL,NULL,NULL,3,4,'-100','0','30','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',-100,-100,-100,0,0,0,0,0,0);
+insert  into `productos`(`Codigo`,`producto`,`codigoAlterno`,`codigoBarras`,`base`,`costo`,`impuesto`,`iva12`,`iva14`,`iva0`,`ice`,`ProductoOServicio`,`costoConIVA`,`utilidad`,`pvp`,`cantidad`,`unidades`,`ubicacion`,`observacion`,`minimo`,`maximo`,`garantia`,`serie`,`imagen`,`Modelos_Codigo`,`Modelos_Marcas_Codigo`,`b1`,`b2`,`b3`,`b4`,`b5`,`b6`,`b7`,`b8`,`b9`,`b10`,`b11`,`b12`,`b13`,`b14`,`b16`,`b17`,`b18`,`b19`,`b20`,`p1`,`p2`,`p3`,`p4`,`p5`,`p6`,`p7`,`p9`,`p10`) values (38,'MR POLLO 3 LIBRAS','MP23','3.21313123E8',10.59,'10.59','IVA 0',0,NULL,0,NULL,1,NULL,'4.41','15.0',-86,'FUNDA',NULL,'1 - Predeterminada del prodcuto MR POLLO 3 LIBRAS desde el archivo de importacion',NULL,NULL,NULL,NULL,NULL,4,5,'-100','0','10','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',60.53,-100,-100,0,0,0,0,0,0);
+insert  into `productos`(`Codigo`,`producto`,`codigoAlterno`,`codigoBarras`,`base`,`costo`,`impuesto`,`iva12`,`iva14`,`iva0`,`ice`,`ProductoOServicio`,`costoConIVA`,`utilidad`,`pvp`,`cantidad`,`unidades`,`ubicacion`,`observacion`,`minimo`,`maximo`,`garantia`,`serie`,`imagen`,`Modelos_Codigo`,`Modelos_Marcas_Codigo`,`b1`,`b2`,`b3`,`b4`,`b5`,`b6`,`b7`,`b8`,`b9`,`b10`,`b11`,`b12`,`b13`,`b14`,`b16`,`b17`,`b18`,`b19`,`b20`,`p1`,`p2`,`p3`,`p4`,`p5`,`p6`,`p7`,`p9`,`p10`) values (39,'MIGUEL GETIAL EL PILASDE LA CASA','','113094631956',44.64,'50','IVA 12',5.36,NULL,0,NULL,1,NULL,'203.03','151.52',-1131,'UNIDADES',' ,  ,  ,  ,  ,  , ','','','','SIN GARANTIA',NULL,'ˇÿˇ‡\0JFIF\0\0\0\0\0\0ˇ˛\0;CREATOR: gd-jpeg v1.0 (using IJG JPEG v80), quality = 75\nˇ€\0C\0		\n\r\Z\Z $.\' \",#(7),01444\'9=82<.342ˇ€\0C			\r\r2!!22222222222222222222222222222222222222222222222222ˇ¿\0L¬\"\0ˇƒ\0\0\0\0\0\0\0\0\0\0\0	\nˇƒ\0µ\0\0\0}\0!1AQa\"q2Åë°#B±¡R—$3brÇ	\n\Z%&\'()*456789:CDEFGHIJSTUVWXYZcdefghijstuvwxyzÉÑÖÜáàâäíìîïñóòôö¢£§•¶ß®©™≤≥¥µ∂∑∏π∫¬√ƒ≈∆«»… “”‘’÷◊ÿŸ⁄·‚„‰ÂÊÁËÈÍÒÚÛÙıˆ˜¯˘˙ˇƒ\0\0\0\0\0\0\0\0	\nˇƒ\0µ\0\0w\0!1AQaq\"2ÅBë°±¡	#3Rbr—\n$4·%Ò\Z&\'()*56789:CDEFGHIJSTUVWXYZcdefghijstuvwxyzÇÉÑÖÜáàâäíìîïñóòôö¢£§•¶ß®©™≤≥¥µ∂∑∏π∫¬√ƒ≈∆«»… “”‘’÷◊ÿŸ⁄‚„‰ÂÊÁËÈÍÚÛÙıˆ˜¯˘˙ˇ⁄\0\0\0?\0ÂÖ<SE8Wä}R—KLBR\ZZCH¶\Zy¶öE\r•≈•†bäx¶\nx†“”i‘CM4„“òhBiî„IV!H¥¡OZâVû)ãO 8R”ih\04Üîöi§1))M%\0î¥îJJZm!é¢ö)¬òáäZhßP!)\r:öh”EÅIåpÈN¶éî·@M4Íi†4î\Z)Ù¡O	è¥Çñô!E¥J)h†•£¥\0P(•§0¥Q@¬öiM!§mLj{u®⁄ò»⁄£5#TfÇÑ¢ä)¢X£≠-ñ≠∞¢äZd1;“‚äZ¢XQE-Tã÷£\"‘≤—a*¬Ud´	R2qA§¶ÅµD›jV®õ≠0#=*&©MF’q&D\rP=N’÷±0ëZJß/zπ%Tñ∂FLÀπÔYS˜≠kö úu≠‡a3=˙öÑ‘Ó9®HÊµFM¢ó`”Ñ§≈?ì\\,6äSILê¢ä(\0¢ä(\0¢ä(QE\0ô•¢äQOUÕ\ZWä6‘Î{TÇÈR‰m\Z-ï1F*—Ä˙Tm(R	QhÇäq\\SjåZ∞QE(•≈†¢óîÄ(¢îq€4¿ZyB*ÕÇ∆Úë—	+0ŒO•lM•X√`ô%’Ó1« ∆Ω≥éÙú¨4épäLT“£# Wÿäà–QE≈`¢åQä@%•¢ÄåR“Å@Ï&(≈H4Ô.ï Q!≈1é£+Eƒ‚6ä\r≈`¢ä(\0•¢Å@–¥QE\"Çíñäbû®Mπ5°ijd`\0©î¨8∆‰0€=+R◊Mg#Â≠ù7F.GÀ]eáá…‰˝+ÜÆ\"€îËÆß)k§>Z”èL¿˚µ€A†Ìr§ìH⁄øvºÍòÜŒÍj(‚\Z«hÈU&∂\0+Æ∫±ÿÀXópÌ¶[gEìG+wn\0<VÃx&∫ã–\05œ]Åì^ù	3œƒA0j:ûZÑ◊z<…	IKEPÑ¢ñíÅQ@Çä(†ä(†ä(†ä(§ES\0£¥P;	E-Ñ¢ä(QE\0QE\0¥†fÄ*ÃÔ\"•ªï≈ÜÁ•kŸÈm&>Zª•ÈfRø-wöGá˜ WZˆÿÍßO´9k=∞el¡†ê>ÂzóáÄQÚV¢Ë`/‹Ø>•Y≥¶.1<ÃË≈G›™≥i€G›ØO∏—¿v∞/ÙÕ†¸µŒÍI=N∏N,ÛÀõ\\gäƒºÉ‚ª]B◊a<W1~òÕuPõaV)£ó∏LTú`÷ï◊SY“uØZõ–Ú*´2*JSEjsâES\0¢ä(\0¢ä(QE\0fñíä-QHä(†äZ1@	E.(†aV MƒT÷¥¨c‹‡TIŸvmÈ>cØÈZçªoÀ\\ÁálÉ2q^µ°X\0´≈yudÂ+ü\n,È∫B™ØÀ[—i™›´∂ñ¡TqZÆ.éyUf3i„+>ÔNO’Ü*¨ßäU0 ¡\n≠3Õu];æZ‡ı{]Ö∏Øb’mF‚º”ƒ6˚wq\\J≤=\nUnè3‘>Rkv‰÷˛≠√µss7&ΩjCöºµ sL•\'öJÎ8ÿS—riÉ≠YÅr¬ìcHΩelda≈vö6ìºØÀX˙5ûˆ^+‘º=•ÇÂØ:ΩMlé»%r∆ë°\r™v◊[i£*®˘kCM”¬¢¸µΩ\r®P8¨#EÀs9’0óKP>ÌG6ö0~ZÍ<ÅÈPÀnÈU,.Ñ∆≥π¡ﬂi¯äÂumÑÒ^õj6û+â÷`⁄\Z∏gI≈ùÙk\\ÛÎÒ∑5ÀÍ\r÷∫}]∂≥W7ÃyÆÃ4uß°HûM\\ÀÕËÚúÁ°é¥ÒMÍÚœUãKIKL@i¶úi¶ê»⁄öiÁ•0–PQI@§Ö<S<PÖ- •†@içN4∆¶Ñ0“RömR$QR-F*E°Å ßä`ßä@--%Ä))OJJÑ4î¶íÄ\nm-%!°\r%¢Åä)¬ö)¬Å1¬ùMÍ”N¶ö4—EÜ8SÖ0S≈öi‘”@ÜöJSIHc≈8t¶\nxÈLLxß\nhß\nd±hR– ¢ä)(¢ä\0)i(†QIE\nCK⁄ê“TmR5F‘Tf§4 cJ(•Hñ¬ñÅKTf¬ä(™%ázZ(†ëh¢ä`\"‘b§ZñR\'J∞ïY*Ãu#\'¶ëiM!jÖ™v®\ZòöcSœJç™—2\"jÅÍv®µâÑä“U9j‰ïRQZ£&f\\˜¨©«&µÓZÀôy5ºLdg∏Ê£Ú…´~^OJµì9ÈTÊë*\rô´=™e¥oJÈ-tb¯˘kZ/í>Âa,JFÒ†p¶—±“°{r;W°K·Ú‹˝+&ÛE(…J8î≈*»EFEl]ÿ¥d‰VdëÌÆ®…3öQ±\r¥ï°EP ¢ä(\0¢ä(QE(\rU…´0≈∏Ù®‚\\ëZ∂ê‰é+\Zì≤;‘yÿCiû’ml∏ÈWÌÌ¯U—\0«J·ù}O•°Åçµ0^œ⁄©Mmé’”…\0«JŒπÑs≈:uâƒ`cmjXjπ5©s	¨˜ﬂ	]5à• »©h≈.*Œ;	E-%\0ò•¢Äîcå“RP√0‡ä“”5˝GD˝õrô>ÒÎ>\Z ≠*n@y_Zµxâ,˘ÉjB√*ÖæË°ç]^\\_]Iqs+K4á,ÏrI®è\\T¶8÷5>`cûTv≠Ìt©4ôgñÊX/ƒQ ø‘ˆ§›Ç◊2hß£ÌGR›ﬂ“Éà÷Mßct4ƒ2óSπ fóo≈\0GF)≈i¥\0∏ß™”*U§ Däµ Jjöê\ZÕõ≈!åï≠Y5PòIH¶‘ç÷£=kTs∞¢ä(¥RQö:äJ(≈•ömI…§´h∑0ÆªE”<∆_ñ∞Ù´}Ú+”¸5¶Ü*v◊yÙ:©∆ ÊÆã°ïÆ“ÀEUQÚ’≠#OUE˘k•Ç‘*é+ëRr	’±Ñ∫RÅ˜jµŒò6üñ∫Ô c•Vûÿ<RûAFªπÊ˙ñüÄxÆ/T∑Ÿû+÷uKAµ∏Ø:◊‡⁄ä‰ˆn2;ÈV∫<ÛQ;s\\›”rk†’õijÂÓÊ5Í·„°œàôRCìQ\Z{iï‹è=∞¢ä*â\n(¢ÅÖQHAE.(≈a(¢ä¡EP!(•¢ò	KIK@¬ä(†aEPQEQE\0¥ÇîP2H◊&∑tªO1◊ä»∑\\∞Æ”√ˆª›xÆz“≤7•≥¨ˆëªa€^ô§È*®ø-cxnƒ_ñΩ¬ÿ*+Ç1Áf≥ù¥#∑”’T|µgÏkéï†ëÄ:Sˆ{WJ†¨sÛ≥\n‚ƒxÆwS”∆”≈w2F¨mF‹<W-j⁄ïVô‰z’¶Õ‹W™Æ“’Î>!∑\07Â:Ë⁄ÕYPç§w:óâ…]7Ãk=ŒM[∫oò’\"kÿÇ–ÛjJÏmQZâESQE\0QE\0QE\0QE-\0QE \nZJ)åZ(¢ÅÖQHßZŸ”2≠c\'Z⁄“€≠eWcZ{û£·xÅ)≈zﬁçºWì¯^AîØZ—úlZÚ◊∆tUÿÈ†\\(´\0T∑ÀSÉ≈zPµé)ãëS≈C!‚ú∂aÍh\n5yóâc^Ω7Sp´Ã|M(⁄ıÊTKòÌ¢œ&÷∏vÆ^n¶∫]iÛ#W11‰◊°AhEg©	¢äL◊AŒ9z’˚EÀä†ΩkFÀÔäôÏ\\7;œ¿ìäıÔ€\0ã≈yWÜà‹ïÏ\Z6%y3÷gTæÆ≥àVÇ/V◊E]ZÔ§ïé)=Cm1◊äñòı´Ze^∆\nö·uÙ[äÔØH⁄kÅÒÄØ^ux´ùtdy>ø&◊z·oeÀûk∞Òü;◊tŸs]hh]iëo˜¢°ÕŸcñÁ™\nZAK^!Ó±E-%-\0”N4”Hhç©ÜûiÜÅâö)\r-0)¬ò:”≈!è¥—N†B\Zå”Õ0”Biπ•4ïdé\"‘c≠H¥ò\nx¶äu ä(§Hi{“\Z4“RöJ\0)\r-!†hm%-%!ä)‚ôN	èÍhßPHii\r\02ä(§RS≈0SÖ\0:öii\r\04“Röm\08\Zêt®≈H()¬ö)‚ô\"““\nZQE\n(¢êE¥\0Rw•¢Åài\r)¶öC’SÕ1®¶\Z{S\r•QVàb““Rä¢\0R—@¶HR“w•¶HQE\0S◊≠2ú¥ôH∞ïb:¨ïb:C,≠)¶≠:êàû°jù™¶M“¢jï∫TMVâëT/S\ZÖÎXò»≠%TóΩ\\í™Kﬁµâì3ÆZŒtÀVú„9™ÎÁ≠/dgkë€Zoq≈u\ZVèÊÚ‘:Ué˜W¢ËzH!~Z‰≠QÏç¢îU ∫oá¡)˙WCÄª~‡ÆèO”UT|µ±íÅ“π’7\"%Z«\r6ÄªO…X\Zóá¿SÑ˝+÷d≤R:VM˛ö¨áÂ°”q≠s¿uùfÔí∏õÎS+›¸A§Æ∆;k µ€å‹WV´ΩòTJJÁÎÉL´7	µçVÔ^íw8⁄ä(™$(¢ä\0(¢ä\0)À÷õNZL§[Ä|’∑f£äƒÄ‡÷≈§ò≈r÷=åIõ–ä≤1ä°ºu´\"N+Õíw>™ïEaÔåVu»‡’∑ìä°r¸\Z∫kS:ı)ët5ó\'SZr®$güJÕ/œL◊ßM;#å®ú¥#\"äqÊê„u≠è>‚ö\\q“éÜùÅÿÊòÆ\"\"±;ú\'M4ë⁄ûÀÑŒ£ ‡\Z@%båS)h§\0\råúìN ÌézNÙÜH\nlÂr›ézUÃ4–4P≥yHıb9≈PÌä’–µªç˘.≠“7t»°óû¯4üêÙÍTáÀ1¥o≥Ú∂z•XÇÿ:≤ûﬁæ¥ñÛ	Ô•ñùﬂ.„ö—7ë«•¿~œí9rÓz∏=8§Ô–åãÎilÓ\Z	‚h•P2≠Ó2ÂUpHŒ8•Ø_K©jR] ªI\n∏œ@\0≤˘≈5∞1A©WÎPèzï«QMÖ«ÉÉäxzcwz”wb¶≈©n¶1¶Ó¶≥R±NC≠2îöJ¥dÿQIFh$Z(§Õ0ä(§1jhGÃ*ı<xReGs´–c\r\"◊∞¯^‹m^+»º>√ÃZˆ_8⁄ïÁV¯é≈ûâßD+]äÃ”»ÿ+U—I+s‹v⁄ÜE‚ß®§<\Z“IXî`Íqçç^g‚U¬Ωzv¶¿F’Ê(êm~kÃ©Ãv—lÚ}m∞Ì\\¨Ì…Æì[|»’ÃJ~jÙh/tŒ≥‘à“QAÆÉò))h4ƒ%-%-\nZJZC\n(¢ÅÖQ@Ñ¢ä(QE\0QE\0QE\0QE¿J)h†ò•¢êÇîRRäã÷cÊË^@Y+œ-+–<5(ï…àÿÍ§{?á£Z◊oj†(Æ√≥\Zs]’£ÇÇ±¢—KÍ8ßS∏ßfªNqå8¨À6\Z“v5ë®J\ZÁ¨’ç!π¡xê\rè^;‚ájıü\\\rØÕx˜à&›#W-yó¥NF‰¸∆™\Z±9À\ZØ^¨v8§ı\nJZJdQ@Q@Q@Q@Q@-%-\0QE\n(¢Ä\nZJ( pkR¬M≤-eVm‰⁄¬¢jË“Ãı/\rﬁÖdÊΩkCΩö˘˚FøÚ›yØM–uêÂ´ ´\\Ï¯ëÏ∂∑îsWñ@EqZ~¨¨£Ê≠∏µ#ÔV∞ØcñTŸ∂dV‚p™y™®Æ>ıe_j™™~j\'_@ç63WΩ\nçÕygâ/ÉoÊ∑ıΩhmoöºœ[‘˜ñ˘´\'9qè*9ÕRm“75á!…´wSnbsTX‰◊´N6G%I]ç4QEjf(´÷çÜ@Uà[T…]©Ë~π\n…Õz˜áÓ¡DÊºGºÚ›yØP˛¨\0Q∫º™—ÂïŒµÔDˆ{)ÅQÕi+Ò\\fô©´\"¸’–C|§kjUUéY¡‹’›QªÄ*Ø⁄◊j≠≈Ú™ûkYVV!Aå‘\'5Á>%º~k¢’ıUUoöº«ƒZÆ‚√urJ\\Ú:È∆⁄úfø>Èö„Ál±≠çRÁÃëπ¨9&Ω\n1≤2´+±îRQ[û¨)‘ÇîWÜ{‚“—E\0!¶öq¶öC#4√Oja†cM(§4¢òÒLÒ@¥Çñêj3O4√TÑ∆\ZJSH*â*E®≈J¥ò\nu4S©\0¢îÙ§†ö\0)¥Ím “RöJÜä\rIKHi)‚ò)¬Å1‚üMÍ”N¶ö4—A§§1E<S)√•Hii\r\00“Sç6ÄTÇ£ı†DÉ≠:ò)Ù…)i¢ú(QE\0R“R“cäJZ\0(§†öEiß•8”\ZÄ\Zj6ßöcP1Üõﬁúi¥–1)h•´Fl;–(¢ô—Eƒ√Ω-%-2E§•§†ú¥⁄r“e\"d´	Uñ¨%HÀ+O®‘‘îcTSµB‘¿Ö™&©Z£nïHôµDı+T/[D∆Ew™≤’ß™≤Ù5™2eG4∂ÒÂ≈,ΩjK_æ)Àa-Œ∑A∂À≈zÜâjØÁ~∆ÂØQ—±±kâÎ!‘z¨ (‚Æ™T0}—VGJÌ¶ïé)1åïNÊ TÒW…™∑Â55∞EúVªlm≈yâ≠Ç≥Ò^”≠ëÂµyäÀ◊¶u«cÀ/ìlÜ≥èZ’‘~˘¨£÷Ωàlrœq¥QEh@QE(†R–0•î\nC,Fÿ5~	∂ëÕe©≈LíY 7:h’qf¸7X«5h]Êπ≈∏#°°ÆXˇ\0Õs∫=8f(È˘Õgﬂ]˘sÜ#ä£i4˜aè$êO–U	ôû^X±œRj©–≥‘œòπB—¢Ká˘rIÍi&EÖº∞¡ò}‚*ƒÇ[X6‡¶·ê}jÖt£«n„ñVBvúd`”;‘—&HËZ0y˜®è,HÈL@›}©cŒÏÅ”ûhúRÇ@¶Æê-$iPõ\'ÕÂÁ˝ÖkZ¯x¯Ü9nÏ!Ñ9˘‰†Ï£ÆO5v√Rª”‰ﬂkq$G˝ñ∆j\\_Aß‹⁄÷º5å∂©mt”	o„Óøu¨)·{9J≤‡ÉÉëRùZÌ§F36U˜éz\ZõVø:’ˇ\0õ+X¿⁄Ω94íkpvËRÇ“K©|∏◊Á<ÅLíﬁH«Ã•NpAÍ+k√w6ﬂjqu\"∆·s0‡ëÿ“Î\ZÇkÊ‚LGÄ\0:≈;ªÿ,≠sÆ1∆)81üQZ±€àÓ\\WãÇåSÈNÒç˝ïqƒ€†ïCÇ;dg_[äZ]§W∑F)&åd{˚T2≥›H#nà˜8pEHIê‰Ùƒa¿#®5=ÃÎ3!\\Ö\0j®m¨J“®ﬂû	«&Ä-_\\«<ÃbÑEUs‹\0	¸jüäÚ}\r%√êx£9<\nh˙”„rô¿år(ƒ,eéi∑òe*F=™%\'≠Xõ˜ë#(Ë\Z+HMê–íñíÇBä(¶EPKIE\0-K√TTÂ84ôHÍtYˆJµÎûΩ\0/5·ˆÏê◊°¯wTÿWÊØ?jvSwV=ÛLπÉö›é@EyŒç´ãÛWWm®©QÛTS≠c)”f˘qäØ4†)™&˝q÷®^jJ™~jπ◊V!Sd\ZΩ–∑5Â^\'º8Õu:ÊÆ∑Õ^[ØÍ[À|’ÕŒGTc éSVõtçÕ`π…´◊ìosYÏyØVö≤9j;±¥QEhdQEñä)å)i(§—Iö(≈§ÕP ¢ä(\0¢ä(\0¢ä(\0¢äJ`-&h¢Ä—ö(†¢íñêä(Ã\rÜ◊hW{yÆ-µÙ˚£k\Z∞∫7ß+3ﬁ<9©\râÛW¢i˜°ês^°k>^ﬂöΩI◊ÅE˘ÎŒªÉ6úyëÍQŒÎRÜ+ê∑÷î®˘™Àk∑Ô÷™æÜì7\'∫\n:◊9´jQæjß{≠®SÛW≠k√÷3®Â¢5Ö;˛$‘Å‹7WñÍ˜;‰nkoZ’Låﬂ5q◊sÔcÕt·È€Q’ïïäíúµGJ«4ïﬁéF%QA!EPES\0¢ä)\0QE\0QE¿(¢ä@-RS-QHaES\0ß´`”)E!öV∑%`◊U•k2ø5p ‰\Z∑\r—L`÷))”©cÿÙﬂm/˙◊Câ—˚œ÷ºB€Ut«ÕZqÎ¨ﬁ?ùpK˙*qgØ…‚A∑˝gÎXöáàÚıØ=}yà˚ÁÛ™\Z√æ~cJ8i=√û(ﬂ’5≤˚æo÷π€√#jÔ…˘™ã»XıÆÍTTL*U∏H˘5Õ“ëŒÿQE) ÿ4⁄\0ç+[Çå9Æ∑H’Ãe~j·jıΩ—B0kû≠%#zs±ÌZWàp´ó˝k©µÒ\nï=xEûÆ…èö∑-ıˆP>÷∏%FIËt˚≤=†ÎÎ∑Ô˛µùy‚ÉÛ◊ô6>ˇ\0ÎTÆuˆ`~÷•SìX£™÷5˝¡Ä÷∏[T23|’VÛUi3ÛV˜…Ê∫Ë–∂¨Œu—\r∏òªj©9•f…¶fªR±»›≈¢ì4S∞èX·H)ExG–ãEP!\r4”ç4“S\r=©ÜÇÑ†QH)àxßä`ß\n\0x•¶é¥¥\0Ü£4ÛL4–ò√EÅT@ÒR-F*E§∆H)¬ö)i\0Í)3KHöii\r\04“RöJ\0(¢íÇêîî¥îÜÒLßä\0xßSGJZ-4““\Z\0m6ùM†§:ú:S9i\0ÒHh†–!¶õJi(¢û:S=iàxßˆ¶\nj	RäAK@EbÄ\nZ))\0¥¶êR–1))i)\0î∆ßSMcLjy®Õ\04“RöCM	Ä•§¢≠±h¢ñô!ESBñêS©í\'jJS“ê–0ß-2û)\r-XJÆ¶ßJíã*jJÖ\rL#t®Z¶jâ©àÅ™ÈSµB›*êôT/S5B›+Xò»ÅÍ¨ùÍ‘ïR^ı¥LôJ^¥@¯qI9™¢]ØV’—7‘ÓÙ†Æº◊ßËó`¢Û^•ﬂ˘n9ØB–ıÄç’√R..ÂµÃè^µú’’ìä„¨5Ue5lG®©zÆléYAõ- «Z°u8\ny™≤j*Zƒ‘ueT?5MJ∑` :ı‡∑5‰~$ª_öÍı˝da∫º√ZøÛÜiPÉîÆn˝ÿú˝ÎÓsY«≠Xù˜1™ÊΩx´#éOQ(¢ñ¨ê≈¢ä\0(¢ä@¥î¥\r\0•Õ%„∑“ú‘u \0|p\rqÒy±©db•Ü2)ÉÂl˙t°õqc”=™‘Bﬁh–Uî|«=h$äI<“2XÅ◊&ôs\"I+: çOE©§ÏrJFr:PÑí<b1ùã¸#˘‘dÒ≈I\rƒ∂€¸¶⁄]JìÌP–IEƒıÇXûúbôE\0.NsR#πSÜıj1éÙÚ¿±`˚\n\0D ∞e⁄sVÔ•Kâ÷x’SxÀ\"å=ÒP(§ç÷íM™«!9^F1ä\0∏¶)`ú˝•Äà-Ò\ncK4—˘dóD^ÑÚRÈ@b9A•a‹Ù¶ÛﬁùöBI4ƒ‰rôÎÉ¡\0ı¶—@¿ı„•îÔJ ¢ß∏∂km°Ÿ0›Ö9¿®pA†b‰é*ÌÖÔŸY≤ä }ET	î›ëÙ£8Z[Ç2î‰pﬂ0˙TxœJê…π1\'&£∆(¶õN4ÜÅ	ES\0¢ä(QE)E%-\0XÜB¨+†”5kôbäµïHs#XN«¨È\Z˘M£Î]}üà∆—Û◊Ü⁄ÍM>c[6˙Î(˚ıÁT√ªËvFq{ûŒ|D6˝ˇ\0÷≤Ø¸D6ú=y±ÒcÔ’+ùmòö≥T$ŸWä:-_\\.ÁÆ#Qæ2±Ê¢∫‘\ZL¸’ô,•çwQ£ s‘©}Ü»˚çCJM%u§s6QE\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n)(¶!h§¢ÄäJ(\0¢ä(\0¢ä(QE\0QE\0R“Q@E%\0¢ßäBß≠AJ\r&Üôªe®4D|’‘È⁄˚ ?Î^zí´Q]≤˜ÆzîTç·V«≠€xúÖ?ÎVõ≈o˙œ÷ºö=M‘}ÍêÍ≤cÔ\ZÊxSojèBΩÒ)`~÷πmGZi3Û◊=.†Ì¸F©…p[Ωi:D ØbÕ’ŸëéMg;d–ÃM0◊\\ccöR∏RR“b¨Ä¢ä(QE\0QE\0QE\0QE\0QE.(\0§≈-Ä)1KE0\n(¢ÅÖQ@Q@86)¥\nCπ* EH\'>µ^äV\Zë`Œ}iÜRj*(Â0‚Ÿ¶“fäv&·ö(¢ÅQL4¥î¥)ÍƒS(§4À)9Í¬›∞ÔY˘•\rP‚ôjm\ZloÔTOt«ΩRﬁiRPCsdœ1=ÍŸ§Õ%ZFmÜh¢ädÖQLY¢íîWÇ}¥QE”M8”\r!åjaßµFhî\n(∆<SÖ4SÖJi-\0∆\Zaßöa¶âchP*â*E®≈J)1èÍhßR\0¢ñäBê“”{SÜíñíê!¢ä\nBR\ZZ)Jp¶”Ö\0H)i¢ùA i\r-!†cM7Ω)¶öá\np¶¥ÒHcÖÅA†\ZJS÷íÄOZe=iàíù⁄ò*A@Ö¢êSÖ\nZJZ\0(¢ä@ñíñÅâHii¶ê!\r0”œJå–1¶òiÕL4CIAÎER%Ö-Uô±h§•†AKIﬁîu¶!@•§Íb”M8”M\0%8u¶“äCD´S!®¶SHeÑ52öÆ¶¶ê5S˚S\Zòà^†j∞ı]Íë,Ö™ÈRµD’¨LdA%TóΩZz´/C[D…î.;÷d≠ÉZW=\rdŒy5¥Qîô47F6Î]õ¨ò»˘´åi6ötwláÉJtîÖ\Zñ=OÒ&–>zﬁáƒ√oﬂØÉVt«ÕW”^p>ÒÆIaüCNx≥◊ßÒ0⁄~zÁı/nSá˝kÄì]r>Ò¨ÎçUﬂ?5¬æ†ÍEzÆ≤dœÕ\\•›…ëè4…Æô…Ê™3d◊u:J&©pcìL¢ä›Ö-%-\0QE\0QJ)\0QE))i(\0ß,Ñ)^‘ )à\\ı°X´dRS’2rN(ˆ*√pÎÈH0›˙R˘ôEèj‡Ù‰‘lw(N‹pN}È¥Ùâû@É\0ì‘û*x“,Ïv‰≤åìÙ†\n≈H4°	 UËÌ–£ s¥tÊã,ŒÛJv¨iï\\u=Ö+Öä^^\'•GV$,~SåûH	î¿JU#°¸È0E9\0ﬁ7éÙ\0ªÙ¶ûqN`»QèZ\06è»»¶Æ7ÙÔRÀ3Là…(ªWÿTT\08ÈEç√vqûqRL\"3∏Éwïüó\\{–x≈ß“íÅÇ„<‘ë©bp3éO∞®Èÿe»ÈÎ@âdWΩ@$µ$†≥ OA⁄ò•∑á?6ÎÕ]p%∑íweª ©¨X§`‚ÎL?t\nÓ˝(Œ#Êòú∂)ÃòPs◊µFáÊ•-ì@i\r.sE E)§¶ ¢äJ\0Z(¢ÅQ@«\nPqM•§4…B*U∏#ΩVÕ§‚RëoÌMÎLi…ÔUÛFir°Û1Ï‰”	§¢™ƒ∂QE1Q@Q@Çä(†aEPEP!\r¶íÄ\n(¢Ä\n(¢Ä\n(¢ÅÖQä\0(•¢ÄäZ((¢ä\0(¢ä\0Z(¢ÅiA§¢ê«Ô4o4 (∞Ó;q4ô§†—`\n(¢òÇä(†íñä%båP;-P ¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(QE\0QE\0Q“ñäQE\0%Q@Çä(†ä(†ä(†ñä)(¢ä\0(¢ä\0(¢ä\0J(ÔE1Q@Q@≤)‘—NØ˙ ¢ä(\r1©Êòi\0∆®ÕH’¶1¥¢íîP1¬û)Çû(¬É“ä\ri¶úi¶©ƒ¢íñô#≈H*1R\nLäu4S©ZCEÑ”Ji)åCIJi((¢äE!(¢ä¢íîR‚ú:SE8P ¶ö}0–M4”ç6Çê\nx¶\nx†–h¢êÜ\Zißöa†bäz‘bû¥¿êTÇ£Ò“ÇG\n}4Rä-ä \n(4PKI⁄äC\nCKM4FÈQö{S\r‘√N4√LÔEU\"¥fä*à\nZ(\0w•¢äd±¬ñíñÅiÜûz”\r0“äm(§4Jµ*‘+R≠&Q:‘ j∫‘ ióµ4“ÉHiàÖ≈@ıa˙UwHñWzÖ˙TœPΩjåd@˝Í§Ω\rZ~ıVZ⁄&,œ∏Ëk&„Ωk\\t5ìqﬁ∑ÅîÃ˘5lT“ı™Ì[#/òE/ú}j*L”∞ÆLf>¥√!4Ã“Qa\\Ri(¢òÇä(†ñä(QE(§ÅE(“íÅäËWËzS(4P •D.NNM%(b\0ûiÖƒ§•?J(zx\'“ò\r8>E\09]·mÀÄzr)—∆®s∑=È±∞a∏zUíË¨%‹ZL‰—ià£4˚Â…¿¨.-@yúÉ∆j#rF6Ä£©#©¸iÆCBdf9\'\0\n\0’¥∑ªΩâ„ÅüºÄΩfHQ\'i‰ì‘”≠ò∏e$à¿˘»<”neÜY»è âxEŒxı4≠®,÷g \n^ˆW\nÑ„\0Uk®£éUé3í˚é¥ƒπÚëU@ ísﬁ£.“};”∞\rïH9aÇi#;>b2=(ñWë≤Á&öô=¯¶\"BÂJ∑=8§ñS+3ëÀút®œùåØJ\0e%=FOBqM4\0ÉØ4„ÄNﬁù≥B&ˆ∆@Ôö1ûù((«‚?Ü•(‚$êÆ=ÈâPñ\0rOARÀéFL‰Ø˚‘±D–´\\±h˘}…™‰íwu-…†	T[wñ¡±VíêÏz’V^©˜≠dî.ã(í<ªêQœjLçÑ°s˜G|TnN–øç_igbÿ`Cü0©%æµûﬂxÊö9•c∏Ó\0• ÎNU„4ƒ6ñÇ1IHh\r6ùM=iÉ\nN‘w¢ÅEPE¢Ä\n(¢Ä\n(¢ÅÖQ@Q@Q@\'zZ(\0¢ä(QE(¢ä\0(¢ê– ¢ä(\0¢ä(\0¢óµ%\0¥QAAEPEPEP ¢ä((•§†¢ä(QE(¢ä\0)i)hQEÄJ)M%1Q@Q@Q@Q@Q@Q@Q@Çä(†ä(†aEPKE(¢ä@QE\0î¥PQEƒ¥\n)(¢ä\0(¢äQE\0QE\0QEΩw¢òÇîRR–EP3÷:ö)’‡üBQE ”\r<”\r’S⁄òiåi•á≠¿}8S<R·A†Ph¶öi∆òzU\"Xî¢íñ®ë‚§©K‚ñêRäCä)h¶ê““PM%)§†aIKIHaIGj(SÖ4SÖ )√•0SË\ZißSM\04”OZq¶ö·Lß\nH:R”AßR¶ôN4√@N x†(ß-0S≈2I(¶äp§!h¢óΩ0\nJS÷íê\0¢ÅE “\ZSM=(“iÜúiÜÇÜöaß\Za¶Ä)i)j—õ\n®»ä(†•§•–Ö•†R–!Üöi∆òiÄRäm(†hïjQQ-H*J%SR©®©T“ph4–i‘…#nï^Nïe™ªé*ë,™ı’á™ÔZƒ∆DU$´OUd≠¢b \rd‹w≠kéıïqﬁ∑âååŸz’v´ı™Õﬁ∂Fa§•4ïDÖQ@Q@Çä(†b““R“()h&ùÄ9ÎÈ@\n[h¿®…©é≈OÔ9¸ÖC@	@ QRC˘ëI∆‚\0†CJ‡‚ÖÈZó∫{ZC!;~V⁄{’	·h÷<ëúzPù¿Äúö(†SË„i	3ÅìÙ§‚J\r†„#úR)€@	ﬁû£wzΩw>î⁄=ú6ñì%˙íngyrØËˆ™*|∂åØqÎHïî»v˝ﬁ‘‹y¸)âQÅÿP4¿êæ»¬	ÎÔLPIÈM\'4Âbº˜†	§ál+\"Ééú˜4\"9çá@9>ır÷Q¶œ=”πëGÓP3Íj].ﬂÌp»å»§åÔ~¬¶„2Ÿ0Ä˜4ŒqäµpõWz{”Æ-¸®ïÄ„•;Öä™3úúS∆Á€\ZåˆÙÖùAy<∂8≠oÏÒm\Z2®rq\'åg°46	nQlW…ÖâêÆ%a”Ë+>µ.MÂZ@£9˘ùøàüÈU. Ú&xú¶T„+“ÑÜ5ﬁ¡{V‡≥YÑÓ~ÏC∑≠1™ù´◊°=@´±1»∞ê®†3Í∆Ü¡Ñ}Kp\\TÂIùúEå≤ØP)ã 2nôÔQ‹L≤\"Öı˜†;	$}ôO\0˙v≠(m¡∞ÀdF›7ıî:’∆Ω∏íﬁfraã;W∞Õ\r&ìaµ∑ÖÂùè|ö–ûòm‡Wë3‘˜®\Z⁄&µµ)ì„\"å‡ˆ=òñMFﬁÕ%X∂≥±≈M D\ZÖå¢Ò·8F@7g¢˚VC∆vO”ﬁµ5…ZY”y >Fr}sﬁ≤˛˘À∂=È¢Xê¶˜«zô·d éiÄà_˜o∏ë◊aÉH≥ÂòÙÙ¶‰!éVg⁄ Q˝Í´VÆóh_aè≠U« öiÙ”LBQE\0QE\0QE\0¥QE\n(¢ÇÇä(†ä(†ä(†ä(†ä(†ä(†ä(†ê““\ZQE\0QE\0-Q@¬ä(†aEPE¥\0QEÄä(†íñä¿“R“P!h¢ä\0(R–0¢ä)(¢ä\0(¢ä\0J(¢ò-%-\0Üñê–EP ¢ä(\0¢ä(\0¢ä(QE(¢äQE\0-\n(\0¢ä)\0QE(¢äb–(¢ÅERQE(¢ä\0(¢ä\0(¢ä\0(¢ä\'z(¢òÇñíä\0Z)3E=dS©¢ù^	ÙEP1¶öi∆òi\rjaßµ0”√÷ñä)Ä·N—NÑ:ÉEò\r4”N4⁄hÜ%(§•Dè ®÷§#)¬ö)E EP1))i¶Ä”i∆öh\0†—A†§%QH`)E%(§≈:ö)‘ƒ-4”©\rC\r4”ç4“))¬õJ( ßSE:ê4√R\Za†”≈2û¥¡í\nx¶-<PHÒN—Nu(¶“ä\0SIKE äZJ@!¶îÛLj\nC\r0”ÕFh”Mß\ZmRKH)jëõEµDÖQR1iE%(™·Ji(†ëÜòiÊòiàL”Ö2ú()≠H*5©K(x©‘\"û\r \'SRf°SRL@j;‘∆°í© íUw´2Ug≠be\"ª’Y*”’Y;÷—1eéıïqﬁµgËk*„Ωm≤éjªw´2ı™Õ[£ùëöJSITHQE\0QE)i)h¥P(§P´÷ú±¿¶®ÀÎS1¿*üO©†ÿmi¨1äù·⁄·Q√\ZKÇ…œAÄ1@«QVÚ#ö9ëOÓÿüZ´åW_-	#éhøm=Ω˝¥–2°3L]•?√\\’‘≠$ßp‰æµ,WM‡7ﬁ≈VoæOZIXm‹éîô§=sEQ NZé¥∏„4Ìå™0‡–^jEÀ©Aı*y™« 2éû¥œªÇ4,VìOíDõñ1ó«aPU∆∫Ú¶I≠¬vÄÀúÇ{’V}ÏÃ@úÒ@\r¢äQ÷Ä$R“a3∆sWíC¢#w@*ºÚC∏,)¥*ÅúÚN9?ù$nK\nLfı•ùíîπ’n≥åïA»ˆùp∞§˘íB–ì∏D v’kãí≈TÚåf´vCù§„4íe˘u(éx¸∏–ÂT‰’ìq€±∫yeºf«ñ\nÕÇ0øºg)Å¡jXbVÜI¸¿¨Ωı4ôô;*˜«ZÆ@8˘≤}È≠!9Êößìöv$û&eç»?x„ÎR&◊ÖÄ‡˜®dÌ-ÄiÍƒB@¿¿ÁﬁÅêë«ALßBëÎH\0Ò÷òÑÕJéBï˘∏5j)à–∞∏Ki√ïá\0˙\ZC9kâé\\∂I™Y¿„≠HÆ°ªæï6*‰˜»¸ªz*¶p‹‘ÕÅnΩ™æi°«9©íBæı\0\'≠=_√ªPé˘!sï≈FF3H\r<èó4¶öwZ1H´\r§ß‚ì\n√qE;ò†,%¥SQE0\n(ÌE\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\nCKHhQE\0QE\0¥QE\n(¢ÅÖQ@E%ÄZ)(†§£4SQE\0QE(¢ä\0(ÕP1h¢äQE \n(¢Ä\nJ3E0\n(¢Äê—E\0QE\n(¢Ä\n(¢ÅQö\0(¢ä\0(¢ä\n\n(¢Ä\n\\“Q@÷äJZ\0(¢ä@ô•4î¿(¢ä(¢íñê¬ä(¶0¢ä)(§Õ†¢íä\03ESQE\0QE\0QEÎ#≠:ö)k¡>ÑZ(¢Åç4√O4√HhcTmOja¶Ämä0)‚ò)¬ê§4Piâç4”N4⁄¢RäJQLC≈H*1R\nëé•ÇîR‘RR–1))M%\04“RöJ\0J\rùË\Z\n(§5%@§• ßv¶\nx†B”ii\r\Zi¶úi¶Çêî¢íîP1‚ù⁄ö)‘Äi¶\Zy¶ö`%(¶”Ö\0H¥ÒQ≠H($xß\nhß\n8QE\0¥¥î¥Ä))i¶Åàiç÷ûj3HcZò‘„Lj4“Pi*ë,Z(¢≠±h§¢õÍ)-H≈•§•™·A†Ph$cTd”⁄£&ò	ûiÎQ”÷Å¢e©FΩ*ARP¥†”M\0– j@j5(4	íf¢~Ù¸”\Z© “w™œVû´8≠be\"≥’Y{’∑j¨µ¥LYüq–÷U«z÷∏Ëk*‡u≠¢c32^µY™ÃΩj≥VËÁdfíî“UQE\0QE\0¥î·@äR0ph»´\n±=ºÃŸ2\06è∆ëB|´q&Aﬂ”÷ãc≤x‹®`pzVŒ∆áÀÿä6å÷†∂nó{aüØµ dI	Ô…\"†QÁJF:é*Õ◊ñ“3™ï$‰¿UxÀõ#ËI°	çXÃÆë°ÿÌ‡T¨L8ëÉÌNΩ¥kfSù€πt•h‚m=é÷3Ü…9Ë)ÄÀxcî≤ó*ÃßgO•WLy™ÓÁ•µúA<2‹√Í3EŸWπñDUÿêæÇÅ û\\Õ`{S1Œ)Ú´\rôø:@	\\ÄIö`[∞é..3ÂìÛmÎä∑uúi∂›¶ÛèÀ «Æj≠ºmø(†Ó^>µsRï\'∑éH€∂EK‹•±V€c»–Ã∆Ré0{\Zœe*≈OZV ‡ÇpzPd,€èﬁı¶â\rŸMßµ!«j‰Áô¶RÆI†å\Z(\0©À¨pÑSπõí}=™Ω\0µe\'l#b\\) °Ë©™¥¥!vïπ4Á$3∑•FäNHÌJXò∆I†æÚM!‡‚ùêdëÓ)gMí:z˙–ˇ\0&¿iPÕƒ≠z‰âb*†œ=Ú*§$rØÿc÷°BTCKm9ÔJ¿6N\0böì¿ÕI œÕÎNÊÿ»≠ úLà‡Sis∆)\0(•Ö∆·ûîØç«;Pñ!@Ìú‘cìJrE\'J\0q∆:˜§ÎIGJ`=N…=™≈ÃrE±d]≠∑80Í;“ºå‰ñ$üSIçç›i˚i™8‘£•CfëC6”J‘Ω©¶ï ±)1RRN‚hèîÚ)¶ù»hJLS±ILõ%ä`QE\0fíä\0Z)(†¢íä\0Z))h\0¢ä(\0¢ä(\0§4¥î(¢ä\0(¢ä\0;““Q@–¥QE\0QE\0QE\n(¢Ä\n(¢ÅQ@Q@Çä(†aEP0•§¢êE%\0¥îQLä(†ä(†ä(†AEPEP §¢ä\0(¢ä\0)i(†¢ä(QE\0QE\0R“Q@≈¢íä\0(¢äQE\0¥î¥ÜQE\0%QLAEPE¢ÅRP“QE\0QE\0¢ä(÷Ö-4\Z\\◊Ç}π¢äCH\0”\r8”\rC\ZòiÌL4∆6ÅEòá\np¶äQ@¢äC@òÜõJi\rQ)¬õNiàxßä`ßäLcÖ(§• --%\0\ZJ\r%“v•4ÜÄõN¶–Ríä*F¢õJ)Å ßäåS≈íùM4Äi¶\Zq¶öÑß\nm(§Q •¶éîÍòiÊòiÄ⁄QHiE\0Hµ ®ñ•8S≈1i‚ÅJ):Ä\n(¢ê!•4ÜÅç5ßµ0–1ÜòM8”\r\0%îµHñw¢ä¥C\nZ)(bB““\nZëãN§•BM4Íi†í6®ò‘çQ\Z†\nëj!R• DÀR\nç*ARÀIJi¥\0j@ji‡–¿”M 4TàdOU‹Uá®Vë1ëU≈UóΩ\\qU%khò»œ∏Ëk*„Ωk\\+&„Ωo	íı™≠V•Íj´VË¡å4⁄q¶’QE\0QE\0‡)¥·÷Ä∑9©≠c¸‰˛5	9*Õ†	ô\0„ÜM\"Ê<|†°«÷í+pÕÇ√‘ëUŸôwÁ£µj’JÃàFwéô≈.ÉD{∑MÅ˜WÆ{äâSÕ/é	4çπ‘újcäBπÍ0qLFÖ¨ümí⁄…ŸUå±ÌVo-‚¥∏πçöé•Ω˝k-’bëBæG\\é’igÕõ£åÜ9\rËiXiôG≠8æÂ¡§qÜ<ÊõTI<ƒÅ\Z9…UÌRÄbÑ\\FGUsÕO\rœïm4;AÛ1…ÌH˙,s›ﬁ≠î*\ZYsÂd„Ê™íKÛ6rF^ú‘vóíŸ^¡uñ§v Êõq+Os$œ˜§b«¶ãj;Ñ∏(\nÙÓ*\ZRIîƒ-%Pı‰—IKé3@	KEì@HY„y\0˘SØ4–7t•9ŸÌB‰t‚Ä&áf«RÛ˜qﬁ£ÿ∏<0ÌH=E,åÁπÎ@—≤Ö „p»˙R,0y4¨Èªw›ÏiõxÕ!ÿWÂ#†u£˝h«<”∏X±µJê§g®&†/«>Ù£wN‘÷<R\r≈©32A$vÌBF\\c\\vy£d”ôJÒä@	¿¡«µá…ÿ¬ÙÃO≠8™ÁÇqC—Ù≈aîÂ«S◊ﬁêPM\08úui;”»ﬁ@ŒieÅ‡}Æ0qû9†Nµ.ÏäÆ3û)Írz‘¥hò˝‘Ñ“\ZL“±Wö3MÕ-p§4¥ô¶!∏¢ñäa)¥˙m2l%QLBQE(¢ä\0(¢ä¥î¥\0QE\0QE\0R\ZZC@Çä(†ä(†ä(†ä(†ñíä\0ZJ(†ä(†ä(†¢íä\0Z(¢ÄñíñÄ\n(¢ÅÖQ@¬ä(†ä(†AEPEP0¢ä(\0¢ä(RQE\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\nZJZÇä(†aEPEPEP ¢ä(Eî¥ÜQA†¢éÙS(¢ä	\n(¢Ä\n(¢Ä\n(¢Ä\n(¢ÅQ@¨≠OÕWV©ÅØ\n«—è¢ê\Z)CM4„L4\r4√O4√@\r•P)Ä·N—N\0ÍCKHhBc\r\ZCTCSÖ0S≈1ÒLÒIåu(§¢§RQE\0!§•§†b\ZNÙ¶íÄ”iM% §•4îÜ%(¢Å@\nx®≈H(ÍCKHh3M4„M4ÜÑ•⁄Q@«äx®≈<R\04”N4”@\r4¢ê“ä`=jAQäêPHÒN¡Ou(¶”Ö\0-QH\0“\ZZC@∆5FzTçQµ‘√÷û‘√@\r•¢ä¥Cä(™DQC\ZKIKH\np¶äp†B”M:ò‘…#nïTèQ\Z°HïJî1¢tÈRäç*QPXÜôO4√@	OSQ”Å†	A•Õ0\Z\\’\"X◊®ö§cQµi§™≤˜´oU%Ô[D¬F}«CY=Î^~Ü≤n{÷Ò1ëó/z™›Í‘›Í´÷Ë¡å¶öu4’QE\0QE\0Â¶“ä\0{πÕM¸æY\'i<‚°∆G“§Öà`≠\"áH¿=®,KØSé:—0c9\0[ßˇ\0-ëd HúÄGZ2„vÂR£–“\\gR†é›ÈZC(%∫‘ë¡Í(\0lÇ	©R|[¥[G\'9¶ú<|å∆°ÈLCâ„•6ä(sFi(Ô@⁄ä3F	¶QKE ñÉÇxQ@3K⁄ú«\"ü‰úgµ+ç\"Ù∏8ÕK‰9]¡NﬂZñ(RA¥ÁpÙ•ÃäQdr1H2è»ÈV“Ÿñmçëûô5Õ©∑RíD|ﬁπÏE.u{Ï›ÆSdÛ	p@ÔäcFG„V!∂2°#¶yˆ´—È.–y… eqœ÷•Õ-«\ZNFF\n¶ú“p8>µ°uÔ#èa.•H˙|í¬^B±)EË~…Ù3?ﬁÅúf¨œbV(¡8®÷2á,	’m.U¢4M¥˙Q&˙1]JinyÕ6{vç ∞‰Vıú∆Œ4Ò$}w≥Ù´Q[ZÍ3»Èä1¥ˆ¨›[3UAIyú‘Eô<•@rrxÊÆ¢∑r®ƒ≥ #=èz‘¥“ï≠åëø$êH‰äÕ∏ÖÌdëK´sÄÿÊéu\'d…≈jR|r∏…ı©\rú¢4!H\r‹öπn±çdáÊN~ıo√km\"ßò§qS:‹•√œ©»…d—gûEWhqû˝´ÆªÄy©≤”tk¸^µósi+3ºh6ünî·Z˚ì<=∂0åxÍhe\nqú÷Ññ,©ñ9b3≈U‘Ô[©¶sJõD Å»î ÃªI\'“ûUò6ÖÜjH<¶GL±ê8 g?çUÃÏ@§∆Ÿ«ZvTåc÷â1üï∑ÂMOº22(NGRbûX˝ﬁ√•4é(∆QìKäJ\n—E&hisM•§“\Z(†§•§¶KäZJb\n(¢ÅR–1)h¢Ä\n(¢Ä\n(¢Ä\nCKI@Çä(†ä(†ä(†ä(†ä(†ä(†ä)(h¢ä\0(¢ä\0(¢ä\0(¢ä\0Z)(†¢íä\0\\—IE∏¥QE\0QE\0QE\n)i(\0¢ä(RR“P ¢ä(\0¢ä(QE(¢ä\0)i(†hZ(¢ÅÖQ@Q@Q@Çä(†ñíñÄ\nJZ\rê““P ¢ä(QE\0QE\0QE\0QE-\0%¥P=)¨+V|rU§zÒ\Z>Ö2–4ÍâZüöíÄ”M)4“ii¶\Zq54¿Z74†–≈8Sßä@:ê—Hjë,i§•4ïD∞ÒLÒ@áäx¶\nx§∆8RäAJ*@Z(ÕJCJi\r\0%!•§†cM\Z(\Z”ih§0†RS®·O©±‚öiE!†\Zaßµ0–1(î¢ê«äx¶\np†\Zaß\ZCH\ZÅLäëzTbû¥	í\nx®≈<PH·J:“Ré¥wz))i)¶î“\Z1©çNji†dmMß54”%Q⁄©≈¢éÙU\"ä)(\ZRäJQH\np¶äp†ñ-1©∆ò‘–àö¢=jV®èZ§ *T\"¶J—a:T¢¢JîT!®ÕH’†Õ\0”M° 4Ï‘@“Ê©«L&ÇiÑ÷à∆C™KVû™À[D∆F}«CY=Îb„°¨ãûıºL$eÕ‘’V´Su5U´t`»È¥„M™ (¢ñÄñä(\03Õ-%ÜL∏(≠éAÊ•±∆@ı®Ó‡‘ë∫Çx<g“Ä	€i9 ÒH”K,Äπ‹›…ßE8âÇHª„ŒN88§õ ‹Õ‡ßÓÉ‘P!ÿr9÷NsœΩ‰6C÷ê‡Ø\"òÉ9O¶2ê=È‰ÉÕh`,ΩÒ@QR:∆»O^¶ìö\0J(•†•ö]§\0H†•ö)Í£4ÆRCp\n~Ã6qê*¬UHc∏û‘‰!YN“…üõ∂EKëj#@H©ïP˜©cS/8¿œA[«d≈ö#q˘ca”Ò¶…ß‹ôòÖD^ÿ5ã®t*:¬‰«ëå«ª=)±0äÂ•åô£g£Ày.˘+ŸàŒÍï¥∆±.œ*2Á≈\'8≠\nT§ıcûÊ-@G≤GE√sZëiÒﬁ⁄â(2ı¸j∂ôyß\"˛˙ﬁA ÍTu≠kk8ÓK\\ôÖØt8˜ÆY…¶uB	´≥ÎEπ≥u∏é\"àG>Ü≠Ÿ^My\n§vc\n∏-–qS\\kêCõ}Eùƒ$ÏX˘Y*\rAÂÑôƒì1⁄vÙ€ìç‰ÑîT≠Ωª%Õ”â∏	¸ArMOt÷í§K0uÑ∂<›º”í,›F Ì≥˚ª@-[ÈÒ∫ÌiÉ&0™Î–‘ i4_#h√åiêômÌúKﬁi`˝*I†µ6®m‚YŸ˘c`ı™wûª]H√Ln2H5Øm£œúê¬ªf˚¨wdÍj§‚íië…Ë—ä5ëB¢S µZ:uÄ∏äIeå	$Ë\0¿Æ⁄¯Um§m†Jƒ|≈Ü0}´]`h’cQÜN¬¢uc¥M)”ó⁄9ËÙ©mÿ5±mßÜJé]ebd_sıÆ®Eï;è=x®Z$Î\"Ω«≠eÌY∫§å7—DëE±Bq÷ô%åääÖ ∂p8ÆíAÚ‡ØNj®Å¶ïYŒ’t\ZJ´Í_≥Fd∂é±m„Ô\Z∆ûŒÒ‰íWr®=;◊b`NNsQKb6»»n)¬´D íí8Cj¯⁄Ôå˜ı•∑ÄƒZﬁhÉ£ÜEu-då†ÏŒ9‡TOfÄ‰ºw≠’{úÔq◊6@JÍ\0Èö•çáîŒ=kØñŒ\0Yúr‹\Z•u§©8çáóåÁ◊D+Æß%\\+›√)\'!H•*Wı•uf–˙Ì˙U)!1Ö<í{WLfô«*n/Qå\0\rúéx§ç¥´ú‰é;äsaÚÁä£2&R)1Vàfådp;‚†aœJDh•<i(QE%4RR–0§•¢Å	E¢òÇä(†ä(†ä(†ä(†ä(†ê““\ZQE\0QE\0QE\0QE\0QE\0Ë£Ω\0QE\0QE\0QE(¢äQE\0QE\0QE\0QE\0¥îP—IK@QABäCJ(4\0îQE\nJZJQE\0QE\0QE\n(¢ÅÖQ@E%-\0QE\n(¢Ä\n)(†¢ä(\0•§¢êIE))i)à(¢äQE\0QE\0R—@¥R) ¢óP;¬=YéJ†*TzÚZ=¥Õ4|‘°™Ñr‘‚_zÕ¢”,ñ¶®L£÷¢iÖ£π;=F_ﬁ´¥˛ıüﬁöàs˜˚”É˚’?ﬁú≥˚”Â24™@’Ef©÷JN#πg4Qßn©∞Ö§£4U(ß\nhß\n\0xßä`ßäñ1¬ùMÍ@-îP\0i\r-!†bîî¥ÜÄ“Röm §¢éÙä\nQIJ(¬û)Çû(%é§4Ph√L5!®Õ!¥¢íîR·O)Çú(›©JZCHöAJi;”¬§ZåS÷Å\nx¶\nr–HÍQIJ(¬ä(Ü”N¶ö\0a¶\Zq¶\Z4”\r8”M4&QEZ!ãE%-2Bíñíê≈ÔKIJ(‘·M•¶K”\r<Ù¶\ZD’ÎRµDz’LïÎS%h∞ï\'jç*ZÇÜ7Jâ™V®ZÄ\Zi3A¢ò≈Õ¶“fö%äM74MÕi)∆´…S1®$Ô[D¬E˙\Z…πÔZ”Ù5ìsﬁ∑âÑå©∫ö™’jn¶™µnévDi)OZJ¢Bä(†ñêR–J)Pd—¥“≠7<—IL„ ‘·J®‹„5[8ßÜ\'†BíAŒ†9;∞})0G&ÄWw#4\0ò√a≤(«ävÚ«ìÙ¶¥˚–`˙QN`Èåû£µ3Ω\0¥ûî˝ÄÜ…Ô@–¡O⁄qêxß$[óvqVm≠VlÂˆcπ-§TbŸU#,j‹v–‡˘ì¿È∂§[}§Ñ˝ÍÂ≠Ω´7·¿˘T.A˙÷rôº)˜mß√0´¢„é˘5n]*‚;uí‡§q∏üƒ‘»Ó¢Yÿ•q≥ÓÔ\\ñ¸™˝àª7ku~‡∆NH9¸c9Ks¢èDW∑µkXìpÓ†3\ZΩmK¥äÛJ›\0ËïmÏåó§G3»ÿè\nµ∑i£C\nà§l»y&πgTÎÖ;ùê	eâL0Æ:„4Àx⁄‰´ÕnFHdWÈä“æ∂Ûo≠Ï°àyy‹Á‘\n∫ñﬂ# ÓÌë¿õ®í5T W6ëG7û€à»\n∏±fñmjı≠-™åˆ‚ªKm=Z-ÓVLåÅÎPÕ§)ñ3\"0ISÉQ\n™;ï*|⁄#õ≤ºèdühPÀìÛ¶µ‡–aKTÑ£†‰Å[HòåGç°}jx∆ﬂª◊÷¶u‰«\ZQé»ÕM&Ÿ\'R7e\0ä∫ˆ0 ÍÏªÇzT˘¡;àœ≠àR`\Z…Õ≤πHåÆÔ%>b∏ÀT)«å`c≠§å›©\nì»£ò9HïFNN*@$f«Zò©#ìÇ;’gy‰Ìÿ—qÿ!e##˚ƒ“∞RrΩ\'ñ@V-∏ûﬁîøpt˚‘  °‰’b\0Ê≠Hp√¡ÔQª<qN„±1√1Jr‡˛5!P1¥Ry`∏,\'–—p#héﬁò„VX∑Éºåï|°‰É˘’v\\Éöiâ£)≠Alp ﬁΩ™aÿH∆+P∆É”“¢í  }kE2i\"W»t»«z°s¶¨úÅé8≠ÁàÖ‰dUSŒTÂkxTkcûtì‹ÂÆ4ÈP^}@™&6åÚ85ÿ:(‹†Ù™wZdnôÜ∫°_π√S÷\'>óO/\0 «!Ç?ïG,{vù¿Ó©ÆÏû∆“G≠Va¥G≠t≈ß™8•f0ÊôR1»\0ˆ¶\Z¢F—KI@QLb—EÄ(4PzP!(¢äb\n(¢ÅQ@Q@¬ä(†ê““P ¢ä(\0¢äZ\0J(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢ÅQ@Q@¬ä(Ì@Q@Q@Q@Q@EP0¢ä(\0¢äJ\0ZJ(†AEPEP §•¢ÅÖQ@	KE\0R“R–EPIKI@Q@Q@ERQE¿J(¢ÅQ@R–R—E\nZ)i¡EPPQEŸ\ZnÏ\ZëÖB‹Wñ{À&*A6;’2ÿ¶ô)Úá1qß˜®„ﬁ™ºæıYÊ˜´åïKÁﬁ¢75A¶˜®åﬁı™¶bÍö_h˜ß≠«Ωd˘«÷û≥{—Ïƒ´q‹{’òÁ¨üﬁ≠GqÔY ô¨jõ©6{‘À&k9˝Í‹sV. w4S¡™©&je5\rrQO¡OÄxßä`ßäñ1¬ùMßR\0¢ä)ÄR\Z(§1)ZZC@i¶úi¥Çíä)¥î¢êÒLÍ	cÈ\rÜÅiÜûiÜÇê Å@«\nx¶\nx†RP)i\0√Iﬁî“S¬û¥¡Oxßé¥¡N}- •†BäZAJ)\0\Zaß\ZiÈ@∆\ZaÈO5P1¶öiM!™BaEË™FlZJZJb\n(¢ê≈•⁄p†w•§ÍbözS©¶Ñ&D’©Z£5Dà*d®ÖLîò—:Tù©âRv©(ç™©⁄°j\0å“RöJc\niß“@”M<äi§LdÜ\ZÜNï9®$≠‚s»•?CY=Î^~Ü≤n{÷Ò0ëï7SU\Z≠Õﬁ™5nå$Dz“RöJ¢ä)h)@Õ£4p@$Û⁄Çr;“\0z–rii£ßzP§úbÜRß≠1	û)A4îö9∏ÔLß‹p)1Œ	≈\0\nH9\Z9\'öëaæbHß†Ï¬Á†¢„DX«SR¢)Sí?≠:@éÃT})Ñ®<d`R∏Xpçeå°}ö|9oïÔpF(à≈åæIÄ;’∏ÿMâ§HQ!¿9\'“•≥H†WTJ#îË1M/4†°#Ä£≠2s, ™˝OÁ]¥H·!§àl\\Ì\'$˛Uå‰¢tSÉëüÊ«ßFÇB\ZF‰∆qÔö‘”mÂø¥úGn∞§«iöN†{\n~õß‡˝°Ì≈Õ√úç¸*˛–õy„∂ÿÅ3‹˙}r‘¨ñãs≤ïı{∂V0ÿ/ìlÜi;ù∏Ò´ó¨Ó≤2Ôt·@WÏ≠;éÏ˜≈jE#í+íU]ÓvFöJ≈]>€ÏÒp“0À±ÎA)cÎODD≈F…Ê|£Â ı¨\\ÆZBuYûMÉ,xˆßyj\"ÿ‘ÅJ‰„?çì‹ÛJ„∞BÇ›Å¿¶»Ô˜TåSú3π+∆sé¥ÁÜ5é=éZNØëÅ¯RÑMúsÇM!\r€äíDb»#⁄òπzbÅçE$é})ÂF0F3≈\"68cÛf¶\n_ÔQp 1l·H≈<“ÇáëëMX¯ ∑¬ÄÖ Ü`>µãÛ+⁄¨¨9…Í;S,é‚ãÅYA\0øJ6ˇ\06F)ÂvµB€ï≤[Â&ò…6¢‰1\'=3Q√ëç¥˝Ã„∑Ω Q˜Ûœ˜i‹D*ƒ Ÿ‰qO.…Œ8ÈM†Ü©å\0 ˝}j6@3Ói·•Èååw¶ñGål…o‚w¶\"UeÎí*2Ñ® ~4ˆdl.÷SﬁöK>_?Zh œOlU	#!∞G†˚]r«ké’â¡ÀÙ≠\"Ã‰ÆfòÀ˙TeF9É–’‚vú™Ûû*§$åÔ[&b‚Söôq¥{VU∆íô…‡û„µlêGjlëÓZ“q1ù%-—«‹€$ „÷´ï´~ˆ–‰∫üCX≤!ê1Ï+∫ÊGôVó# ¡Ó(≈XêpG–‘dzä“Ê$Tï#€4√@Q@!•§†íñädâKIE\0-îPEP—IE\0QE\0QE\0¥îP—E¿1IKE\0%¥PQEÄ(¢ä\0(¢ä\0(¢ä\0(¢ä\0JZ(†ä(†ä(†ä(†ä(†ä(†ñíä\0ZJ(†ä(†ä)(h¢ä\0(¢ä\0(¢ä\0(¢ä\0(†Q@-%-\0QE\0î¥î\0QE\0QE\0¥RQ@Q@Q@Q@-PK@¢ëHZ)(†aFh¢Ä4RQ@À*ªä¥zT2\nÚëÌ2£‘,p*y5Ù≠Qõ sUdcV\\Uim	ïŸ™\"’#äÑ÷ËÂìq•QQö´r¬…ÔS§ÿ™!™E|T∏ñ¶jG?Ω]ÜjƒI1W\"óﬁ±îàT7bó•]ç≥X∞KZ0…\\≥â’\\—SR\nØTÍk&hJ)‚¢û\rK)\np®¡ßfê«“\Z@hÕ\nJZJ@⁄ZJ!§•4îÑ§¢äCîSiA†c≈8S<P&:íîR\Z4”\r<˜¶\ZÜ—E%)‚£i ¢ê\Z\r \Zi)M¿<SE8P\"AN¡NíîSA•œΩFi•©•®‰”	¶¶3—aè&£&ò“ZaíùÇ‰Ñ“T[Èw”Hñ…h¶•®Ü>ìΩ&ih\0¢ê—Hbäu4SÖ\0:ñêR”SM:öh%ëöaßµFjÑ(©í°2R\Z,\'Jí£^ï\'jíÜ5B’3T-@»ç%8“S\0£¢ä@0äi!ÑVë3ë\nØ%ZjØ ≠‚sH°0‡÷EÕlO–÷Eœzﬁ\'<å©ª’6´ìu5M´°Hà“Sç6®Ä•¢î\nÑ‡qEfê«céøÖ9c„,¡GÎIºv^iÉÊ>¥`à0À+Ù€“¢ec»Ztq˘≤\0\0\0u&§s\ZúFß#©Õ!∂cû‘ÄÛR…À˙\n7ìèò=©Äﬁ£é1IﬁÅ«Zzï¡˘iÄ†D#;ãoÏ\0‚ñ?ï◊ÎÕ!Oìé*H°,ã¥f•±•q“™Bãâ;Ú@˛jfc#∏˜4lÀÄ1û‰‘Î\0qÂ™1ojMÿµ≈Ç⁄9‹î›Ñ\\Áx˙U∏¥€âÀıÓsÄ+[M≥UóÀHôb‹÷≈ï∞Ω%Uö8A¿ÎÔ\\ï+€c∫é\Z˙≤æõ¶AgkΩ¢Û$Ü≈]¥“‚xpc√À>9>’Ø\rπUÚ…Gj∞\0CÖ…Æ÷mûÑ)$¥*€ÿ…PTˆ&≠ò2‡6	œ5)i`‡c4E>m€èΩ`€f…pcÆ\0Têß\0ñ=Ö(åcÔ\0iÍ©;ésÌSqè\\\0ƒ‰Ò«µóˇ\0JDô@}¿‰åT{◊jñü˚Ω≈ ,»çò∞\'≤ä®†ƒW\',›Ω)Î#o;sL|.{π˛#L,[ñ‚i\\)#ÓÖ˘G[ÒèZdn≠Ö‹3å‘‡®¡r>ÜêZ√ïdÆ‚0Àê4’èÿé3œ*ŒWXz‡tZyªE\\’úån=h∞Æ∆~GLûÇëƒqß˙›Õúm™_∂6{Æ⁄£ÜÒ¢\rÂ¨dø≤ÁÙX5#1∂I/«¶9ÅÑd≤∑$t≈Kè1â-íz‚ï\"]º/Ω!˙ïºÃ`ä|Ñ¿ÙhDÑ·Ü1Ì÷óÀ‹§`Å@\\Œë\\ë»§çΩ85u¢e¿\0Íi<í√∆;bòÓf2aœÀÅO\nc<TÌqt≈G\"0!TÄ\r0π	ÖLò{”å`Æ@ÈÃ\n∞‹H˜–¡†d=05åÉÖ`†ÛV∆pA∆*\'ãÊ¿aÇ)‹<†;ı…§ê.Óò=Ω\r/ÃK.q∑ı®‰.£-í=™Å¢6íN*º√<(˙\n∂\\ÿœ≠DJÜ$Ø8™LñäƒπèQäÑÜÁì⁄Æ˘yâ¡œJ¨√,{\Z÷,…¢ø\\pp(d› „+ e*QÏ Û´π\r2¨±⁄≤Ø-P ˘\0Á%áZ⁄nF´ºYBC◊ﬁ∂ß6ézî‘ëÕ…>BáA⁄£s	à(LH	,˘ÎÌä–ø≤T`Îê{‚≥›càÉíAÍQ]∞ï—ÊTÉã+8®ÕYê)é=WaÕhåÜQKI@QLBQJi(QE\0QE\0QE\0QE\0QE\0QE\0P(¢òEP ¢ä(\0¢ä(\0§•§†aER\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢íñÄ\n(¢Ä\n(¢Ä\n(¢ÄEPEPEPEPEPE%-\0QE\0QE\0QE\0QE\0¥îP—E\0RQE\0QE\0QE\0QE\0QE\0QE\0¥î¥\0QEZ))iÇä(†aF)@ß•p∞‹QNŸEœQQ∏ß)•a≈yG∞äRä¨‚ØHµQ«5§Xö+0®jÀäçÖke$Që*ª≠_t™“%o≥âPämJÀäåä’4%(4îî…%V≈YçÒT¡©Q™\Z.25`ì•jA\'J¡ÜJ—Ç\\bπÁ≤úÕÿ§‚¨+÷TSèZ∞≥èZÊq:TçÙ¢Jœ˚H}§zäûBπç!-(ñ≥>“=E8\\èZ9s\ZbJpzŒ[ÅÎR¨‚•ƒã€©sUV_zê>jZ)2jJhj\\“(\r4““\ZE	IA¢ê≈•⁄Z\0xßä`ßä«R\Z(†öaßöa†c)3Ji(‘‡iî†“ 4¥¿is@E&hÕ\0.i¬ôö3äbd†”Å®wQÊEâ\'›Az¨f≈D◊Ù˘DŸl…äcL*ã‹˚’w∫µjπö\r8ı®Z‡z÷kﬁZÆ˜ûıjõ!‘F´\\Za∏µé◊ûÙœµ˚’˚\"}™6≈¿ıß,˘ÔXÇÔﬁ•KØz=êΩ™6÷\\‘™ıëŒ{’òÁ˜©p)JÊêjp5Q%¶WÕCE&ME058\ZÜXÍQH)Ec©‘îΩ®î”N¶ûïD≤6¶\Z{S\r2E2T\"¶JE\"¬‘Ω™%©{R(ç™&©Z¢jC#4î„IH\0QKE4M!•4Ü¥âîà⁄´…ﬁ¨1™ÚVÒ9‰Qü°¨õûı≠?z…∫Ô[ƒ¬FT›MSzπ?STﬁ∑G<àç%-dÖR„µ\0\0få{”‘ê‹zc4|™y§v‡Û˙Rù´«≠K∑pi\0*\0‚†qÊÄ$.@ÏmÑ ƒ|‹ﬁôÂ≥.·˜∆M$á-œn8†òı©”Àhò·æQ∆}jª6P.–?≠L\0X¿\rû2hFTû‘™qì–\n9œZv2Ñ“\Zn8b8=*dBÓë®8$éı5∫©\n≤Çq»û°ç ˘jg•Cë¥`ÏL∂^Có`©ı‚¥tÀ2_Ã!ïÿ‰z«K3ç”ú†/ΩoÿŸ«\n\'»ß≥“∏j◊ËzT∞ˆ’ê[i≠\ZïÛ7o‰‰ÛZPŸ$X¡	ë»_JTP[$SÔ?6W&∏•&ŒÂâ-ÇÄ\nÉÉ”‘T≤\r©∏r›®çp°Ü)ÌÖ#˘÷mï`bVQºu\"ò$\0é:“ÛNJ‚úxg“Åÿ~ˇ\0óqˆD=A\'4¯î®‹‹åÒÔJÃ€àP\0§§∆ÀÄ	Ôöïî6Y Ç‹Ò⁄£ä4\r rΩ˚Sä‰ıÕ&ê†\0G“É‡ûwz‘™®ÿRqB±T,ü¬Ì¡†.G‰Beo/ /\\”„âe8\0w5nXw]+dLß*\r†üJdãÊ<•∂!\'>Zˆˆ§…R∏÷é8ò†!Ò¸C•@—êrjeE]Â±Å≈XÅbñ)ìã`…Ö‹Œ}=©§\rÿÆ±º¨x$tß,@7ñÊMK	_ùDä¨£$oßÆ’PIàÊãòb€lêÉÛ7˚=*@©\ZüÔ ”Êû‡ÌâaÚ∞ªﬁ°19å»fE√cYÕ>RyØ∏·π…Ó)£9…bKñ\rà„-ÌöE‹Ä°;Å˘äÅ”Ò•a‹ç‰ÖgL√t”â%ÑewÖh)d(æ•ÖE(⁄T\rÅêÀ⁄ÄEGDe⁄YêÁ∏®6\0‰éıqäíGﬁa€≠B…ª† ı°ä¬Yò^∏Õ$Éa%y=*eù‹är«øÄ7ºQqîdÎÌQ¥Éh%\r]{P[É¡‚£6≈N{Éöiïr¢rI„)Â˛ÌL–ï˘æË®ﬂì∏∑ *ÄÖ–$ßÂﬁ®KÅã!AÈZ•rπŒWñ0√íy”3À`Ç˘\rûÄTr0\'pö∞∫êI¸M\'ìèòc˝™”D¥@ë7TRÆ3¥sÎV$»8®Y∞0G5iê—U£˘≥‘T$ï‰Í*„.WçUx€q èŒ¥ã3í*À\nH¨≠”÷±ÔtÒ\"]‡≥∫;äË¿€êsQ< ù;\n⁄ùGsU§¶é?afÍ>ï)Ç0kCP¥ky7†˘IÏ*≤nrz6x≈w∆WWGï(∏ª2°§5+ådcv5Dç¢ä)à\r%)§†AEPEPEPEPEPEPEP!h§¢òEPEPIKI@¬ä(§EPEPEPEPEPEPEPEPEPEP0¢ñíÅQ@Q@Q@Q@Q@Q@Q@Q@E%\0QE\0QE\0w¢ä(\0¢ä(\0•¢ä\01F(¢Äñä(QE-!†¢åfûÇ¨4\nxJz¶jx·\'µCëqÉd+jUÑû’v+R{U∏Ïœ•e*â¢ŸïˆsÈEn}ã⁄äüjiÏ1∂jn¢©ƒımEr…≈åu™≤-^aö≠\"“ã)î\\TDUá\nŸ2‘%Z\"£e≠2înPu®jÙâUùkh»ÂúJƒRTå)ÜµF-)‡‚ôJ(b,£’∏Â≈g+b¶Y+7ö∆v5R|w©ÖœΩd	}ÈﬁwΩfÈö™¶°∫˜¶õØzÃ3{”|Ôz=ò{cWÌ^Ù·wÔX˛qß	ΩËˆbˆ∆⁄›˚’Ñ∫˜Æ}g˜©í„Í#H÷:8Ó}Í NzÁcπ˜´±\\˚÷2¶o\nó7RJî5e≈8=Í⁄Iö¡∆«BïÀy¢£V»ßf°ñÖ§§¢ëB”Ö2ú\r )‚ò)‚Å¢íä!¶58”\r!¶õJi¶Ä4π¶“fòfî5Gö3J¿K∫ìuG∫êµ;…SK‚°i1Uﬁp;’(ê‰[3cΩD◊ıBK¨w™≤]˚÷±¶e*â\ZOt=j≥›„ΩfIwÔUûÁ=Îh“0ïcJKœz≠%ﬂΩg=¡=ÍõﬁµTå%Xº˜^ı\\{’#-0»kU\'UóÁ÷ìœ>µKy£yß»G¥e·9ı©V„ﬁ≥wöpíá™åŸéÁﬁÆEsÔX	/ΩYé|w¨•L⁄Ní+å˜´ëÕûıŒ√q”ö–Ü„ß5œ8XÍÑÓm+Ê•≥‚ó=Í“>kù£tÀ@”ÖD¶•#)OJAKA!M4Íi™#jåı©Z£≈2E2u®ÖJùi\r•ÌQ%K⁄ëdmQ5J’R\Zi(4R¢î“\n)°1¶öz”©¶¥âîà⁄´…V\Z´I[ƒÁëNnÜ≤n{÷¨›\re\\˜≠‚a#*~ıMÍ‰˝MSjﬁ\'<àèZ(=h´$)WØ4Äfïr#≠ &,°\0\0Ü\'íiÄ«å„÷ñQÇ9ûN)\0œcö\0íi‰óÂ,\0Ç° Ì\0uß†â=($ÚÙÏ(\0` Äg¶∆\0|ø v°A\'sgnj’«ŸäàëÑ≈πc”Oób‘£¶=}iÒ1H†0¡\'µ`ú(∏$I$ã‰§jºéKÙËï›¬™‰öö$ë-“∑¥˝-cùYŒrx¨gQE4® LãN“ù˜yàÿ#Ü´v€CÇ6å(.Gs◊5r\"å{’®›–ó»˚µÁT≠&zÙ®∆(sDßÀçF6p@ÔRà…B„˙Sñ\"\0g?1‰ÅVc¿}£ì\\Õ≥°\"1ÂQå◊ﬁß)¥}—“†F2Ç¸›ÚÊ§bÃÉåÇ•î/ôå.^µ,áxSÉH°x]πluÕX0≤®N1R¿Ç(Iv#ê*pªªsB©c»‚ûŒ∞¥6z\Zõ ∑ﬁœjEvKfÅ!2¸ÃU}@…§&UÛ8ﬁ#C‘–ÂU»áÁ^Åè¶¨I∫\'_,éNÍë§D(\rqÕ∏x°çÇ>2Ô)⁄øÖIn<∞ÔW|\0œÈÌN∂Ü∆IÌ((	¿Õ>Âío(™∑òNYÛç£–\n•°\r∑†≤»∂ì86baç•∑6°®\"h„ë“‚GÑ∞8õõÈVﬁ6∂é	˜ßπ\ZÚTÁÇjHe∏äIñePÓŸórÛö7”B≤⁄\"\"ñyHaí\nÛÙ•6·ü˜ê¥*¸!~N=@~KµX|º)c…~ßMg\r9Õ¡·…˙{R—1ß&Ü⁄ÈVP•6íHQô^yõbø<q÷§êƒ¶X„Db[ÔÉQÀk-√)â‰‰Òı°#çAF,Ó \0‡üsWÕry{≤”H·#\0„ÀŒ95…n	‹Hf.M>9LyƒÓTTmÁ(1Åéy8®πIt\ZëíÁ‘∑ß¥l	˘LgœjôçU£‡t>¥˘ÜI‰„±Õ+åÅëvÑfœqQ4nÀÄß>ï†∞ÓåÁÄ£8¶àÚ0nÙû¥ÇÊoŸ˚Ó!≥…ËÚ˚)…Ó*ÈFiJ8¶mÚ‰Û◊⁄ÇÆTÚ@M†ê›È®Ü6 ı#åT≥å>}˘•\nü∆ÅïÃLô˘âRs»ÈM) ;èFÎVº∆⁄SÉûï_s1ÔÄié‰•\0aÉÓz’fL:çπÆÃä¿gèΩWí0@ubXv¶árπPŒ TåTep	?@M]0!ÄÜ†l≥i†(Àn£#⁄™J6Ø\0ézVôW¶}™¥ÂBúésåUß®ö3â`èê7\r3ÕÌp95kÏÓT¸ ;ÛUÃ\\Ó`ı≠.àµÜ⁄I=1«Ω@ˇ\07QVåcçßÅ”5äc‰åÊ©2Z*≤ë…¥âÜ0ÈR6J„åT#;¿¿≠∆M/°o)¸±∏zW3&cóÓ≤∂k¥∆së»ÔXzùôì/ûúÙÆö-£8Ò4nπëá&ÌÁx9˜®M\\m•\nru&´»Ñu5ÿôÊ¥Bi)M%PÑ¢ä(QE\0QE\0QE\0QE\0QKE\0%Q@Q@QLä(†AKöJ(sIE(¢ä@QE\0QE\0QK@%-\0îQE\0QE\n(¢Ä\n(§†b—E\0RÊíä\03EPEPEPEPEPEPEPEP ¢ä(QE\0QE\0\Z(¢Ä\n(†–EP—E\0QE\0QEÜÖ≈(öïS4õ-!™ï:Eöí8s⁄ØCmû’îßc¢ÆAæ{U¯m3é*‘Ω8≠mÒé+öuNÍt\n–⁄cUÿÌ}™‘PU§ãÕ)ùQ¶ëKÏ√“ä“Ú®©Êerú\\MÕ_â≥Yq5h@’”4pAñÒëP»ºUï‰S$^+°±ô*’vve™¨+h≤)§T∏§≈]≈bª¶j¥âWŸ*éÆ21ú«ZÖÖ^ë*≥Æ+¢,‰úlAE)ïf\"Êó4⁄3EÇ‰õçÕGö(∞\\~„IªﬁõEé›FÍfisEÖr@Êû≤T•Õ+\r2ÍKÔV¢üﬁ≤ï±S§ïâ¨gczèz—Ü|˜Ænπ≠(\'ÆY¿ÌßPﬂéL‘·≤+2≥W#zÂîlu∆W,Êì4–i’ô†¥¢õNxßä`ßä8Q@†“¶£4ÛL4i¶\Zy¶\Z`%%íòö3M4∆lS∞Æ<∂*óÍ9$≈Sñz∏∆Êrïâe∏˜™R‹˚‘OÔT§û∫aLÂ©T±%œΩU{èzÆÚÊ°i+¢09eQì¥ŸÔP¥µcMÕh¢`Ê<π4“ŸÔMÕ%Uâ∏Ï“fíäqsFi(†BÊå“Q@\räï$™˘ßI¢ì/«.;’¯\'ÈÕb£‚≠E.+)DﬁúÏtPOÔZ1IúW;›+Vﬁnú◊%HÙÁsf6´\njÑOö∏ç\\Ì&L)i¢ú)öi‘”LÜ1©îˆ¶w¶!ELï©”≠\"ë:‘ù©âRcäE5B’3T\rHc	§Õ!4ôÊÄ$•ÌLó4\0\Zaß\ZkVë2ëUy*v™ÚwÆàú“)Õ–÷Uœz’õ°¨´éı¥L$eO‘’6´ì˜™o[£Dh†ı§´$pÈ@8§\Z\0z!êúcéy50Pú0 ë≈Cmnïn=”ú\räH\'“ì$xπŒ¨Ÿƒf∫âùT¡G@EAò4Ø∂?QM&ﬁWhÇêWÍ)=@qd2B†8¡®f√ú 8ÌöcÛ”°´p˘Kô#\r√¢˙–›Üï∆Ci+!;r+oN≤çêÜ§;UWìYüo`Ñ`)À3DñRÙ«QXÀöGU>Hªù KtïQ>¯˚Â∫jö“fírT)x\'‘÷Mùº¨ëÜ”LpÄûæÊ∫xñﬁ\n\0Õúq˙◊K#–§ÆZÖéXÁ˙U»…)å`v™·ä£åw5aE^zp\rr…ùqEàø?Œ¨\"ÂŒ0\0®œ›`‘—èîn˙Vl–wëÄ=©ƒ\0ƒúìJ\\±⁄úûÙÛ1n)\0®	l˜˙u©YáBOµ3r™˝Ïs≈Fcw“§; ÁQnÂÚ3ëC r˙S>b¿˝h5\ZI	¬êMâ∏\0tßóU∆¿÷Õ/Éí;–à\Z3Ûƒı$ı©ïY[rß *$ã*§úêx÷ÆD……‰„ú“‹»Y∆„—q∆(é-€C>>cR0]Ämm«Ú©Ì¥ì™ïU»¿\'⁄û‰∑dCÀè≥æ_<r*G2ÃÌ*ÛìÛñ=jrèw\ZCfh«Œ√S>ÙË„¥á°ñdè\"Ùv˙’(∂f‰ñ∂‘ß<Sí%ªÑqï«#µ-Ω¨«ih»vÛ$†“;J–¨gÖ∆ÈB˘Ïä{[D˜XO:‚`\0åG–wÕ>^ƒ{GmJOe!V|)ı(p$è8€LBÛ2Ø€5}Ì\'h≠∏ 6…˙t©çõ~ÓY„äpπo=∞Ã~î˘>—u(BdhƒpF$^Ä”Ì≠\'\rÊ…h|Üm¢V#è\\’àgÛ•(åZ$_›Gg.~Ω(ÖãfY\"#9Ño†ß \'\'–l¢0Ã≤„ ·Kw∫TbêÇ	˘áÒÂVP∞î@Z›ÄÛ[ÅìT⁄d&?¥0Âíı©∞”ËI%±F_;‰9jÆ€´oäVí0v≥«Û´_hî€òÇÑ)√‘’Y<ô#Vb≠∏q¥Ù˙“–®ﬂ©[tiqµâ\nG*ï$PqÅ∏ÄﬁµqfïB#Bô\'ëöÑÇÃƒÄO¶0*_ë¢)»ÕÉË{\ZäMÒƒéË¡æ8©û7¡b0´#Iê_˜c†=©CAπ]~F¶#låÆA‰‘Äp±#µ0Ç∞>NÜò»ú`uÚißÀ«?vë‘r	«•W‹YNÂ Áı†§áÌ<ÒQÏj9•h˚d\Zt2?2zULÔ‡uÎéı]ìp!∫’¢∏~@¶}iÆä8öiàŒ9/Âú/πÔPãv(Íßp™Ù»¨6ê7êj;Ωx´LñRpF0jW .Á≠^`$˘Ç„û’(a¡=*ìü\"®<ØÂT›IÈ∆+Rx~^§üJ¨ÀüîŒµã3h¨rÓ}3Lñ5xà#ÎRà∆¸ë∑9¶…¿ÈÕRfm∂°j…˛œb*ã öÈuﬁ‚=¡Ä⁄œ,¶6*„wl\ZÙ)Oö\'ì^ü,äÜõR8˘ç0÷«;\Zh¢ädÖQ@Çä(†ä(†aEPKIE\0QE\0QE\0QE\0Ph†ä(†ä)(h¢ä\0(¢ä\0(¢ä\0)i(†¢íä\0ZJ(†ä(†AEPIKE\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢ÅQ@¬ä(†ä(†ä(†éÙQ@R‚òQ@QHîRSÖ&R$EÕ[ä<öÇ5≠tŒ+ «U(‹ö3é+R~úS-‚ÈZqG“∏™LÙÈSHX°µ\\é,RFïeEs∂t§*%L´MQRRP∏¢ùE <Ê3Õ_∑nïòáöøn‹äÙ&è&◊èê)ÃπÅVJÒ\\Øs•≥ßZ§„ö‘ù8¨˘ö÷,LØä\\S±J™‚∂òÒÊ¨†«Bbq3•ã⁄©…+bHÚ:U)¢ˆ≠°3û•3)◊nT≈WeÊ∫bÓq 6#¢îäJ£0¢ä)ÄPh¢ÄäZ($J(≈ZplS)E L≥’Ë%˜¨µl\Z≥‚≥îM°;÷ÛtÊ¥·ì\"π˚y:V≠ºï«R\'£Jw5ï≥RÉU\"j∞\rr¥u\"Jp¶\nx©(p©F)‚ÅP(4Äa¶\Zy¶\Z4”\r8”M4M%)§™∆5çRπ¿™í∂TQ-êM-gÕ-K;ı¨˘^∫°í§»Âí™ª”ù≤jÎ]1GÂq¨∆òM)§5¢1bfíÉEQ,(¢äQE\0QE\n(¢ÅÖQHR£‚†i4RfÑ2tÊµ-ÊÈXQΩhA\'J¬q:©LËÌÂÈÕhƒ˝+\n⁄^ï´úW‚wFW4T‘Ç´∆’05ôcÈ\r\Z	’=©ÜòÖ<}jSßZE\"¬T¶£JíëDOUﬁ¨ΩVíÅêµ74≠M†ÉN®¡ß–ZaßSM\\L§F’^Nıa™+¢\'4ä3\re\\˜≠iáZÀπÔ[D¬FD˝MSjª?STö∑F\"4î¶í¨ÅG4GjT¿`H»œ4råÉ”äú.∆∑n«{äÖàg‹ÌRµ¡iKéΩ©\0÷m√¶3–zSQ∫Á¯œÔ7H~^‚¶ë¸∆-±¢˙ûM& Kπ^F€∆sJaeMŒpOAQu˙‘äŒÍA˙–+ñ∆R4HÀI‘û¬üeÊ˚§êzˆY‹õO2P†≥.’»Èöó$\"™‰≥}Ú+9CSWNôV‡JÓ€∫(«Î]Ñ-π¶gy¿¨( Z«,†»¸±˛ËÏ+oMpd‰(‡g˙W\rnÁ©AÙ4ï[ì–T¡±¿äfÙ%U~á™Uõ\0\0\0Î\\lÌCïéI˛uh»¿ÉÉ∆jèj)qZüí®IaÅ–wÕK(µ	T‡˝Í∞ÓBØΩS∂W9ÛíyÕN]H*xˆ5pWI9¿œ°®‘)ÍÇè\'#kÒÌûµ*Gåï^@Ì@∆Ó`Ÿë[{dﬁ¶BÄ1ﬂäÆ◊0«|ñ•âïÜq˝(‹â[s«;\n∞´ªñ,m∑t˙w©˛‚JÜœRKey⁄π˘y5f’∞§Ü1ÇiÆU—#⁄S-óêıcÈ@˝‹f3µFÏñ~îr÷ÏÜx£…í˛Ì£uP¸û˝…5ªØÔ<¿ŒB¸Å9ÁﬁùkÜm÷ ‹Ôn£™DΩ\r]∂ˇ\0cd∑Öc⁄ªn$\'Â$w¸jq$ûn-¶G+¬éπ5ID)2[Ioo∏\"˛6ÒW\n∫⁄Edâ∏ù¯T_z’3ô´h?¡q*K4.H√6ÏÄi”jf_.‚π\\!T⁄£–ûıV·-√§ÒydÂJrÕÔÌN≤πô·v0ú‹:ÓÚáΩ	Ÿÿó´ãt∑ñ\"-√í*ë∆@n˘‹jK≥> ùÃS\rªò≥nÁÈQO0ûËF&ö˝8	*∆p9∆;RÆ‘ëïF(limrGπë≠cE}Ú∆—ÇµïßsúTgû>Ò¥¯vÃÏ‡≈|doõ®Êx√b# rŸ©n˙îíŸR≥(é(“TXúmˆÁ≠1tÄ…1V9¬∆Ω?\Zq∑h`/≤8¿Ç‡∑‰* T∂Òè∆ìÛ\ZWÿs¢|¿)`Nry5âo\0NJ\r9…p\'ê9…ßÇ€Y$\n\"R‡Ú«⁄ïäŸ∂nÈﬁ¢îsÑÔ◊5nH«\rüë˛`Œ°¶O\n≤∆ #åûªOÛ©±Iôó;ù›µÅ˘Ü*}ÉÅÉËjÏäZBÆ†xojØ:¸€â«•+\Z¶F≈X™Ç‚£ÿ¶3åÒÔSÏWaÚ·Ä‡Ù◊[ê©åsÎL.TëY∂‰*€åc=Ífb9bqöç„Ú†û:PZ u\\êGAUÜ‰r£©Zµ f%@«‘•GL˙üJhã1y)Iby\'•9„bx^£ëLv‡)b®‰`ÎQÓ« F}*G◊$Ù®L{Il˚b©ç#$¸µô¿¬è©kqQmRÿ»≈R$VUa∏û}*ìtb¨\r[ë~_2<zu™≈∞yû¯™D≤πMË3ê’∆ c?÷ßbrH¶üúúb¥LÜäRF]HU˘G9≈söïªA#3´Ù\"∫∂.7&0Ê±5rbn¯Ë+¶åÏŒ<D9¢s•x®» ÛS¡ ı®õ≠w# he\ZJ¢Bä(†ä)h\0¢ä((¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0))h†¢ñäQE\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Åä(QE\0QE\0QE\0QE\0¥îQ@Q@Q@z))h\0≈Q@Q@%-\0QE\0QE\0QE\0R—E0Qä)q@	E-\0ò¢ñìΩ \nzı¶”áZL§Zãµj[ïïj’∂=+ö°›@Ÿ∑\n–àV}∑AZ1WœR§:äâ*uì5¢û\"äxÜSˆ—@^5r›πG<’òΩ9-\Z/Szÿ‰\næV≥- V§c\"∏Êµ:¢ ”\'ZŒïpk^e‚≥ÊNhã)îvÛOUßmÊú≠±$ Z]¥¥Ì¥ÆUà2*§—qZEj	údL¢bMRë+fxÎ:d¡5◊NGXSjg\\TDWBg+Chßbíô\"QKI@Çä(†AIKE0ä(†Bäö6Ê°Â85-ô£ÛZñ“t¨Hõ•i€ø\"πÍDÌ£#r‡U’<VeªqZû+ÜHÙ`Ù\'Zx®÷§ì4)‚£˙\0}\n\r!\r4√O4√@∆\Ziß\Zi¶Äi¶ûî˙a™B!î’	€äª)¨ÎÉ÷µÇ3õ(N›jÑáö∑1Ê©=vAu¶R‚çµ≠ÃyH¶V\n”jì!ƒÇíûE6®…°(¢ädÖQHä(¶ ¢ä(\0¢ä(RäJ)*\Z∑’jx€öô#H3n⁄^ï±o&@ÆrﬁNElZ…“∏ÍDÔ•#v&»eMg¿˘ØFkï£°\n\r †“çQö{Tfòá\nù*S•\" TΩ™$©{T1˙Ui*Àt™ÚS≥S*F1é·L˙¬öi›©µq2ê÷®$©€•@ı¥NyÊÈYw=ÎVnïïsﬁ∑âÑåâ˙ö§ız~¶®Ωnå§•4ïdãB„<å˚QJUÄÙ†ßX‘sñÔM\nﬁY|£å˚‘|Êê–Ò…Á•&x Sóil>pı©E§Ç.”±æÈı§1ä¡#∆‹∑≠<˚?#OZ`B¯\n§‘…æÿ6c…e dp=Ë`â\\	 ÑF9AíSOµ∏ïﬁ8—3Éü∆¢∂GV u’~≈L&1ñ$ù™;Vs—B˜D¨\ZG⁄ˇ\0xæQÈ]Vö»–†#b˙˚W94Ê>C\'Ãﬁ¨}+§µuV˘_9˜œΩqVzñ{óëBÅÂÌ∆z˜5fVM«ïËFà8gÎVTÉúr\0Æ&Œ‰(≥3c–\Z~ﬁOœjèn◊œÔÌC1@I8ÕK-¢mNsË*x–7$`„ìQñU`™A˜ˇ\01äû:Ê°Å0sÀ1ÈL]ÌÖ‡z‚§Õ;ÜîÅŒ;˙“\0\0∆‰vÔä\rîOr≥˚1ÌNâ¢,<‘ròÍΩI©√∑.@ÍŸÈ@õdê·edá;∫j∞°°îoÑm#~˝¿í*ä9~Cí«I©H˚8de√Çj.KW~—;y∆ÚÂŒ„¿2≈$ÒÀ1QÂ)˘éqäqu˘lﬂw⁄öëÓV…*Éëü‚°¥-E@\"⁄±æ0r*Ãw!∑H¿<«èòÒU˜/õí\\tßA”s∆˜•pjÂ€Ÿ.VX·ò©hî}ŒTgﬂ÷¢@%àE+0ã2ˇ\0zò\nÌŸ‡sÇzìV-¶Ÿ8·BÖ⁄sŒ⁄´ëk\"_-<≠Ó˛Q‡$(ÑÓ˛ïiåÒÆ“*üı#ï#ﬂZ#(œ 8FsŒ;R¿·måC ÛúèJ§Ã⁄ÓN.Â‹N—\0ªDqå\nb±E2d)‰ı&ò€^_ıEÿ`^Ä˝jaàë\"îﬂ’èjWlVHG1I Q!œ˛fÄ©ÃFE7π$‡Lê™∂!˘Œyn¥c|}B±98ö`#M‡«ΩâÁ•.är#¬ïn¬öÅU[Ríw\nIÕ1bïPfh… +îjÅ‚ëK8†c(2MF#R‚%.ÀåÂîÒı©&UU·BtÔëUß˚U¥[ûoïóvÂ?•†ºâJª°,îÂH„5ﬁ√wQE9ùõY»\'â ·@•2ôa`™€Å¿¡«ôI29cIº>‹`Ù®V÷kü7f7 œ^¥…Ó|∏ÃLúüzí=E.X∑íce<Äi$iÔ%°YíhôQÄŒ2	„öV\"Y<ü,™ÄpsìÎV n/ëÍGZnr¸£ÇiÂ\'Éﬂì‘TLä=*¸ëteq¡˚µ∆Xn\0H§Ã∆Oﬁaé—ÎQòúcÎ÷¥$Ñ≥\rÿ¬ÂF~î”*Â\"@Ñwœ≠CÂ3|≠ékU6ÌÍA®%à0\'≤ö§¬Êq∑¡¿ üjç‚!Ggöæ ÿS‹äÖ«Ã7:fù¿œh∑˚’µoµâKê\0√c•l2·à’yÓ¿?Zµ+	´ïú~ÏÌ‰ˇ\0*ÑêÀÇÎV€pŒ°®^ü(ıHñS+ü∫?Lu‹õGﬁù™ƒÖXså‘M˚≥í2=™—ÆÍJFHÎYì≤K.9`÷¨Æë2Ùn¢≤ı8ÿN\'E¡Ü∑¶s‘0.Ì€yd\\˙„µg∫‚∂f&H€\0èZ…ëH$\ZÓ¶Ù‘Û+E\'t@i)«≠6∂9ÿQE(¢ñêƒ≈¥P;	IKE1	ESQFh†ä(§EPEP ¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0R“Q@ES¥P)hò£∏¢ê	E-%\0·÷õJ:– Eò∫÷•∑jÀä¥ÌèJÊ®vP‹€∂Ë+J*Ã∂<\n—å◊œVBÚUÑ™à¬¨+ä…£[ñ§QP´{‘ jl;è≈fä,<§jhõT-÷ùÊΩ^áã≥7,ﬂ•mBrs∂ír9≠Àw ä‰®éò2ƒÉä£*ı´‰Âj¥£ö…hjP+Õ9V•)NXÍõ)	NÚÍ`î˝ï7Uì≠^e™“\niâô”%gNï≠*÷|À]f\"eHµ]Ö]ôj£ék≤,‡ö#†““UòâE-ƒ6ä(†AEP!(•¢ò	N⁄QHh±ÈZ6Ì“≥#<’˚sXÃÈ§ı6Ìõ•iBx¨õc“µ!Ì\\3G©Ob–©Fµ ¨®ÒO¡NÜ<R“\n(Üòi∆öia§≈)§¶iÜ§4∆¶Ñ ≥Vm¡ÎZ3w¨Àéıºj≥\Z™’fnµY´≤\'˜‡)†‘ãMÇ\ZV£d≈X≈5ñÑ¬Q)≤‘Db≠:‘,µ¢g<¢CHiƒRUò¥%Q@Çä(¶EP ¢ä)(¢ä\0QR!Ê¢ßÕhø„≠k\'J√â´NŸ˙W=DuRë—[øJ“àÒX∂Ø¿≠h[Å\\SGtYlRöjöq®(ç™3R5Fh·S%Bµ2R)í•®í•©(c’y*Àt™“Sª‘f•jÑı†cÖ8S8SLßv¶\Z∏ôHCPΩJj≠‚s»´7z πÔZí˜¨ªûı¥Lddœ‘’´”ı5IÎts»Ñ“RöJ≤©UÀ.Œ:/sLQR2ñu\n:Ùõ˝°2¸Ü…⁄\rFJÄ~^{Rï*¯ê€∆§oôπÈ@æ^‡I;jSr˛RDº*ÊõªÕ:«\Z˝‘Qíi%å#OÃ1@≈ç¬!‡Ô\'ÉÈS4ìÿÍvì¡®·\nË√$2åäµ\r¡MíHºûB∞·©1°ëøÔBn##ÿV∑Ó,‹}öÌg‡|ÿ )¸k<M¨Ê@C±\rï•^åwHWåÈÔYLﬁõ4`ÚRÈÓ;«ñÄıÕo[«µp´±dÁ…¨[y£ö`ëßô/\0Ì(Ókz∆‹´nnù≤kÇ≥±Ë–]çÜe\nWog•J®b˘ï≥ﬂ>¥‡I\n qHn,O∑=+çù®6oUŒI?z¶Ö#∏Ê^«·H,H*8ßlIË=)1å¡Q˜zû‘Ù;£;é\0Êò™—>Œy–\0Âòëûä)H≤~ÒV1¯z‘ü(#$û•WÚˆÄB∞>¢≠≈Â4`¡˛t0%‰Œ”¡´3∆âl6∂K‰m«\"ôn±Ô>i¿q⁄öª›I9<OZB_ÂQ\ZHYx‹‚ïIscny$ÛS∆ÚÖX˜Öè<˚R,J@˘ó<0‚ì$æRt‰qO)\Z€©ÛKH«Åû˝)a@ 1Œijc’»œoSHB)1|ßk26ú‚¨€H∞ÓvΩè@j ¶@€c ©‰Ù•%w(i2˚†t¶+‹sÖπ«+€ämì√,éë≥\0É$∞ÍiäU8#w&¶Çi&íV;{t…-!<∞=Õ4\'¢-≈StcÊ9%é8˙w©ú9`-√rNZ⁄V{‚±¥Ú∞ ´≈cO,Æ¡vO¡˚ÄÚO|‚´dd˜&I\0áõwaÄü≠Yﬁmπ∂måƒÚH‹@ˆ≈W3GRˆ`nË«∫˙Tp›K\nÇvTlê#èÁ÷ÑÌ‘óÙ%I\0ga$·3\0äêΩæ\n≈rDâÇWiæÜ©ê†Ü,Ÿ∆NNÏüZë	T√êƒrû‘ìË7•≠”›H-§RT1⁄>π5›î«)m…¡M‹SdvkÄ%ìbï¿e§hA#-é§–ÿ“∂„¸∑XG—è*i6ÃÖaéºU}ÌÄ6Olf§IR9†hÛ—âŒ•+èïë…ænÔ2Qüó?Jí/.8‹<\'{üñ@‡ ïÀ 9cÚé84äÎ≥d™JéAÙ¢·m\n∑∂sI¬(5µ≠‘@¥ÄÖ\'”ÉZ»ò;∂≤åqöQó$é°I‚ê˘˙⁄6<Æ8Á4’>fU”\r◊\"Æ»^1Û\0Ù€–T¿ê	9†\"¬™Ì⁄y®º¢v}*‹©ªúèjbå\0ˆ#µ§ é7ñœ_jÆ#\n∏∆ÛZ-P∏‡g≠Uëüòoø^iôLë)¬ÄÿÎû*¢[»íJoîúÄkUc⁄Öò{RÉ¡FE4;ôËü.3≈F—Éûï}ˆ£cØëÅ∏c≠rÉC¡ÌUÃ\nX‰cÈZﬁFA√‹UI„ír0;\n§2⁄\rÆXdˆ9*‰ûïß(;CÌŒzs“±ÔãÉÊ∆N–0W÷µäπ\rï‰($mÍEGÖ%à8‡c≠6Kà¬g1ú»qU≥o2°A√(nO∏≠‘$ˆF.¨S’éuWVr9Ù®%ÀHlÛûò´o∂∏R»Ë¡∫\0y^Qµ∑ƒ¡ìÜÌU—2îYô-©å»¡ÔXwI≤BÁ][Ö∂Ã∏9¨\rB\\ê8Ì]Te©…àÜöÏ9¶TÆ1QöÎGûƒ¢äîRR–PQKIHbRRöJhÜ%QLAES¥Üä(QEÄ(¢äQE\0QE0\n(¢Ä\n(¢Ä\n(¢êQ@Q@Q@Q@¬äJZ\0(¢äQE\n(¢Ä\n(ÔE\0QKL¢ñä\0J(¢êQ@Çä(†aEPEPEPEPEPEP—E¿ZQIK@E¢ê	EPRäJZ—b>’•nqäÃå’ËÑŒ ,€Å_IEb≈.X[åwÆ9@Ù#;#egµ2‹Z¬^ÙÒwÔSÏ ˆßBó÷ßI«≠s©wÔVcª˜©t∆™ùEd}´ﬁäûBπŒ!≈5N\rI ÎPìÉ^ÇÿÚ‰_∑ìV’¨‹kõâkN⁄|cö §niNGB≤du§~j§3d\n∞5»’é®∞€öz•*å‘Ëô®l—\rTß´)é¶„(»µNQZRßBU´â,° ™S/Z–ëjúÀ≈og4dŒ*ìä–∏jÑï€œ´π\r%)§≠Nv\Z))à))i\r\0QE\n(¢Ä∞P:—J(X˙’˚z£´ˆ‚≤ô—Ijk[v≠H{Ve∞ÈZpä‡®zîˆ--HΩ*5©`Õá\nx¶\nx§Ö- •†öaßöa†bRRöJ@!®⁄§¶5RRaYó≠jÃ+6·z÷f3Z3j£UÈñ©∏Æ»ú3C©‘U\"’2b…ER-<sPkπ≠@ÎV ‘.µqfSâMÜ)ÑUáZÖÜ\rhôÕ$GE)§™3\n(¢Ä\n(¢òQHä(¶J\r¥0&åÛZÌ»¨‘<’»ö h⁄Ë-•l[∑π˚GÈ[VÌ“∏™#æõ5”çE‚§œÅ∞”Qöy¶–éµ2TS•!¢“\Zñ°Jó<Tî#Uy*v®$†\nÌQ\Zï˙T&ò¿ußäe-11›©¶óµ4÷ë1ò”Q?zê‘O[D¬EY{÷eœCZrÙ5ôsﬁ∂âÑåâ˙ö§˝jÙ˝jãı≠—Ñàç*&Á«£©P\rÑcö¢De)Ûù®R»Í˝«4®•˜g†öhv„∆Ä,4Àno@\"pªâ˛#⁄¢XôÃç˝ﬁiaê,à≤Ç—Ó‹PúO2§≥\"ÑS—{\n\0lS=´ôQäπîÁÅTA#Ãí~b©…∆üo4C8ö#0ƒ|ß‘”6˝ûAΩ~le@§2˙]«cx”[FS#aV¿#öØFëZ@Z=«(ΩM[Ü[vç ¿a+îÅ»«jägÛÆ©\ZDô¬™*JElHëA·≥Ù≠Ó$ôX»‰3tÕ5måœôú4Q6/RMh]Eå\Z(ˆ#aEe9#¢î„¨„X‹‹≥2¬£X˙W]j√…Ü\nÁ#$›√å˝ö.H∆w7jﬁ”Q√»A9⁄√~≈[Us–•£±°Ì‡3u‰„µM¡lˆ“ô;1˚ƒ‰TèŸ∑H˘ÅÔ\\lÌD±G!»/¡ÎöB√… ∞…8Á“§8Ó\"ê™±›∞ˆ©2¡#%FˆÏ*2_Ì=MMêœJ{™$Q∂±<éÊÇà„Voº«#Ó‘®a }÷¡ˆ•]®‰ìO@K8˜§¸µHy`{ëﬁ¨.—\ZÏ…œPJÖPº∏‡útœZïdfèc\"åR%è@N¢ß¨±&Ú>nzsUø{ç\ZÂáSﬂ¶	8ŒrÔ@ã\r¥\0ÒÇƒúd3MYå¿ ;YsªéøçF…*ŸﬁFFıTç@Dûù®º◊˘í QB·T8¶FÚÖ9 ¿ıß\0Ï t˜©R&U$¸πÈ‘QqÏC\Z√y<’‡é_y¿>ÄqLÖq¡!}ÌVQwê∑\\R%≤0èóÚ˜∆:‰qöln‚eU\'$q∑µZÚñE€ågÆM?ÏÃ≤*∆ Ω)ìtExèÂπ‡’:G∑	∆AI\0E‹0I‹I\'ΩZT.v›‰Á\'µ;ŸU¬8˙éî*o$û1–UßECàd\"∑>Çù˚ƒfêÔ$ri4.bîà7r3é‘Ìø( }jv⁄·C9RB:ö6Ì-äVï&Fv\rç‡u•Eâ„lKŒ~Ó9`Ü»†`ﬁ°eb¿:\0ﬁù(¬çï›Gﬁ5\'óµ≤ÖXûÙ©\noQ#î„ ÅúT™ÚÏ3)Í¡qMŸ\ZòŸö6ﬁÅïÙ\"ù2  7πn1ÙÒ∫P!g·s¥c•F€_8Ö1\\â@)Âê«#¶m\nrÄ>`¬Æ∂‘\\ÄCu\0äiﬁ¸ù†º=h∞s◊0<Wê)Ú.Ï∞#–U«-),Ë® .˙‘kµéSÃ<vShä;éx„\0qK$i(⁄∏\0ı© C¡‡“Ì(§ò∆IÁ=h∞ÓfàDnsﬂµœ Sêx\"ßb\ZCªò®ò•œ Ω956.‰∆W∏ı®@åÉé}™¡t1∆pzÁ≠U30b\"ıVà–ÆA‹@ˆNvÚòçäΩÖ&ùu<ÀL\r«\'\'ï&†c|;pI|VëÖ»r∞∑7–;0U\'<*Ù¨ôîÁ2nEcçÍ	N)öÖÕò≈ª	°^¢Fí•a$mú—j{cR7îu=ÒöÍßHÁùR∂§—ªJO\"å*ú÷0ÇN^<t3[ØcÁB]uHæcÄ\Z@üz ª¥ÇvO3´˜¡ﬁÂ]¥⁄ZUnı)≠€F€Å¡\rh[Î≠ƒr¢≤˜a¡¨y+|çºz‚ô◊•j·πåjJ;3Ø[îπåyR+ =;˝*∏Uî„8ß•sê\\Àk(t8 Ê∂bº˚VXûOoz¡”pwGTk)´=ÃyÜäÑ’˚ÿY|pjâ—tq…Yÿe-UÍJZERP\ZJZJd1(¢äb\n(¢ÅQ@¬äZJ\0(¢äQE0\n(¢Ä\n(¢Ä\n(¢Ä\n(¢ê¬ä(†ä(†•§•†ä(†ä(†ä(†äZJ\0(¢äQKLä(†ä(†íñä%¥P ¢ä(1E-!†aER\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0•î¥¿Z(¢ÄäJ3@IEÄ)i)h\Z%é≠∆’M*‘uîéöl∂Ø≈?y®TT°I¨lt›éÛ\r89§ìO—†µ≤\Zô&\"¢Úœ•H©–jËπÁö*ÆMr¢πôFQUZÆ :’GpfSC∞j‹2b©w©#l\Z¶ÆD]ôªo/J“âÚ+ﬁJ◊∂|‚π*DÎß#N.@´±•SÉúVî+\\≤7Dàî2qV8°”äÅôì/≥Â^MkNΩk6eÊ¥àå˘≠PüÄkBn3YwOå÷Ù’ÃÊÏå€É…™j‘ÌíjìöÔÇ<⁄èQîQEjdî¥ÜêÇíä)à(¢ä`QE\0·MßÅIçF+B‹t™1ï•n:V”Iji€ï•™„•hƒ8ÆûîÑ¬û)¢üX≥Qi‚ôOÄpßSE-”\r<”\r\04—A§§M4ÍCLEiGBuÕiH2*ú´ö÷,â#tÎTù9≠Yì≠Rë+™9gëZ\0©Y1M€Z‹«îUÎR(‚ö´R®©l¥Ñ+öç÷¨cäk-	çƒ¢ÎU›jÛ≠Vu≈ksN%R)µ+-FEhévÜ—KILÄ¢ä(\0¢ä(\0¢ä(\0¢ä)ÄÒ÷¨¬‹’QSFy®ëqfÕ´Ú+rŸ¯Œ[7\"∂ÌÅ\\ïQ›Iõq6EOößp*–<W+:P\Zaß\ZiÎHcñ¶JÅjt§4XZît®R•ë@’‘∆°z\0Æ˝*V†j6ó4î¥ƒ≈Õ0““\Z“&R\ZMDÊ§5V—9‰Wñ≥.{÷îùÎ:„Ωmı™O÷ØO÷®øzﬁ\'<à™efx¬d5	©°çÂuä0Yè@*âoÓŸÅäR#1çá˜ô˘èjö(PC2¥™≠é’l®#∆9˙–Ät‹a@\'afÌRΩ≥¬±;‡Ó]ÿÙß±äHc@Y{π=œµ\0W@]»≈]é’åq_L?—Àl…ÔÌTw<s⁄¶äAˇ\0-‘™;\ZLhôFeÃC`\"ïYßuB˚S8Œ(≥êƒˇ\0hŸªh#æF)÷ºâ&IPü1©5,¥JóEr¬2|µ<dı#ΩjX»V·dcπ1í+&÷ﬁ!\"op˚ò˙VÍ√vìÏlπ\\uÖ[412≠‹J≤~Ôô#Áï=´~˝˘üv˝˝<◊/`´à|”‘Ôîˇ\0*ÈÌîêgŒEÆ:∫hzUı5>`8§t‹SÊ<Ü>ïTHXêy\\bÆ•∆Î{rbÊ˛ır3®å+∞≠H\nï	\r˝)º\\w†8ﬁ6©‡rjYC∂#Ö*9Èœô`„Ω1ò\0+n=i)ÖK)8˜†à«A ‘ı⁄°À)ˇ\0`zTi(*±)aåô1JÄ;‚Fe\\q«$“æibåg∏äî¨r2°‹S¶)dH¢)ï˘Ä…«zäÛû=®ÿ7&2à∑ë¬ìåzP\'çòÖLë¿jØ(ipO%∫‘F1∆M&++}3ÔH±*±ì\'v:b¨àŒ‹\'NÊ•é-Ú™ñ«fÈ@π¨S˚ëP„Ø©–Á!§åÉév3\0N÷…¡4^Zó·]∫ˆ§\"é„ev8Èﬂ§±m*#]Ë„p€’GΩ3)!/&wF\0UÉäêK¡(§øPGo•RFM∂ >b˘VˆÏÚ‰í‰ˆˆæF`º— -èô*jÀóV˘è–ˆß¢AÀ\"¿2M5n¢w[•ƒ>aÖ\Z2•y(A.~¥ÛköõÚ´6KS.fíR£Ó∆ú\0W“çËcëCï¸â≥∞LÅBFÅÂ°^¨iÒ¬π!Lyœ43lπ\"L‰ˆÕU7∆ˆ8‚µéHXúùŸ`>î…≥eá\"$+¥t∆OSK\Z«2ÿWÖ«ZõpâåL©º¸„ö#ÄH∑íwmü†•mB˙Çúì\"ûÄ„ôí7Dl&}:U»w#p•7ﬁnﬁ∆íP·›ôãªs«JV\Zzï!âZ1∂]Õ—îéï:ƒ—(ìÿ˛%≈J±˘√3±@¿„Ò§Öa$«;nœPßı¶¢\'\"Â&Ÿd∑b«ÆOﬁ	Â	l8\\˛ï{Ï»Ã#ÜI#Fè ÌœÃ)D·Ö‘;ˆ\'2j˘^ƒÛ¢ºhLXâÃúÚ≠¸&ûmŸ#\\1Ë¿uZ|)∏nU ™Û∑˙”—Én3ÅÜı©∞6˙Ììdxl*í˝tŸcëÿ<lÜﬁ≠õX§BÏ≈r0zìÎÙ®*&–X1„5|§Ûv(Oœ\"ªÓdB:Rå r¿∞„≠ëπãFŒ;®Î˘T»∆}¬ŸbE\\0Ì≈A™ËÅb\0ƒÛëT‰m≠å)œß4¨—\\Œä&çÇˇ\0\n>y®nÆ-ÌA2Ñ,\n?ï&ÜôQòˇ\0π⁄I∆MsW˙ÑB%/vL	ÃQ∑ÃkZ˙+õ≈.∏ä%%‹(…j˛]¬[YIn[¯ÊçA¿ÔÛWE8\\ôŒ≈ªë4êÔi.jr@…?çb^xÑiÍUXä k+Uæä+ßãÌSÃÄgpn3\\¸ë¥Ã]Q€\'\0ûı€NÇ›úUkΩë≥©x¶mF=≥∆	=*:ÊTêe”˝d´íµ˙+Gí‰a\0ÍyÙ§6˜H-∆\0Ñ;VﬁÍ—{œVB~ lqíŒy¸ÖfŒƒ9˘≤=zUì(\"<\0.iå\"\0õûZ≠”)ÓÊó%π¿´œ&ŸnÍs˜òıÇ¬W¿D‰Ú\0ßÃÅS}\n ´\'\0m>ı<<oπO#®•∏≥kr™‰n«@i–\\erΩ2j[∫–∏∆œR‘±ºñÔë€5é¬∫dÚäú„◊±¨[§	;S“ï7–+GfU4RöJÿÁñõKöCíäJ\0\r%S%âIKE1	KE\0QE\0QE\0QEƒQE\0QE\0QE\0QE \n(¢ÅÖQ@Q@∏¢ÄRR““Ñ¢åQä`¢ä)ÄîR“PHQEòÖ¢ä(\0•¢äî¥PQE(¢ä\0(¢ä\0);“—@ƒ¢ä)\0QE\0QE\0QE\0R“Q@EPESh§¢ÄäJ(h§ß\nLhë[àUh≈\\àV2:i¢¬-N´LA≈LµãgZC’*Pî‘52‘î0•0äúäÖ®Bcv—Fh¶\"¨¬©H*¸¬©J)¡ìQèZU84å)ls†nElZ∑J¬Ñ÷Ω£tÆzàÈ§ŒÇÿÙ≠kq“±≠q[ñ›pÃÎEƒ^(u‚§A≈+é+!ô≥ØZÀ∏ÕkŒ8¨ã£å÷ë*Â±ö≈∫ììZwèå÷À‰öÌ£ñ¥äs6I™‰ÛRHŸ5	Æÿ£ÇN‚—IKTHPh§4\0RR“P •§•¶ERS◊≠2û¥ò\"ÃCëZv„öŒÑr+RÿtÆzá]i€é*¸cäß\0‚Ø ‚∏¶zÿêSÈÇùY3A‚îSE8R¬ùM¥\0Üöi∆òh)(4P0§4¢É“Å=Têu´mUdÔZDL£2’)ØÀT§≠‡c$Ve¶m©ZõZ‹≈°†S¿§ß\nê†PE(†“ u™Œµuá]÷¥ã0ö)8®XsVúsU‹s[Eú≤DFíúi*ÃXîQE\n(¢Ä\n(¢òÇä(§1EJáöÑTäy°ç\ZÌ“∂m•`¬‹÷µ´ÙÆjàÎ§ŒÇ‚Æ)‚≥ ~_F»Æ9#µR\Z3GzÇá(©ñ¢Zïiâñ•‘Ä“¶¢zê‘m@5B’;T,(¶íöM4ß•4÷ë2êÜ¢jê‘m[DÊëZNıùqﬁ¥dÔY◊ÎXôH ü≠Pzøq‘’ÆàúÚ\"5f‹M˝§#ÂCcå’sV!Gòƒè XŸÒπè æıLîB€â$˜©/êí	n’-–A;$rQ¿a–‘jÔà yZJ	≠ÿªÌëx⁄zëOé‚6X∑B°Uv∂ﬁ˜¶4Q∆ÜA0.√ëöç$°/P)Çx√;…\Zïàüó4Êî(èjïÏ:˚‘πíDÚ±ïÄjKÑéUFR√a\nˆ\\Ì◊d*î˜4∂≈ï“\\n∞{úR»Òò#WS±3äTÖ’ÿ≈ìÜ=*^≈≠…Õ∞çÓ$V ?/j‘”∂%£‹n 0Œ„ÿ÷e°yYâ8P2A´¢·%ùl◊8ÙÉXO]™VZìÈêŒgiôã&Ó8…Æ¨b±ÆA∆Z±„ÛM≤ø ;¶}kVGlTÏO$◊\rWvz4cd_Å@^ﬂ÷¨(\0sUm%D∏$qVúory‡W3‹ÍCK[ú\n≥&vX‘I»´UuBÿ>ûµf“MØìêº˛u :XèX£Ø SîÆ≈Y÷qêæîÛ P\098 ‚°(æ^Xg\r\"w,$k¡BÕéÏ*0ÃrGj¨–ƒıﬁß¯≤›jxe⁄¬B03≈0±#≤åí‘•É‡`‰r6Ï|‰Á±ƒ√<ıjC\"éís\',zø gdç™8\0u®Q ÀÂ!$ÅÀ\nò Ö,x‘Z‰πDHmåﬂ1ÌSâI@	oj¢≤¡i≥\Zv\'©©!úÇ¿acn\0?yç;\\Ü……Uà9˜´PFd\\å’3-¥cÃí@ÆN–¨y\'ÈVV‚Ÿ’y…aüñéVKñÖø\',2ÿ…\"§Úï¢8Ÿı¶Ay®©møçK\Zbç]•vcÚÄ>˜π¶¢G1ÑF•á-ÿ‘ıI+\0ﬁ¨ˇ\0¨ï!âIìﬂµ[∑Éc˘h⁄…rŸœΩ8¬‰ •å´ãùXoDvlÓ\r–{˙U»bÜ⁄4P˛cÀÁÛ5r%o:Fïd‹v‡Ø,GSÙß6w?1√*q«Z”í⁄êÍﬂBëù\\®ëPíq˘PD)œÓÂ\'1∆ΩIı©$[I\'FY⁄H‘cÁ=MNñÈ§*_˜Ä∂‡:\n|Øb9ó°YY‡‹Æ„Àoiíl[•\"@©å(Á5uºªFh£ù\"FË“6sûø≠¬[Â£IÂ`˜§„†)ÍAÂ‚%ï≥\"ñ«˘‘íZØ⁄m‘∫≤e…ÌV“ìÕÿ±ÇŒq¯äå⁄‹D\0ÜRUøÑıß»O>ªïdX‚j»8ë	»>ÙJø∫LynãÛ/˜ó=™ƒ—ÌYq≤BAL˜ÅHômîí.‚G®•nÖ]Z‰R¢!Y¢ Õó@‹û)gx„Q\"Æ_$è‡_Jöm”B—˜æFÃﬁîárà„b™›\\vòóòÁTäÁ6Û#â*›◊⁄°ÿ“©ç§`´z˙“æ#íuÖ>CÜÛ=˝®è (≤¿†\'ﬁ°Ô`[\\Uâbóq›¬pCÍ*∞ñ!Œ’*é£`«Ny4<”:F7`Ç_hÈPìÇÓ“Ô/–vZõÆÖ(æ§s,õ≥Ó\\ñÈåV%÷†&mçs£09≈_ø˝Îá∏öGâF<•‡j∆‘Æ;|˝û$*»ÿ‡(ı4çbä˜Æ2ÑE~\\◊9yØYi∫√ô3üv©™öû≤-Ì‰g	#7\nàº}IÆ-ù¶gπõjπ8Lé+™ï$ıfu&÷à”º‘¶ªô]‰23∂ˇ\0∫=´>mNT$˘h®Ÿ\\tÁ‘UKës\Z™LYT¸¡:˜™¡∞K2zq]ëåR8•)7©`à$ÅâÛ~–Œ6ÒÚÅﬁØ}é[gçYÃd.·∏c\0˜¶ŸY;‚Yúé>EÓkz¬—ÆVY&å…∏\0]ÜJäâ’±§(ﬂRç•É]Ìeœë\'\'Çi/,|µ1Gùú‰Ñ?wÍk£ãO\r	âAä6ı˛u~5c_&ppY»Î\\ÓΩùŒò–“«á&–˜≠Â(·#ˇ\0ÎUÎ](„ì‰Ïã¶+¨kíO2Lúß≠2Téﬁ6H@$ÚI9®u‰Õ#B(‰$“ÓºµÂ◊Ø∞´¢÷E≤x!ä4ˇ\0¶õy5§–ÌÈ7rZ©›€	ÿyí>»@ÿÕ?hﬁ·Ï“9â†X¢ëáîÚÉŒﬁH¨π≤GÃkÆ}ãò¸∞*Åﬂﬁ≥n#äQ˜π˘EtB°ÑÈ6Fc\'äf£n ¢N£8´aÓÜﬂΩÌﬁ¶ö›ßÅ·ÁüƒV™VïÃe¬«4i)Ï0H=E2∫N¢íäqh§¢Å‹(¢íòÇä(†AEPEPESQE-\0RQ@¬ä(†ä(§ ¢ä(\0¢ä(QE\0R—E\0¥QH´.(óáa(•≈P1¥îÍm1%-%2XQE…ÅE\0¥QE\n(¢Ä\n(¢Ä\nJZJQE\0îQ@¬ä(§EPEPEPEP—E\0QE\0QE\0QE\0SÄÊö*E“e\"h≈^âzUXñ¥!NïÑŸŸJ$ä*AOX¯ßyuçŒÆPJ∞Ç£HÒVëi\\9F‚°u´ª3Lh®LN%¥Uø&ä|¬Â3¶jî¢¥%jå¢îTE\'”;‘Æ*#÷∫Q»…‚85ßj‹ä…CÕh[?\"≥ö–“õ:k6Œ+~–‰\nÊl_8ÆéÕ≤yı€kG“â:Q›¶ x¨P∏<V%„ı≠k¶‡÷Îı≠†µÙ1Ø$‰÷4ÌíkBÌ˘5ï)Î^ç%°¡VDiîÊ¶◊A ¬ñíä`-!•§†AIKI@-%-0\n(¢ê¬§AÕ0T±äLhµ\0Êµ-ªVl#ö”∑„ÕPÎ§jA“Æ\'J£‚Æ!Æ9#æ$‚ùLú+&h8SÖ4Rä@<R”E:Ä”M8”M\04—E)\r-!†ö™…ﬁ≠5Uí¥D≤úµJCW&™Ru≠‡c\"4‹–∆õö‘≈±Ù·QÉO\r¥Çñê∆ëP∏©œJÜJ§g\"§Ç´8´RUg≠‚rLÄ“Sç6¥G;ä(†AEPEíòEPNi¥·Hh≥sZvœ“≤c<’˚vÊ≤ö7¶ŒÇŸ¯£dV-≥Ù≠8ü•qMe‡i‚°FÕJµì4D™*U®ñ•Zíâ§ßäCöaß\Zi†òT-SµB‘\r\ZJq¶”Bb\Zm8”kHò»C“¢nÜ•®ﬁ∂âœ\"¥ùÎ:„Ωh…ﬁ≥Ó;÷±2ëëq÷®?Zøq÷®øS]9‰Di rò-ÚéqL4g=™….G4/)`°@?≈Ù§∑åNqÛcÉOﬁe±\0ú:ú•9UHå( ÅÛ˚û’# 12∆7\'^\"Â1≥¯∏&¶ö}∏¡∆* °§h‹ÌeÈı†,(`\\|Õ¥ú;UÎh`7*˚8œ”≠Df{ÑäÃ2«\n‹≠[∂äHÌï‰êFã\'Ã≠√2‘IË\\Fº“«b-Ò≤9$0˚ﬂçEW6Øòç≤qÚˆ‹*Œ£nçrê[‹y∂„ïvÙÙ©-Åò!ïŸç∂J!<c⁄°?t◊ñÌ“¸‡ó!Z\'¬√ï$ˆ©æÕ‰ﬁHw\r–¸õêÁìYÒ<Åû-ÕÂ1-«s⁄∂¥€QÂ&‡G9˙˚÷U%mNä1ª±©jåUI‰ü÷µDjcU1åUhç™9π´R>xÌ^tÂvz∞çê®™”\"ÒÚÛö¥	‰öØov\rúÆjÏG,Yqéò¨Ÿ°\"ô‡óÉV∑\"(^H nœ•D`IÎös†y#⁄ïƒXV⁄§l=rzS⁄&l∏êNzı®®-ÚÓ\0tßIÑ⁄©Ü$n8ÌHñ°í`Œÿ^∏©#ì|è±—∆{S3Ä8÷úﬂ∫™	\\céÙdí:§®Œ˚OeÓjçƒ°ï≤Ïc›¬éı©ìÂ¨¨≤‹∫tÎ∂πiu´´ò÷ÿÇÕ‘ÁÅ[S¢ﬁ¶3¨ë“I´Ih¶˝‘,6˘ßÄM6ŒiÆ\"2†t@qÁ…¿πÔ∑Iv©ÂZâ^3Üï€åèAW_T∏é2Kïëq¥·È[{+hbÍ≠Õà“Y.VHnB[∆rdsñsÌ[p<nÌ$GtÚ7}}kê∂ú]›˘Ú&1˜ÒéŸÆZÎ>r…Î!Aa5◊1ÌÎG≤d˚].t∂˛R1ëf\rôFHo≠[Ü¯: Óvn˙\n‡tÎêai‚øﬂ-í£\0}™Ïæ%Û©f«xm…0Í†Ù£ÿªêÍ£–†’≠QK….◊ \nÌ\\{Uã]bÕ—e7QÀ…⁄„≠y ¯ÜÎr\\Mdë4jªÇ‰ë‹Á÷∑¢ÒŸí&YTú6|∏£⁄ó≥h.û«oj÷÷Ø3√∏$ßñnxı´∂Ã“≈Á\'ñÏ≠ÄÉÇ≠y§>-“&¥iuƒ„˜Œ~_¬≠«„À≥yí∆o\'nÌﬂ:„éE5.Ñ…_cº∏πºÚâ6Ãë©u‹=j_¥à“Xo.FCcc6˚WûC„XÑ(∂∞ÕiÙñq∆Ó¸˝j¸7û+®ÿ‹•Ÿe⁄Œ™0~îˆ#gl˜qÑƒ[πƒiåa1Lé:oÙ©û0“Äu5ão‚XÆøu1ë.!;Ñì.«“•ìVñﬁc8∏éf$ºOêø•/1(Ωç”6ıh \\Ç>añπ[¨2ïe[¯˝+\"A‡A&\'$	v˚ìRA1din¡êÜ˘ï>eÎR‰5e‘O\n¨´ƒπU=Ö.Q|˜x¡%∂ù{U1/üí7ºS˜çN˜\"‹´\n}N*îë/†O$^\\C`†©Ù\0t™ÓW‰e}ØìªÿS‰bW2ïa˘{T2JÜLcoß•g\'©¨PëÆ°Ûî$®SCHº£drFG&°i:!ôÜN;TÎ#¿åÚé_Ø·Q–∂Ö!õ∂\néÓ* wb7\09€Mf|n$é@Ï*7Â8=EKcHVêr†Á÷£#j Ä}iÖ,I«•UiWhÂÁ˜©πv öfF‹4ƒî√Ωs:ÅmŒ£dJ:±‰ìÎ[óíÅ  6H˚ﬁÇπ€Ê\'ûBí…8œ˜ö™,¥¨sZ•†ëKMò‘‡∆ü«!ı#“≥N€FÛ7yóH3as≥‹˙U˝FÊYgb¥ç«ôéû√⁄™}Üo%ëNúè‚Æ®ª-Hqπè2Øö^lÕw6NI©Ì4ŸdëIBOCû1[V∫Z≈ÜT›\'v#í+f⁄◊`\0†π=i øD°’ôˆ:Z¿ÊF øL„•m[Z\0KFHÁ“¨¡eÊïÿ6íqœz“KG∂S›◊É\\“õf‹©¢∂E√éßjYUQÉ˛ï$¿«‡9ÕPvë˜n‹}Î6ÓRE{Ü$î/∆+∆a‹\'wZ”ö)0$séjîÁ ¡#p≠\"∆—P»ŒBìÅı®412G√gñÕ,Õ≥-éΩ*pAÉåV©∆yh∞~~‰ö®‰ÉíªépN*r¿ÉöX‚\'ÊÂ˚÷âÿÕÍgÕlà•–ÌÁMréTÁ\"µﬁö&⁄†{‚™Kl ãésWô )	ÜÂÅ\r»ÕR5∑¨@≈R‡˜;y5ä¬Ω\nnËÚj«ñM•†“UôE%\0¥îQ@Q@Q@Q@QLAKIK@	ERQE\0QE\0QE(¢ñÅ†¢ä1H´)h•†vú\0R“\ZAä)h†bR\ZSM†AIKILBRR“S%ÖQLB—E)i(†¢íñÅÖQ@%-%\n(§†ä(§0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0•¢ä\0QR\'ZàTày©eƒªj”ÅzVdëZˆ√8Æjá}Ki ã⁄•â8´:Âr;îJ´L©SyT·√ÂìÀ©¬RÏ£ò\\•+⁄ä±≤ä9ÉîÁ¶’	GZ—ö≥ÊÔZ¿Ê®Szà‘Œ:‘F∫Q… Zπ`ä¶*ƒGöRCâ–ÿøJÈlüÅ\\ÖîúäÈl•‡WXùpgG|¥Ÿ[äÇ2¢ñG‚πZ5F}€pküΩ=krËÁ5áv3ö⁄û‚ñ∆◊$÷lÇµÆSöÕï0k–¶Œ\nà®¬õR∫‘DVËÊbQEƒRR–IKI@Çä(†¢äp†`5:-5¨\"T6\\Q,#~åU4´ÿ¨dÆt¡ÿ”âÒWÎ&91V„óﬁπ•≤4’™@júrUïl÷\r&J)¬ò\r8\Zëè¥⁄\\–\0i(§4JL–i)Ph4ô•4ƒF’ZAVçA ™Bft¬® +JQT%º¶SjniÏ)Ü∑G;)‚£ı40DÇîSE.ip5Ü§cPHjëúŸ^CUûßêÛUúÛ[D‰õ#4î¶í¥0bQE(¢ä`%-PEP •§•ÜHáöªt™\ny´Q5Dë¨≥l˝+R»¨(•jA\'JÂö;a#Z6´*jÑMWc9Æy	ñV•ZÖ*uôhpßR\nu\0&i¶ùL4ÜÜµ@’3T-ADfíÇi*ë,\r6î“Vë1êÜ£j~j6≠¢s»ÇJŒ∏ÔZ2t¨Îéı¨L§d‹U´˜AÎxúÚ!4ÇÉ÷ÅVI~›å0…‰˚\npsˆS p	®ÌK\'‹∆ÊÊõ*†eB« Âöß®jÚ7ö6ØΩ\\∂∞íh.5	géÑ°∫»I∆EµämÖ[`¢2dÚ‚\'\nÃ=)1¢ÀJ]§I∞∫îñ:ù∂ß\Z∆¡2õnåÉÏjµÃPŸ]…\rº∆N\0fÌèJrZ¨Ï´ %QI˘j[E≈2Ë+/⁄Hì◊ÈM≤¡éFÿF2A«ﬁb8q££∆ °úÔÂ\Zm¥»À»Z(óh⁄1ëX=ö:íŸê∆ã$ã>ÂoòÅÎÈ[⁄z‚]ôË;÷6ùfvîπ<[ñÂïô∞3”&πÎ>áf:\\“ç2;É⁄¨y%ì#©®UÇÑíG9´p9\n»ﬂ•q≥∫!\Zò»¡˘±Vâ\"2√:S\'»X¸áÔ`ÛJHÏ∏;GCPPÂb>]˘aNg‹ I\0üªäÑç≠¿˘è~ı4HASœN;P&$Åëˆú©⁄úf¨ôw_≠Kq3ô¢M€ü9⁄{÷F£x´æ=„~2XÔäqãì3î¨µ4>ÿ±Ä“¸ﬁX·s˙áà‰˚pD\0∞<GYç®M}∫=¿œC∆\0˜™P¨s$Æ\\ƒT¸À‘üjÏßA-drTÆˆâ^‚Ê[ã˘.ßmÆÖ\'!jK$äb|÷gbr™[hoØµZ––∂´—È∂˜m>U◊ÃÉ›™Ù˙0i•º÷Py†¥~TQÏ+¶Èhrj›≈“‘ŸjLÜ%üÂ8€QGsSµÓÇ∫Dñ .‚;ëK|íÛ˙’\r>«L˚\0íkàûBƒ0ï∑1àj‚ÀIû“≈ÊüÉΩéO”“ñó‘NÔa—Í∞Z>leí)¿√.8¨π!ö·òL≤\\*»p¸ÏÆ¶û÷óM#Aqqjº»`\r¯‘ˆ)ô.úÔ‡ë\ZK∑èCÎE“ÿ}Lõù>⁄hDjM√¥x#\'ÈR[…∞î¡rvºNp»}k~¡}o<öÑp«p‹≠ƒÏX±Ùı\r•ñõyWSM\Z‹822Ú1ÔKû Ã•N˙úƒ˙¶©.˚tòÌ«<Ú’≥\"”ÙØ¥Glàõ\09˘∑‰:“:-¥ì°Ú€ó>SNﬁŸ†X›Ë‚;UF!âYñYAÌÉ¿©uS—\Z-ãﬁJ}‰›O ¢\ZùôR∑ñ+(\r¡…Sè¬ªÊK}I|´à£2€é67|V¸\"∆+º[\\âmîeÂît”çhı	QïÙd\ZMﬁâ<±√ˆô-`w¡Iú∫&{‡÷¸V∂Ûñ[{ªYv¸™»ø)⁄≥‰å!$ÊŒY8?B*T”üKñ •câπIïSÈû’îe±§#%πySWçÛawk Qì2\0zbüe´[:H∆9,Án˘N–~ù*$k.¢\ZŒê™—±≈‹≥˙g‘U€f[i^x‚∂∏±îêÒ Ä¢˛çe&¨iÕ˚]gP∑kt∫2	@\n¯˝3ﬁµæ–±Ã¡úÜ\'˚øZ¿âc∑⁄mPã∆bÂSÏ*˙Knòö8∂ˇ\0xëXIó o€‹™ì»KÅŒ:b¨≈,Dqârx~ÿ¨K[â0A\\ÒèJ–Y6 ¿˘{èJéa8\ZÕ0d!ªpÉø·Tß0¨•Y∂æ2ÿ§çôî>I„¢òM+“0ë„Êı™rπçô\"≥´yv\0Ö?âß<ªÿ3IΩˇ\0ã\'ΩHÖ5Ï·pÏzöØ3ç™°ì…**^ÉZ±˚î,Ñ 7XzèJãvıÚ¬®‹sì◊‰`]`é˝I§ói∆q‘‘∂ZC]ÿGzŒπvåù¿û“≠H√ŒqYWo∆Ú{“4ä!∫æXñL∞\0zW/}|”©q!9=´∫úÊbcåúu5óûÊÀ@=Îh$µ)¢–ÀÛa≥ÔZ0⁄ó\n	 u´êY®⁄À‘ˆÙ≠`	npË\0¢S¨TäÕ\\Æ’\'<VïΩ†-ôåpøZö‰å¨°ˆ¢¸ƒı´1Öﬁ“\0ev?0c¿˙T$)K±?Ÿ‰Ú‚o$ßÅÍ;—4`≥∞çP∂P)%π∂≤E30˝\0ÎÙ¨YuCTπkm6\'˚Î¸‘’ÿ…]ón^8ìIÅÍk\"ÎQÜ8∆≈gÁ≠I°…ö\\]\\ß.Q£q»„5\\X»G‡Åûı64RV‹∆∫ºù¡˘vØQY3œpPåü©ÆÜÂa∑≤®cX˜76¨¯Û£‡.z\Z÷	ÙBîëÖ=’–P	Q˛r˝Ï0Ïj’ ∆K\"≤Éﬁ±•\"⁄`»A=≈t≈&å%+ji\0˘!πœ•Xåî¿…\nN0Z•\rÃrco^‰tÕO0sS$ åì4BÊ\"†“£hò£aÚò‰T.v∑\\ı54±!BßÖ5ävf÷9]N6»éköeÆ÷Ê‘obz\\˛°ß¨J]?\ZÙ(TV±Â‚i6ÓåR)µ#\Zeuú,J(¢ÅQ@Q@Q@Q@Q@Q@Çä(†aEPEPEPKI⁄ñÅ°E.))‡R-	ä\\R—H´¥R	E-%\0ƒ4”N§\"òÑ§•§4…ê“—Lñ%Q@Ö¢íñòÇä(†ñíñÄ\n(¢ÅÖ%PIE\0QEÄ(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(£¥¿))h†ûΩiîÂÎIç`<äŸ¥Áâ‰V’ôÈ\\µN¸;6‡Æ*qUm∫\n—çxÆ	3‘éƒ~](é¨Ñ•ÚÈ\\eo.óeYÚË1—p*Ï¢¨ytQqîıü/SZ˜¨˘{◊M3ä°Q«53\na“ôÃ—*XŒ\r0äUÎLìN’Et6RÙÆZ¡Ωe\'JÊ™éälÈ‡ì TŒŸF›¯húä„gB*\\w¨õÖŒkZq÷≥fZ∏1n#ÎYìG÷∑\'ZÃù+™9™D u®bÆ º’W’q…öm<ämhfƒ¢ä(¥\ZJ(\0¢ÅN4\0†T»ô¢4Õ\\ä‘∂iqë≈ÌV*û8q⁄§)ÅXπ(ïà≈7~)Úqö™Ìäi\\NV,¨µf)ΩÎ+ÃÊ¶éZô@“\rÿe˜´±…XPÕÔZÕÔ\\”ÅŸ	‹’VÕH\rRéJ∞Øö¡£dÀñò\Zú\rH≈¶öZJ!§†—@¬ñõNÌ@ÜëQH8©»®úSB( *Ñ£≠iJ*Ñ√öﬁr(8Ê°<Uâ5]´°“\0i¿‘y†5;r`‘ª™‘n¢¡Ã9ö°v•f®]™“2îà‹’v<‘ÆjkTsIç=i)i\rQõ\n(¢ÅQLBw•§4¥JZJZ\0(Q@<f´äë5,∏≥FÊ¥†z«â™¸“∞ö:©»€ÅÚh¬x¨{wÈZê6kíhÍã4#©÷´≈VV±f»u-†“¶öi∆öiåå‘MRöâ®§•4î–òÜöi∆òkHò»CQ±ßìQµmûD2w¨˚éı~Nıüqﬁ¥âîå´éıBN¶Ø‹U	:◊DNy\Z\rH1ö≤I£f:’ïå<`ëŒy5Z6!¿Œ*Ëëc,±Úÿ¿c⁄ì9	ô!-u#\0ˆ©b¥ClíCJp*ºQÏT|	∂–ZkòÜœÂPÀEÀªÉk+vqèªHÜH8|Ü«OQPÔö@≈§-Ù=jÕéˆπFëæÔÃÛüjó±q‹‹µé’≠¶Vy/oò»Ô.Gı¨ÀrÅféNå„π©öqÁ≈ÂÓ1èò°ËZ£hc)3Lªdnb	ı¨NÑ[“‡uçŸÜwr=´^!ÎöœµÃ®œN3ÎW!ê3ÇAÆJéÓÁ£EY$kÏ\\9˘j‘JÆ2Ã@=jºG0\0y\rﬁ≠@ª’Kc•r≥©†88L-J0Ì‚í=¿í§pp)‡mLû˝j7À3≤©l/•=ÂK`@∞\0ÔLåêÌl˛ı&6ÒÄ\0Í{PK2ÆoE™Óuﬂs\'	É˜}´ò6s]›L˜#$À&p†Ÿ≠…mRf˚:˘pÜ⁄“ûòˆ®5dï„∂ç’¢ÑçÂÜÕuS|¶UÃø≥\\Î3*EnÿF3^§’≠JÕöÇbcB!ç¬ÆÍzäNBYyím…⁄ã¯˙V\\–»Œ’‰Q¸ﬂ3©/ªÚ≠ìlÁqDˆ∫≤¡á‘WNãß.ıæ\Z”ãÄ⁄¢ΩŒ>‰œπá·WSCâˆèÌGí! )c¸´j◊Dõ *XÂ^!ñ˙û¥ù[l≈Ïªò∂z5€[Åñì«1Ä@˜ÔW-t…UŸö«\n£Ù≠ˆ”¥˚vG∏“|≤OÃ–ˇ\0™Ø¡¶ƒ5Ω‡7*%lÅÌöáTj≈”£‘≠Ì¶ÅÓÂ…îÜÅìŸ©&–Ø•¥çQm÷2ô\r¥gÒÆÖ,„âÀÕÂï Ä…¡Æ%§;b1√Õº:å6}Í=£*G?e¢ÍQ™	#∞1Búm2\Z±kß ≤0‹i—~Ò≤Ã£ß∞Æï¢≥{H•ö’·Ív˝Ô≠^µ¥ÇU@Wr∞»‡sÌE€% »„”J∂çêyh5ÿ™G#ﬁí{ÿfX§Ÿqch˘:◊r˙e™¿Ó—·«EVj\"≈ö±≤3s∂&ÔR”[é5ÿ‰Æ,D¿ºä#ù ¿}Ô≠UóOÅàO#ÀòÚNxsÌ]£[	&%›2‰É–qTíæWòÆ˛^„µøQSsE$r2ÈSy£n\"rA<\ZŸ—·0…nû7 ˛–>5âäùƒ∑\0ı\\È“ylJ‡≈.fh¨ÃU≥o≥ôOÓ…Ó([FeîëÄF@˛Ù≠cnÒp¡H<íy≈j1í¨I=s¿s\\v!ÇË•íÊ6Ü$J±ÕXäÈEæﬂ,3Ü˛Úˆ¶º	»\'öêO$t5-èï`ì‰U∆µ\\H†2å‡≠f¬¨äAìúöπ%ÅÌÎP«dj≈!Çx´ﬂfm√{vÇOcT-ÿÌˆÕh@§T‰Áúˆ´âœ=6‡Ã£\nÉø÷ö÷Î,Y<≤0AŒ}*r¯`3ÛgØZd∏ë‘3íÿ˛≈Uëöl°8w¢®1äÜF`U©ÑË£∞Õg‹ãÑ`H=}k9«R§Ôé¿¨;˘æR:Vµ√|úöÁo¶ÃÖG4EjläÆwÖßz∑Hü“´≈˜0VØC\Z‰v´ld±∫®\n9Í*‹™7≤ê¡πœ ‘IjXÂN9ÈW‚[â €Ö}ã»ÚÇ}Õ	)\"u*ˆ¡V_ò\r˚AZ{ãÖñHmL¥`n?√=ÿ”ù$72ZZ4\"‚$˝˝‚.D)‹?≈UbÉO`·„∞-íÏp“7˜õ◊ÿVä\';ïˆ-Z⁄# ÊÕõj¶\'ªëπó=Q3–}*¸ÔkßX:y∞ZC [ææµÀ›Î”ﬂŸ‹A°iÕ<™ólº®˙ˆÂ:Ê≥®Ííì5√ò¡#jû8Æöt\\ŒzïTw=3\\¯Åef™.ÿdvRQû¢∏mg‚ß®…˚≥Â(<`b∫}j”E÷~ŸÎ:ßâ¶∫÷m¿äﬁ0a9ˇ\0W≥Ë3ûº\nÚ¶V„=\ruS√¡jrÀ\'¢–∑.≥}>Ô2·õw\\öØâÊå»2éß“òWI‡¯b∏∫∏∑îå†ú÷íj∫Bäî‰ìg:.fB?x‹t…´&˝§\\>;˜≠]OCS<≠\n†ÒéıÖ=£¬˚r“îe	ép©L–∂πn6ø´Z—ùÊÆjÂ¢wç˚÷ÂÖ—ﬁ†sÎY’Üö·Í]Ÿù}™6C˜z’¬·…g‘ä´bõ¢ÂÒÏ* ÆŸâ\'ßN+ÃñÁ¶∂3.b ≤„5á~§€6zé+•ºLÜ\'ÛÆznäU‡„öÈ¢ŒjÀCìîaçBjyæÒ®\rzëÿÒ•∏îQE2Bä(†ä(†ä(†ä(†ä(†ä(†AEPEP0¢ä(\0¢ä(\0•¢äá\np¶\nx©4C©i)iÜñê–EP!(¢äb\Zi¶úi¶ô,J(¢ôJ(¢ÅQ@E%-0\n(¢ÅEP1(¢ä\0J(¢Ä\n)i)\0QE-0ä(§EPEPEPEPEP—EƒQE\0·M•i1¢‹\'•lY∑\"±\"5≠h‹äÁ®é⁄S§µ=+R.k\Z—¯Øp+œö=X=äπ©Sc5aEdhGÂ˚RÍ¿Z\n—p*˘~‘T˚h†\nzœóΩ_üΩQì≠v¿‡ô]ÖFELE4äŸ3àH¶Ù4ˆ”Z§C,Bpkf…˙Vgö‘¥|Y‘Z\ZSgQl¸\næ\"±≠e‡sZqæEp…ju!%BaZr*î√≠2Ák6q÷µ\'ÔY≥˜ÆàM≤ä™¬ÆJ:’FÆ®úsEv√RµFkT`∆QKITHQE(P*h”&ë5rs⁄•≤‚Æ:sZ0¡ÌKoN+F8p:Vë”ê∞*F^q¥V}√`\ZòÍT¥E€≠Që˘´ΩQvÆà£ör~)…%W&î6)¥Jë£ÿ´—OéıäíUòÂ«z P:!R∆¸S˚’∏Êœz¿äzπ«ΩsJôŸ\n¶ÍIS+Ê≤b∏˜´i6k	@ﬁ2πwu®L‘Å™,Zc©3Iö3AB“änisHC™7©*6¶ÑUóΩPòVÑµFa[DâÚı™Ø÷≠J9™Ø÷∫\"rÃåö3HiÑ÷®≈±˚©S7RNƒÛf®ò“ìQ±¶ëúò∆5ß56¥F,JCKILÄ¢ä(\0¢ä)ÄQE\0QE!†¢ä(E8\Ze8Re\"ƒmWa~Eg!ÊÆD›+9#h3jŸ˙VΩªt¨f‰VÕ≥p+é¢;i≥^Ví©¬jÍW3:%!•\ZFi¶ûiÜÄ#jâ™V®öÅë\ZJSM¶Ñ¿”\r8”•i	\r5TïV—0ë’éı†˝\rg‹w≠be#*‚®I÷Ø‹U	:÷Ò9‰@i)¶ä≤	TÛSÜ É”µ@µnaêô…^~îò…£väHä¶«ÉOù<‘2‰ÓÔû¶£éWÛ0ºÄ9„5qŒq$ëü-èn:Vrv4Ç∏ÿOì‰≤Ì;A…«^*H|ªõYùCy‡çÄt∆y¶Œ‚të—vÌ8UQå\n-1—ªk1Á=™[–’-Kç ÇhéœôG\\wı´qπïÊù|…$<≥u5End{®÷c∫rMh¨»Û·P*◊å¥GE;6XV å¶3˙Uò◊%FsœÏ`ˆ5,c,0yÍ+íG°l[7»#ÓM]ÅL.QN1œ5J€	∑OZ”çïŒ[®Îôù±!\n`n9©A\r’~Pÿ©#P—çÎ–qÌC\rë.Ï÷bπDƒﬁiebG≠.÷ª+,m√eˆÒª€ÈV<≤Ì◊mKˆ∏Ì»\nõ¯‰î–6Ui¨4ÿ‚P	”hÍ{\0+Öºπ‘5]@‚)#Äú\"®‡{öÍ\'äÓÈ√Ã±ñ-îMπT√÷¶µäÓ‚_-£pÄÒªÅ¯\nËß%\rLgòñZQÅˆ…bû79⁄‡∂ﬂÈ]EÜóhm¥ÿ» ÅÚ˛J≥\rΩƒ.EªFOtóï5(h»a${O@W†•*çê£mÑ[(î™ﬂZG”ÔÖ¸Èœoa.æaêt ÒMd,¿`ùº\0M5a∫cè&ﬂ‘\\ëY‹´£U˘á⁄Ên‡Jy>‘·em$EeÇ&V˚ÀÎQ/ò∏/( èù}™2T»»–pz0§‰5ÎBë<jë†Hÿa1¡≈^[∞˜(Æáí™d≈7 P|∏˚†‘»ÏH%zjWr◊s4œ+EËá°=Ö^Eïñˆ‚I]pªO(æﬁïÖÑ»	\'#†ÕlBY‚ë⁄h—ëGz÷êg5EbÛ∆≥>–<∑A¥ºü1#ÎTn‘ƒ ¸Î»(‹T≥IgÂ7q¢évg≠Qªæ∞í7^ƒf¿˘WµTâÇw!ì\n7dìåü≠VY‰Aà]◊wR¶£Û·ïp≤Ü~ò≠Uê88^bt•‹ªÊÌ`«ıÊ¶èÀëãH	«‰?\n«3Ìc∏c¶qOl√çﬁîÓ7K…Ü]ÿ Ú;‘mk\"`Ö=≥”⁄°äG0˘É{é¶¨Õ V(Wdd°õı£†¨”±†V;£\'“£%\n0EN€‘Åë «z™Ó¢ly[\0Ís◊ÈH¥√Õ>`^Zá◊Ú™åÒªÂWﬁüÏ8œ·RUçòâ€éÑ˜≠mP«=≥éµìo9∆+J\'Ÿws÷öf3Fú`dp®´»„˙“ ™ëªJOñ~ZàN\Z4GqµÜ~a“ßWò!HËnéWs&~õ€a–Éµe\\7G>‚∑.À‰ìåë⁄±.-¬Ç‡∂[ìû∆∞ñÁM6b›d`8Ù¨)QöbV˝—¬∂kü2∂NqN\'A4(†‰’Ë—r8U~Ë#¶9≠=ÏGÉ¬∂(ÏÆli∂œ<Rò«ó∆HÓjKîkaojvﬁπ»ï»m´‹˚VìlÇáÕ;BÛÅ˙W„\ry≠,,bﬂt‹ªv–ö⁄+[#íÓLõX◊Ìt˚hÌ—TÏm—«IW_∆£–¸=?âÆ\r∆ª<ﬁ@_1aFÓqÉ\\˜áÂ“mÖ˝ˆ≥3M©eE¥qç√æÔÈ]ñùÒ≠Ì“œEÿßsr~µ≤I=HúekAﬁõ§√mcsi∫%¨®\"E¿«ø≠|È„\r\r;ƒ◊P-ƒpF\\êÆ1¥˙W™â∑Ã[Jé√Å¯◊‚ë7åníÊËvA…˙÷ê≠≥ùa™nœ+ïDs2|•áqﬁ£¡5Í◊^“¶}Æë\rú\"ˆ)å≤Í1Ê0¡wzÖ`≈·çÿ˘≥2ˆ\'Å]ZÖâXI∂q*¨ƒ*ÇIÏ+¥ö>å≥\\\\¶◊ïv™ëŒ*Ã	m`™÷∂IÛeYïr√Ò®nëÆ‚f—ê‰dw¨jVÁVËtS√Ú;Ωƒ‘gyw<hò\'üQX”∆≠∫7ÄÓ«&∑˛¬◊¢U]Ø‹äékTÚó<øL÷qöâºÈÛÿ∞I¿\'5´¶È™≠ª°´Îh¢0´∂—`Zs™⁄&T]…aFåax˙’“\"±<”z®©U≥ÿíΩ=ÎïÍt¢ÖﬁÌ∏Åx¨å{Ç?\ZËÔ2Trk˚pB@Œx≠ËΩNzÀCâóÔ\ZÑ’â‘¨Æ¡´öıë‚Kq¥QE2Bä(†ä(†ä(†ä(†ä(†ä(†AEPEP0¢ä(\0¢ä(\0•§•†hQNò)‘äL}-4RÊ§—1‘îQ@\\)3E%êö	¶ı¶ §4R\Zd∂\Z))êQE\0QE\0QE\0-QLñíñÄ—A¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\nJZJ\0(£R\0¢ä(\0¢ä(\0¢ä(\0¢äZ`QE\nZJZ\n(Äö3Õi[61Yhy´ˆÌÉYMûßEh¸\nŸ∑~ïœZ?JŸ∑~ï¡Qµ)hlƒ’m\rgD¸U»€äÁh›2⁄“µ1Zïõäëç¢ô∫ä`p3w™O÷ÆÕﬁ™∞Æ»!\"ò¬¨m¶:÷âô¥TqQµN„äÑ÷à…ÇU€y0EQjhõI\\\"Œä÷nú÷¥2‰W3m/JŸ∑óÅ\\u\"u¡‹’›ëU¶ß£‰Sd‰VH–ÕúVd‚µß^+:eÎ[¡ô…Rä¶ı°2ÛTd5’q‘D\rQ\Zï™#[#ùç4î„M5D0©SJÇÜ±\nd÷•¥]*ï∏≠{eåŸΩ4]Ç,ïcÿ\0•ë+üs£bµ√`\Z…πì≠\\∫óØ5ëq\'Z⁄1©\"¥œìUX‘é‹‘$÷ÈÕàM§¢ô#¡ß´‚¢Õ.i4Re¥óÍÃs˚÷hlTã%Câ¨jXŸä„ﬁÆEqÔX).;’®Á˜¨eLÈÖS†é|˜´+-aEqÔW#∏˜Æi@ÎÖKö¡ÛN›TR\\‘Î%d—≤w,ÉKQ+f§§w⁄ò›)‘ç@•™S\nø ™í≠iKFd´U$£*’9◊DYœ8î⁄¢nµ3å\ZÅ∫÷Ò9f&i3M&õ∫Æ∆-é&òM”I™Hñ∆ìM4¶í®ÕÖ%S$(¢ä@\'zZNÙ¥¿(¢ä\0(§¥\0QE\0RäJZá©Ê¨ƒj®©„54ã5mõ•m⁄∑π˚vÈ[vç“π*#∂ì7 =*Ùuùnx~3\\åÍD‚É@†“”Qöë™6†⁄¢jï™&†dFõN4⁄hLCLjsSZµâåÜ‘mRS\ZµF ~ïB„Ω_ì°™˜≠bc#&‚®I‘’˚é¶®I‘÷Ò0ëu¶”öõVA*cv	p∫ØW∆Ô•PSÅS≈úäLh÷ÖU›†˙”ÌYŸïß5RàŸ1ì⁄≠Zª£\0∏lûπ¨doOr‰…n ãÏ·˜É˚Õ«øµE\r¥óóq&œïy`x˘{‘≥)HSûsJÌ(Åe-◊Éé3Y&trï•D@≈só$Ë*Ù∆?>%ã8Uπ™rÉ±Xí@oÀ⁄üH.ÇGriKb°Ò\ZèìÄæùÍh∑)åÛQı}πœ•YÖN‡;W$èF&§1Á°‰Vö‡;Vmö∑¡Á•jDÿBÿÜπdl[Y¡å@´DØó∞Ozßº4¿GÄòÁ<’øî0\0í¢°âïKãœOö£í)◊õ\0?›5e¡,p@Ù[F\'Fq#¸8‚ö)HöäG˚≥+`Òª}*r¶È]ãúØbq¸™”¬ë´¥©ı99©í’„pL≤*ë–\Z´íÃÒm\n®P“nÍ7úÅMUX‹†ù√∑8ä“;„cºC–“© Ådﬂ¡ÈÙ£ò!2Œ=È≤pU¯¥∆r	‰t®L•œL“\ZA4ŒœÚí0yœzùNÔõï\'¶*ú◊PAyòË:÷lö¥ì!„ÀNÄû¥(∂S7e∫∑∂LÕ û1Té¥€èëlû¶≤£Ñ»TíX˙±≠Hm∞\0g8™ÂHñ=n/Æ∞7òG™Mhi˙M›ÏÆ<Ÿ$êy©Îygß…H·~uêÈYwÙÕ3pÇ,‹‰âd\'©ˆ´Ñ%-ëœR≠ñáLﬁD&\r)Çﬂt˝kÁOáO≤ˆ}Ì‹kòó‚F±´Y›‹[œmX†l1\nÚ}s\\Ω◊ƒ=jÍYeñ]Õ ¡,+£Í≥{Î£ª;ããa\0°V##iÈP	¶∑ìtWrÉé1?Œ∏?¯Lı2w<Åüπ\"≠[¯∂‚v\"[}ˇ\0Ó–µ5X lÓ≠ıÀ´J  ›¿´ip≠&#bpxœ…XÎëJ£ÀsêTˆ≠õkàÓB\rÿÙ¡Ñ©µπ—ß™:{ÆvÇ~ôÔWë‹≥IÖe[Ü,§`Æ>>µr2VEFR3‹˜¨⁄+sQP≤q¡ıÕG-ª§¸ﬁ˘Õ[≥ã{vÄ3ÕX∏â§û·ER»I?t˛Ω.Wc>k3%bSBxÙß0ÿ*l‘Œ¨®‘ÒÈHÏß$gäÜhôb∆@¿´ê±eÓ1≈SÖ¡ä∑	?Ö\"$j[∫ ™f]˚C‹’ïçX`±8‰Áﬁ®B∆1–˜´\"BƒëìÙ≠c#ûKQ.\"¬e\0#÷≤.A⁄}+JYGòPÇ3Yó.êƒéÙ§];ú˝Í·àœÙ¨	üCﬁ∫K∞Øí√Ét∏lé(ùHñ@Î^À˜]WøJ√Ç\\∫å?ZÈ-\0h∑éTuÈ=≈\'°bˇ\0W6\Z\\˜Æä∆5˘CsœjÛaæ’Æå”H»≥1ï◊<Í\nÙ∆≥ËëD#VWîn9Á≤-Ùµ˘HDJ£ÎZ∆\\® )nU—tkKuE!‰ ª[é’—Z√j±L¢7hè\nUzsUö“‹F]¶lBü\"»såû’bM°SÌ≤®aΩÑmÄ‹t≈=ı	=ö∆1gtF rwåû¬§ö)å…v€≥¶J#◊ÿ‘∞âaa≤‰2©Œ…î2ÓÌJ”MƒíKLÿ·ê∞§-L€€D¥”n`¥kmÈÜ\'<íx≈Ggµ≠ô8	áÉ¯≤9©Æ„IàgÖAc∏Âzöè˜Ú˛µ<≈®ô∂6≈H„èŒXTSZ˘~búﬁ¢¥Ém¡P¿†TS©|ÔÕ⁄ö$c˘^P(Ä‡ˆ™ff|üZ‹˚;Á9ÊõˆSê1≈5 hÕ{ee¿\\QVc∑&0\nÉ∑æ*Ïv≈V•Nc⁄∏∆Ï;“råÊè(	‡)ŒF‡åyË≠XëFq‘Tr #éææî”Qô¿Œ:V5Úå`/>ï—‹/ÿèJƒπPÖõqÁéïµ\'©çE°¡Í(ÈˆÙ<’≠˝z\Z9At<Vk◊¶Ôƒ™≠&àË†—VdQE\0QE\0QE\0QE\n(¢Ä\n(¢Ä\n(¢ÅÖQ@Q@ò•†AJ))E\nZJZE!¿“äm:ëhZ)(†aHM“P §¢ÉLõÖ%S$)(¢ÅQ@Q@Q@ES\0•§•†4Ph†AEPEP0¢ä(QE(¢ä\0))h†¢ñä\0JZJZ\0(¢äQE\0¥îP—ﬁíñÅè^µr‰U%ÎVb<÷rFêzõVØ“∂mﬂÅXÕ“∂m€•qTG©FZ0Ω^ç´*´—7Ã—‘ô†≠N/UïÒH“TX´íÔ¢™˘ÇävúîÉ&†ŸÕ[u…§◊Bg$ë[eE\"’„ZU´LÜå˘5´Rjª\nŸI‚úßRRéµD¢Ï\rÕk€?J≈ÑÚ+RŸ∫V—MõQ6EJFEVÄÙ´»π»Ù:\n2«T&ä∑’9†ˆ™åÅ£ûû.µù4u–‹AÌYs√œJÍß3ö§w	zX∞zUfJÈã8•RS ëM5fM*d®jE¶$h[ö÷∑~bBÿ≠e¿å—º≤≤‡T3M«Z´Á‡UygœzÖG1∑g5ô3‰‘”Kö¶Ì[EXÁîÆ1ç34§”kC0¢ä(\0¢ä)\0π•õFh…U»©RJ≠öp4ö)HæìV‚üﬁ≤UÒS$æıî†o\nñ7\"∏˜´ëÕûıÉ’r)˝ÎûTŒ»U7J∞≠ö…äjªôÆyF«DerË4ï\Z6jLÊ≥±dl3UùjŸ®\\U 3ÂNµFe≠IV≥ÁÕme36QÕUsVÊÎTú◊\\\nååûiπ°ç35≤9€öi4RS&·EÜòÇä(†ê¢ä;–R—E\0RbñÄ\n(¢ÅQ@¬ä(†\nñ3Päë5,¥h€∑\"∂≠•`¿y±h˝+ö¢;)3†∂nh∆k&Ÿ∫VúGÅ\\RGb-©•¶)©*JiçR\ZaTMS∞®XP2MßöiÈM	å4∆©\Zò’§Ld3µ4”ÈÜ∂F ~ıB~ı}˚’˚÷±1ëìq‘÷|ùMh\\u™u≠‚a\"ªSiÌ÷ôV@‡jdnGqP\nzöLeƒ\'\0ˆ´ÜµRàqËh€»F\0^á5îÕÈÓ_0Âcy∑™üZÜc&’M§ÄŸÁ†ß≠Ãá(wc<U®h|÷P¨H€Ç‡◊6«_ƒey™ªÚ2;/ø≠KéÚ4≠ú*!êJK\0∏ÙßG »SÎ«Ω[ÿQﬂSbﬁ@O#ö∏¨Çf€6ÈÅüZæÑ08ÆI≠OBõ–Ÿ¥¿aìœZ“ÑÅàWáduèg&ÊŒj≈\'„ä‰ë∫.⁄D¿(ÁÈVÇm-PY±sÚ∞˜5tD\0›ìüN’õ[Çß\n	«zh∑õê≤lP06ä≤ƒ\"©S◊÷ùåêAﬁÑ…*Ä!VXın˘©Kæ–Ã¸Ù≈OµA¡«ÆiNOÈLõê<çÂÌf-TùÄbA¿´í)¡ sÍ+6RI…ß≠ƒqêm9‡tÕf‹‹:T|øﬁ5=≈¬&É⁄π˚€ıﬂ.~ÔΩi‹àc)öS$å\\˙ö“Ö\0H+ôõUÚX®û†V|∫ıÌ…1@DaFKz\nÍT%#	‚!Œ‚mNŒ¿ñôÄwöƒøÒ|”√\"ÿ@Dw~;ö‚√œypäÚ<Ö∏9ØKèá$‘m-t†à°$3\\NzÛ–\n◊ÿBû≤‘‰xâOmƒ¯éMV¬ów,]Pga¿‰W;Ç[Ê9\'πØ†¸mÚ-I∂0ò¬F—’∞1ü“º\"‚Ÿ†ûH\\a„b¶∫hÕ5cí§\\ùÓkx>Î√∂:”I‚m9Ô¨åeUQ Ìo^5ât±díÚ·wcD‰¢ÁÅû¸SpE4)-[) „°∑3H™£öÌ˛ZA/ã£ÜXVU+Ç≠–◊-—E	T·è^˘ÆÀ·Ì’æè~˙ï‚lb$<sÎXUó∫ŒötÔ±›¯õ·ñïx$ª”êÿ\\òÑcµø\n„Ïº3≠X_•º¿0qò\\t>∆∫≠S‚í°Ü⁄ÀzsäŒ˛ﬂÒˆèŸ≠Ã~˘^J‚sv‘Ó•NH•°sew,P∫¨oµàÈü≠tˆwv⁄¥J÷˜I#(¿C˜î◊=-Œ¢l§∂çßx„=ÛÎYÛYÍ_∏ñ Õ·t˘º»◊\0˝k;)\r5©Ë÷“IØò†î˛*π{r%H∂ïŸ»ÔX^÷^˝ùÙAo\0·«´Yïî∂¸\ræµÉ∫–Üµ‘i√´1¡c‘b™ÆK∞ÕhÚŸwÂy≈Qa˚ˆ„häÇ‚«Gû¶Æƒ¯Õgrq‹Uà‰¡9ÈÎHm\Z»JıÍjhÁ`ÿ¿Îﬁ≥Vpç–ëU%◊bKè.5bSÔ{”DÚ7±–í“´Ωû9¨˘‚∆F8ßEyÊ†|m»ÈNrJÇO©ª¢iòWVÏrO≠c›¬AÈ≈t∑8=:VM ∆‰®˚√µ(≥tŒt…ÂJqZ◊Ú!∏ÅÌU.Ì∂ÂÄ„?≠26ÈëÛVçh4tR∫Œ∞∂F‹ÛÔWdµéEW∑%QoûkûÜ_ói=Î^¬Ë«à‹‰7ïBemûTRKˆq$útÎ≈5 (\n1ì±ï¯+éïyN¿¨ç\\m…‰\ZöXK»≠\"˘°{∞Îı´H≈À°ú»’å;„5(ÉÔn(ÖG@:’„Ä·X|º–TíÓ	á+ë∆UG#ﬁÜÖŒb¥\nÒ3≤≥v5XZ.9µ^Ÿ¡ﬂ‘n\ZYb+¥Ö\0µô™ëèˆqÇ1œ•5≠o+œnkNH6∂AÉÀöCÊ3ò…˘FH§6™ã˜y´ÔÚ˜c\"ò™YwücJÂ\\œÚπ#=*6P¨´ûMh≤mœFæ`\'WΩ0πûÒ‰„Ë1“¢(¸ﬂçi<x\'ûµTƒI%±öwBÊ6#+‘v5âzç±Ú:ı”K¥dr}Î\nÌ$\nˇ\02˚÷¥ŸWG+®CˆΩ>H£è\rﬂìﬂ…8Ø@ˇ\0W}›Ñs¥åps\\~±gˆ-FX±ÖŒG“ΩZËy8öv˜å£IN4⁄Í8BñíñÄä(†ä(†ä(†ä(†AEP0¢ä(\0¢ñä\0J(¢Ä\n(†PKE\0R–)iÇîR‚äEäC“ÅâE\ZbíñíÇXRR“S$(¢äQGz\0(¢ä\0)i)iå(¢ä\0)i)h\r¥î\0QE(¢ä\0(¢äQE\0QE\0QE\0QE\0QE\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä*xœ5\\T±ûjd\\^¶≠≥t≠õc¿¨+c»≠´S¿Æ:®Ùh3^#V—ÒT¢<UÄ’ Œ‘À^n*7ö†/PºîîA»üÕ¢©˘¥UrãòÉfM<ER*‘ª8•rND≈Púu≠9Üfœ‘÷ê2ëBAÕ@¬¨»*ª\n›¥BEúE ÎWrlXã≠i[ûïõz¨¶kj›∫V§<ÅX∂Ô“µÌü8Æ9£•2‡è\"°ñéïv ©\Z,éïùÏQœ\\[ı‚≤Æ-˙Ò]Lu‚≤Æ ∆x≠a2eúƒ–rx™2C[˜‡û+>XπÆ∏L‰©L»xÍ&J“xΩ™ã⁄∫éi@°∂úµ;EäaLU‹≈ƒtgi$¿™Äbûò÷Ö≥-C$µzçõ4“ vÕ@∆ú∆£&©ÿRQE1Q@Q@QHñíä`8\ZplTtπ•a¶YI*Ãsb≥¡©ÍMc;MÔZœ”ö¿é\\UËf˜Æy¿ÏßTË\"ì5e[5ë›*¸rfπeÆ2πn£~î™‹SX‘\ZeËk6‡ı≠è≥.Z⁄ö1®ÃÈçRê’©è5Mœ5€y’4îRVß;\n(¢ò%-%\n(¢ÅQ@Q@Q@QHä(¶EP”‘ÛQäp4ôHπt≠kWÈX±5i[>¨*#¶ì:;g‡V¨-≈`⁄…¿≠x•qMÒz\ZHjQU£jùNk#A‘“)Ù”@0®XqSµBÙÄÅ©¥Ê¶’!1çLjê”\Z¥âåÜS\Zü⁄ò’≤0ë’˚’˜™3˜≠bc#&„©¨˘:÷Ö¿ÎYÚu≠‚a\"¶wßµ2¨Ä\"ı®È¿“\Z.¬p85ßiµŒ	!R+\ZínC\Z≠≤¸ƒÁ®¨jã—*´nNá∞©Y6¿ûMºi\n.—É¿Òú7û9œÀ∑µr6w§P∏Bd›ªÔU}Ï¶Áú„•\\ªVX¡lcVts‘}+HÍåÂ£4†‹´ª8j–ÖÒè‚¿Ê≥‚˘îu‹{T±ND¡[•c5s™õ≤6≠•&B\nëéıØÄß÷-±‹I9„µ°˚¿!¿j‰ô◊Êå$7,I;+£8VQŸk\Zƒlé\0ËkX\rÒåµåû§ÀqË∞2\0HÈR˘eá LTQ©Y6ìü≠Z˜§ñF±Ñ9?éM:H¡$ús–Sﬁ2‡\\T[JÇ?Zdï•P29‚≤Æû5)Àcö—∏…rπ¨ªàK∂wtÌTç\"c›:∏ä¢Á,OQÙ¨í[.ë_]ºWO=§oÀ¶ÒûÑu™Q›MŸ‚\\D¸©é+xI únp˜WRò‰Ü\nﬁld˛u\rûüy$3I!¸‰˙W\\ö<ÁåÉ–t5•˝ñb≥1\r4‹}3⁄∫˛≤¢¨é7ÖºØ&qZ.ü+të9Ú∆‡˝\05€¯ƒ7:Nÿm–Lÿﬂ¶?\Z∞4MÌ\02Bä7™ˆ´ÒŸ≠øŒ-„⁄8⁄WÉı¨jVS5Öc~N+≤6–9,8Æƒö¶Øw>°˝ôù∑9Úí{◊Sö˙Ñ∂–NZ;cÛà˚:éÉ⁄≠¯ñ+çCGºíDA+7ópë†\0 ‡é*!6ù”\"T‡¥±Á˛Üù˝©mq©J◊v\'œ\nÇæg∂AÕ%ÔÑt√Ø‹§I<PI3b›¬!<)=xØR”t˚AoiXyñˆ1\r±èíG8·üÈœÌÛ ˛Œ≥∑i_q€ã≈≥ÈZ∫”Ób©¬˚um·;µß≠£%⁄ÚôÁ‹fï¨Óaªdñ—%Pv0Vªm^”˚Bq,óÔs®ZúFR0:zcµB\0∫ÖZ8ﬂÃoı†ÚT˜…¨e6¸Œò$ëÖè•Ìò‰€à«µ_äﬁkØÙMÃßçÆrµ$™˜\0*	;·é>ı,áó‰*Ï2/D9®ΩÕ4Dë‹ÕˆH„Ô2£¡Ó˜=Îi.ı;∏U-¿PÉ\0†{åU$eÑ\ZvHÅˇ\0X§¸«‹T*≤mW1í‰í7S∫FM_R4áñdü(ìê—åm≠)„ÇEåI+Ü?y˝hÖå*0úÇwn™-3I<ü‹›ï≥r∞“r,Œ‡n(Ã»ùı™/)#=…ŒOzñG «^›™/(Ì∫˚Vwπ¨UÑ¡\'8Âl‡u§(HÂ@≠å((ïFE>;HI\'ÀR«©≈ Á•><Áû¥ÀJ°ch\'<SYòõé{“Åûµ^·æerËJd$6Wc&≥ßLéF\r^\ré\r√©®›áß4\Z-;Ä•pF\0¨πP£‰	‰÷’Ùy\r€ÈYOÇò‚µã–d∞*={’ËóÂ‡ú÷L$Éœ+Z,êqé˛µC4-n§çîÌŒ=kj„+ï2π«Äô»l’∏§‹\nÉﬂ•I£9A3•luoó±™ÚÆ˝°@6>nïB;¶@ôÌ=E^Y„ë>e)œ<ìÌWŒôÉÉâØ∑!â¬ˆ*9YdeeŒ1V‹«™I˘U=1Q8ò*Ù=™YQewá˘õr§„Ø4äç¿‡Ø|“ X2\r√8«JUpN—◊∏Ù§V§/ùƒÒäf‹q◊<‘ŒÅá#éî–™~Qü≠\"ëVT\rç´úTLü)«µmÜ‚°e úéßΩ)›I?•1«…”-˙’ôÇ8®U√É∆M)MµìÊ„\'èy	)…È⁄∂Æ=*Ö èækH∞9;Ù⁄ ÀG÷±ºT¶CorG.úüzÈo£UŒ5Õkr	4‰S˜£n+–†ıG&>Î9fÎL©≠Fz◊§è!ÖQ@Çä(†ä(†ä(†AEP0¢ä(\0•§•†ä(†aIKI@Çä(†AJ))¬ÜRS¿§QRRÀBbì&(≈M ±ÑTÑSHßq§ßbåS⁄LS±F)í6ìÍ1@Ü‚íùäLPQF(¶ ¢ä(R“R”QE\0R“Q@Q@Q@!•§4\0QEZ)(†b—IöZ\0(¢ä\0(¢ä\0(¢äQE\0QE\0QE\0QE\0\"j:zı§ FÖπ‰V’´p+\n»≠õVÈ\\µ›EõP∑6Ó*§-≈Xœ»—⁄òé¸Uw|‘éx™Ójíbo¢£ÕV$‘E©‚ïûÀ≈`Se	«ZÃúrkVq÷≥¶^Mkû‚†aW$ZÆÎZ¶f—Xä@*FZn9≠.EáØZµb™/Zï[§j¡.≠{YzW9òÔZñ≥ÙÊ∞úM£#™∂lÅW’r+ l„ö⁄ÅÅπ$¨jô—dVUÃ=xÆÅ◊\"≥nbÎI1úÕƒ]k6X˘È[˜1rx¨…bÊ∫i»âƒÀh≥Q4>’¢b¶òΩ´°HÁq2^\ZÅ‚≈kISï+X»¬P3ŸqQö≤‚´=jôÑê¬iÑ“ìL&¥FLBi(¢òÑ¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(sJ\r6ä,\'G´1IÉTA©QÎ9D÷2±≥›+J	zW?ò5•Ω+ö§⁄U\r¥|äs7N)8©Àq\\ÕäW\"úÒYw\rWÊnµô9Î[SFYBSÕT~µfC÷™∑ZÏâÁÕç§¢ä≥ ¢ä)ÄîPh†AEP ¢ä)\0QE\0QE\0QE\0QE¿(¢ä\0)¬õKHhñ3W†|\ZœSÉV¢jâ#X3z÷Nï±o\'JÁ-§È[V“p+é§N˙r6‚n* \ZœÅ¯u\rs4nã\0“\Zh4§“∆5@’+T-@7Zaß50’!1\r1©∆ö’§L§6òiÙ√Z£	=QüΩ^~ïJqZD FE≈g»9≠+Å÷®Hß5ºYÉEF ùíòRÆ‰XéîR‚åP±∞‹+j \\©Ó`ØZ◊”‹Å÷≤®¥:(ΩMô_\"%∆“92]*o\rÀ8≈U√À:ÆqÅ…<Êë$+oË3∑5…cπ6â\'…ÀÙÓk=îwÅÚéqÈV∑∑ê7Ú7g•RëÇπåeÅ‰’≈\'rÙíë∑Bxß≤‚Á9Î…®Ì”˜J{vïmÊ\0˜‚≥ñÊ’\Z0\"∂pjŸ∂eb6èî˜¨Ksú˜kVÕÄË:W$—◊t∏´») ü≠f[∂¿$˙VÇ»ëƒNN}+ô¢ôxŒ‚?˙’hm`ûå\Z3Çr;Uà‹ìûF)¥\\ﬂ∆JÖà,Gjn„øÔdw§èÕëA6*JòfÓj∞∑g\'=Ωh2gú}M4(¡<˙”E‹œk|1ëﬂŸzÅ¿&¥⁄0ÿ9ˆ©@8¡ßpÊ2V»¬˚ó†jTçxq˜ó÷µö›@cöåZ.N&ù≈Õrº!y å‘¨äÍA≈L÷;ëÇO<P-ü\'nH¥Öt\nƒKª˘Bé¯&”<F.°èÃ∞\r$VÚ8l\'A…\'ä∑l(¨†ìîëı5j‰I§G˚˚x¸˜∫â	]¨Urÿ9®<ø¥më¢ö‰„¯‹¢å˝+Y,a2hwÅ–18_¬¨í“4ç),`Ç\0•åyª±√0L.¿À˜!∑üvÍECñR≤0ë€qé6¬Á˘ö⁄é?.-®6‰t‚¢h¿…,8GzOBìf+[ePcÓäâm„ÇVX”ilŸ∆ÔzŸï7`\'‹S!˘≤¬&r0O•EÕ9¥3 ±|63êÑÊ≠ÄC∞ëúµZPS!ê)Íå“πg;õé00\r&ÙÓC#\0ˆ®{ÜE[;üª€&ùÂÅ⁄¢„N≈QØ9iA#\'◊“ßëv∆x\'\'Ä;” #i@§;î.\n∆Pn\0ör\0√Ø„POgÁ‹+Â∞ß={’µåÌ⁄?:e=ÑÛ\0˘HÁ•=I‡éûî¬òÈN˚°{ìA%òüÂ9\0ì∆HÈH˚∂ÚGÀ◊äqö≥\0#Ω1u+:ßc…˝j6QÅÉÉı©û3¸K¥ˆ®eãÂäE˜©πOoz√ó¯≠o‹—ú\n∆ªB=kH≤ààËVÆZÀπ6±¿ÕPâ∫Áä±a˜ÉÄx>î‰‘(˘Kz‘÷ÚmlÁ>µ^9&Â<è÷¨DWÓz÷`Õ@ Òµ&”#$qÉ÷´D¡vúÛÈVP´p‡cµ#6ÖVvl≥:\r«8˙S•¿He…Q˜@Âæ¥ÉiüJ`‹™í	°1Xta¬≥ÚFy¶ªç∂«w<vß˝ˆ\0èò\nî¨∆6ÚOz°q∞du≈0:í9Á˘S€ôÂ˘q‹“*åí@G#)èg?ZÄí≠åÇ¢¨:së¯Udﬁ¥ä@Y_$Ê™»€\\7)ÏEXur[Y‰f∆ﬁ3«“öVWÀﬂJ£.s”zTlÉ¡Áêk:V›ΩOÈVÜb›≈πã0#Çp+ê÷¢a	‰ë÷ª©–y,«ì\\Æß\0x‹c$éï›áñß&\"7ã8∂¶\ZöU⁄ƒzT&ΩTxåJ(¢ÅQ@Q@Q@Q@Q@-%\0¥QE\nCKEä(†\0SÖ%8P∆á®©TTj*eõ4B‚ó†R‚¶Âÿåäa)“)â¢,Qäyò™&√1Iä}&(Übì¸QäwàÒF)¯§≈§≈?ò¶MÜ‚íùIäb\n(¢òQ@Q@Q@Q@Q@	E-%\n(≈\0RäJZ\0(¢äQE\0QE\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\nrı¶“ä—rÕk⁄∑J≈àÛZñÕ“πÍ#™ì7!nY*å≈\\S≈q…Ò`√äÅ≈Y=*\"à1E?U⁄E‚ú„äTß0Õ`#>eŒjå©Z≤%Tí:jC±ï\"UgJ”í*´\"V±êúLˆZàåU©´=jôîê—O£Õ<Uâj‹`ä£NW*jZ∏˘¨u6W=9Æä“‡9Æ÷Îi◊Ce{¿Êπ™S5åŒ∞8+Uß\\ÉPAtG5#…ë\\≠Xﬁ,ÃπèìYí«…≠â˘¨˘W≠TYMÊ:c\'iÖD¸WDYå¢QôqY”w≠)ÕeŒ›k¶4 rw™ØS»jªöËG,àöòi∆ökDbƒ¢ä)í%¥î(¢ä\0(¢ä@QE0\n(¢Ä\n(¢Ä\n(¢Ä\np4⁄QC\Z,Fı~	+-N\rZâEe8õ”ïç∏e‚≠‚≤°í≠¨úW$¢w¬zJ‹\ZÕúı´r>EQòı´Ç\"£)…U€≠O%W5’ÜCh¢ä≥0¢ä((¢äQE\n(¢Ä\n(¢êQLä(†ä(†ä(†ñíñÄ\Zû3U≈Já•ói[øJŸµ~ïÅsZˆØ“π™#≤ì:v»~3¿¨´fÈZq+éGb-)‚î”W•<Ù©TV\Z†nîS\r=©Üö4”I•4÷≠\"e!)¶ó4ÜµF#zß0´çP:‰VàÕ£&dÕVÌ+ÌE$ö’04ØµGZÿ±≤Ü‹\r√Ê=ÈNØ\"4•CùúÏzÃÉ\'I\'ÜÓÄ\'åc5Ëñ∂∞ £i≠∂úõNAÈ“π2iù´N«éœa4ﬂw≈U)é’Ïœ§G*h’≥Í+.˜¡ìF“ÚòÙ€‹÷–∆«Ìı0Ï≥À6Ûö“”W2Q]#¯\n„¯f}sPŸ¯z[+¶IÔBk,E9GFeO\rR2’>œvq»2∑ﬁïõ*©WÍÙ—ç4,a∞Oµg\\ÿØú“m$Øc\\±®Æw:n∆gêïbBÅÕFÖcòn„°©Ø#uÂ‰’I&ﬁ˚äÙÔÎ]+Sí^Î.E1]≈â\0Uÿ≤ÜÍ¶®Z≤…/Œ>µ~3ëÖúÕÈj_ÑÚ0kNÿ\0á\'\0VTAHÚ=´F,3éú}+ñgdMª9X™≥\0\0+F9xıÕcA&÷¡≠c…¸+ûH≥R6Œ¿2zÊ¨)˘ª’\\Ü+ä≤Ñ„◊Î6K,°M›NMJ@¡Ê™®¡œ>µ1\0∑R=h%àÃÁ©ßcw\0Rp[•ç0z”ë««z¶X˙dÁ÷ûº0äë@›«•åx…Ëÿ·Îåb§\0“•èk7œúwô7\"Áë÷¶ÚJ\0ß¯™tR∞£n(sJ>bN?TëD>K,lò«|Uî@£åÅŒ)bå ø|m\nëP|¸ßoZ–Õ±§ˆAååíNhÿÜ·πáØO •]™«ßµ#‡û£≠+Á%ïPëé«•B $©\n{\n≤‡aä,Äg˚\ZÑÙ;âSåeèZOÃµ‰V1 âéB˙˚”Âïó+Û8Õ\\ål]¯›C1˘qÙ†\"H7≤Ô\'ï9¿“¶≈sQ\\¡wu4„8¿É˘U∂Q¥m9ıÏ)œn%÷Áì∑é*l«Ã@TåÌ<w®Ã.3≈X1àFH˘õ¯ªA*.>j9A2¶–˝ﬁ’Öé‡úÊ¨ÏbvÅ…Ê°î|πGJE¢ß›r«ıß!»î÷ƒÁ§oïrO4ã\Z‰ˇ\0Ö.ıY∫é’eNj ˘<”Æ]˘S√\r†UU«ÂO·C1–+IπîÅúäÆÎ”$˛5?ù∆A®^B«úc⁄Å¢¥®1…¨ª¡é£\"∂%å≤É≥Ø|’I†ﬁßpÊöe#úù<≥ê85$\0b1ÈSœn¿rFk?k¬ˇ\07+ö◊p±ÆùN=XÇrΩjï¥†Ì#ë“ÆÖF`={VlfÇIûN*‹/ÚÚ8¨ƒMÑrOz∫é7ê‘¥K.á| ?\nîHâ\0nÑT\n√Àt=™xnx„“§Õ¢C#F¡Ç˙äL˘Ó\\˝„◊µK $\0tŒEF\0sûz’F…áÏ@¶ïÀcZ∞»K`pGÎHADfQœB=©ÂFÜ»™.∏? ≠í\0åzäÇD7®-Ó˜x¸™Ø\nßi«1!áJ™[,T}¸t¶QQ§q(=jÖÊg„\0ÛWÆ3¥πé∏¨˘Ú@…›ö¥2î†ò€ûïŒÍ…Í3”—…¥ß\'â®‰Æ0æµ—IÍcU]%ÏF+á_|’CZZ®oµ±aåé+4◊±txU§∆—EFaEPEPEPEPEP ¢ä(ΩÈi)h\0§•¢Åâ@•¢êÇú:“\nräI-J:Tj*QPÕb<R”E-Ib\Zm:ê–!ÑRSç4”$iî˙m1XJ)iq@¨7bùä1L,3m4äóò¢‚hÑäLT§S™LñÜRSà¶’QE\0QE\0QE\0QE\0QE\0QE\nCKI@¬ñíñÅQöRfå–—E\0QE(¢ä\0(¢ä\0(¢íÄîSiE\'åÛZÔåVbj‹/ä H⁄õ±Ωo\'JøÒXêK“¥\"ñπg∫47qQµ1_\"îöŒ∆…âEP3q*]π»Üj ßÉd¢£«U§é¥⁄:≠,u74FTâTÂLV§©ä°8‡÷ë`Ãπá&©I÷Æœﬁ®HyÆ®”\Z:‘ãÕDΩjd™d!ƒqQ1≈X#äØ\'J§	1SZvó•qÕañ¡©bîÉ÷™P∫2Siù•≠ˆ@Ê¥“ÁpÆ6÷‰ås[6˜$ÅÕqTßc≤úÓlºôVB)´.E#µak)ê9™≤æ*y[ä°;÷–\"ey‰ÎYì=YùÎ:WÆ»#Ü£#v™ÏiŒ’5∫G,òÜíäJ≥6QILê¢ä(QEÄ(¢äv\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(¿‘—µ@\r=\rKEEöΩ[I8¨ÿ⁄≠#÷Ge9Y≤*¨¶§-≈C!©ä‘π;ï§™ÌSΩB’—íC(¢ä£0¢íäbaERQE¿(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0Zzöe(4ôHπ	‰V≠´t¨xè5ßj‹ä¬¢:i3†µnj¬x¨[F‡VƒÅ\\SGtK…“üQßJí≥,ct®¨0‚†z\0¨’©^¢4–ò”Ljq¶\Z“&r\nCE!≠Qœ!≠“òW5%(U	ÈˆW-Ë3Zñ∫O€\'ew*ä;u©4à7Aë÷∫ù\'NUŸFO9Æ\n≥|«ßJ*0πÀæô{¢‚{|œ\0˚»zÅ[z}‰:Ñ;—∆zÓ+jÚ\nvúèJ‰n,¶≤Ω76›‚¨[Ê‹⁄.ÁI%òåV¨0!QÄ	Èí+M’·ºÎÚ8ÍçÎ[ˆ”+.\0µ\r4LÓU∫”ê∏}π5çs¶©óÃÿ\0◊1\rz£4$°\0ÔJˆ&29©,∆ŒÇ∞ØÌ±êπıÆ÷h0ø0¨[À@Ë«\Z®»—jyıÙD≈ÉäƒuPÄ7Qÿ˙◊g}dÓßµ∆ﬁƒbúñBrxØFÑØ°«àçµ9K∞ågûï±\Z®%’Åœï’É\r√ìZ—¸À¿’UI¢ZâéÌ¿~z/Nµù	8√\ZªïzäÊëÿçô±…≠Y±ípx„ã∏.\0éy…ÌZ1Ì1ç§úÅö∆Hªõ1…øßû’mî,Mf¡(¿⁄0G•[éLp9œ\\÷L\Z-´ïSœf«JîeàPz˜™÷“`\rƒ˜5<-–Ò˘Tà∂@@˜©£@^i©Ú∏˛B¨&Å\0\0)ô∞⁄sìNL|«Ç6Fê/ÓÄ$ûÙô¬Á©\"ÇBêÜf<zV#˚‹å\nbÔ—èªúìûµ*ÁπüJhñ?h…‚¶wB≠\ZÆ#==i#R«\'8‚ùám√°Ë∏´D1Ë\n(L/A˜iÏ—©bISé\0ÔÌH Ñ\\‘Åpƒ∞‡f™‰\nCªWê>`{P§îoõÈ≈HJ∆FQúg˘”B«$Ñd™ˇ\0≤0(É $∞˜ÈöÅSÆ«=Ü·ê*UeL®9ÙÕñ√H™S=	§Q g‚uêFB·Rmi˛VQ«?(≈:5m∆(ê‘Ó‡qÕK®VT`YOv˝(∞õ∞›°àUU¿<{‘Ú>—ºp€xòÉw ÏN:Sõp…à©êç™\rR%ï§V}“òÅP∏Fs¿=X∏∑p√$+˜®pvÁ,ÿÏ*Y§H7ÆÂUV\r›≥U§sìﬂ3çú‰ÉÅU‹í77Ry¨Ÿ™Dæ¬™K7>π©gf$Ö=™õ∂—Ûbë™@Útı¶ñ	…<’9.K6–0GzrosíIßb¨XY§êÒ“ßç	eŒN)ñë…Ç$ØÙ≠E^0I4›Übÿ)|‡ÔV±Å¿¶yx8Á÷êÆDÖ8 ëÎLhK1.p=_X6Ø≠#Cºc†>î…Ê1Â∑8\"≤nlÚ«èzÍ$∂U˛b©œn¡I ”N≈©ì#⁄æW gúU∏.É˜‰t‚¥g≤8ç5ìE&Â»Ê≠5-∆oEp≠≥éj¸JN@Qåfπ(ÔZ\\z◊U•L∑ÂHÈŒMKãD≤TV˙ÒW#OîÛœcÈQ∫m|s“¨!2ß9%±a…Í«\"ûFÂ»fùj√o9œñDpô™∏ÁΩ3;Í†Ù\0ÚE5àÄ‰Ù≤±K\r•éx¶å©Œr)ÅP†©«=™)W8Ì÷≠â `ı^„x¸)ôJEœ8©0\0ñ‡7≠]%î« ’9sÅA¢(‹e~:úÒY∑,™7)«†≠R∑Q«ZÕôæf‹@?N’H£2Ï¸õÅ…Ù¨ã¡òGµÓäáPW•eﬁ„i›ÅûÄWM=Ãjlq⁄¥e]XÙ#ê›k†’c-jÆ”è•`0ØVìºO∫¥àË•4V∆QKIHäZJ\0(¢äQE\n(¢Ä\n(¢Ä\nZJZ\0Z(¢ê√†QNÅÿ\0ßÅ@*Yi\n<RJ*YhZ3Eä\n(¢Äöi‘î…E-†Vä\\Qä\0LR—K@	ä1KKäb∞¬*2*r*6–ö!aL©XTf≠±¥Ph¶ ¢ä(QE\0QE(¢É@	KöJ(¥îQ@¢ä\0(¢ä\0(¢äCKH)iÄQE(¢ä\0(¢ä\0J(¢Ä\n(¢êßç±U≈HÜìE¶iC%hDıë’¯•a4uSë©‘‡Ê™DzUµÆi#≤\"‚äv(©(ËaZ∫â≈CU‘N+ùâ2qU&J“t‚™L¥ëiô3/ZÀπÔ[÷≤.ª÷ê2.&®Hy´∑MQ~µŸñcW≠Xé´ØZ≥Tââ#t™≤Ù´dqUe©àOb£u•N¥ÜúÉö€°Õ‘ªnH≠ãf8ìnΩ+Z›xÆzáU3F6‚§-ëPßJj‰hÎã\"î÷u¡ÎZÙ™≠\\7	leNy5ü!≠Å…¨È+∂ôÁU cÕ2îı§≠— ¬íä*âä(†ä(†ä(†ä(†ä(†ä(†ä(†ä(†ä(†ANõJ(cDË’a\Z™)≈L≠YI¡ñ∑Tni°©¨’)\ZπhFı	©‘f¥Fch¢í®ÕÖQ@Çä(¶Ä(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0)¬õJ(cDÒ\Z“∂<äÃåÛZ«ëXÃﬁõ‘ﬁ¥=+f‹+–Ù≠õs\\S;·±•‚¶äÇ>ï8¨Y®÷®UñÈP8†\nØPö± ®U!2#M4„L5§L§Üñí¥FûÀL©îdSbâ÷¯rﬂÃ¥+≠¥åFòÆs¬Ò≤ŒIjÍ‡ãº øÈ≈˚∂*›∆¥X1:¥Ï;Ê∫ﬁ\"n¸W9l\0∫˚£ì⁄§“$–`º`&)∫ÜO_zÉÀ‘Ùñ_9|Ë3˛±:è®Æí≈	Aû’™±$â±◊*zèZî»u\Z9Î-E.lÁ∑•\\cêjñ±·Ûbﬂo∞»_Ω$C∏ˆ®lupºåCCA£WâfcêA5ôp®Í@ÎZ3w=AÌY3∂‹‘¢‚a]¡áaä‰µ8,Á“ªõ¨2‰c8ÆcR∑û:éï’FVaQ]Ñ`	1Çp:◊à|™‡ëÌYÛƒ—I«5z~_nµŸ7usíö≥±~ £◊5ayô#ä©êŸä≤\\‡∞{W<é∏ñõûùJµlÃ ß“®…Æ=*ÌæwwÙ¨§¥)3VUïWïNéA‰‰ìT îí›lqV°»lëö…¢çXÇåVÖ∂Ï©n3‘\nÀÇRSp‚µ\"b±«8‚†ñ\\VŒı ;[æÜ†åßwl‚•\n¡≥êsHÇ åTäø\'|w5\Zú.qöpìÀ\nNH¶àd™Ω	¸1RmÈ«§QÚê;“Ç¬Egm ß1÷©Ÿ<Éa=èaR \0åg\'\0{TR8,erz·x‚≠∫˘TèôsëVàddÑu@ˇ\09•¿VÂã∏Ùß[≤∆\02GJëN‘9)ñÌﬁö!≤%b¨«çﬁò©36O›Ó•!\"gRp<ÖÌO1Éë£°$’$\rïÇFÏ√i8Î⁄ëÇ∞‹®œŒ:\n≤ZLr≠û~J\\±DÿJ™p¶√ª#L†º*	œîÿöòEÉ¿E_N‰“ÜnÜ~Âáıß`⁄Ã7ïV\"‰;w>K7 pB—‰Y»]ß ˜©fc\ZîŸŒxl‚™;	U‹d`Ù4ùëJÏ|°F[Ê<úÁÅTÖÂ\0Äx>ïrI4o-|÷Œ“OE˙Ueè˜Á-ûÇ¶E¿´ >gLUÆ úU˜@ëÇÓ#úˆ¨k©79@P:˚÷m√RºØÇX∂+.{ù«\0ÒèZäÚÙ1°È÷´√HŸ\'Ø$’(€sdKl7»rx≠òb˘•S¥µ¡…´Vﬁ6Œ06äMäD±«Ôä≥zäUèéúUƒå“2r!s»©0N@Œ=jtèvqVí‘˘d\'=jînfÁc=£ò0¿#®4´’¿°´Ê”8•*Ÿ%é¨R*π.¢(~\\∂™Ú¬0x≠c∆1…ÔöÖ£$∑‹“q±Qëãs\0#°ÌYW‡˝ﬂ^s]„i…\0‚≤%≤9»ÁúTö∆F≈öììÅäé›•±úIN‚¥‰√7 UgÃ*£®™ΩÀ:+ÿØm˜!Å»=´DFF\0ä·ÏÆˇ\0≤ı\rœÃrù≠éﬁı€°Ë;c?Ö&¨e%bE?ªÿGF‡éÙ≤˝¬zåﬁùÇ†r9œ1ôƒ°Å ˝¬( I0v‡{Sap√Óé©ÍXﬂ¢,í±⁄{˜ÎHhSÜáS÷´HA„”ΩX#∞ê\\’Y\0#v9=©\r‰`n:éG≠Sp≤jÙ™Fy\"©\\ x˙ö\rQJÂïA*\0œZ ∫ \0q…5nÓCµÄ«9™7LßÀ$Ò‹VëE.YäÙ#ä√øtûF{z÷≠È+ów“±Ô^7Án\nåuÎ]4÷¶Ö	aÛÙ©Wåı˜5…∫‡ë]Œù\ZÕ∏_ê\rq◊±yW2\'°ÆÍ’£Õƒ«E\"ë§•jJÎGÜäZJ\0)h¢Ää(†AERQE\0QE\0QE\0¥¥î¢Ü4(©F*E©e\"@)‡SVû*¢\nZ\\QäE	EP0¢ä(\0§•¢Å	ä)h†¢ñä¬QEƒ·MßP\Zk\nìµ1©¢Y\nå‘ÕQ5Z!å§•§™ (¢äQE\0QE\n(¢Ä\nJZ((•§†AEPEPER\0¥\n)ÄQE\0QE\0QE\0îR“PER\0ßM•\rbjøVlu~\n gE3Z≈_åV}øj—ãµrLÙ K∂äìVF∂:hVÆ®‚™D√ä∞Æ1Y~ïRQ≈Xf™Ú)åÀë÷±n˚÷›…ÎXóg≠i≥„©™WÆ:ö¢˝kÆ,ƒ^µj!UêsW\"ZrI‚™L:’Úø-TòT≈Í9≠\n9©#“0Ê§às[_Cù-KˆÀZ∞\'≥Ìó•jƒº\nÊõ:È¢eSç(R\Z¡õ¢*î„ ’ÁÈU&D∑±ëpµô(ÊµÓfL9Æ l·¨ä-÷ôR?Zå◊R8$îQLê¢ä)\0QE¿(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢äQE\nQIE\08Tä’ßR—iìÜ¶ñ¶fêöV/ò”Mí©ÿRR“S$(¢äQE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0¢íîP¿ñ>µ~‹Ú+=:’Ë\"≤ôµ6nZïµnk—∫V›ªtÆ*àÙ)Ω\rHœ¨≠SàÒVî÷ÿyÈQ8©sLaH\nÆ8®U¶ä§&VaL5+\nâ´XôHJJ)+Da jƒB´éµrí)±Gs∏á“\0@˜5÷Ÿ\0ÏG‘◊\'· 0‡é’‘€>€Ç´Ä+œ©ÒÎbN=®ÿÈÎ\\§g˝7ÔöÏı5Ã\'é’∆n%x Úk&çÈ;£≠±‚1Œs€“µ##Éﬁ≤t˜\rÕhØ®¨Ã¶µ&ö@c!ó>µ¡Îç6Ù›@\n∆«ÁQ–{◊cq U«\\÷DˆãxHuOZÆa”˜J◊´uAŒEW∫BºÅö•5ƒ:fßˆTï∫qZR2…¡ÌEç∂1%$ù£íz˚VEÍ‰‰å÷‘©Û6z°pâ\"I»`u≠a†6qzÑee»¸È-Œ§˙ìWıX¬≈∏é;Ê≥Ìõ˜Dü ªbÔô´Hª^O9Ù´!æ\\¢™ ˘?ïOsú÷R6ã,†%ÚF™‹RÖ<åüZ•Ó52ÊeÚqPı(ÿçÅ√cßz∂åbaÜÎT°q∞|Ω{U–πëX¥Yz%øZ—åìÖcû+;%P>ïn*¿ì«zÕâñêÌqûrj·…‰6v™C;¯U§l„∏ÔRK%ÇRø{)—»¶bß8ÕViÂD\0ÂèÂV±\"∞$8ÎÈMÀ‡çÖΩ:\nQâe1åU8§Û\r‹ï|Ï(„8r8«cTåö±*4~Qâπ!≥üjîæÏÌ\0®„\"™Ä™f9#ßÛïktÁ≠ZÛ!ÆƒÀ‹T/^jHÑ{N,y<ˆ®m€≤Wñï\"e`2úU\"\Z$EOïû< $Ä\r2\\ï»9œn‘¬f|Ø #˜¶3·ßx˝3C`ê¸Úaà<ìöôUy⁄≤j%g»^π©ñ6,[Â<=®ZÉPé–æÙbÓY…=xŸP mÃﬁ‰ußFCÁ\næÙƒ2Ic8;z(<”N¿så±<Ç3äî‰±\ZÉÎ‹˝i°&f8ŸÂëñ≈˘—kÜƒ!UÀ&#cêƒÚO“ì`	ëÄaNïËKÇﬁË)è\'ïÂ˘ÔH§ÃÎ…<∂+ûûù´ê’/%BR6ÎZ˙ïÁñ åÊπ•\rw8ôá^\0ˆ¨÷˜;)∆»mΩ©l;‰úÛÔ[pY)Â¿ÌKkl†\0ÁZk\0:RnÂ6Wé£ïÔWí §S¢åo∆8>µ|@`öπî¶E{á#ÅÕ[XâP◊µDeU;G„ö<·Ä3≈R≤2wfå\nó#ÅZ÷p,õ¡WMúeøãÈ\\Ù3*súZ”èS`´âòÌå‰WE9≈=NZ∞ì¯KwQBå§˝¿πœCU#P—∞?;g©Ó)∑7FÂNÊ˝*õÃ™\0û{îÁ5Õ†B∂§Û\"˘$πqﬁ®JF–s¿ÈS<„fG#ﬁ≥o\'+‚F}+4Õ‡û≈;Î•åz◊5=Œ˜8lsK™ﬂ‰u>Çπ{Õ~“Œ@ì33Á\\|öQ¶Â±“öä‘Í‡$dì◊÷£ITúÉíN+êKΩr\"¥X≠Àó$∂+†≥Üt9qìé¶©√îi‹±©Ä!c∆@„äÈ¥{ì-ú±cê5…Í/Â[≥1˜ÆèF.ö}∫∑qê*%∞5°“+úÇù3Õ( ≥IËEWÜQû8…‰zU¶Ei	9 t5(≈Ë3Ç„#ï‰èQUƒ\n≥… \'‰\n±\"≤‰ìµá#ﬁ°¡Ó‹99§∆ÜH«n–{‘üïpwJùÄ`s¡Îö©)^E\"ëÁrí:UIÿäÁﬁ¨π˘pjçƒÖH ÜÉD`ﬂÃøi\nÄg∏ÕVvR Ï7c±ÌS›¬´+∏˘â5FVeãÅÅéı¥QR)HËÔ!$‡tÕc›æÄ@OrkBG\"B≈A>ô‚≤Ôò<Ì\'Æk™ö‘‰™Ù.hZ)˜gì¿ÏkùÒøì®∑ÀåÛ[˛w.Ã∏ÂOz<YfìAˆÑzû~ï¥eÀTÁúyËúiï3äÑ◊z<∆RR”RR“PER\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0•§•†\nëMD)ÍjYhùjAQ)©C4C≈•¢§°\r%8”M1âEP ¢ä(\0•¢åP0§4¥bÄíñíòÇùI@†CÈÜû)¶ö$Ö™&©ö°j§Ci¥„ITKä(¶HQE\0QE(¢ä\0(¢íÄíä(QE\0QE\0QEÄ)i)iÄQE\0QE\0QE\0RR“PERiE6û§KÊØ¿*§KZP\'J¬lÍ•ı∏ÈZv™p¶[N+ñGtUã9¢¢›EEãπ“§ò©Ñµòí‘¬Z ƒ\"˜ò1Q…\'_Œ˜®§õä,2+ó‡÷-”g5°q.sYW\rö“(3gÍjõjÏ£ìU Û]f2Cy´–•C\ZsWbL\nRcå@ØRq÷¥x™SéµzékC9á5,#ökéiıÆéá7SNÿt≠H˙\nÃ∑ÌZ1ûsLÈÅ`)\r 4Y3d1˙UIj€û*§¥ëßC:q÷≤Á≠qﬁ≤Ó+Æë«Xœì≠Dz‘“ı®OZÎâÁHJ(¢®Ä¢ä(\0¢ä(\0¢ä(\0¢ä(QE(¢ä\0(¢äQE\0QE\0QEäJZCå“Q@ÓQE2D¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0•ÔI@†	≠[ÑÙ™c≠Yâπ®ë§≥j›+fŸ¯œ[>1[6“tÆJàÓ¶Õ∏_ä∂ç≈fBız6Õs4t&Zê”TÊùRQ\nÅ≈XjÖ≈4&UqPµXqU⁄¥âúÜ”M-&kTa!W≠^µaTE]¥lHøZrÿòÓv~ìÀπeı¿—ƒvjC\'ñ‚π\r&Âb‘◊<Ç¿Æ®À∂ı$#\nkÇ¢≥;·™6ı(sm∏r1ä‡Â@ó‰/Ø\"ªÎñ/ßeNs^p\nÍ°w÷¢Fî6:{`V™@\0b≥Ù¯¿åfµ„àí+âõW(\\Üüq+,DGﬂäﬁπÑ/l÷{[nîö≥…¯–EÏ/ÊÌ—±»5ùñﬁGµüÔßQ]‹h™øv≤u≠Ìpªs˚¯ÜÌ£¯á•iUäUu≥8À“—Œ\nçŸÌNXÉG∏ƒ~U‰‹]¿T ·Å˛U≤∞({‚©ª#Cä÷≠Û›Ωs øΩ∆ﬁÆÎXµ7ä‚fc\rﬂ›»Õt—wV2®∫í∆>M†czû2À…Á™!áÔV„o_zl®ñT‰u=*HÛºÅ–ı®ëÅ\0d\nï%Ä≈fhjZù™ßå÷ÑL nﬂ◊⁄≤mä©í?ùk[Å–ÈYHh∫ÉyúïeN¿71∆:Ø(`éïgf>˘÷Liπî±©@;√#wldÚr8ß¬ªÛÉ≥”<Êë%ÑOò?ßJy(S¯˚Sc‰cÛr*`2‰0˙“…É	\nmœ\nù^5ëO;πUfuU	Œ”≈<∏\"ÉÄ2M36X|…µÒ‹Á•Y—⁄Á!áAÙ™»C †=MKÃ0y\nqÌVô\r¬è∏1¡›‘‘ë∫Ó\"^ú‡v5\Zwú¸´‹z”?zêßöˆ‡tHñÆKæIHã€ßah…ã8UÎìÍj0≠-36†„\'4‰IdíPI‡¿™ZÏ≈êH≤°€¯ôF}™D*\Z=ÃI<Ùß™+\"p}Ó*%”≥ôJåd3Uk2o•áæƒìá=»=j)	I$™ê;t©Qá»Ó]Ö9aƒ« a˛◊CCMÖ“!¬˘@,Gl”¨äJíxÈV‹Ü¡⁄õ¿¡+“£,#zú˙P–”\ZHÚˆÄxÍ;V]Ï˚rLVâSÛsúè»V5˚Q)\0í{‘MË]4Ær∫‘äñ∏/˚Ÿ$¿\\tÀ2™1–‘\Z≥n‘—2p´ûEjÈ z‘Ω€{\"‹ïî“µñ%z\Z≠ 0aú{‘“L±Ç„•#;ÏJ6°∆:S&∫UÁv1\\÷µ‚ã=‹Àq:Ö<\0Ã\nÛ˝C‚§“HÀadªÒ ›[BÖJü\n2ùHC‚g¨KyÚ¿ú“-=xtﬂu˘)‰D;\0Ñˇ\03RZ|K◊V@Ø\rº¸‰çÑ˙÷ﬂR©c?≠“=’.∏„≠ZÜ‡ì˜´ ÙøâñSJ©®ZÀfOÒÉπ•vˆzú7p	≠ÂIc=Nk	Rúºçî£=éîLvrEUñlciûjà∏`3ú˚SÁoÔ1”µM¡@—y≤êÿQ‘z÷F±yÑ*9s”˜æ;NT(∆AœZÛ¯Ü·Óõeñ∫óÔ:ü∏*·9Y˜UŸüØxÇy/§“Ù¿dù¯íQ¸?J⁄ØÑ¢äa-œÔÓXo.˝;Tû‘V0ô•Vy‰\\≥∑≠v÷ñÒ¿gûÿÔZ‘®í‰Ü¡?ä{ó\"–#x˜(\r\\‰å`÷eÕ¥pÄk‹Î[-ƒÇ®Á»j:õ]KˆhÔ~3éV]ã¶ßºå…¿‘58‚Lòbm“ﬂ⁄ªF“—¿Ù¨õ==lm÷5\nŸ;ô˚ìWbm≠¿Jô;öÓjDNÂ!≤M^ÇR¿‚≤!ì⁄¥ `Ã\05	ô…e„íjÆÈ¥dtÔR≤ôb⁄Á<Ì®\\∫ﬁõ!3\0FM@Ãºn n<\n{0é`Ïªé\nèJâ ‡ÁØØ•IiIåììœJ£p3Cúıœns¥Î:W»+ìÅL—ó`˘‹ú(èvÂÄ~Z‘ºŒrπ¸k\ZÎÓû9≠‡Ö\'°RLI* N1Õaﬁ Y’p:ÊµÊp\"¬`∂{Òäƒº.X3 ÛÅﬁªi#ä≥–Ω° Íj\"ëíOjﬂ‘—$∂ëN2T÷OÜ±%”Bf¨Îì˘09œ853÷•Çùï3œÊfı\\‘ÚúíjπØJ\'ì-ƒ•¢íô!ES\0¢ä)(¢äQE\0QE\0QE\0QE\0(ß¥—KIç)©î’u52öÜiN)iùPhÜöißëIä2äv)1L•≈8\n\\PqKäv(≈ Iä~)\r\02íûE4”î¥îS$p¶öZCLDmQ5J’U\"§•4⁄¢QEƒQE\0QE\n(¢Ä\nJZJQE\0QK@	ä1KE\0%¥î\0R“Q@EPEPEPIKEä)i\0µ\"ö`©£‘≤‚ãP&qZ∂ÒÙ™VÎ“µ≠”Å\\’ﬂF$Òß.1OEßîÆkùV!¢•ŸÌE;ä≈Ññ•˚÷r…Râ*,I{Œ‚¢y	®Cfúh∞JI™S-i4uVhÈ¶;2/5Nj‰âÕFfµR!°#éÆFúS#J≤´Y…îëØBqZn8™≠8=E5°ò„öt]iŒø59ÆãËs5©~“¥#<Vl\'ØFx¨dm“öq®÷úMbÕê«<UY\rNÊ´HhHªËRúı¨…Õh\\7ZÃùπÆ∫H„¨ ru®ç=œ4√]hÛ‰îQLê¢ä(\0¢ä(\0¢ä(\0¢ä(QE(¢ä\0(¢äQE\n(¢Ä\n(†P—E(¢äQE\0!¢ÉE\n(¢ÅQ@Q@Q@Q@Q@Q@Q@Q@Q@Q@4f†\"jYQfå»≠ki+≠+wÈXMt‰o√\'ØDıèo%hDı…$u≈öh’ 9™ëæjp’õ,{T-RìQµ$gÔUﬁ¨…Uûµâúà©\r-4÷®¬BÉäö6∞™ƒ–V Ë-nˆ‹D˘Á¶k≥yåör]´ñÚ»\r≈yí\\ê;Wu·ÀøµÿKmÇ≈◊ ’…Z‘Ì£- Œ‰OßÖ‹zf∏ÌU¸ùrŸ‹xU≠li3vhp«c‘÷F∏Oˆ˝≥ìœNGJÊgM5inòåÍ¨›N8ÙÆïbŸ{„ä¬—X9#9ÆÜÓE8U«Z ¥πÀYæk•\0∑<”`J}i21äá®ôy≈]±_\'˜∏S∑úı\0BÕ≈]Pê⁄HÃ¸qUIY‹ôÌcÕu[5OªÅè0ó\0t´òDOJn£ ìZıPhﬂª<b•ªùâhå}Z/ë≥…Ù¡_D~“NqÏEzÈ⁄å?Z·u2<ÊnòÆäQObI1ú„ßJìiÎU≠Â‡ña–’¬q„•k%®†ÓáG« T´¡®Ì€‰‰j¡\npÔ⁄≥fàªh∆H¿´–6Á$p•e€?;«v≠páp>‰T±£J>\nÛúVÇ0ly¨ÀrπÎå‚Æ¬‚2¨ﬂçb∆Õ;Ùß∆\nÅ›ázâdA$c∞©Ò¥íÕI$Àñ„üjzúÛû{‘\n≈e∫”ë…)b∆9˛ı`ßÇ58U‹y«Z]ª◊8Éû¢òãN∆‰z’Øı{¡·˚ƒ’D¿˘e^†S^Dp«i˛⁄ÑKE‰ã\"Ä≠¥b:T≤Å*¬˚Œ{Æ:’HC¨ªHœ\'äï%U$d„∑oj¥f—wñWå‰±‰\nr¢Kˆeqpù?•@≤ÅPYœV\\z‘≤™B´ FÁ™˜ˆ≠ìC˛QYëπ@<ä.≈Ujp	ˆßÀ 2ïD˘ÒÚ˜òC3˛Ús#ëù£å\n¢u“\rÄ#C∆O%çGµÅ	Â‡uV\r¡Ô\"!ÃÑªˇ\0\n1·˙ÙÆ(’lªG9°Æ¨ê’pßsGÛ»S–z–±êGÕø\';èß•*ïÇÓªàŒ=EJ«9˘>∏€EÜŸV@ \\ûXú`vJ·#1<ÅÄ*ÙªÉê´◊°œQUö@‰≤ø˚8®e≈úà&£lÌ\Z™∫mt85v¡¿≤*Áâ,û}yaD∞H]2pzä¡±ªﬂ\n@«PjZ–ÏãÊâ”õë∞ï{Vª´5ºÂ©-∑éj◊üÑjÉŸ5Û±óêzIo®îR<ªS—/µkŸÊêúêzaU¨º4&µ∏˚E¬€ŒÉ)°;˛ÑW∏iﬁYc PCﬁüq·“†[¡m+ıì\0Ï÷±SJ÷9gBî•æßœëX‹˘§%∑ûÉÂÂN3[\ZGáfW˚D∂≤?r0y>ıÓÉ¬ñÒ≈¨h\nsÚÆ2}M;˚\Z8¶o∫=Ò”⁄™X©5dâÖ\nQwΩœ4ã√ˆÛ€¨åÀÄ	˚µõ¶⁄jûª[»	˚#>Ÿ≠≥û=Ez‰ñp§Dm»c‘÷&°h¢2Ç0U∏Õb™ÀfoÀlIiÒáF!O#=EY.Éªkôá0 T H€Ë*wºuœµG/bÏKØjfﬁ‘Ïr0†z÷è£¡â..uÃß,›p}™o≥…}:ñ%”q%I˚ÜµEâÖW*G“´·VBZ≥N¡“ﬁ‹á*Ø™–2±|¢™áï„ÿºÍy™ÍÀ!)2·á≠Aj€à¶kÈTÇ ô‰∑SZ∂∂PZ„n	=OsURDåg∞‚≠	U°fsÉﬁìlw\'óYΩ1Uâ⁄º~îàÂ–úˆ≈:1Ú·∆gbëj	\0L[#™Ã3ÄÍå[‘YÍ•9‚¶ﬁ\\\0“9ê4m«sﬂ ®?≠$≠Ω∑ÚéqYâ+(„◊“≠¨€Ü†œñ√§£SªúÁV@…9ˆÍŒ∞‰¸√Ä*≥ÜwÏ(\Z*…Û∏+∆:V|Æ´ø©+÷¥‰}æºÊ≥ûÛYŸèÃ;SH§f›æcÎÔX≥1%ÿ+ZfoA⁄∞ßêﬁı—DôBÂ∞åx=Î&VRÖäÛûôÈZs‡«\"c;∫\Z…ìvöÏ¶q’.iW€Qâ‘‡(Ò6†¨|ïl±˚’ì,Ú[í>=\rgM3JÂúí«Ωo\ZWó1…:÷è*#vÕDiI¶◊J9¥R\nZbä(†AEP0¢ä)\0QE\0QE\0QE\0QE\0SÖ6îP‘‘»jR°©e¶YZîT(jaY≥T√òß‚ìãä1N≈†V\n\\Qäu!âä1J.(ÃRO≈&(àÕ4‘ÑS\rR%ç¢ä)í¿R\ZZC“®Lç™6©\Z£jd23MßömQQEƒQE\0QE\0QE\n(¢ÄäZ(QE\0QE\0QE\0îR—@Q@Q@QJ‡R‚ä.1)h•§0b>µ\\TÒûi2„πßo⁄∂-˙\nƒ∑nï±n›+í¢=\n&î}*]µF¨®Õs3¨f⁄*l{QE…±åØR´U%z±f¥±çÀ±ÛW#L’8OJø®cB¥|U9◊≠_b1Tn≠B*Êd√öàu©&<’rÿ5≤%≤‘f¨)™%XI*Z)2wÈTÊ^µgvEC\'4ê=LÈöbå\Z≥\"ÛQmÊ∑L¡¢h™Ï]RéÆ≈–TH®ñó•ÒMS≈\rX≥TF’ZS≈Yj´9¿ßû∆uÀu¨πõìWÆ[≠fJ’›M}ijBNi¥¶äËG#ä(†AEPEPEP ¢ä(\0¢ä(QE\0QE(¢ä\0(¢ä¥î¥\0QE)(¢ÅEPIKE\0%Q@Q@Q@Q@Q@Q@Q@Q@Q@Q@Q@\0ßØZe8RcE®Œ*Ù\räŒå’»[•e$ol¿˝+F\'‚±‡j—Ö¯ÆY£≤‘âÍ 5g∆’j7¨Z5E¨ÒHzSqJMH»§™“Uó™“Uƒâ\Zi•cäåµlådj&|R≥ÒU‰z—1˛oΩt^’ÕùÊ—‹uÕr,ı$-Å◊®©ú9ïãß>V{œΩ£Ωââ#≠d¯Çu±ﬁ+Â¸ÌÆ=∞iû‘÷Ú–D‰g¶=)|Aj ∑/èêzwØ5´JÃı Ôc∑›»&2zö›∏ê≥wÔ\\OÖ/,gÔq«÷∫◊ëãaè=j≤±çX˚˜,¶X`i˛A˛*Ü)Ä˙‘Î6E$—õπfŒﬂ|°@≈?Weä\ZÄ95W\r‡˛5ù{t“1…5£íå,å‘ßw±√^I∑[b√ÂıœJºQ_îlÒQkvéUßâ~n¸T\ZU»ô6±ƒÉ®¨wG†ˆ∫(jAíSìÚ˛ï∆k*™\\ñ„®„≠zØn≤[óÒÁ:ày&(Œ[÷¯}»ü¿e√1ÜÂde;H¡ˆ≠A˚ƒ ¸À◊\"≥a⁄˘ÑÓ\rÇœb€+)πx€]SZò¡ÿ∑*úûÄ’º~Ì®Œ0*Ä;d#¯{äøÉ¿∆1X»Èâ0E\08$Ú*ÚH6nÏx‚©£|ÅX\r§wÌS¶qÂÄvıÕfÀ4m‰;◊-ÅÎZJDõÅ\\‰V$mÑS€<\Z”Üo›‰úVl•\ZoL±‰T ÁÃ`z\n®íï\0ï=jU~Êµñ¢e›OΩKÎÕVçˆ®F)Ò∫‰xˆ§\" ú·™@«;OÙ®#m•˘ ûû’`aò69#÷Å1KÂX’IO‚j≤Ö\\Ê©Åñ#\'ü“Æ4Óz(‹ñXFhˇ\0’ÁÊ`•Y,°WºsUÑƒ™Ωi…q¥Ó$î=«\\’£6ç(º≤…Ê6¬“}E9ë’Xº†®s¥c¯{U2&U˘=XcÓ’ÄIvXg%∫\n’æ‰ô1™≤±Ü ìﬂ4b4mÌÇÌÚeNHπ¶;<íoWO+?téÉÈO⁄æT≠I¡,Á©ˆ´D2ΩÃ…m^G˛µ41í¢\0Ï$#xœ\'Ò¶±i%U2Å˝–•<J9$œî#$6y-Ù§∑⁄¡Â∫¬ÇCÊ8˚ÕåP]∞WèCLäVëU˜eqÄ_∆ûÁÇ7rZ@GÊÂA,∏‰qPJ ÂïK7!W™˝iÏ»™€A…Ë\0ÎTdDâò®‰ı©l∏¢≠Ÿå„<¸¬π≠WBù/^Ú—„oò≈∑?ZÈ$$éN¶¥Ä2«ç˚îíOöÖ#x›lq¬Â†>]ƒoé§é*ÌΩÙDÓVœl◊A$\nc—´«#\"≥‰”PÉÑSœF1C±¢ö{èèW©⁄√°œJ±¨—∆^1íy$ûµãˆUâ⁄A‡N\n’≤P©\n‰¶\'ˆ7WUÛUYò!#Ä=jzŒXú=©¨‘_1„emªHÔÎHn#édä·∞Ô¬¬˛uWlÀï\"ÍÕΩYè2)çeWrìÛnÔÙ¶¨»w‡©Úé∆yÕ:÷ÌÓ\"›’nå{èZ,+îe“b≥!Îœ\"´6ú◊èQ[®GÕÛcvß≠UéEy’BûI≈e&ÏTé∆+hÒ¥*±Íjß∂“9P}ªVÀ≤àŒ\\pz0Ê≤ı(ê…BRF28≈LÊnuHÏ]•ôﬂtÒäÅµhn&a∏éMõó*\n∏ˆ4ÕV◊Õµt∫∏eq ãø`zëme∂”m$˚lSl˘d`øtô≤J¬m‹äÍˆO±4ë$Ég˙¿zÏiˆZº3 ©π∑`|ÄÁ„PÍ∆I°˚öèaπ¢Ùı5ãkmZ¿∫µ∫i$Öæ‡\\ù*îé§π¥Œ◊Ì°J!ëX1‡äΩ†ëœA\\Ìæ£ñíC_òFü\\\Z∫óqΩ√¢ª$™3∑oQÎX8)£Y§*√\r«•KÛÇz÷æ•œ$g2îRƒ≈Ûc’bMﬂt—9B€ë‘sèB+7W26êÄ«wC–ÊüªÊ	‡’uë$A ˚≠ ”ödD	céF*l;ó\r¬»ﬂî‘yá…›€ÕP;•å8Rá9∆jD∏X`‰@§Ú√q8\"®NÿåúëìåU‚‡Ó»Î–÷}¡p2Ojhf=ÓUYÄ‰ÒXW\\πË+r˜ò…ÈÌX3cÃŒGΩuS2ôBbA åb≥ßQû{Vù«\0rEe»FkÆô«TŒπ-ÉÄ0:’<’ÀÇrA™dWdv<ŸÓ0“RëF*Ã¬ê—KL¢ä(QE\0QEÜQE\0QE\0QE\0QE\0QE\08Täj!OSIçP’Ö5QMXF®h÷,úR‚ö¶ùöÃ’	äLS®†cqJ--\0•≈¥Ü&)§SÈ\r\0DEFjSQö§Ci)ƒSj—)JZCLDFòjF®⁄®Õå4”Ji¥…aESQE\0QE\0QE)(4P ¢ä(\0Õ-%\0¥ô¢ä\03Fh¢Ää(†ä(¢‡QäZWÇä)iLR—E\n(¢Ä\nï\rENCÕ&4h¿’Øl‹\n√Åπ≠kVÈ\\ı›EõPûïq*Ñ U¯˙W$é‰Iä)¯¢§v9U5<göÆï:ö›úàΩ‚Æ$∏k-d≈J≥T4R4Zn:’Iü4œ7\"£rMJE¶<’V<’âj´÷®ÜjUóTö7ëU +ö-;vjÇÀR¨µ%)∏ÕBWö~¸ä8°h\r\\b≠∆x™¿sS!°ÇEêi›j4Êß≈dÀâp*ÖÀ‡\Zø1¬÷=‹ùj©´±Tïëür¸÷{úö±;‰’Brk–Ç≤< íª\Zh¢ä–ƒ(¢ä\0(¢ä\0(¢ä\0(¢äQE\0QE\n(¢Ä\n(¢ÅQ@Q@≈¢ä(\0§¢ä\0(¢ä\0)i(†§¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0)¬õNÜâc5r\Zß\\Ü≥ë¥\r+B\Z°\0≠WäÂô€‘gÅVQ™≤*u¨ô™,´Tô‚´©ßÁäëÉö≠!©‹ÒUdn*ë,Å⁄†y)ez®ÚV—FR$i*|””sö—4!$”„B«©cWÌ≠˘TNv4ßI∂jxz·ÏÆó?u´—&U‘Ù÷àÚX~U¿Z√∑Ωuz5ŸxålpG≠yı_3πË∆±+¯zV≥æíŸâèzÔ„ú…*FkœµT{K‰ªLcÜ’‘h˙Çœ€‘\n ]«5us†G#¨«.Nf¨ß)ÈtöŒˆ2qπ¶Ï πSPÌ2rÿ™m{ΩvÉü•M\r¿$\nwπ<≠!f±Iê´üî˙Wl⁄®èÇ`vÌ⁄Ω2ÖrMgkñ◊˙m¬I‘!)èZiXp®”≥9˚§˚MÅö?ªäÛmr %ÿ§Ül‚ªﬂ]	bíŒc˚ƒ%q\\üà·]8?¬O5≠-$h÷é\'ó\r≤6Ó’nÇ–âî·A¡™å±â$\\ÒœZ[x$ |ÆyZÙöM1m3yTg◊ﬂ5•\rõà˘◊¶{÷=ªÄC¢µÌòºxÔ\\ï›M›®Bq¡ÈSG˜ão<ˆ«Jâä#6—ÚÉ÷¶]¬<®ÈXõÉ(Aéµ<N∞¿Á∑5IXcrÒö≥]∑‰8≈C§í¯\r^]ª8¿ˆ¨»„¬3…Ω]FcÁÁ=èJÜÑÀÏ£ü»T®c‚E‡‚†Úå‚§VeBπ\'&êôqäÆ6Ï˛î‰ìyÙ™ªæ\\t˛µ$N´ÄsA6,+,ŸŒj€ÿ*p∏Á>µI»R	\0ı‚§2\03g◊Ñ—n7ïÔVw!6ÄTb®áPπv´0πiüÄd”πFÖ¥É\rΩAc¸U+LŒ*Tû}jà,Å–„#©˘U°4@yk!vQπr1Z&b„©+	J≈<jÆ‡‡¶Ïc≤Jª¡b\\n	˝⁄´HA+≥i$∑<—`Ã€OÕè-≥˜~¥”Ë.Rƒm∂”±ÂAÂjy◊»ÖnùÑäßoñúˇ\0˙Í4dá˜àí‹8mÄuı§â£U1™l\0ìÇr>µiôΩY eƒÑ2£1˚µ}	4í<7ôçﬂ¿ﬁµ3rrìe$$≤1aïÈ”Yò¨ô¿ ıÕ=ôâåwı®dpƒ‡Y…ö≈Iáó8\'<“©SÚûˆÎR(ÿª@\rûAÓ(u<g\0u»•bÓ,Å\nÄ§Äzägò∞°g\0Œiå™ßø◊µ5∞\"ı˜5B!dÛvçÈº‰∞<ÈäÇh√b§>q¥÷íÂ\'∏&%ïAÊO°¨À€˘Ù€o>@:;x#ø“ö◊`‘ºâ\'⁄Y›X@}9´ïÒã„±ê[Kh∑Âÿ|∑À Ï\0˛ık¨Òj˛L–jM„ç∞ù›∫ïÌı™SÿÈ67}¬,ó\n€UYôÎπ@˚Ÿ≠!dıD Ôb÷ô‹Y›_+Œn2ê\07™ˆ.	ÎW¥´€˘¥Ÿ^˙xGÄ—†√Ø¶}Íúøfæ/5Ωƒ–ÃdCaÿz÷Ö∏ë58Œ€5A‡1Ãç˝·∆?ZyV í\\oÛ\'¿⁄9 éò¸Í\0«œ e„˚›p~îí≈ˆ[ì\"ªcπ≤7√⁄ê\0dc\'q=ÕfŸ™F¥R¡4b°.NJ˙Ui„ù„-ÁæŒü≠E¢õxô\nÒœ°´v∆F˚ (&÷f›ü€Qô3˚æ@~ƒV,ññóˆÊ·°xúù≤¨då„ûGΩvSld8P[0‚≤|¥á*:∑\'\"™2±V∫1•¥ÜEÛ†ceYG?J∆m\Zˆﬁ)•kêdv *¶´∞ñ⁄=®∞®úêESªWgç#l≥ú\0√†ÔW\Zç	¡3õ+ÁÿFKG±∂Áç§;˛†b≥u(Óº≥v¨Ê57+·«·È]}ÓêÑ$…\Z:˜˘™ri±¡våI°YQª{ä∏‘KS9Sπãk|∞g¥1∆√ùÅ}sÎVÊæûÓ‹=ï‰‡íË>’^ÁLÄ	£] €ÅBº÷=Œù-µ¿T;]W!î`»¯V±Qëî•(ùVù‚·mˆ[mBﬂ∂÷ëOà≠ÒvMÁÓ„\rç  x˙bºÓ]G~í¬DF*@√.Í\r%¶π®Y9h.ﬁ£®»î∞˜’\n8ã£õX*8!Å<ˆ¶À#F¶EÎå{äÊ≠5-VÓ5#Ü9òÄ≥g(q◊5–€ΩœŸ¢Ûƒo#s°Æ9√îÏÑÓ8Õ˚†r	ˆ5ç‡Á PËY8Wäìy»uTX–∆æ .—˜ÅÆ~r¬Låûµø®m‹‰Åú\n¿òÇXë¿Ïk™ôçB¨ŸÓ„÷≥ßZ‘êÔäÄ1“≥nA\0±È]P9*leIg ‘F›Ω*˝¥>l°pN{÷ßˆv‡>ZŸ‘Â9£KúÂÃv¶àÆñM3⁄™Ißë⁄ö¨ò•áh√*E7ß%ô™≥¿Gj’M3M¢•%L—ëQëäªô¥6ä\\RP ¢äZ`%Q@QHä(†ä(†ä(†ú)¥¢Ä%SS£b´R)©h§Àä’ 5U•V¨⁄5Lõ4µ4Ï“.„©A¶fó4áq˘•ÕGö\\—a‹}4öni	¢¡p4√JM4ö§CcM%ä¢î”“ùMjb#jå‘Ü¢j§C\Zi¥¶í®ñQE\n(¢Ä\n(¢ÅÖRPERQE¿(¢ä\0(¢ä-QHåQäZ.ä(¢ê¬ä(†¢ä(QE\0R\ZZJ\0)√≠6îPµ¡´j’è≠;V‰V3GU©Ωlxßd⁄ûj√⁄∏¶zp’1E:äÃ≥ëJòt®‘Tò‚∑8ƒ-äU~j64â÷ùÑ\\CëO#ädCäòé+6hëNAUÿsW$QVô2ERï.*ÊœjäHÍ”!¢°8ß,ò§ëpj2qWb/b“…S+Ê®´T ı&ëëp5Jáö®ØV#jÜãFÑC5cUhX`Tœ ÷±{ölä∑oÄkÓNMi^Õ÷∞Æ_$◊UuÊVë≤jNcìLÆƒé¬ä(¶ ¢ä(\0¢ä(\0¢ä(\0¢ä(QE\0QE(¢ä\0(¢ä\0(¢ä\0)E%\0¥Rfå–öJ(†ä(†ä(†ä(†ä(†ä(†ä(†ä(†ä(†ä(†ä(†ä(†ä(†ä(†ä(†ú)¢ú)\r«÷Ø@9™Qı≠aúVSfÙ÷¶ç∫t≠(ìä©lΩ+R$‚∏ÊŒ¯-Rû•	≈.⁄ŒÊñ\Z(\'µ5€ä©+ÒR»ıNW´àô^W™é’,≠öÆ‹÷»Õ°π5,köbÆM\\Ç.Eïá\\ö≥ZêD*#¿z5¿Æ:íπ€N	¢\0bØÿÕ‰›ÿ÷h|\nxú©kµ°’^B∑ñÑGô§›Iß‹4NßocW4€¡qA˜à¡ˆ%÷ûKÜ»ı\"óK35¶åË·ªY¢S^ﬁFêûkMë‡p¨ﬂ&z◊]j¡„€ÿé+>]Hüª±œ4í⁄π…ÂªTˆ⁄åÄëè÷£◊ï·|≤|∏·™Üë˛îªü=p3Oñ»•Ô+õø€OﬂF¿Ó)Ωit•R\\1˛‡”Œö”DH≈U$D»Àœ≠]L˝”ûyEßàãFF$‚´¯ã€….9«Z≥{bÏMûT)óq˘ˆÆ¨»Ëjì≥F®Ú›EW0ÆMH…X…™„8ı≠\rZ—\ZH·bTÓÂ¿Ë)µéqî	\\ Ω5+≈|£À6*yâr\\´+‰0«´jÎÅ∑ø\\÷2Õqu©\\4œÊm}´V’‘‡1ﬁ±®éöLπ.ÊF	¬’´w>N–{`Ê¢É˜ÌÑÔ⁄üÛD‰ˇ\0˙´ùˆ7D∏jD&+Äÿ˘AÎö`˘ê‰riπH èzíÕxÊflm»#Æj]„ √=+.dWÆ	œÔWûR¯;p{\nÜÅ‚ù3∑Ç3≈\\B6üÔÄ÷*©¬Eˇ\0T}}kI%W˘N8ÔR–ôk8˛ÊÑc=‘Ty…∑z]Ÿe%Ä_ZB/+é·∏˛Ì;qEQ¡3ö¶$ëp|”˜≥&Iq◊“ê¨_çë◊Ê^EOÄ)^s”>ıùª#˚Ÿ¿©‚s∏∏$ÓÌÿPKF™»πP„jû	˜©#ôÛõp=Íä¥Å2q∑ﬁùÉÂé\0\0‰\nw3q.Ç¶up$èAS8F$Ú∑?)‡UHŸåõò|å2zï ,jß8-∆*”!¢Ãba#»”~Ïç¢4Ï=È–¬Ò∆€‰V«›ÕAÀú(¡cí«†©ê¯,Wvz‚©≈ïïê∏a«∂iÅ∞§ı«Zä^È… ıÌM\rïÉœZMÍ4¥ÿêO&õÂ±p1É‹\Zq¿#¨˝à…ËI§RŒ“@9≈AÃ|ﬁ*¿œŒA‡˙z’+i|Îuï«\\ëè@HœÈEáq∑ìàêa[iô™ñ“ü-bƒ‡‰œZu≈˙…iˆà≥Âï%Cº¡?ùeÀs6ëk)Û·ÇVÏGzj#æÖÈƒ√m«Fnıôq=¨—J$∏Ö.U∂0∏$ ÙÌ“ùµ’ı£Kcw@sÊC!Ê#‘èzØ†cSI≠·ï“S±o‡qúVâY\n„—.mëb∂∂Ÿq∑Â∏∂ÿÒ2˛`’õy¿‹Kiw=‘GïÑm\rÏI‚Ø⁄ÈpŸHÒA	éﬂvwsüJºÀ\r¿vìR‰2çΩÕŒ¶ç=’õ⁄Œ$˘|Õ¨Óx5ñ%a\ríﬁ#u\\\n˙V¶–Ã”œ?ç,q»C>f<ìJ„Z“°Ú’*∏?JŒ<2Ù∫U±<\0º˜4ŸtÂ`F—ı£Rî„± Ω„ô0ÅœZµoÊÃ‹ûÎ[GG\nÖ\0Py>¥ˆÇ+`ªônÇçCû=\n\"€wÚ;z”%≥;∫TÛﬂ§3àYyÔé’ZÁSå§ä!H\0éÑ“≥fEˆ%U98\rﬁ´Ωåh^≠å⁄¢7¨‘‰ïÊ†ìR˝ﬂsûqU «r»Ñ0\nzTZù˚∞1”ä™˙àAåsJ50\\u€å„=iÚ∞Ê!ñÕwï∆«˛ä√ø“ÆÂeW‹ëå˙öÈ\rËvV+û*m÷Ÿ`l)==j„\'D¢§éSãÕÇuŸ~BéVí⁄+;âRÍÒM»_v9Ók_P¥YÔ@Ë@ÈYv¶M/V\"A–∞\"UóêåZÏÑÓ¨p‘¶‚ÓiZjb¥Ü“∆…1∑≥É‘\ZÈ¥…A\r\"ÀÖ$lzz‚πòÙÃ›œc¨Ò≈â#ëÃAÌ¯Vøá$ärπFtl&„ÜFÔXVäµ—Ω=ôØ,Ä\\Óœ8ÎH«l[Ω9‚ôtÄÃú‡Êû√nUè8Êπlv£*ˆ5eg7m…Æns∫f\'Óé\0ø|ﬂªq€÷π–J…Ü∆`gΩtRÿ∆Æ‰LÃGñ‰û˛ïZu,N	≈h^2¨†‡ÆxVUÛÏ Ü¡Ïk¢\Z≥ñ¶ànñ≠ˆ¥√m…¸ÎÆäÿ0È\\uëu∏Yâ·XfΩﬂk™∞Sà—ÜËRkGJ´.û=+£‰S€éïÕŒ—◊ ô»Mß{Vl˙~3≈vÚ⁄⁄®Od0x≠cU£9RL·f≥#<U!\"ª+õºV-Õô‚∫·VÁZ9ˆ\\S*¸–\'ä¶ÎäÈRπ≈(ÿéñéîUêQE\0%¥îÄ(¢ä\0(¢ä\0(¢ä\0(¢ä\0pßÉQ“äN¶•V™¿‘™j\Z-2»4‡j5 ®4L~hÕ%vi3IIö\0vi§“M&ã\n„â¶HM&jÑÿÍ)π•¶H¥”N¶öµDjV®Z©∆öJSITK\n(¢ÅQ@%-%\n(¢êQ@¥PQKä\\PQäZ)(¢ä\0(¢ä\0(¢ä\0(¢ä\0ZJ(†aEP ¢ä)ÄQEÄö3Õh⁄ûEf«÷¥-è\"¢hﬁì‘ﬁ¥<\n◊ÉµcZk¡⁄∏fzîﬁÖ⁄)Ω®¨çŒ`\nqÈO€ä6÷©úmÿR¢ÛR2sOä>zSoBR‘û‡TÃºS¢èúÎÅX∑©≤ÿ°/ZÉ<‘∑’B¸ı≠b¥3ì,éií-5^ûNE1ÂJ¨ÀZπ™Œï¢ë%\\b§SAZP1T$â’ò⁄´-Hßõ5EÙóí[é:’O3≤“Q‘%-Ó¶Œy¨π[$’ôü$’\'<◊Té\nÆÏå“RöJ‘Á\n(¢òQ@Q@Q@Q@Çä(†ä(†aEPEPEPEPEPEPEPEPEPEPEPEPEPEPEPEPEPEPEPEP\0)¬ö)¬ê—<Ußl9õi⁄éïçC¶ñÊÕ®‡V¨K≈fZÙ©‚∏fz0ÿú/”≈.Ó*7zÕ5Œ*ªµ,èU$í≠!0ëÍ§èNy*≥Ωjë,çŒM34§ÊúãV+\\í(ÚkB™#≠ì∞úç·ƒò©«ö£îÙ¨ßBõìäGjÆœÕ	ÊŒçy‰]r›xÆﬁ)‚,2ÒäÚ¡+F˚‘‡äÌt-U&âT∑#ÉJqÍC5d∂0∞…I‚∂t€ΩÑ+t¨Ÿû9£=:f°¥ëŸˆÓËp\rekíıVfÊ≥$€Ñ`[q·@™Vâ	 üó∞©£éFpJÓ„ÉÈS√j ÿ\'9°Ωñöl\n‡£äÉPrëzJDqwN¶≥ı]J8°%é‡ı•∫%EÛˆ´É&ﬁ\'Ú©c≤y‡Í\0©™÷p…wΩ√9=Î∞”¥ıÚ „#“›ŸÕ®-O◊m⁄\nc=kKGÇÈn#mßÓπØHÒûò,ÔáBdJ·Øpíò≥í√äÓ£\'kıóºD¯™|≈ó9µY∑RÁq „±®Ï%#pﬂ∑û:\nò+A{… Õ9>Ö@πoπ\\ùÿÙ≈M 9c◊û*´;√µÚIÍ(mN7è\r∫0z‰VVf…ó“`WŒ:bú]£¡`z\nÇ 8?àßbG|0€Ü‡ûı*‰å¡äîoúsÕiZª…Ô\n†#/1¶zÇ)»ÒÕπ>Qú{TΩJEøﬁ´Ç\0zæ†â<∆#ΩV<Çqª\'ÇHí î.ÏÁ®¨ÿÀQ…‘˙‘∏ﬂ∆z’R6mÁ©VL©˘[ﬁêã$å©SùΩEJÆ±Åï=V™£.∆nxˆ©ÂçY9q√˜§.∂$	óB:U›˛RÇ∏5H8 Ä{~U\"ÕçàÎå≠ jÂ–Îµ7ÁúU•9Àgé’ûd‹´å{’∏ﬂ$w4¥Xç∂¨Có\'äúK¸\nA*yˆ™Gh<ùô˘MKà≤ë!ŒÏ„ö!¢÷‰Ëß>›=1é‰úmÁﬁ´∆Á$‡Fü›√ú≥e…Ôä¥C];í©1pøÑıZ%}†‡aI‚£í#\"∆IKﬁô,Œê6ÙHŒ·éûÜùÆ\"`BçÔ ⁄á√†™7◊N∫sNü*Xˇ\0w=j§◊õ,¨]¡_∑}°?Ü*-m£æ”ntÒø @∆ΩqTñ†_}IbãzÇËX™Ó„ π¨ãmJX4Îa3Fê¸€òûJñ$Î÷∞∆®≥¯QØí9dï!ç$˘@bOÔ∆+RÈ£H≠-Ó¢Ey\"Xaåò%ø,‚Øí¬∫!≥æémhÈé§€§—˘Én$Ï\'±©4eäK3ß6ÿ„î∞çsí=MX—ÌOô,æÕÛ,~csÇ„$nø5V˜F‘lo˚HI\ZúÃíí¨2sëÎE÷≈\"Ù}üœµàànòc$u#å‘∂\Z,6»ó3\"ã∑ˇ\0X—qŒkN5D≥<J$`	oJ¥c,Ä‡9¨Ó;ïHw\n°yÔÔV¢ácü0Ó¿‡zQÊ[ƒôg√c8ÔUg÷Ì ~Ë›≤(åD€ËjGJNÌßåÛLíÚ⁄Ÿ	¡\'ØJÊ§Ωöcñ|&rÌÏiÍQP∫Rã&÷œ`FGÎZ(í“ÍÕ≈÷!f™S‘∞¨˚ÕVb^4¡Û‡ƒr£ÈYw72D”E,á?Îv¢gxË1Ëjì\\,f|¥Üo)D`ÚH9»˛UV\ZIjkG®‹]8Y‰ºR «ó\0qı5FÊÒ÷ﬁ›¶ââv\nŒ3œ⁄´€HßR≥â&\nâ!.9∞N}∏®ooG,HÏ—<‡n+¿\n;SÂ∏ósÀ¬¿3»‡úûG5ºäí«m eO\0„?â™í›®õld…ü9∫Á1UöTfÊ\'ùƒÒö|•_°°wp7ÅÊ¨çåπQÅüJ¢“eX„‰~Äv´…31`;Ä¡ÈäV˝≈ª÷7ŸÌË*îDÿÀôÿÌ@I\n[ê=*p¡∑(¬ÅÅüZlÔ\ZM≤,™Ì€…œ&†|)2JÚƒ’Ÿv^K–ë1¡qı¶X™f$¿5èupJ‡s÷≤Êª¡~)™W´ u-pgëvú»\"Ø‹ÈëÍ◊vR\\Ö„S1˘Ä˙◊?°ƒÛÔ`w˜8≈vP˘Pºsâ0FI≤ûÿ¨ÁÓlR˜—Ö£iÛ≈i®\\yßÃ∑∏XJ\n˙•X∞∂πΩ{ãÀfä⁄Dô|–„«®≠KÎSú◊ë;4¨Œˆ«ôœ˝*î¢k∏$;$âU¬Á®\'÷énd⁄%Gï§jÀ˚ÁÔíM$ÃvÔﬁ†∞êI4±í3»¡»5-¡\'Ô+ô´;qf†¸˙ÛX≠ÃÀ∏‡ÈZzî™Å≤sYPyç~˚y÷∫`¨å&ı%π#-’@…Õ`]L´t Ó ‡ˆ≠}BIR™Ä~WbzVê≥€µÈe æ≈]√?ït—èVrb%––kîû·Â\n„—FvzTõÌ„\'Æ9Õy˝åﬁDã&–Ï§≠–◊w¢KÊ⁄ÜŸÄyˇ\0ÎT‚êÔS†åqO+Má†©±^{;ë]„VXj˘ÆhπF%≈∞9‚±ÆÌ3û+©ñ:ŒπÉ ÷∞ïâînq7v∏œè4X5ÿﬁ[xÆzÓ≈wR©sœØHƒaÉM©ÂL\ZÄ◊ZgêQEDÅ§¢ä\0(¢ä@QE\0QE\0¥î¥¿JQIKHR≠B*U§ DÎRäâ*eõ5CÄ£¥Tñ6öi∆öií∆ìL&úiîƒ¬ì4QTH†”áJhß\n\0ZkS©≠B6®ö•5U\"√IKITK\n(¢Ä\nJZ)\0îR—@∏¢ÅâKEÄ(¢ä\0(¢íòÖ¢ì4fÄä3E!ÖRP—E¿(¢ä\0(¢ä@QE\0î¥î)i)iÇ$é¥má\"®F9≠k(ãYÕŸS‹÷¥SÅZØ^ ‘ê8≠x≠≈yÛöπÈ“zÛE[˚3zQYÛ#†ÊŸ0i°j‘âÕF©3	\" ô´Aì“üy≠ Œ8°»îà£ÉéïÒ‡V∫€‡t™óQ`\Z…=M:’ÿ¡5òÌÜ≠kÂ¡5ã)˘çvSÿÁ®…íJ∞ØöœV¡´ΩTë1eæµ≠9[4ßëYöïYy¶mÊ¨≤”vU\\V#N<Sˆ‚ò˝(‹{±®$jëçB›*“2ì+IU[≠[í™∏Ê∫\"rM“R“VÜEPEPEP ¢ä(\0¢ä(\0¢ä(\0¢ä(QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0\np§ı4ò—<Bµ-GJœÖkVŸ:V◊I\Zñ‹ZÿF¿g8«-Œÿ≤fìäÇIΩÍ)$≈SílP¢W14ìgΩVyjö°i=ÎE\\âûJÅü5IL/V¢Cë0<’®FH™qúö–∂\\‚¶Z\ZCRı∫U¯◊äÇ‚Æ¢Ò\\≤gTC∆©à®^°WsUd5fJ•)ÎZ$&∆3ÒVÙÕ@Ÿ‹.:1¨Ájè=kN[´Ãz)‘ï≠¡\r…≠mfœ4Á=NkŒlu#Ú€úr\rv⁄ÍHÉÊŒ\"πßR”LÏ£ï\nÒÕLª˛ˆ+:Ÿïò`ö‘V‹Äf±lÕ´n™V#XIs1gbW“∫F∑Ûzˆ•KU\0ij\nI¥˚2ä\0k¢R∂ñ‰‰t‰’‰å’=GRH≠ÿ≥`MT}”9^lÂº_tíƒK0»<fºÊ¸¶¯ee\'‘æ(÷Ê∫øbèà—∏QTFæ∑Pß<d˚bªh”qI±Uk·Dê±;»lqÎZ	õÇ¡\n3úı5èvVŸÌÃr¨û`€ZVH^@ê;®MÏ 2\n©«™&ú˙3FŸí@#«=™˜ëƒﬁhœe¿‚≥`\n6 A˝Á>’ßnLg+úg‡VFÈ‹´,RBÅ‡;Jˇ\0	Ëjp·€Lıı+É!\' q»¶∆≠úmå˜5’∆»ë1 ÜÍ)»•˛rß5\0>b©9œqÈSµùä,∆ÂJÚ2=jFSÊÂBì◊\"©F‰ú8∆*ÿ*&úÇ1èJLeê¡Ú£äÌçS÷ö™ª±åˆßí¨q⁄§€b¯…ÁÊûWïùÿH«ΩB¨\0d<Ä>ı‡l»‹i∑¡ì\0\0Ûär∫-⁄…Ó=)∞2år}(|H≈vÌ“ï¿π‘í>U\'Ú©¢Û–§ûsU‡πŒ*‹xÚ»ËGCA≥ !Å˛˜4¿6bÕëúÊöê§±ÈN,ΩÌLÇ êÌQ”æqölÚØ⁄§d8Â\\é¬¢Çl ÄmÈÓ*∫…Â∆“≥oUG?J¥CC√4íWìÕY!Å~µ£tñ≥µ™JÌ¡Lèòc ÷u∂£∂ÓiQTGmì9\'ÇO;W‘’´ñ‘\"7S\'íò%LÑ/ñÖkôΩ≈]a\Z⁄Y`ç¶är8è≤®ı»ÁèZîÍ&&’\'ªó˜ç	âÖ€ö¿“.°\Z{XisôR–<“ÒÑ-û71Íq⁄®Ou©]Z%e›8‚<d∂knBπ/ÜÔ[P“cµ∫A\r¥§πÔ+„Ä=´¨æ∏˛€◊Ìl•å}çI#tÃÉå!¨À6t‘£Ö•FXÌ¢yJî~QÔ]\\vëI2LPßGßZäì˜ãå4‘ßo¢4V/$[®…Ú⁄Cªbìú[–$õQ¶Ÿ#Ì⁄≈G®sábF÷¶\\ÍIl\0ùπ¨πVlø XÚ†èOJ»º÷R%tCÀk\Z˚\\öU;Î¥Ù¨Gºyrvíy#ún´å.>[nkÀ®ºƒê€]O*z„⁄†{ë…$\"£¡π«¯VP∏ç±,aã\0Á®4ÎâûÈxMÕå1“∂Q∞6h%„πí3\"éÎ«·*À,â5Ã:ÆD†Ä1ﬂå÷r9˚:ÌçC◊Ω/ñgó{™‰Ò÷ùÑïÀ&ugïZ·õÀ™v∑ÁUŒcu√bπ&¨«nŸxém>ı¢;p°ãu˜†µ∞Hœò∏Áìﬂ=¸Q$KL\n(…ÔPDìÕ*Ωº[î6ﬁ95|i7R3#«∑ø\'≠eY#8|∆*ò8‰É⁄£d¿H¡TûOµti¢K\ZÂX)?z´Õ° ˘≤YªÊù–rﬂcﬁ)•\";GN)$WQÖLì”Îf;FÑïÿLÆüu‘†ßÃâ‰g6ñåâ$“@≈œ«JŒö“P•ö7TjÏeë†lî˘w™ÛÏUŸ #p ‡pi©ô ûﬂ,åﬁTQ>W‘pj\r%Êº‡nˆÅ]tËí¥Ö∞ªG «ΩW”÷1x£^Ê¥u-}ïÂ©–h÷Q[∆1–x\"µñ$∏h®-HX∏qötìãxæf⁄Ωs\\Rw:‚¨G3<SÇ”)ÇQ±ì	ÈXöï∫€Í±_! î0∫7Fµpë^®	8\\ÆRE\\◊-us‹m<NR&ﬂnTèZ∏\\ôw6≠|õ2gôòG*ÄvÆvµItdÑÌ\\é{S¨Øm5ü»a(\\`åUMEYP∆r	<¯®Î©{#üº‹Uâ{tœjŒHÃ≤±êô˝}jÊ°*¢o-çΩkÓgÛW$àòÅüOzÎß£í§Ï…Ø\'KÀp\"<>”sVH¥ênU…ëÑrj‘≥«≤8÷d,∞lH‰\nªg‚t”Ù•∂≤çñÊiw‹K ±·:Èäihq’íì3†1E ?úd¡nÿÙÆœ@fK}å§å‰\Z„•ê  °6‡‰1œΩwZ5øìmﬁ‰sYb>l>ÊÙÄj»)≈NºÊw¢&\n∞V£e†§ ≤-Rô2+E÷™J¥–Ã+∏∫◊9}3≈u∑I¡Æ~˙>µ”JZòUç— \\&	™L0kVÌ0Mf»0k—É–Új+2*CJi+S¢ä)(¢äQE\0QE\0QE\0QE\08T´Qäëi2ë:TÎP%Nµõ5C®4R\ZíÑ4√N4¬iâç4”Ji¶®ñRRäbS≈4SÖ\0-1™Ja°TmRµF‘…dFäSITHbì¥PbóQHä(¶ER\0¢ä)ÄQE\0îQEñä(\0¢ä(\0¢ä(QE(¢äCä(†ä3ILAER\0•i)GZ`YÅr¬∫m\"‘π^+ù¥q]◊á·Vπ13Ââ≠=ŒìL“À\"¸µ∂4íÓ÷ñèf¶5‚∑Öê)“º	◊|«l\'cå˛Ã>îWZlFzQO⁄≥hxƒ—ÛPÖÊ¥\'èö≠≥öÔL∂>Êµm„ÈT!\\\Z’∂°íY¸µùz∏µÚ6VUÒ‡‘-∆röÄ‰÷ﬂx÷ˆ°‘÷„Ê5›Kc\nÖpy©ë±P¥Â5´2E‰zô[5Iöµ&≤í5ã%€ö]ï*&jaõf…Ÿp*ºÉ≠hI*ú´ULäMQ∑Jùñ°q≈låZJ≠\'Z≥!™Æy≠¢r‘#4î¥ï™0aEPEPEPEPEP ¢ä(\0¢ä(QE\0QE\0QE\0QE\0QE(¢äQE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QJ(@©£^j%5nŒ*$Õ\"ÆY∑è5ØmJ´kq≈l€≈Ä8ÆZí;iƒ|iÅNaÅS¨x…ÖŒÉ>v≈gLı~Ê≤¶<÷–FrdO%D^öÌQ≠í1r%/@jÉu=4Ï.bÏ÷Ω¢V]≤‰ä‹¥èÅ\\’Y◊Døp*⁄Ø»SÅVB◊gb!a≈B‚≠0™Ú(@RìΩQö¥%Bj÷$≤îÜ°-RÀUú‚∑ä2ì&IJú©¡≠m+WíŒ‰1oì°Åºäpñ©¡4JùèY”|CáÂêÒ]5æ†é£ë˘◊ÑCtÒ‡´ëèz’µÒıπ¬ÀëËkñxg–◊û/s‹¢ºçÜ2)eΩçW®¸Î»°Ò•¬(ﬁπ«°ßK„yôHX{sY˚	ä—ÓzM÷®àás◊5¡xè≈H‡ÅÉπÍA‡W-Ø]ﬁV\nÑ\Z«íbMmO\r≠‰\'5ÖûS#≥1…&§±b˚·W\nÿ$Z®Zö$h§)¡◊m,sIı/0PÒÖÂ¡‡v≠+ma†íH¢&$ëB 3˜á•c3`Í}˝™Õπ∑˛“ÅÓã,K…⁄πœßÎI∆ÎS5+=\rì1çÆJÉ«µ\\±ªL—û≠ÛË+\"9Lˆ‡gÁRH“¶¥ºé)W,≤˝—‘VÜáDg©’∆®ÍÈ#V$≈Vµô‰ê´\0®f≠≈0ﬁBÙπÿô^Hä§“ƒŸÀÛJó,äI˘±Ä8®Ã¬;∆œCKq\Z£\\\"∞FS=\Zãtc/√ô∏ÉúvÔVJÉ1.tµIo1h‘´m\0Ç+F7R˘F‹VmXw∏ƒîòQ±á\'Ê;Ç≤ß“§P¶\"´\'=jœ#2ë∑;Ä◊ìÀ!Ny©[ÑVV„8‚†/∫uFÔ¬öG˚Dn¿g‰Â◊Ï¸‚5 êƒ’ê«nBÛä£\r‘ohÆ[<djúLÆ°Å‹§qéÇìB-√#mW#*ÏN%C¿ÈTTªm˝Íî1Ú¡ãÂpyë,Ωë∞/ßÜp6Ç>l`”Pè,r{”d¿b3IHõ9∑\0œJÕ’Zç”Hv£ÍÕÍkB‹Ü&)ñÂwúVd∑D›]F´ÏÀ Œrƒö÷(ÜeÈëC§Z˘Ø V ±»súúÁﬁ±u;8“[c®ªóºÀ¨y? G·Z¢Á∂É[ºWÚbåÅ\Z}“\0˛ïŒÍZ⁄ÃlØ$ç¶‘XÉ¬É”?A]T”nÊdŒ\Z∂ïk4k$Â•i\"_øì¿>¯≈]–÷aaknëè:ÚŒ}j=2O\"	Qà1∆\0œV=€Û≠•‘¨·ÄôI∆;öSóDU8u6m£HIÈí†Øz±-Ï6Îû3\\¨ö˙.‡[˝k*Îƒ\0ú¡µäß&jÏ∑:{ÕwÇ†9¨Yı?8‰∞#˚§‡◊?-˘ïâ‹~îeòÂAb9≈m\ZV‹\\Î°¢g‹˚îëûÉ=)Ö§«$ÌKiiqtƒ¨D(ë⁄∂Ï4“¨Z`g˚’Ÿ!^ÊdVÚ›¥Ä√ê{öªgjZeçpqóË\rmAP£*çÁ©c⁄ü\Z);¿‰ûis!∆-ï?±ñ+ÿ—Æ“Ta˚÷àî˚z‘ÚË∂^_˙1ùú9˘§Ù≠+X’¶QÅ…«<bÆ¥k¯\ngÍ\\ák;˙h©‘3Ó=rjÃz<`Â◊πÌ[Nä%çb\'Çbú·î0 Á“ìcÊ2„µH–∏Rx´ªvèÒ®ÓBÔñ¡—7ï=@ıß.Û≥7&·Ó=h‘znPìíj	P+åÉ“¥#¥›qn7b9z±Ìö[∏\"àIÌ≈ ØJV:ΩëÖq\0»ﬁ\0»‡˙÷l—.˝¨~^¯≠π9“≈Oñ]bGj≈ûdkIIRYXÙ≈ﬁÂ{ﬂ)Rﬁ‚.é•][≥’ùrÂÇ(S∏ºF=*ƒ”lç≠ôæS*±#úqYW.‹˘y€∏åÁ≠R3}ä∑ÓîE7LF‹]∏RxœjU∑iÿ±àÔW!Pà2§ıÏjú¥±	jl€»V,€§m“K\Z(‹O„≠UÅét©Ó$+ç>pC≥úsäÁ∂¶˝ÎgÚ\r€E∏@≥cÀ∆qÍEKxçpâÂ #-ŒzèƒTVbd	ˆNë¢0‹d\0≥ë‘˚VökMDmÇA\"Jn»ï{Ìı≠To±ìï∑:T3Y€ùñHY@›,d÷mÌ‰≥Üê©ﬁF{Ê¨-Ï\Z¨e∞g2 v,l6ê«†Ê∞|@.ÌmãH≠ê:«/=9≈8BÚ‘âÕ%tdﬂﬂ∂¯r p»›˜¨{©MƒIåÂá#“¨^‹‹[ﬁ2âÉ∫ñ¸x å˛TŸnbªñ‚˙X“)7e\"å|üÖzè*πÁJ|“≥(≤NUÔW¥\r+˚Z¯ßö∞Äïü¶‡	\0˛UJ{kü≥}°î˘9˚Ÿ´`\\EeÀ‹DVq¥*8‹∏ı´G∂Ü=K œ{®0úÔôœ,\0«ZÙ-\'\ri Ç3Î\\6à—Õˆ¶‹ºì	8?Í∆Fk”m≠’4Ñ\0\n„ƒæáfπn$‚•€Nç8ßïÆv¶W+Q≤’ñZâñÇÆUu™íØ~AU%hÃ´ï‡÷\rÍk°∏\Zƒº^\rmg±À^ß&≤%ö›Ω^µâ0ÊΩ\ZOCÀ¨µ*öJq¶÷Á#\n(¢òÇä(§0¢ä(\0¢ä(\0¢ñíòQH\nëj:ëi1¢t585YMNßäÜjâ)	§Õ!©(BiÜúM0”“Ph¶Hî·IJ*Äpß\nhß\nL¶\Z}4“&®€•J’™%å4î¥SîQE\n(¢òÇä(†ä(†ä(†ä(†íñì\0QE\0QE\0QE\0QE\0QE\0QEÄ(¢ä`QE \nQ÷íîSÌ°√äÓ¸=0+œ·l0Æ£F∫ÿÀÕq‚aÕZ{û€¢‹)çyÆïY+Õ¥MKÂ^k±¥Ω£ö%AÛIUO<z—Z{3…eLöÆcÊØ∫Ê†uÆ¥v≤8◊ØBÿ™Y¡©\\S$—i~Z Ωì9©^~:÷uÃπÕ@cﬁúìX”kbÎík2UÎ]pfRE\"¥Rï§Z‹ ¬†ÊØ¿ô™—\'5´kJŒl∏\"xa„•YÚ∏ÈV!áÅ≈L—`tÆfŒÑeKgÕ5∑4uü4}j‚…í2$LUIx°8∆k2vÆòjsTv*»j≥‘≤5Bk¶(‚ìíä*Ã¬ä(†ä(†ä(†AEPEPEPEP0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(QE(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0)E%<hcDëÆMh€GúUHW&µ≠#ÈXMù¢hZC¿‚µ·ãä≠k¥‚L\n‚úé¯≠Ú*¥À≈_#äß8ÎRôF=»¨ô«5≥r:÷L‚∑É2ö3§®’ôZ¨’“éY\r<C&°j’∫‰”ê£πßfô\"∫H¯ìcJË-c‡WYùËZâ0*mºS£N*RºW1πUñ´»*Î≠Vëi†3•BaZs\nœúV±3%’I:’Ÿá5NNµ—	ìM›äV®Õjåõæû$5hÕ;ò≥ÊöC)™˘•›EÉòîæiÑìM…ÕÛEÇ„≈4Ú(Pa–π∞ü¬ù+0a\"6\n‡äÆ˘V‹8©YÉ*qÇ2jéii°z“vÆUÜ‚yZ∂ªD—Œ£iR7f≥£+Û∞˚πÕi\"êå«∆~µî—§ŒªOèŒh‹rJˆÈä|í˝íı◊\0#åç’ü·˘øÅòúıÆä˙’.Ì¬¨£Çkœí¥¨œF∫2.-≈ $∏ÔLGY-|â‰áèj±vvÿoX»Ÿ˜ÕcÕ<q› 2wÃ(∆B”älnI-Ñ—¨ë«.vvπ≠=6‚4ä( øò«9\"≥eÇYÂÇ‚‹ÄœÚ∫∑•jZbwëÖ∆vâÏzõÂ\'Å◊éµpÓ€ON§–∑MÄÆ“i–∫Oë@Sº´/–ıÆ{\ZïÆ◊ e˘ÄÁÈS≈!hÅ˛üQOñ0cê}‡G\0’kI&ªâbVå4d´o8\0ïKT&NaHs ®‡q¡r›≈≥« J©l±›Xy0˘∆—R»¯çï[q«ΩMÇÂ‚ÂrbàÏ*∆‡#R™GsYÀ)é% e±€≠[Â*<á˜^æî¨&i¬wF;ﬁò‡Ô#£TpKøë≥5#X»çöDP∏H¨}BAˆã{DäI•úï%WÖÊµÜP}¸g5XIqmªtâ(\\cçæ’§Iw1ºWß;È÷éﬂœ»\"Å«ÈXñﬁµáUxÓï˛»à!û¨=OΩt@~ƒ/‰∫vôg2*1ÁØJtV“˝•$ù¿Y	ò«‘Ç{{VÍm+(+‹´r∞Yóò\0πPÉ#Â\0\n·ı=Nyò\"nP0+“Æ4·/ﬁ∆√ï=+>]9pFÊìª£udœ:Ä_ﬁ¸†™‰Ûì[¯^˝„29V@˚wn‡üJÈdÍFH¿Sè·‰TCJû&å£óTﬁµˆ…ÏJ•ÊSè√>[:`∏\0‡sZˆ0DvÀ‰d∑•J±J™U˘Ó¿’ãxdìs\"ÄvÔRÊŸj)¢€6ƒ\0dSS<Ré‘ π≥€4ÿypÄÇªæRﬁΩÕLÔπ.†I¿lFO^N\níÆ∫ä91m*ÃÖîë¡≈Omô\nÜ~nSÈOéÒ‚π≤0 Óbv@ßßQ˘’Ñô÷+´yë’≈◊ò•P}Ω©l≥c∆ò≤¸…ª,z-i€¿Û˝ÜuUÚàrt8«_Œ≥ÏÔº≥+»£â\n≤1˚Ÿ+j+÷QD¨ÉsÖ«Ã¨1”éº’F›Lf¶ﬁÖ÷Úçıî2ÖId‹p«ê≠1„ÇA)ëæUvqU?¥¡{iÆ∂Œ»—„ÊËJXÔ$òÌüc‰;∫`‰åP⁄åêbπ‘l.K[¯ö›øŸ«L”,L•∑ü!_≥¥ˆŒKdWèqö§˜9∑—WœRFrQ	*2@$R‹N÷Ò^Õ”CÊ›#……<Ç@Ù∆*ì–v{\"‹∫Öπ”Q∂∂¯Œ6‡Á Ê°æôMÍªƒÌπDÖ:§b≥Êπ/ ñ2ç#ÉúÜ˛ïQÆd2+3+Öy<„µCf±ÄÀãÄrÄú´ÌUÌ≥\'@ÊN¡\\œÁRÀv£ÊV\n ‡åV]›€œ3,d≥±Àb•‘•ÏîÜ ê:dU8‡yìµ}MY[6FWòdú‡\nüj¨`pßÃI[gñß`œÆ(\nvï« {üj{∞€Ç;‘Caúu•qX”áiáÊ`Ì‹”Ê*Lasµ∫ìPoUN∏ÌäeÀí2áO+˝Ó:T€Rá]H∞Z$ÓÉ◊ˇ\0JÁµ[ÏOs8326CF9Oq[9∫çñ4`À√ëu{kMÆQÀÚ‘qè\\÷‘—ÖFTmF	l•øà†ôQ@Ä;Ú9≈fj⁄â{CEõ\rπè›jÇÎMTyﬁQ Oﬁ6;zUK€◊úâ∂ÌI0@¿zWe8Gtp‘ú≠©BÊI\'ìtÃLΩ…´ñVèsíÄûL nÀÄy8Û5ÍqÂrASü÷´	Hh⁄\n‡„ΩtnéKŸ‹ö˙	mfx$|ï8`≠ï¸Íà8Ó˙TäÃÔ7\' Ä›5vËÔ÷ÃÜ(–èÓä6ÏŸ¥R≠À ü*Ï;IËÕÿW•Ÿ∑ô\Z±$r=+ï“tò‚åEædJ°√Ø@Mu÷ãÚ)ˆØ6ºπ•s”•XÿæÉäR(^î¶πç»ÿTMR±®ò–4@˝\rSñ≠π‚™KLhŒ∏ÔX◊cÉ[sÛö∆ªÔZ@$sW´÷∞Áöﬂæö¡∏öÙ)3ŒÆäm÷ôOn¥ ÈG\n(¢ô!ERQE\0QE(¢äc\n(¢êÂ¶SÖ\0âî‘™j5\"öÜhô89†öå\Z\\‘ïqI¶\ZSI@	Iﬁî—T ß\nhßä`(ß\nhßTÄSM8”\r#jå”⁄£j§Ci)i)à(¢äb\n(¢ÅQ@Q@Q@Q@ä((†—@Q@Q@QHä(¶F(•†ä(¶äJZJ@QE\0Háö◊”Â*¬±◊≠hŸüòTM]©ﬂË˜DmÊªù6‡≤Ø5Á:9?-w∫X;Vº˘”W;¥:1)¿¢£\0‡QS»+ú\'ZÜJU|“?\"∞=äéÿ®ÃÜ§ëI®\n\Z§MÖi	™“ú‘€\r1£&ö≥.sTdJŸí*£,X≠c\"Z2Ÿ)sVù*0º÷©ô¥>Ê∂≠#ÈYê/\"∂m0\0¨Ê ä4°N)ÓºScp¸VÖYñ≥n\0≠)[ä ª|fÆâ;#\"Ì±ö»ù˘5zÓNMeJŸ5ﬂN\'\rYë1…¶JM6∑G+\n(¢òÇä(†ä(†ä(†ä(†ä(†ä(†AEP0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0\"ı®«Zï:“cEÀu‰V›öt¨{a»≠€!“π™≥∂ä6-ó•h†‚©[^^ï≈#µt™s˜´èU&§Üe\\µïpΩk^‡u¨ªÅ÷∂É2ôô(™¨9´íä™√öÍâ…1äº’˚T…R5Êµl„‰Rõ–™Qª6,cÈ[÷—+2 >m€ßÁ‘zûúë:/Ú¥ı^)J÷%ïùj¨ã¡´ŒµZU™@fÃº\ZŒúu≠Yó≠gN:÷±2f’)kFqYÚäËÅåäÕQûµ#TF∑FJ(§¶@R“R––))E!GZZJQHb0qLQ’OARı¶±Éc84”2©¢Ç +wNù\'âcv˘I‰\n¡›æB«◊5•ip\ZÏÀ∞*ı*Ω®ö∫2ß+H◊›˝üzíD\0ÓozÓ-.M‹Q1\n€óú+ê2©xd~‰t≠M2ÁÏíΩ∑ñÀπrÑ◊\rUtw¡Ÿñm«ùhn*ÏUá≠`‹NëO\"DÖò\0>£⁄∫\"≤@aG˚ßvIÊ≤µh£∑èŒŸÇ§#ÎQM˚÷5û™„¨^Ï[#¨Ä/ﬁ\nG+SE,ÜŸìÊ	2Wπ®c3€^\\¿Îì˘ÄË÷âÂ˚%–º1ìjÁlùˆ{”jÓ¡•Õ„,SÕ	a≥ªo•I˘W∑%NË§∆°¨¯YZs\"é6„pÁ5v¬Ît˜∞–é=´ù≠\rÆZãj∂—ù§w5Z‚D¥ïèó∫6∫ÙV˜´s\0Ëy⁄q∆E2ˇ\0°¨N ÿ]º˜©Lea:√nÃHAûπÍjf…î≠F¡Iô«F=Ös◊ºzù§ÔXnBWá\"µ,.e6Rœ3ÑÛ$f€ûzˆ´ÖïÃπÆÕ&23‡˝¬#◊Ωh$Ãx0ı¨+§éY£gdÑÀì«¥Ö„¨Mc‚√µf„fUÓ_äaTa¿„µ^äf#px÷±æ“±∏uœò°@ÍŸ‘ëeµåìaœsÔKîR4ú,äz”®ObógíäáÄ7UÈrhÏvÛìU⁄O≥Zô\"q!\07≠DﬂBåã›•≤Ïpy¿©Â‹ƒäø+`ñ‡˝C§6PÓ†PI+ùƒÛ≈Z≥!¡,>ocÈZ2ID¨é\r…åñÌS+p1ŒF1Pm;|æàZre|ﬂ7ÎP ±9D\0ñ^qÅU$Ä,{ãOAV2I1ê}Íç…æ7-∫)ç≥Êgµ	ç Ü∫û¸S#∑ò∞}≈q—j⁄è-G_r)À#dÓ\\Áß“éf;÷&Û7∞g\'!ç2\\ª¶qÕY6Æ0A‚ê«∞g$8≈Ã4+Ì›\Z¬æÒë»ˇ\08´nÊh{)ƒåO^j=™h…„<zSd\0„oLußŒƒ“eà¸Ä ≤2≤Éüò~¶¥÷KI6/ú1óVq⁄π˛qœ9ÔLÛôT·N1T™1:iı6n%äYI_:v*ÇØÃqﬂÈYÛÍpóhŸπU\01˚Ωz÷›‘—‡∞ÇEeÕz≈æP}Õ>f T‚∑gE≠ÔIedU\0*∆>ˆ	8œa…™˜zØôªl+9=sÀvä€›˙ù∏œ9ı™ó∫âﬂÂ∆Yéz’®…ËKï8ªõSÍOÇLô„¶zUQy$∏+ü∆≤`ΩáÁgaï˚ÃMhiØˆõo=dGÀ™úÌ©∫n+PU‘ùëam⁄gÀíOµYX“ﬁ6Qå§Të∆c;Å˘çDcyCÖ…Áêk;óv»ì|ü1jl„Ât‰˚‘√@Z%î`„Ω+ÖäM\'Õçπûhâ—¶ \0ßëöçö«#o5:Øñı ’ïcR:c“Ái9ı,Õœ|T72Ã‰*Ø%G\"í‹–áR‘NåLÀ˚ç¡ábkñ÷æ’5¡û⁄2ÒÌlu®˙r^íÍ·§=78ZÇÓË[B-/!ip1à21Ëk¶ù¢Ù‹Ê®õZÏcùJ\"π∑Úé‹2‚£““˙Ê{;ŸR!,mˆi·caœ?P¸ió‚◊À/\nü1«\rÈÌO‘4ƒíÚ…!í4çê‹¿´\ZÎÇV8jIﬂSÚíÌ“ﬁ_2%8x§vQ0‹\0U(ı´\Z≤€E®Oî¢k`ﬂ$Äu¶¡:Z‹áö(Æ£*Tˆ»«Ê+sïÅæñ‚m¶\nR,Ï¿‰VÜó⁄n¢Cö°πLrk5·_9|•;ï=k•≈¨Ô©yË§+Û7O¬≥®ÌÕ©FÚGm¶⁄«H—°åçæÇ∑`\\(™V¿úZ+ ìπÍ$L\r!4ô¶ìP1‘,iÃ’\ZG!™≤öùÕUî”C)Œx5ëuﬁµ\'<\Z ∫=kHÉ9˚—÷∞n:öﬁΩÔX7Mw“<˙ÂÎL©≠Fz◊R8XQE(¢ä\0(¢ä\0(¢äQKLbQEÄ)¬õJ(‡‘Ä‘4i1¶L\r<\ZÑ\ZêT2”ER(LQäZJb\nZJu0îR\nu!àj6ß±®ò”∆5ß1®…¶âb\Z(¢ô!E%-1Q@Q@Q@Q@Q@Q@%-%\0QE \n(¢òQHaESQE\0π¢íñÄ\nJZJ\0)h¢ÄΩj˝ô˘ÖgØZªjÿaIç∆ã…ZÙ=%>UØ7—$Â+“tfπ&µ:bÙ7Ñ|\n*qå\n+1‹Úàﬂ58Ê®Dıv6ÆzˆcÕ4¡ÌVW§\0QqX†m˝©≠µhî(¶ô62•á⁄®Mm Éöœö>µjBh≈í<\ZÄß5•,uU”≤d8åãÉZ0IÄ+8pjdì=Dçuõé¥„.k5fß˘æı(ûixÎX˜≤ı´SK≈c›…ú÷¥„©çW°ùs&I™rjƒÕìUõ≠w≈hy≥zç§•§´3\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢ÅQ@¬ä(†ä(†ä(†AEP0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(GZë:‘b•åsIç\Z√ë[÷C•bZéEoYØπ*ù‘Mãq¿´™8™∂Î≈]U‚πÿÜ0‚™ µxØ^T‚§fLÎYw[s•e]%k9”µLı´”Ø&©ëÕuƒ‰û„·^kj >Ee[Ø\"∑lS•gUõ–F’öp+b¿¨ÎU‡V¨#Å\\;—:Ø‚¥™8ßP2≥≠Vïx´Æ8™≤¥–å˘óäÕúV¨√ÉY∑≠i2nZŒîVù¿ÎY“éµ”)î⁄¢53u®ö∑G;IäZ*â¥Q@-ñÅ§(•§‡)ÄSf§≈8§ò§ÆàTÌcì“ßÄò0={JÅÅ=~µb·|ª¢Å√Öëﬁ¥‹‚wLÈ-\\Ol≈≤G\\’v“G‘ÏÑW2ü>åÙ+Qxim£∏O∂®í td‡ÚÑé	Z≠qJÒ¥≥ÂÄ˛Ò”¯á©ÆIGVéÿKCAbõM∫äÏ7õn◊‹xP{’…Ä∫ImáŒëØòÓ9}j&r`0ìêj∑m>\'µäMë‹≈∞6xoAX´=˜7m≠ä÷˜Øo{%≠‹[íL3”5¶RA,∑T«ÀÌU/gée,#Ÿ\'#Ø·PΩ˘\Zπ‘∑ÓÖ¿VQ–èZßbTúKê)éYñr—Êµlﬁ1s<Ñ`Ô√ZƒÇÂ·ÆPyê3Ú·k]%Y‘).FÓúsXÕhŸ∫>CÇ0—úmaQ√s…hùÇÌ»‹x™ˆ◊aÏ2‡ú.éÊ®È≠ˆ+ÎâùÜ?ΩìYÚ‚Íˇ\0⁄ZL™Ñô‘·\nûPä≈±‘„ÉÃK†¡‚_#å˙÷Óçw)∫ñ’„ãÃV,I8‹+úæä\r}æ–™mÓ9=Ù≠È≠‚Ãß›uÅks\rÂî¢ÍÅOö;É‘}EtsáÇ	ƒí\r“íz¿˛ÀI·˚˜’ÓÙ˚7		PËé‹nGÛ´—Gvë›YB¬Kêáúı#µUH≈•b) IÍm%—ñ{Rêπ¥ñcîé{Uÿ…\'WS0íß$`gœÁX∂SõøE®Úßãá?0a◊ÎVm›nı)Âç›í2Òñ« ä≈§çUﬁ¶ŒùÛ•Ωƒ∏ëó(qÄ«–RÍw±⁄ÈRôY]¸°˚€ö≥û5ëÆíëv…≥cw®Já^yó0maÇƒ∑o•JäÊZí;õ;ÖFWñÍm¶fAùàË+NŒÌ\'y∂ôm\'E⁄}:\ZÕ”Ó¨ç¥M\Zò·d-ÊªÁë‘ÁÎZ\Zu√^YΩƒän⁄ÑéXz”íeÂGn„≥H˛Vpx@=zT	 UÚÿ˛ÏÛÉﬁ¶p\0I⁄≤l´Ñ$ı®ö∏Ó}})°õó®„öôJ0˘à‡ìHº∞¡\0ÁúÙ®Çù‰Œ9ßi\"\r√tÁΩEøÁ?!+é¢Ñ44eAﬁ¡sﬁùª+é@ı≈.U‚⁄À¡Í\rFTï˘x_Ó–1–îR‡ïŒy…¡ß\0P§⁄´Hå√ ˆ‰öQÂ™ÅåpH¶KEì∞&ˆe\03Tnn7 N;S•À|±ÙÎèJ•ˆwïŒNÂúˆ™@ëü{r70›Äq…ËkWõbÖÜRXñ∆È]oÿUÿúdÈX~\",(å´,oz⁄õWDTŸúåzÑ˜w´¥„tf5«˜áz≠o2…2}¢R°IF9Ë’.éëÆë4πtùv∂yPzˇ\0Jªq•C•Í≥=ÎE5úá^zÁ∏˜›tùè?ñM&d‹^˝âƒRDY.:8=≥]>ëq€çB¬Q&–»OP=´ô]>GÕn~—gÀ1Á`<GÈ[æ\Z—W ñ@Ô°G\'£dˆıúyMpÒó1€[<2⁄â—’ëáH®ﬂÔgvé’R-28¬lo$ÅÛ˛*∏66¸¿vØ=˘äD;Có¢ı‚†#j¸√Ù´ßÊc»‡sU§)=Ωi *≤¸õÜ1◊ûÙ¬¯P@¸)óp	˙\Z6ó9cÙ≠#√‡ë–c•A3	·›ïÿ8Îﬁ¶çIê(â˛*Õô›Cõ\'¿„Ü9ˇ\0\n®´ë&Z\"`°òdˆÆsRπë&ñIä«±7†˛ˇ\0=k›ÕòûIó-¥Ïékí‘ZGXÁ23é“„È]aÆß5zç-¶W6r¥j ;c¯y™BÊY#	ª,##úzV’Êµue·ËÙ‚Öb˚G⁄åÎ˜ú‡Ä	Ù¨MA£kÖk`ïwπÆÿ#Œõ‘Ñ∞\0ÅÇO&ú|°‰îb\\èúÄ“GnÛJë ƒ¨ÿ√ı&§∂≥23nt]ß\'ìÙ´n∆i6À∂Ï/Dy‹\0ŒVªÕ\nœÏ÷€XùÃrkú–-ô.≤Ç6·N;Wikÿ◊üà©wc‘√“¥nÕh\\S≈SÑ’Ä’»tÿòµ1öìu1ç çDÌJÕP±¶]™¨çRπ™“\ZheYçe‹ûµ£1ÎY∑\riYáyŒk‡rkzÛΩa‹éMwR8kôÔ÷£=jWÎQöÈGä)ià1F)h†—N¶ö\0(¢ä¥îS\04QE\0¥îR¥‡i¥¢ê\"Pi‚£ ÈRZ)i-\"ƒ†R“PäQH)E1Ó‘—A4Äi5Tåj4¡åcM4§”jà\n(§ÔLëh¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0))i\r\0QE\0QE \n(¢ò	KE\0QE-\n(¢ÅÖä(3KE\0£≠YÅ∞¬™‘ÒòP∆u∫4ÿ+ÕzVá6UyØ)“d√\nÙm\nnöÂ®ç·±ﬁ,Éh˙QT÷oîs⁄äƒ´Oïv)}Î&6\"≠#Ò\\Æ\'±sY&˜©ñoz YO≠<LjyIl‘Ûá≠5§¨Ô<—Á— -;Ê™ÀÕ4ÕûıIöv™HµqŒEVíÆ\"h¶¸\ZfÍñAP„ö’≤EsRÜ‚°E©∂ÒIàÇf8¨õñ…5´8‚≤.zö⁄ö0™ÃÈM@jij]ë<˘	IKIT@QE\0QE\0QE\0QE\0QE\0QE(¢ä\0(¢äQE\0QE\n(¢Ä\n(¢Ä\n(¢Ä\n(¢ÅÖQ@Q@Q@Q@Q@Q@Q@Q@Q@Q@Çä(†aEPEPäû1Õ@*Ã]i2¢iZ/\"∫5‡Vò‰WEfº\n‰™v“5m◊ÅWqU‡UµW#:êÖjä∞j\'ÈH£:u‡÷M“knq¡¨õ•‡’ƒâ7…™E~j—π^jûﬁkÆ/CñKR[u˘ÖoŸ/J∆µ_òVıíÙ¨*≥™ä6mWÅZq\n°l8•‚∏‰uì®‚îä\0ß≈H0™“\n∏√ä≠ ¶ÑgÃ:÷m¿≠YÖf‹µ¢ëp+2Q÷µÆZÃòrk¢r(∑Zàäô˙‘-[£ùå§•=h´!ÖQ@8Si¬ëHZpÇú:“-!@†”ÖRD\rëÙ5\Z6O\'ë“ßq≈GkO}\n ç#ÖÁ\0{÷ëgefiZﬁ˘e]÷Gvl€±dÒ›O+≈*∆[;ïèAXzårGv–<°⁄#Œ”¡>¢¨ÿ_¡;I&T1ìéÄ÷sç–ÈŒ∆í¨—ƒ@,ﬁQÎËjiû;à`∑éb[ 9ÍﬁîâyÖNÌ‹c©´⁄jY˝™D`¶G\\Æx¸ΩÎùÈ©‘ù›à\\¥FÌ\\ç√Ü¨ãò⁄\'ä„˙#ú„p’ÌZGÖ>«Jw|™≤T˙\n≥ˆWk4∂Bm¢Ô¯SN⁄âÎ°Vﬁc=∏√F„9È≈hÆÌäI\Z±d#Â˛¨g∂äÅssΩcÑ·‘òèj’ä˚~ïÊ@Ÿ»‡ûHˆ©úz¢°-”$éfKiSîr≈ó€=©⁄%Ã÷n±M&]Ou™∑◊^]Ã.ŸUí%«›5†K≈sm<¡\\&Ì9!Mf÷Ü´V0ƒœ4óÈ\Z9rÒëTgª˚gõYíÌ)ëPÚµlﬁò∑Jc9ﬁõÄ≈g_¬M©h\ny≠a˛–ˇ\0\Z ˚é[hE¶@eK{˘•êyﬂ3”ŸVìOÜ-BKÜéUﬁŸOJ…∞’vhoopZ;»•c#/µt◊wπñ⁄U›>–riÕI6DZ ö’≠÷)≠∆pF™˚÷úë«∫[∏Â»p>QﬁïP-™ 9êÙ≈W˚ˆÅ?ÇLÇ==+\rÕ…•å<KÚÆŒ†·©l§éÁFà;á1ªØNúÒPjL-Yc∆¸Ùˆ¢ƒÃ±‹‘å±∏√)¿œÛ¢ﬁÈ-ÍaôFùØ…oi!å¬πxònGœ?÷∫8ÓMÏ…:¨cÊëá}´}∫SJKoπÃÃπÓ3Ka}-≈¸Vë™»Z0Ã„¯TÛÕn„ÃÆå9π^ßixõ2±êgû*ﬂú•PÁïÍ}ÎœP7.l‡_6Hõ|éG âÿ}k\\*∏˘éÆY+=M”∏°Àí‹öp![èjÅàçˆ~Uìy96.≈›Î(\0»ÈKΩÉc≠TYÄP\0∆ÁDs∞sqÈ@¨^n«Äæ¢ô∏·óÇæµúw`tÌR•FH\'“ê&>˜A≈D∞áS”◊4‡•˜„øz|M∂0≠Àc†ı¶Ñ»0∏Õ;lj«»z„Ω>RÊ \n˜Œ⁄H‘Ñ√ı?ê¶òCÑﬁ\0˝‹\Zß=ÜÎ+∏$ÚÂÛ‘ÁxÈ¯˚V¢˘D`é9¶\\¡(f)>¥”hñy≠†I§LÕ©X £™ûY£}2≠[πˇ\0‚[ß)5¨mÅ.sèU5ª‚8-‰ìO∂3F∑\"q›y»>ΩEdi6“Y√>ÎUhÜ;àÿd‘7µv{Nh¶ÃT,Ù\"{tõ¯/¨ŒÀKÃ≈qÓ#•t\Zeò”‡Ÿ!T‚Ùùµö<r∆\Z9;¬ìêﬁÑU‘a=úéHY¡ÑV3õí6ÑI§Ié@äï=#Ú®≠òÕ\Zπ˜©à,	8+új≈ö‰$Æ’PyÔﬁ™ÃÏ†®^={U˜eTÈ…„öŒìq.ÁÅÿS@TÚ…`≠¿&íW∂1˘TÌêø)Õ ,«kØÀ‘‚≠11! yΩvå„÷πÌJÍK{ªEì˛=›ô‰a–∂8≠{Ÿ“±/8Õ‹jk}•›™#=≤êY«Tn‹zWE(∂ÓsVíéÉ/f{…@ùº∏êÖÎœJ…æ‘ë≠\Z‘\"®ƒsW•±?cÛ‰î∏ö= Òû?¬π∆*—ma»\'πÆ pGJé⁄]ƒQ£££Å˘á_•Alä˜\n§‡\0NsË3ZrO,?jiw,mV0ƒÁ`$t˜ˇ\0\Z»G∆—Ä@9«≠n∂9û„‰,Ún9…ÔZzm£;Ü\\dsÉT’2€Ç‹~P{WKeE˙÷5ße°’á•wvl⁄Åï8≈m[úb±≠é1ZpøJÛdzâhk∆›* µgDıi^≥ã;©§‘{¯§-@¨#\ZâÕ9çD∆òπ™ÔS=@ıH\ní÷u«CZ2÷|˝Í‚&a›˜¨;û¶∑Æ«Z¬πÍk∂ë√]“u®ÕK\'Zà◊R8$ •î¥…ä)E!âHi∆íò\r¢ä(QE(¢ä`QE!ä)i)E C÷§\Z‘Ç§¥H)i-\"ƒ4QER“\nZ`:êö)§–X‘LiÏj&4—,i§¢ädÖbäb\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ää(†ä(§ESQE)i)h\0¢ä(\0¢ä(\0§¥bòKZä§CÕ&ÓòÿuØA–‰·kŒtÊ√äÔt7˚µœQ@ÓOî}(™™ˇ\0(˙Q\\Êßö ‘ÈS=π•3f+ñÁ±aA†µ%5çñÖ/ÔL2”‘LMZFlòÀIÊ’löQú’rãò≥ø4∆9¶≠;6-2Œj¡Êöd¥$q‘•8•Aä{p(π63ÓFb\\ûMm›∑∞nè&∫i#í≥(Hy®çH˝j:ÏGíñíô!EPEPEPEPEPEP ¢ä(\0¢ä(QE\0QE(¢ä\0(¢ä\0(¢ä\0(¢äQE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\n(¢ÅÖPh\0¢ä(ÂÎVbÍ*∞ÎVaÍ*Yq6,˙äËl˚W=fzWAhx…PÓ•±±	‚≠≈Râ∏`5s3•ñ®ÿÒHZ£f©«ÉYó=ÎFSY◊Í‚K1ÆG5Oo5°pπÕU	Õt\'°ÉZì⁄Ø\"∑¨◊•c€\'\"∑-•aQùtñÜµ∏‚¥bUqW‚W37\'Q≈;ãO«\"!aU‰mÖWêSB3ÂVm¬ı≠YG≥ÆZ¥3‡u¨πá5Øp:÷\\„öﬁHŒêsPµO/ZÅ´•Håı§Õ)¶Ê¨ÃZ)3K@O¡O)2–‡)‡SE8Tñá\n\r-%ÿc*§…WH®]U≈ÿÁ≠°≥^O8∑ç«˙ï⁄∏ëVûCz‡∏UìF—ä•ÊDê∏t<cÀu=>¥∂çâ’úêÖπ#Ø÷µjË‚OïÿøhÕmïπõd*r§˜5‘‹i©±GpÿübÀF›AÁäÂÁH$s∏ª@«j»E2Sqm©≠õ]º≤<¢#€î£ÕÍjß ¸é”S∏2€I.ÊXX4gø€ΩJ’Áö8X≤2ì¬.JüBk5_ÌVÕy,W=G÷Ææ¶.ÙÎ8Tkt$apé¶πTlµ;ÆÙ+$?k∞GrX*nÒúuß[5≤Øï†∏«za˚E§ñÚ¬soª\"02\0=jKó_∑…u¿∏ömzÍVöÎÃí[-A…KG/qÈS⁄:Bë\\Ç[@~¯«4_Eh¡d2¥yÈúJœ∑KÖµEÃq©P}È⁄Ë\\⁄õ¿‹H.⁄ÃN≈œÕÙ˙U4œlˆÒ¢˘ñƒÌs¸cµVkÂD≤.ÉÉÄ?º}*‚H…™Kàº§~´ŸHÌP„mKRª±…e¨¢«3;6Ç¸a⁄©\'ùm}l>–xŒ—ë’{WØ¨“fvIs∆Uá?5Ømˆ´â&êü9p™†vQkaI3¶ãQ1¿ßë*é√<S√Ìò;°î{ö ädÚmÂÄ+∆òG…∆>µiÔah‰ç’ã+a0{÷∫õs+ÍS∫5ºÒ cÂëËj˝‰ìN◊ﬁ#µ√\0Œ 9È˛òé©u,≥‡§aWgπjK[∆µy£∏Û7%»Ù4=¨ªòZ˝ıÙ¢=<!ñ™Î)m«Ù©¥61√v´:≈!Uÿ >i¶j1ÁΩ’’¸Eâà\nFWÁû≤/ºúë+«í3¿5—t°cù¡π‹Ï¥®R»ÀH\nÂ€£lC8pÃòdŒ?\Z»ÜwΩ`Jìx\nÌ‹„˙S‚∏ê›2HûP<£„Æ6õπ‘ç)19#û@å∆F\nÙ8ÎLÇ‚9# }yÕ) «µr[9\Zœb—gx.p:ß&ˆC”ÂË)„Ê9⁄2:Á÷ÄÄπÄ#´P$äBPÙŒ:öí,[©\r1ıÔÇ*¬EVÿ\0ˆ§&«∆°◊¶@Îı¢Uc∑h‰w‡0B˜Ó*EÉëırºvªÚKnøZö$ﬁø:í¿=™t¡‡.:T—∆d/\Z∑PsåZhâH™!&mõ>R2=™µï!∫⁄T´FU™Ùí¢¢(˝‚ÔÚ‘ßBqöáPêC4äÅ0v‚c∆ZDs\\‚o!iÄcoíƒÜ˛˚sÉÈ¿©o.ˆ∞jP[ñG@≥ zûúV‰z|s¡<R†ºsæÍ)ÜG@FsÙ¨8Ó_K‘.ãZÃê^F´h˘@„!¯Ù#∂‚O™¡ëëZ5√£GÛ\0á˘‡”nnë%€4RG2sÂúÇGÚ8©Ï/t˚[WëíH\Z8Aù°øÁRﬁ[G~aö‹F·pí5ÓGµf’ô≤aj–Ω¢Œèê›p~ÈÙ©ö`À±Gù’ãôÙÀñy£S≠áÿzƒäΩ\rÃy“B2qÂó™\\{{Rr;ûïâ$o0ç¨ºz’É\"(;Úl‡Tr‹√4C…(Á∂:äZéÂI”Ã$H±7E>ıôÊ›}¨€9Öﬁ4 ï8\rÔ[!’„YÜ`~cË+P\roˆà”‰$˙Vê◊B%¶§≤∆÷ˆ~l≈]ò¸ƒvÆ_[∂∑ñ1un≠«¸¥(:ØΩt˜Å‚eh⁄4€ï,{◊.⁄§øi\"F\"&rΩÎ¶Çw∫9qMYô0¡“§\"Gçó$‰¸≠Ù®Óë÷ÁÀ9ÕK2àc7√\'=ÒUÅ;ó-œ\'ûıﬁè5È°˘XÉ’Åñ8˜Úú	§}ŒŸ5jÿ0Pπ˘súQ\'dU8s2Ã0Ó€íx≠´s¿¨ÿx5£≈qTw=JPH’Å∫Vå/“≤ajøW4éÉV7ÈVëÎ6\'´hıE–‘®U©wR‚j64•©åiÄ∆®^•cQ=4\"¨ΩÎ>~ı°-gœﬁ¥àôãwﬁ∞Æzö›ªÔXW=MvR8´ô“u®çK\'Zà◊R<˘	KIEQ#®§•†aER\r%:õLAEP ¢ä(\0¢ä(¥¢íñê!‚§ßÉRR$¥Ã“Êëb—öJJ`<\Zu34†–≥L&ùöc\Z\0c\ZàöëçFjëJJZJdãFh§¶—IK@QHä(Õ\0RR”\0¢ä)\0QE\0QE\0QE\0bíñíÄ\n(¢Ä\n(¢Ä\n(¢ÄR—E\0RfñÄ\n(¢Ä4fåQä\0Zz\Ze9z–•ãa≈wZ$üv∏F√\nÌtI9Z∆¢5É;•î}(™À\' 9ÌEsì⁄u‚®Kmé’÷œiúÒY≥⁄u‚º’#⁄LÊû\"*C[r€c<UG∑ˆ≠ác)íòSö–hqQò˘ÈV§f‚Sgµ<AV÷!S,\\Us∏î<¨v†•hjèÆ\"îò´î¬¥Ó≈G$òÁ‚™L¸U≈\\ân‰Œk·≤M_π|Ê≥&95ŸMYYè4”N=iµ–éF%%-ƒ%Q@Q@Q@Q@Çä(†ä(†ä(†ä(†aEPEP ¢ä(\0¢ä(\0¢ä(\0¢ä(QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE(¢ä\0(¢äQE*ƒ]EW<GëRÀâØhzVÌ´p+üµ5∑j‹\n‰®wR6b~*»z°‚¨´W3:Q1ji4ô¢ã»üö•8ÎWÿqUeZ∏£6Ãôí´ÑÊØ ú‘9≠z∑$∑NEl⁄ØJÕÅy´l:W<Œ∫fúÅW„ÈT°\nªJ¡öñüLZx§K\Z√äÆ„≠YjÇJ\0£(ÎY”é+NZŒ∏j–ÃãÅ÷≤Æ&µÓZ ∏º	ëô/Z¨’f^µUÕtƒÁë4‹“ìM&¥FMéÕ(5iA¢¿ô(ßéï4jY§XÒR\nåS¡©5C≈-4R“)⁄£+»©)\nÓ‚ÑL’—^[b~lu™ªöﬂrïåf∂·å»1⁄õ>û”∂ƒà∞Ï¬™5-£9\'Gô],ÓÂxÃóÖRj€Z«<®\ZSmv§í_Ä@ËEc…√#+•O:NgéC3p0§ÚI≠≠’≠µ£6¥õÖπ∂π-)ét‹[¥tQ5ÂÍ@ÖY‰C¥û‰vÆgÌQòmˆ¬™Ë∏v˛Ò´ñz‹÷VpEio\Zœ¶Qr>¯ˆ˙Vrß}ç!U£Ì”ç	éVl}Î9û{[4∫…!…\'Æ¡⁄™ΩÎ\\4R9Ff?2„ÔZπiqˆô‰éP•Ç∏ÈYÚÚ£oiŒ«YJn4I%2ÊÏ¿˜¿™Øs%Â¥å$##pQ‹˜¶ÿﬂ\'1„ÁB±™Õú^N§à\00Ã‹1ÈÔE¨ÿ‘Æë¿ï≈îè˛ÆP1˝ÓıØ©–â◊r∆¿®˜™˙ºq‹‚ﬁ 6\rã˛»ÔO“,€XñH‰`‰Ì9l>µŸ3H=ZîÍÊ9KqØÃ;qﬂﬁõt≤M™Ìÿ˘ÚryZûﬁŒ;{ª˚uçÃp_˝Æ˘4ÀP”j7n§≠∫®‹˝∑Ç¢⁄›Õ¶¶ÕµÄ∏≤ªe1/î°‰Ry|˙W%cw$\ZúêƒZdàÌ9 VÂΩ‘ÆÎºÂV#\n9#Ωe,	g®√<MòÔ_‡wßd”€∫hËƒH¬;Ø1ºÃÜ¡˛T‰ká’ß»ÄŒ¡ÕlÕ5\"≥\"ºò\\¶;}j)l£∫ò¨Â˛F]íÅÚúåëö≈.Ê◊–ææUÆôñÈπP∂‡9…Çi\'‘„äŸ‚∑⁄ó2Ævï¡ˆ®&D”ÓSxµ.8^pZkó’|EkrÃøga˚µ#MºJõ-«w±±¶Xºë¨Ÿ%ÄfaÍhπ”ﬁ{Ëﬁ∆å°‡úVÑzå*‚ú≥0T˛È©§TÛRB∏ `Ì„?Z¡∑{ö&f«b óŒyYúı,z˛u\\n…∆*mã&ynÇ¢q‘1V«L“’é‰¶2pƒå⁄ö‚ˆÜSñÍEO±2¥r\'ÔAÍ;S∂r°èNﬁ¥Ç„\nåÓ,X‘‘—†\\2G$R¥&2ﬁÕIêπŸêÆ(±-ä™y„èzz€á@ÊßlÁÔtö•÷…#\'=®Héb8‘D¡Cå`j‚$s&ÃÇ“2é∏Ù™óV©pÅ|∆B9º`“√oªK_∂µ∆`˘œFF\'≠\\QfU≠ê€⁄èÙsaxÒ<j:Ü)?≠CÆÕj9,ch≠#≤∏¥Óy\'ˆìS±÷ì‹ƒˇ\0bû—¡,ﬂÎOmﬁµñˇ\0hû˛kãƒΩmN5y d€µìéûò5≤]HnÊu’æµj°k™%√wDÅ‘7Ù≠hlç∆á$˜ÓØΩ@ë¶1ŒN}™i\Z÷‘>ßee∫yQo®\".¬ﬂÅ‡˝k¶íŒ‚KkBe∞πp–&B∏˛>ÑïV∏st*i∑Øoõê…x≤πﬁÑ~£⁄ç2v:ë[[i!∏âòº(v´/ }hΩé‘Í ∂· ì%e∑-Ûô\0»?≠A.ü‚˜∞îäÊ7.¸;!Í?AG)\\⁄µi≈ƒrEqæﬁGË‰öœµΩ±ûƒÿﬂ[BnbX≤‡≤vaÓ*•÷°(âæ’é)‰˛Ú3˝Â5èy™AurˆÚ9ñÈNa∏€Ün:z®“m*ñ‹Í ∫˚*ãhıÖøÂëêpﬁŸ™è5’µ»∏Q√2í}≈Q≥Vº“gµ3/ùo∂BŸ (\'é«8®!øà)”Ø¨`3Fwò8ræ‰u¶©Ó∑cNmn&M´òeëÇë–1ı˘µÌ≠%KÄ]⁄=∏#%Nx5À\\‹óªñ“	ñn´(¿jñRH¬A:ecl<≤ëÿ˚Vû«™2ˆ˙Ÿñı€£I+ãÜó!cBø\'πÕsÅm ∏IÅ&B•n:◊[x§ŸÃÊ9T6Ã˛µ»f(^Hõ#è@kZ+C*ŒÏa¡êÂÅ r3÷°X;‰ùFzèjt·¢òc;Tl—˘gÉÊgÉ](‰%\\I&GWcP:t™ñÀïËj‚b∞®ŒÍ–≥ZªJ>µr3“π§wD–à’Ëö≥¢5v#X3CB6´h’üU§lTq^ùæ´áßn§\"b‘“’Í7P!ƒ‘Liƒ‘ljêà$5üpz’ÈMg\\\r\\IfE·ÎXW\'ì[7ç÷±.&ªi#Üª(…÷¢5#ı®Î©äZ(R“R–(≈-%!ßRP&6äSILAEP@¢ñÄ\nZJZ@á\np4¡NÜIö3Ló4ä∏¸—önhÕ ∏‡isMÕ.ié‚ÊöM¶ì@65ç2îöJ¢Bíñíô!ESR“R–0¢ä)\0RR“S\0•§¢ÅERQE\0QE\0QE\0RR“PEPIKI@EP–h¢Äñä\r\0P(†ä(†îu§†u†∂«+Ø—dÂkåÄ·Öu:<ú≠e4iπY>Qœj*™ÀÚé{Q\\ˆ7;y!ˆ™3[É⁄∂]3U§éºì’R9˘≠á•Qñ€⁄∫9a™3A÷ùÕ9Ÿ ˆ™Ø+rx}´:xÒö§ 3˙\ZïTRpMGÊ‚¥FlΩêEFÎöÖ&˜©ÉÉLíª%B…WàÕC\"‡S∏åÈÜfŒ’ßq¿5èp‹öﬁö1® 3rMQëj˚rjè5’céjÊs-0åUÁã⁄´¥x≠îéiDÇíûW“*»hm¥î(¢ä\0(¢äQE\0QE\0QE\0QE\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢ÅQ@¬ä(†ä(†ä(†AEPEP0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(QE(¢ä\0(¢ä\0p©£ÌPäö>µ,®öV«•mZûb[uµjxÀPÌ§ÕX∫U§™êû*⁄\ZÁhËπ(∏§ÒM\"Ü0‚´J*€Ui*“3r(J9®6ÛVe®;’1≈ÍOÊ¥ÌÎ6.µ£nköge=çH{UÿÕPàÒV—∏¨MK@‘Å∏™¡È| LÕP9§i}Í	%†Jk>s÷¨K(ı™ÀTê WÎ*ÁΩhN˝k.·´x\"$Ã˘zö®ÁìVfnµMÕuE≥c	¶ÊÇiπ≠R0lviiô•ãd™i‡‘ ‘Ä‘¥kJ\r<\Zà\Zp5\r\Z¶J\r8\Zà\Zp4¨Zdôß/ÎQäê~µ,eÎ%∞Oz◊TV`÷=™ë[∂£zÌ\"∞®:k°ù™hÈz¡„ ªrkú‘4kΩ7c»Ñ+r¨+–ñ\0ˆÈR‹CÒ/öªõ∑†•O(i–Up—ü©ÂèpŒ™\n(#´…˙”|Ê‹≈›√Ÿj>Ç[Ç–\r°ÜÌæïã\'ÜÓíß8Ìﬁªc^8\'ÖúL_òmŒxËjw∫óx`vû¯ß›XKk.¬	Ù$T0.ß¢i£	EÍYo+´3PaAÙ≠;õ◊}\nÀ˜âò›àe·◊ûÜ±œÀ&q«•0∞ÛGF£ï0m£§ûÌ‚é“‚“@≥≤≤≥ÿı¢7√`\næ…ˇ\0Ä\'\\÷TQ»!Œ‘Á\ré*hÁÄªûÌY8*Üúw◊VëØï 1‹\rÓ3ê[‘÷ñï*]igN`ëGõâf›ÛI\'a¯q\\€ æ^7˝“vÌ˙”£˚Jiä·v®^‡qI√AÛÍu:\rÂ‘bÓkwxÔ0¿:éw5ùÛGicxëâç≥1u#ï˘é\róR˘V(6≤‚Ÿ∆Ï˚÷¨6MiäHœô!∞9v¨v‘Ë∫z‹Oj…-«Ô&;•^Ñ⁄§ø‘%¥∫µ”Â•µô7ºú®s–˝k&ﬁÊ+ô°\0çàØ#oıÕ7Jä‚8fªïÕî|ßr>«Ò©‰]Gœví4u{Ô¯ï≠ú,|Ú¡É…#≠hEu¥z\\≥Ÿæ»±∏„ú˜Á‹÷Ø=µ∂õmçY—˜+wı4∑ZÑƒ∫|wF(yì:ÚX„∑•%¢ùEs¢∏øÇ€ƒ”¬ÃÈ&Ô61…ãû?V‚Í∂≠ÊÆŸAÊÙ«h‰>òñ)I•…í‡ØAû?‡UyØó©f√!∏D!ñ9>g›éMe:iË\\g‹ÍÙ…d∫7/0exÊh∆:\0≈≈”¿ı•ô≥¿9™⁄EÏQª∆Ó•_5’èB}j‰0+[â⁄˜ñ{ä¡Ójô=·+h“	Q&gÛöëw¥;Êp6î∞¡?˛∫G”l“Ó¶˘Á„tù±ÈPœ}n!âØÁñCµ˚£Äi[∞πã?ô\Zƒl†nì\'¢TZ}¥è~ó*&çò(Á*™7r/ˆ¥Û/ﬁP∑ô±√Ûn˙sä|ÅæÀdñ˜“G<Y!`o˘gË~µIs†X4ä™6zÓ®Æníº∆R1Û–sYMzm¥´ªî|I	,JÆ>ôı8¶E´òÏÙπCõ]F6ãcp7sëN0π-öó:õCdæ\\k$≥°hîˇ\0tcs¶jááØ‚öM]÷{iày ¿	n9\'€ëT/#ª’ú:ÖºÂ`µùíc&b7`nïÕ]ºIzöÑ1˘vZ§,dÅ≈y∏8Ì‘\Z÷0–ÕΩlvZ‘÷wvötÛ‹DU‰∏©ï«∫}ån@|ŸÏf6∑∂≈è∑‹aÈÇ\rO·mIﬂƒq…3,r°0H≠ÿêG◊5kƒzJŸxÖo-ÊHÙÀ÷˚= ´sÛå˛#ä∏ÆWb[∫≤)i:ç•≈æ≥f^XnÓeF±ÛI\n A‹=1ê*úQ€Èó∫*:*E®I$S[ëÇ\0uÙœÙ©4¢ﬂk¥µ∫Wi,%ö4,sÊBÿ€Åﬂ~µô‚7Sˆ;(Â`—ªÀ€¿9’≤Kö∆RΩÆM≠Ÿæô‚LÁ«¡@˜\0…^T˙éïvﬂQé·‰ù-T\\∆\0*I9¡Í?\n¡’Ø†∫µ∂æ.Àw\0I}Â|Á?BoÈ\ZÏ◊Níƒ±G$yé\0ÉÆ9«◊3ã∂•¬VzùS[≤)f+ıaàY∞/J‚u¥ª7Ò≠≈°Ç˛#À†¿êı∑|m_Vê˘r8û‡‘WÛ32I+ªJ†¢…ª;êé˛ıtÔâ®î∑2mÆÓÏn%ª∂êE;/ó,G£©‰~ïl⁄ª»eä€oòª’ó€©¸+&ÊEπñ5g\r¡‹~È©Ù˝r˚N±ñ$aãÂ´u€ìŒ>∏≠ú[WF¸¨“∏äƒñ;¢±ÍH¿¨ò¿í>„ÎYvì[È˙å÷˜,Ôg(‰„ù√ë˙÷ÉI˜zu’‰¨Ì&d¯@„ı¨}Rgø‘öaçåŸ\nΩ\np]óRbghÁπç$˚4o °∏Iks5¿2aR/20GﬂlèóÚÕ[“§≤ûÓ÷“yeäªÑÇrÂì◊85üujñwó±∆ÊH‡r©\"ûºÒ˙U§CeYùA>^vëÕEÕ«s“Ç¿Æ:Ê≠X¿“Iù§Ö‰‚úùêÈ«ôí€)U ’¥ÅG%G+öNÁ•J6C”≠Zå’U‚ßå÷R:°´ëµgD’r7¨Z4FÑmV™åmVÎ;l=;}UR˘ûÙXEùÙ°Í∞ìﬁúã±∫òÕM›Mf¶\")[ÉY∑-¡´≤µf]7¥ä\"L…ºnµã9‰÷•€u¨âè&ªi£œ¨ Õ÷ôNn¥⁄ËG\n(¢ô!KEääJ\\–IE\0ÜìÍJ%¥PEP •§•†h)sIEö\\”isHfå”h§ÛFiπ§Õ∏‚i§—öL”(¢äbä(ƒ(¢ä(\0¢ä(\0¢ä(\0§•¢ò	EP ¥î¥ÜQE\0QE\0QE\0Üñê–Iﬁñä\0(§•†ä(Ô@EPEPEPEfÅÖä(xèÃ+£“_+öåÛ[∫[·≈Dˆ*;ù¢…Ú•Me˘G=®Æ{ºÎP:’∑\nÚQ2ì•Uñ:æ‚´»¥ãL…û.µóqZﬂï+6‚>¥—¢g7rò&≥e;Mn]«÷±nW÷àñlµf9≥Yéƒ\Z|S`÷º¶76—Ú)$˚µRjf|≠gmJ3Ô¨+á‰÷ÕÎpkû∫oò◊U$rVïÜÔÊ•\\\Z£ÊsS«-t8ú dÌ\"´IY*94ï–›ôûÈäÖÜ*‰Ç´8≠ì9‰à©¥„HjÃƒ¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(QE\0QE(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0QS«P\nô)1£F‹Ù≠ãS¿¨[s“µ≠õ•a4t”ë≥	‚≠°™∑iZ∞Â6Ê-ßn®RÓ˜ßb\\â∏™Úµ+…≈UñJir9Z°›Õ2I*!&OZ\Z4É‘–Ö´BÈYP∑\"¥!jÊô›L’ç∏´ÍÑo≈KÊ`VV5-˘∏¶ôÒﬁ©4ÿÔP=∆;—`/Ω∆;’i.ΩÎ>Küz©%◊ΩZàõ4$∫˜™R‹{’.ΩÍ´‹ÁΩh†CôjiÛﬁ®M&j7ü=Í≥Àö⁄02îƒï≥U\\”ùÍjﬁ(ÊîÄöfh&í¥±ãbÊú\r2ñÄLê\Zx54jZ4Lî\Zp54ı5-\Z¶H\r<Tbûµ’2AO”•<¯T≤—n“EÛ=Î¢¥ôBxÊπh0f¿<˙WId—‘û+\n®tﬁß@™i˚ÿ9®]\\H^ı-´çüÌïf0≤´Û Ò\\õ%8ïLe’I>æ‘”NxÁä∏©∑å„È™àef⁄yÓh∏X…∫±K´vI/ÿ‚∞Æ¥ÇbÌ<{WdUâ¬Á‹S\r¶Tû™zf¥ÖG9SR<ﬁkMπ91T&Å£qïÆÍÎN|œ#⁄±nÙ˜sªïÆ⁄ué*¥;÷“3IoÕò‡ØaûµZoÙ{ô‡<ÑvP~ÜµÖ∫ôHâÎÈT/ !˜7$˜ı≠£4ŸÕ:M\",ÿ;ÜG?⁄§ﬂ≥‰(U∞®6¢>ı‡Ø8nrj9e2…#l	∏‰™Ù•Æcvç≠Bv±ºÄA)vÿÆ≠ú·è5ø?âÁ{∏Áé!ΩÚBﬁ∏960[„≈â6Iù†c5´mZ]…rÔˆŒ$π¨ÂOCH‘mAÀIkÖâòÏ_ÓÉ÷∫˝&Ê\rÂí T-™ ÅŒC:åcÙ≈[Mmê€æNIÏjXnf[guO9â¡Ë*\'Ë\\\'mY¢\'h4üÌ!Y£ú∫†ê}“O&ß“4˚à[§ó3©¡#ê5Zﬁ·Ø4[Xnõm¥@‹xŒsè÷≠@”◊‡+±ÃeπG¢Z+\Z≈¶Ù.ÈZ˝’Æç3E\n Aíπÿ\\{’∆[-+ƒW\\?ùu,QM¡lF>µë•\\m6ÚÊ`¨ÚLœÂÅÚØÆ+\\˝ûÙ]Õ¨ÊhÒ∂‰n]≠Ë=ECZ¥V∂LÎ!∏˚\\RKµÛí€à˚—Ø˙÷¨:í:2g‰$Ñ¿dq¯ä‰°ò€¨\Züô∫ﬁ¿*ãuÙ52§wWZÖ…§ehÔ∫áíøL÷üS~~Üˆ´ÆGÉ-’ÃeÓ[TÄûA“Xâ5=BHÂªÄ≈à∑\0¸+öøißYgôã√ﬂ\"ûá\0`[\ZdËû\ZûKàK©€2oÍ«@=∏Êü\"Q!…‹ºgñÓÍx<Û%¨Iî©˚ÃÎú~?\nôÓ#¸¡‹IÊª∑ﬂPF0O•`ŸÕ©D◊6ˆ˚gÜí6‹ 9 ˝G\"§’ı5x¢úG®5«óqè∫Éûi∫zÿJf∑ånù-≠/≠ùÖµƒIÁF@!é	˙÷wì∫ uSôybœn#ßÂY˙÷•lÌ<zlÜHGü\nèóp„ zV5Æ≥:yg>da¡òûv°ÌÙ¨)>S9U≥;˘/,`‘ö-N/6õEñ)Êw>¸W=#¥6Z•¨Æ≤Aas±;ûvï?(˝?*±©]»∑7w\Zv…¥ˆä%s!ŒG8Ò&°ºΩu÷ÆÏíKh°éIîù§\0}iF6¶û‚Z_⁄€CßÍL1s,Úy°«\roı≠\rFÚ[∏¸ã©°}:¯˘ÿàÂ°Ÿ∆◊ur∂\"˙”QÖ§EHÓãyBNà3û≠m~È°‘R_±Ωºãn∂Æõ<z∑{Bc-.À7ó6sË°Ìghµ∫_ºËﬁ&±¢éÁVπIn›‘‹£4E∏‹˛πÙ‚≤fûIn\ZÓ¢“\"Lû†ˆÆä!\rﬂá¨Ãì%QñD\'ò€<\ZßDBó30a,o\Zﬁp¢„v‘òÚ23¡ˆ5≥m‚∑ﬂ\r›∏\0\07bj√÷GÅ”™Ö>Ñgöû9ÕÂîë›®.—ÄìÉú÷é*JÏœõï¥Öº‘nÈæ÷Ã°ó1`pjõ_2€Õ`#mDæ|¬I‹(çÿ,å=∫fûa˚eûT ©Vf=¡™ÂHéf≈∑öﬁkXÏÓ_fK7ö:Ù‡}3O3ãÛ¶i±«\ZyGieﬂŒrk>8áêp‹N–ΩÕ=mn`ëfm—≤ßçß∂j¨à◊s£‘‡“y¢äÙ0Lr  Á©¨π÷ŒÓ5xWÏÓëpO˙”ûH§TúÁSHU#∑ê	dÉ€ﬁ†Û“{-é€69`\0∆3I!∂äÆ¡Qä„bë¥ZéA\Z€)I	ë€)•‘2™ˆ\'$‘=MhB‘±kl”N}q]ù∂ñ∂HìB>Ú¸Ÿ•få$çÓgçåL1öËnm·Œ9Ø:Ω{Àï∂ÇånŒ>Ú<Jÿ@πÊ©ëZ˙†!¡<qY-N.Ë–Jô*\Zzöl§\\ç™‘mT™¬=d—iöı0í®´‘ÇJãÀûgΩoΩTÛ)| v&Â±%LèTï≥S°§–\\∂\ZëöòßäF4ÄÜV¨´ßÎZ7≤.õ≠kg7°ït›k.SWÆ[ìYÚk∫ÛjΩHM%)§≠Nf¢íä`-fíÅãE%- \n(¢Ä\n(¢Ä\n(¢Ää(†AKE\0QE)i(†£4î¥\0QE%\0¢ä(\0§4¥S(P(¥QE\0QE\0QE\0QE0ä(†AKEÜQE\0QE\0QE\0Üñê–EP ¢ä(\0¢ä(¥QE\0QE\0QE\0bä(\0¢ä(DÎZ⁄{a≈d/Z—≤l8©ñ≈-Œ≠d˘G“ä¨≤|£ÈEac[ûÚ‚†aVòUw„3’EwY≈[qU‹R-‰Bu‡÷îÇ©L:–hå;§ÎX7i÷∫[•¨+≈‰÷∞cf√°V ’´ÖÎTœ∫£±œ\"Ï2’Ø3#≠e£`’ïìäMc.€ ÷◊ﬁ5µpr+Ërk¢ëÀ\\†ÕÕ&)Ø÷£Õu$p6\\YΩÈ∆\\’0ÙªËÂ)Lùõ5Rn§&ÑÅªå4î¶í®Ü6ä(¶HQE\0QE(¢ä\0(¢äQE\0QE\0QE\0QE\n(¢Ä\n(¢ÅÖQ@Q@bä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢äQE\n(¢Ä\n(¢Ä\n(¢Å\n*T®™D†hΩ‰V≠ªp+“µ-õ•e$ik¬‹\n∂≠T!<\n∂¶≤h’2¿zïÍcΩ+tí‡u™SMÔD≤b®À\'Z§âlWóû¥®˘5PæMIsJH“õ‘‘Å∫Vî&≤≠œJ“à◊,œBû≈‰n)≈Í<Rì≈dl$èäß,¶•ë∫’)õI	êÕ1Íå≥üZ|ÕTdjﬁ11îá<«÷†iiå’l÷Í&êˆí£g¶ìM&≠#\' f®…•&õTëîòRPi*å€4¥⁄Q@&8SÖ0SÖ&iH)‚ò)¬°õEíÉO4ÒRÕS%•9ú*j\"˚EWñRÕJ1ª&≠nU°b⁄aˆ’9Î≈u÷IVo∫√\"∏ãíxﬂÊª+9ëXûoJœwΩŒÜ!ÖFŒ*‹Mù¿ ˙÷|.AhFåWù#“EñÖ\Z(ˆì∏úµF¡öPY≤@∆>=ƒÅ◊ÎA`Æ¿®»ÌR1c Á\0nıh\02c8óï\'CO1§“A∆~î çà≈JÆ\Z≤o,é	U˙◊HcñUÜW∑ΩB–∑a∞m*y´å¨KWG	5áŸ‹∑ﬁ›…†˙T3X˘–©@°‘‰É‹WQsjT≤™Â\rfº\\Â2t*å≈”G?{ß$÷∆dU/P£˚÷L÷=≤#85÷µ±çò©$7jÅÏUê¥`aÜ\0>µ¥j¥c*\nG\Z—≥≥q“öé»‡Ò¡œ5—^il´πW⁄≤n,%ãÊ(vˆ5”\n™G%J%wò≥≥èóq…ÅRµ„É≤h’î*qö™»Gji$ö“…ò;£^)“‚ p¢;u=RNrkJ“È∆ú√ÀlVÏs»Ç~|å{’ãK∂ä&ÖüÌªûô¨ÂöBß)∑ÎæÍ8àòÊØà£Ωºö\'+∫—°„ûï 5¿Œºì√ëV·πDÒ∞ÛA9Áú©\Z∆±“jW≤&êV5«ô\"Øäı?éjkÌLû!ÃhßœJÕµªÇX%¥rd»!ı-‘’(5\r⁄Y∑ùw$DûSoo÷°@©T‘ﬂ{Å™È—BnF˘&3*UBÅ˙R‹j…e-À¿eé‚?ﬁÆÔïü\\è•d«t`”•I#dwÅÿv®µ)“}7ÕÛTe’|ê0U@‡–£w‰ïêÌ>ﬁ‚;˚læ¬àfe›å©cäµ}<W˜∑^J1[Ä›˛Ë®ö–ÈÔgq#‡›@vÜ9+ˇ\0Î®tµ—ún∑åPˇ\0x˜˙’>‰ÆàË5Îõ®¬-‡Kòç¨ŒòH‰˜>µÕ√°#G8KÂ∂ëTìááQÈÎöËn.“/	˘◊xÅ¬Õú¸≠»oÆ++PÜﬁˆ⁄›£Vå§%mòˇ\0Œp}z“ß&Ç™FWóŸ†T˘â\02±œ8Æ¢∂‘Ù›V‚˙ÒÏ G	Ç(∏I§PC˜∆+éﬁ˙}‰±)‹Pè∫}+CU◊dæå«,PJ¬GÄÅÇ\ZﬁQæ«:ìŸó⁄Ú	¨¨‚∫V3!,dœ8?wöYu)„äÍXÓTxºΩ≤ù˚p{f≤‰º˚j€Åƒm¿ 8#∂i·“KÌ™V8¶Sºz#ÎS iœ†üËŸ[ædÏKŒzÙœÎVo/Æbñ8§äCGñ£)˛˜©™6˜®4…ÌV%g=]˘„5R9e˘æW_,s–u™ÂÓBïãzt¬‚ŒÍ«Ïâ3Ã∏Ö€¨X98™¶˛ËmKâú…\Z‚&\';0z\n©\'ÓÂb	#$dÙ¡óQœ9\0U(ô∂v‹È÷ZmçÙÕ€≈=ÕƒÄd»‰(DàÆl]±µ®Ql˚˜…Ùœ“ùmhœpË“∆•ówn\0ˆ˜™Ø∑ÕƒlLt‘ä5 ”c˚-≈◊€c\rhQ„ã¯¶…ÁJ[â§∏‘<Ävâ◊Û˘‘\Z\\‡LJèÀ~H˚ºu™bÒÉ+ú1à¸πir›èõB≈Ã≤≈ñ∆„Œå∏=}+?qlÁ&ï§ÀqLœZµ°;ä0[ûï{O”eºùB°€ûM&ùßK{:™ØÕzñÖ£EgnrÄÓ®Æ\\EuMYnv·∞¸⁄ÀcOIDÉJÜ‘`\"Ä9®/ê9^ïwqÈQ\\Ä -éEyW÷Á©câ’b-◊∑jƒn+•’QR›‹ìª<Vˆ‰F&˚W}=brŒ|≤≥*RÉäL—T—ií´T ıT\ZpjõÂ’íû%™AÍEl“∞πãbL‘äsU–f≠≈©cD±äµ¶GµZHÒPÿ–(‚òı>‹\nÇQäHe)€\0÷5€ı≠[ì≈a›øZﬁö0™Ù3gnMQsVfnMTcÕv≈eG®”IEfL(¢ä\0(¢ä\0)hPEP0¢ä1@Q@Q@Q@Q@Q@Q@Q@Q@Q@	@¢ÅLB—E\0QE\0QIöZ`QE\0%Q@Ö¢êR“QE\0QﬁíñÄ\n(¢Ä\n(¢ÄäZJb\n(¢êQ@EP0¢ä(\0¢ä(\0¢ä(\0¢ä(À÷Æ⁄6U÷≠[ú0§∆éÖd˘G=®™™ˇ\0(˙QYX“Á“-P∏©⁄°~ï‚3÷Eg™Ú\n¥‚´»*KEISòUÈZ•5àÀπ\Z√º^Mo\\µçx:÷ë(ÁÆWìYœZ∑CìYrpMuCc	à¶¶V™¿‡‘ ’mòíÚ+*‰rkUŒEg\\.kJl∆™πì Ê°ÔVÂ^jπZÎã<˘!îfîäLUQE\0î¥\Z\0i§ßSiíQE\0QE\0QE\0QE\0QE\0QE\0QE\n(¢Ä\n(¢Ä\n(¢Ä\n(¢ÅÖR–E∏¢„∞îQä(∏XJ)i(QE\0QE\0QE\0QE\0QE\0QE(¢ä\0(¢ä\0(¢äQE\0(ß≠F)Íy†q\Z“∑j åÛZÌ“¢EDŸÄÒV◊ëT n^å÷,Ÿïöö°qH¢ú¶®ÀWÂZ™ÒÊ© òÊßàr(ÛS≈Lôµ%©n“¥#™p≠]åW$èBB¬Ù°∫P¥5fjWê’)èÆITßËj‚&gLz’)*Ï›ÍîùÎ¶< ÌQöë™3[#ùå4Üúi¶©±ÜíúiµHÜ!§4¶öiô∞Õ(¶”Ö)¬ö)E&i@i¿‘`“Ó≈Mç¨J)wT9-“îN¢ï[bqúÒPûµ#p∏¶U§sI∂≈Ûm+¸=+¨∞íIcWa˜«j‰¡ Ç:èZÈtGÛmñékB˜nt·%ÔXÈ¨\']ÖA>ı©Uq⁄=Î»p	·ñ∂°>`GNkÀûÁ±ãj´ê{ı©Ü˘à\n˘‡ÅPæíß>‘∞±-∑npz÷EÀ$Új”ÆÁ»áa«JçSÇÌëWÌíO-Ñn\0[Ω+í»bbí±sê√#°¶OjX\00Œ>µ†€LE$#ΩC$ñôºOlS\"Ê‘\'h(úf®\\€#›Ω+•}Û∑ò@\nzåUim·ó\'…≥åv´R…K	â¿⁄pjå∆Îú.Â[˜7ñÀ$cr˜ÔYÚF•Ø5™ë-Ñ&hŸAì∆{’i¨2≠09™ÍD¬^åtø\n∫\"FM≤GÇz∞ÔNˆªú≠¶¨≤ƒ∏C‘∆∞Áèì‹Û¿ØL∫”>“õL?*Ú3Yw^çåHä§ëê\0Ê∫i‚-£9j·πµG\rjÚfŸûıb2Ω≥[˙Y∑VêÉÖm•q“≤ﬁ\'©èÆO•u∆jH‡ù7®Cá.¶Mô\\˝}©Q ¶†›Åé‘vÕYôØos\n:∞Ã!9báìPnY-g!âeì(IÁ®8ÈN…Á≠.QÛ“›ƒt•≤d⁄—¶· <±>µùëGÅ|µMªˇ\0ºﬁ¶≤Wbc¥”“fuÚ∑·OjûKŒu∑“G{§,p<f{t\råÙ∞ûÍ\'é?%ÊFÎç«Ü`x≈e§Ô>1œùˆÇÄ>ı(”∂ÄÍ6uZïÏáR∂û9å∂ è˝÷„∏ı+/f¥ï#bYéƒcê>ïÌä@des–É∆)˜6¶£Ç\0\Z1Û ‹≥±˛î„h)MΩFÍ2¥◊FbA$u®°} ‰ .£ ’≠!bûÓWπ€‰√HCt\'†≠g«+ƒ·”\0˚ä•ÿñıπu.œë$Y¬» ÕÔäÜiÜˆ*ì˜HÏ*±líqåˆÑÁ≠>Pª	$ÛNWÿ„9¿¶ƒBæH»ÔMcñ\'÷òâL¨ÍS¢ñ›èzh$`bò>î·Û1\'©†C‚çßù#\\ov\n7tÊ§ïw\r‡€\rÉQ!Dr]K\0{“G VÀ(j,•Dåêßß≠Fh\'\'4Ωp!§ ´§ÈÍ\n®º‘’ΩAmBPJí:◊¶È´g*,QÅÅÅıÆJ¯Ö#πËa∑˜§C•h\"◊m©å3)‹\\wˆÆùêF™2ù© ègF√Å…§l@9Ø.RrzûäIl;Â∆‚2√ößu˚’›å§TÌÚriåá f ÌhÕj±≥BÃFéq‚ÓI$ ∑À”ë]Ó¨¢fe;\0ŒyîØ˛ñÍ8èïËa5M3Õ∆Ë”Fî—ÌP·Å≠B\ZÆ√…hcb3éΩÍÉFÒ68ÏkiF¬•VÍÃ~isLäŒ«G1 j≥ÕUAìZ&qRÙ©f≥ZP√úqQ[≈“µ!ã⁄∞ì5Hlp˚T‚,TÈ<Æ*.QM”Rj—êqY◊M	ôg¨∂‰÷’„uÆ~Èπ5◊IïôBSÕWjñC÷°5÷è:OQ(•§™ (¢ä\0(¢ä¥îP1h¢ä¥Q@RPEPEî\0¥Rfå–!h§¢Ä∏¥RQ@EP0¢ä(\0¢äJb\nQIK@Q@h§¥\0QE¿(¢ä\0J(¢Å\0•§¥ÜQE\0QE\0QE\0%-PIKE0äZJB\n(¢Äå“\nZ¢ä(\0¢ä(\0¢íä\0Z(¢Ä÷¨Bp¬´‘—ûE\r@¸\n*\0¸\n*,YıTMRLjYÏ\"]≈YzÅ«%¢úÇ©Ã8´“\n•7zF]«z«ªÔ[7ÎÔΩ\\K0Æá&≤föŸπk&q…Æ®Ã©ûiÍÙ∆\nÿƒòúä©0ÕXÌPI“úIñ¶|´UŸ*ÙãUòb∫\"Œ9ƒ¨VöVß\"òEhôìDX§ßëM4…ESîÜñíô,J)i(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(QE\0QE\0QE\0QEZ‡)1§\0fù∂ú´NRŸ™âZn*rµ\nDtî„M5Fl(¢äb\n(¢Ä\n(¢Ä\n(¢Ä\n(¢ÅQ@Q@Q@Q@¬ä(†ú:“P(t5v¨ı5j&‰T¥4m[ø¥bl÷5ªÙ≠Hä∆H⁄,ªMeÕ*äìï<‘-kCfiæU;Öåˇ\0#⁄¶H±⁄≠yTÂé≤õ:)!ë¶*¬- ZôVπ‰Œÿ°@‚ë©¯§nï%ïdÔT¶ÔW‰jî√ä∏âôìµJJø0‰’:◊D&Vzà‘Œ*#[#ùå4”N4”Våÿ”Mß\Zi™3b\ZiÎN4√÷ôì\nPi(¶!‡“ÉLî\ZE&?4öfrp*P6Òö»Px≈(8u¶”∂¸π†ã‹CûÙ∏8…•éiv„˙”BdMÎZ⁄Â.LcúÛY.r’>ü0ÜÒX∂ﬁŸ®®Øã£.Y¶z$hváè®ÌWÌÿç¯zVnó0Ú¿lí√≠h2}ú\0„∏Ø\"[ÿ˜¢Ùπ{Ç†dåı©b!”ë˝j‰Yx<+r1SÑ…Á\'ì,ªTèòMh€∆•∑2íG8ÕQ∑O,\rßØAZÆvø*sék6Lá\rª2 7t≈0e$R§tÂH»53)LÄwSFˆ‹p;fö$âìs‰Fj	!T#ÜeœPkDG„é*	‚‹À9\'=jì\ZÏI3yd´cÓ7∑ΩS∏”Ãl‡∑ `ËkVÍø6÷\\ı qU§y™\ZFS¡\"©63\"T`Ë»™YGÃ=>Û∏åy„\"¨»ë∂IR≤∏®LL—‡eH´∏¨Xd˝‚»∏+åjú⁄€™«võå˚p—7AÙ®#˘[%üïH_ÂW…nySSp±°§€_[êb∫Ú:s\\.ß·Îã}…ˆi@+œÈaÑÆBG›Õ!àÓâOÀ€p´(lD©©nx}Âã€Lcí7GÙaä®UáPE{nßfóÂ⁄x“t#É¥nC\\≈◊ÑÔ/Ï‰÷ìø<¿zWl1iÓq‘¡ıLÛäë•-J >Aå„®ŒkZÁ√:ù¥rK%≥yQ∂÷u‰ÈY”Y…7»»Æ•R/fq∫3éËã Fr	‚•Ü÷f∑k≈Ñº8Y`OA˙TOäA¡‰Râ§XL*ÓùÃπ8\'ÈUËCç∑%ñ?67πå\0ªπQ€5Wü¿S“Fàút#z”3M	°Ï2¡#<˙S	‚ÇIÔSf…2≤∏9‹´’>¥\n√|ƒ[o-GŒÕó>›ÖE÷¶	\Z€≥∏%ﬂÑ¡‡zÊ°„∂hUS1låZe.(≈;ÖÇú\nÏ9R[±Ï)∏4ˇ\00˘\",.nŒ9§\Z9‡úQ¿Œ9§¡\'ﬁûau©\\j,uƒ/ÑfRH\rÚúı®±V\"¥ñPYP‡{V≠Øá\'ïcg¬Ô‰ÈQ*ëéÏ“4e-ëç-#\0ZÎ<1·¯%Ωf‘\"%r£˚∆µ4Ì\n›9É∑\0w…Æ≤ ﬁ$X\0	+ä∂%µhûÖ*é≤&≤∑Ü¡HV0=8´EêÓ>RT„≠H™◊\'h_îN¥‚]$\0.1ä‡lÏ!$-◊=sUŸB;<`ÚrFjrÅQáﬁë∫Jk\rå2~¢ê°-ô	˙:S¿0[>cÔDä	6=©è±î.0\'ÈÅó©®6ÃJç«¢äÚ[¶&ˆSûw\ZıÕK‰Åä‰í8ˆØ%‘G®»3∆ÍÙ0]O?≤.ÈÚü1pI9ÔZÌ\næ»9Áö¿≤p≤‰c•nBﬁlF^ÆΩÎÆh‡Ée;ãVÉÊ^R´ÜÕnmFL∞˘q»¨€´2Ñº\\Ø•d—’\n∑–d]kR’yï…±k‘V3:†Ók[ØJ”Öx¨Îz“ã†Æfnã*8•\"ëM)5#+Àﬁ≤ÓèZ‘ó°¨´£¡™àôÉ|›küπnMn_µÅpy5›IŸMœ59è4⁄ÈG\n(¢òÑ¢ñíÅQ@Çä(†ñíñÅÖ¢ä\03Eî\0¥îQ@Çä(†ä(†aEPEPEPÊì4Qä`\nZ(\0¢ä(\0¢ä(\0¢ä)ÄQE%\0QE\n(¢Ä\n(¢Ä\nQIJ)(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0J)h†¥Qö\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0*D<‘tÙ4∂ä)ÄÒE >ß4”JM4◊œû—‘“ßjÖ˙R)%™3w´“’ª–Z3.;÷=◊zÿπÔX◊]Í‚hc‹˜¨©á5©sﬁ≥eÎ]2ëPØ4°*LsR¢fµπïäÂ8®dJ“Ú≤:T2CBë.&LãÕVëkNX™úâä⁄20úJ,*3S∫‡‘,+tŒY\"2i§”ç0’£6%QT!))i($J)i(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(QE\0QE\0QE)i-\0\"ä`©•óU ZjT¬≥lÈä\"e®\\UñÈP8°2fàZm=∫”+Ts»J(¢ô!EP ¢ä(\0¢ä(QE(¢ä\0(¢ä\0(¢äQE\0QE\0QE\09O5b6Ê´\nï\r\r(•j€ø±!nï©l¸\n H÷,ÿàÒVö•p*Í‚±f®ê-.⁄pßTçÌ•O≈(îŸ◊I\rR•U©◊;gdPÕ¥÷>⁄çñê r\rRòqZ\n•0ÎZDLÃòsTe°8™äËÅÑ ØP∑ZùÍ[£ûC\r4”ç4’£&4”M)§5H…ç4⁄q¶”3bQE%Qîrx§©c\\ri«*ÌÙ\n\\ÊÄ3@1WìN¸8Ä–SÜzPò“r:öêi\0QìQø˙”BdG≠ 8‰u†ı§ÔH€Ë[ÌSÊ‹√Ç\ruñ‡ÃF:Wõx~‰≈wÂí0’ﬂYÃ» Àê¶º¨L-#⁄¬‘ÊÅ¶TCÜÍ≠¡„•XﬁWØZé2\\Ç {\Zê#) Ÿ‰Áö‰:ã÷oµÜÂ\0ûá“µTdÉåÉﬁ≤≠ùdÙ<}+Uax∆≤ÄÊ°äB™¸ƒ°œ<ÉN§ü1‡¸$Sá-–ò5#/+ŒPE$jÅ$Å1µÄÔN) éÙÊUq‘ô;ö2ä\0˘àÁ&ùƒBﬁgî»˜Y9R*ÉD»§¨ò=∆:˝+E’ñ3º|¨{\nÑ™‡·H#•;ç≤BXÔ$√í;’|tÛ26åqﬁ¥ﬁÿ»˘∆p*´£Ö\0\0¿s‹U\\°!@Ë]@ÔC§ÜU å˛5\Z(ì ùπ»©…/\"Çª	c@ë\0ˇ\0Xø7ÆjXÁô&Ó\r∑–vßåßûx„≠Iﬂ3z`∑~:Qp\'ÖB∫;FH…¿£πÛ·î=∞Ÿ∆Ït>µ~6v%)àd–RF¬∫åuSÎSqsÈ¶{&ãÌ-Ωõtå@ÍEUO\rY ˝Â≤‹èi|d˝En4\'	ê›O≠ZâX\0¢<Iå·Oj•&+Ëq◊û≥ô¢}õìÀ*´ Té∆πõj∑Úãx#çb\\ÃÛ}≈Ù«Ωz¥—+Cá]¨[\n@Á4¯Ïƒ0Û\\óÊ@›ÎX÷îzôJ1{£«Ø<,+Õ‰‡˘ç¸={T)„VñÊ(–≈∂Qï;∫zˆ	≠ƒ±c\0pπ®œ M®J∑PGÖZ≈T]It)À°„⁄ÁÄ5ù@%âfB3æê>µâÖ»ê¿õŒ„ÜTÔ^˜,?hàÓgB”œZX4[;c¡oo◊vﬁO©&≠cemQ«¨º≠_)ï-JB2Á÷ä¸=πyR<PI#Ú\nıÅ\Z2Ã =®êƒ™ëåøR7j.£)aÈÆáú?Ä4˚Tÿ“À+ÁÔt‚ô7Å¥—‰3o˛Ènµﬁ\\yqÁúÒûïôpÂ(<éx©ˆı;ö™0Ïy‘ﬁä		€#!‡.y™üåÀq1Xó`?1ØEC!2Ài:zQ±wñé00;÷ã5‘âa‡˙\rááõíX€~Ôºj“π“-⁄Tä¿è©sù∆∫a\n≈\ZùÁÊ%üÿˆ™Mƒv`ñÍhu•\'pT£däññ;›£ÊÙUÖµBË®ß~}x≈K`ãÄEOo-π≤1ÿVnL—\"Â§)Ö¿OnÄVîp˘ÚÇä0\rRµ@dXÄ√Á∞≠ÎsnËÉï$w¨ôMÿwÀ	Äæï+‡˜ÎR∫d-í)ß#?/ÀÎY‹d!z6*9o˘á·S∞i@¿∆1Q¥9œ qL\n≤F¨IR¿ˆÊ†pc…,x1ö¥§ë¥Ûéï\0ÀJw8:Á˘U l•uèÊ`∏…Ì^I´ÆÕRq∏7Q^Ø®KàòÑØ%’:îÏ≠∏Î]¯=ŸÁ„ü∫àì Ç\rt\Zja2‡ÌqåûıŒ)5ª•∏(79!y\nO›-è:/S^QﬂwÚ¶Æ’œ…êz˚“∆rÖàn¬ù*Æ„ÅYö$∂⁄ﬁdcåÙÙ´∂Ω©£≤>î»¿çOçHùtjtf•πÈZ17≥!=:UÿﬂÎñHÏR/©‚úO]§ﬂQbÆ2S≈d]ûµ©)‚≤nœ™\"{ıÒÎX7ì[ó«ìXSûMw“ÿÛÎΩJç÷íîı¶◊Aƒ√4¥î\n-%-\0îQE\0QE\0-Q@	EPES\0¢ä)(¢ä\0(¢ñò¬ä(§0≈%-J)i(\0•§•¶EPEî\0¥P(†ä(¶EPQKI@Çä(†ñíñÄ\n(¢ê¬ä(†ä(†ä(†ä(†ä(†ä(†ä(†ä(†\0“\nZ(\0¢ä(QE\0Só≠6ïz–\"|—MÕÜ}TM0öq®ÿ◊œûÿ÷5Ù©\rDÊÅ¢¥µF~ıvCT¶§Z2Óª÷-ﬂzŸ∫ËkÔΩ\\M{É…¨ÈO5°ry5õ)‰◊D§0jƒUOw5b&≠\Z2π}FE#∆¢6»©H»¨ÆQù4]x¨È£≠πóäÕùz÷∞ëâì\"UVZø0™≤-uEúìâQñ£\"¨0®òV©ú“DTî„M´LÄ§•§4…ä(†ä(†ä(†ä(†ä(†ä(†ä(†AEPEPEP0¥îPÖ=MGNì-2 öî\Z¨≠R¨⁄6åâX‘-K∫ò∆ÑÇLç∫‘fûO4√÷¥F,J(¢ôEP ¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(QE\0QE\0QE\0Täj:pÎ@‚nkF›˙VTgöøn‹äâr›∫VÑgä ∂nïßÈXH›÷ú*5<S≈fÀä)¿SEJÉ&∞õ;i! µ2≠µ2•`Ÿ“à∂‘NúU¬úTNò¢„3ÂZ£2ı≠YR®Lïià»ùk>aZÛßZÕôz◊Då—û‚†jµ ÎUòWDNi\Za©\r0÷à¬Le!ßÖ$”Ñ,MQãdöj…∑ı4øf•;ê îïp⁄”Lcüzw&√#åéMHA≈;çûÙﬁºR0Ò÷Äy†úö09<)Ëø63M\\TãﬁÜ’Ãg*H=2*ºü3í2*∆\nÆHŒzT.0!€≠\'zs˝Ím\0I≠´\"ûAÕz.ï{ˆàQÅë é’Ê‚∫/\rÍ9æŒÕÚì≈sb!ÕùxJº≤≥ÍzÚÄ†÷Ñ-ûsÛVM£˘†m8aŒkE)\r^LëÏ¢‰$§R∏`~RkJ¶íÿ˘lƒw≈Wä%ïAcüaZP,ñ∂Ã#Œd{T6Kc«¯äôAb°HŒ{‘sDçsàâ›≥ÊÔJ¨—∫Æ‹qê‘Öπ8»p∏˙“πKzP_\0o#Å√\n`wπ@x˚‚ã*ñ«(>Ω*¨ A.	,z’÷)É‰r˜ÖB©º¿!«\'‘”\Z)KíõOÙaTJ4Sù‹¶1ä—ï8ı‚©ƒ≤HÉÃwuî—Iî›9s„“ûçæ3ó⁄›iürF\0cû=Èe√Ú}Gjcb\"ú∑J|YUF7håÉì–ﬁ§eB¡£r20Aıˆ§«r¬ì\0π«rjŒ\\Dà«*8CÌTˇ\0‘ë∏í:í*[vÀmW.8n‘—me`>nTp\0>2∏Lô…œ˜j¥D£6WÜÈœJú\0‡|¯$–C-&Õ∏h¿~™})Z3:ô	S¥ˆÎUÑ“oE;<≥◊ä–HRÌQÜ<ÛTC–®aT*2Y±úäkEìê2G<÷ëâƒ§ïVP8\"°ñì”,3ÿÆ·ÊÆ3”ÆmÚ»#‹TÂ§`mß8ße\rÅårjW+Ó.	*7/´∫¢=¨;÷ñwø»<∞I«ZÜdÛπ8˛tl	ú˝ r7d’v\n·H˚¬∑n„\0ç+‚aqç†®…sM3TVE¬AéFj9	pYN3Sπ;I›ì¸®+µõW\r¿@Shæ\\‰™Ùœ≠UëI`ùÖ]íBF”€êµ]#gì-Tâ`cF21ÎSCπÄÀ1∆)≥4§*øE8‡U´K}Ï\n1ºìMÏ$hŸ¡Â·Âv‡{UË¬dÌ^‰‘eç[-VapúÖ9¨õ*¶!π˜®∆YœÕÅäî°-ê2á≠#˘ª`v©é2WåêΩ™§≤≤Ù\\¸U¢Jè1èœ–zb†ùäê≈A»Ëi†)∏ÛJÒQ>–`\n©Ôﬁ≠\"ù•éF+2˛O,\0·T∑∞z≥£HsÖ\nMyLÕôX˙öÔ<Sx–i∆0„3{‚∏Î^Æçœ+;…!……~Õ»ê)<YÎVÌ§ ˆÆß±∆éñ‘Ù#ïŒjÈÀ.\0£≠Pµ%≠¿€«µiÑ©Ú’≥éô‚±fà´ÜåíΩ=Ëö1$BCêŸ‰S§˚†ûîı;Ü0\n„•&4E8ŒÉËM[ÜıêÄ¸’#\Z‰Ì$5T∏Ωû\n—)°©pL“5Z:hØQá\\}j–úcÉ\\bj£q „ÈV·’∫Ìì∆≤ïtC‹Èdó\"≥nü ’t‘√èòäéy’‘êk>Fô≤®ö2/õìXìı5≠z‹ö«î‰◊]5°≈YÍW4î¶ä‹ÂbQKI@Çä)h(•§†ñíñÄ\n(¢Ä\nJ(†ä(¶ ¢ä)\0QE)h§†¢íå–ä(†aHii(w•§•¶EPIKF)ÄQEÄ(¢ä\0(Õ%¿3EP ¢ä(\0¢ä(h¢äC\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\nQ÷íÅ@…h¶—@V\Zâ™CQµ|ÈÌ¢6®\\‘¨j§R í©Lx´í\Z•7Je£2ÎΩb]˜≠ªûıâvz÷ë,∆π<öÀòÚkJ‰Úk*fÎ]0FdEπ©bnj©aöí7Êµh∆Ê¥\rVîÒY=]F‚∞í5LIGõp:÷îáäŒ∏ÔUHÃö™ΩZö™=uD‰ôTMR5F’≤9‰D‘”Nji´FLJCKA™$JJSI@Çä(†ä(†ä(†ä(†ä(†ä(†AEPEPEP0¢ä(hä(‡i·™*\\‘ÿ•\"]‘“iπ§Õ0§”hŒh¶àlJ(¢òÇä(†ä(†ä(†AEPEPEP0¢ä(\0¢ä(\0¢ä(\0¢ä(\0•î¢Ä&CW`<ä†ïrÕK)6Õ¿≠XO±≠[•k@xÑç‚]SRäÖMJµåç‡âV¨F*´qØJÊõ;©¢X÷¨*”cZ≤ãX≥b\"µ•\\ŸQ:PtâT¶Nµ´\"U÷≠∆ô:÷lÈ÷∂¶ZÃ∏P&∑Åîôë*’V’€ÜA¿9&´ìíxÆ∏&qT®ë\\ÆMO≠JJÖ¿4¯ó\0èRkTéYN‰m\r(<õBÅÅı®É¢ı4—õ\ZA\"ö§Üˆ•g\0döÅúöb%ñLüî˛xì•\0P;ãë@Pi«\0S2iàR8„–8Êù∑åˆ°y>‘t`É÷•\n†å˙‘JπaÉRm9“+`ù§‘úÁÆ*h◊{éqéπ¶Hπf `zPÜ é9¶v©‘t…S[Ã–LíßﬁCëPSî––\'gs“Ù{—ul&V∆Ó∏ÆäŸåÄú|√°Ø/˛§mÆVcÂπ„Î^èg8*ß‰b)ÚH˜0’y·s†∑b˘I˚ŸÊµbü)…ÌÌY∂•\ZÓ´pÍ0B+êŸÍZÛT∆	eËH=jeˆ€Xè“´·]\0»„öñ61i8QHë$ÄúÇΩ3¬B√|#	=»¶yk.Ì@s¸¡Äª\0≤«•ÄV\\Ó≤	Í*¿ÜÂ\'8>ï[Ïœl¨\0\rªöB&;¢b§QU\n:Ä\0‰u´å†FÃÛöâ°q!¡9˜ä‡∏&8Í)õx\rù ›*„Âú‡q€5Q‚ƒ†#ëÏzTò≈å©êÇ™6å:‘âÇwØEFT? ~Rz0©ïâƒdÉÅÉ@á‰π\nUx„>¥Ë°tê2åå‡zRH§p≠ë∆8≈*ü!Wkª©‰Ø°†¶I∂»´≥‡Ûöâ’ÃÎ4lr£=)qnÚ©ﬁ z‚ù¥4Ü?0sêh%€}§GÿT`íG?Öiƒ]≤®∆rµPÚ⁄(’§âËsVñ@Äªó#4\\ôj^\n$˚íz“£‹´ïœ^)©f2W\n®©•≈ŸíÃ~‘Ã»åäçÖP}HÎO]°W`Ôû¥EW!ﬂ≠H˚˜ÄSé˘†dO≤@]\\„¶z©3®‹I#éïnÁwí Æ\"_P9¨kÈˆ√ªÅé9<öL∏´ïg∏f#ÎìYón<)\'Ω5Ó$F`Ásü∫£µ,o!·∂íFÅœ÷öV5ÿÆvÄ¶Cû~Ë•`«vÖ;R†HéÊ ˙”ZI$VPıÙB!ö3¥98ÕB£À\nr€s¯‘˜ª1êMVDÛff$ïNHœZ§&>!ô≤[=â≠{2à>ÓÏéGΩQÜÃ\0\0göΩÿ¢P†ô	«·JL,]çv‰ÉÛû’r8@\nô$ı5\r≤ÌBv‰˙öª®,zøòõT∆åO~úÙ¶0…Û¿ÈOl$ÖÁw4…cÀ¿*JBÍE#n;@®	|1U’çUw‡ì“©Œ ßß¶Üà.$\n\"åˇ\0J¡Ω]Õûï¨‰ñl{˚Vπu¶õ<Ï›‹ˆ≠)´ª\nOï\\Ûø^õΩI¿?$Gj÷+u©\\íYèRrj^‰# ¨xSó4õcáJö#Ü\05\"u™$Í¥«g©≠;	(H›«÷∞ÙŸ\\.{\Zÿ3(w¿¨Z≥4OAI\ná8Á“íî«›QﬂΩB ≈êç§ÚZrºâR†ÓÓ;Tåë„`x”.-ºËÿí	Ù©2.Ê\'&¶Nûc\0;\0(õû¡êçT*¿úWP–Âà `’)l”ñDÁ–U)\n∆ù–„4Âºì‹qDÒ©9Ëj°˘N=jÏòπö-=œò9ÎTÂS‘sAn‘ô„°+ï˜!=i*R†”\nw™ m!•§†AEP—IK@R–1(•§†BQE\0QE\0QKE\0QE\0îQ@Q@Eî(¢äbä(†ä(†ä(†ä(†ä(†¢ñíòÇä(†ä(†ä(†ÅE\0¥QE!ÖQ@Q@Q@Q@Q@Q@Q@Q@Q@%-\0QE\0Í)3E\0}Zj&©\rF’Ûß∫D’‘ÕPΩ\"ëZCTÊ´íU9®-ó=ÎÔ©≠ªûıáwﬁµâF—∆k\"v¡5´vz÷%√rk≤ö9jª≥ÛJí`’W~i´\'=k£î„ˆöõPÕ“Æ§¸u¨Ê«z≤∑ıú©ö∆©¨Ûåu™sHj±∏˜®⁄l“P±^“„f9™èS≥f†z÷&2‘Ñ”•Hj3“¥F2\"jeH’≠ãä(™ JJZJ`QE \n(¢Ä\n(¢Ä\n(¢Ä\n(¢ÅQ@Q@Q@Q@Q@-%)sIE\0-îPÊíä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(QE\0QE(¢ä\0(¢ä\0(¢ä\0(¢ä\0(¢ä\0)i(†	≠By™ãVb<“cFµ≥Vº\r¿¨Kf‰VµªqXHﬁ&îfßZ´´QÛäÁõ:È¢ƒbÆƒ*¨BÆƒ+ñlÓÇ,∆µe¢àUÖ¨ã`EF„äîöÜCÈM\"*Kä°7z≥yu\r≤nï¿Ù≠s\Zé´qp€`]âÎ‹÷¶‰c:™;ì^ﬁ√nßêœŸEs◊w≤œ€¬•s1/)<˙’¥∑TPZ0XWl)∆\'\rJ“ëÑì ìWVŒI¢,PB:÷™∆Ñ¸±®#Ø¨@e]ΩªVú∆1€Kô£©•ÉNîŸ‚µô∏*QNF0G≠Ã\\•hÙ¿„i<ûi.tõX!i¶%@˜ÍkYBÄI∆rz\\Œµx◊3‡›É¿§Æÿ;$gÃP±¿*\Z\\—¡≠H‰”±éh\0c=Ë…\'©ÄΩVõêO4º≈)\0î\09¿‰Q¥v<–J£súÙ\0¯◊$z∫\"¡∆A=˝™ÇÇGßG;I‹p{Rh4,úzàkòZtPOñ≠¥«>ô™Sni∂‰v§V<`”ﬂz¶“4áπû¯`«˘T5bOï\n˙’z¢D4QE1£` p√êk—<5}ˆÀr£wFÁ°Ø8SÉZZ^©6ór%åÓå˝Ù=\ra^ó<Nú5og-v=ñÿªaëàËX\Z÷Y>Míπ´ú“µn≠\"ñ&,u≠¥ërA&ºY+;3⁄NÍËº¨ éıfﬁ1»«jÇ7ñ/jÏ26N„åé\n‘\nHöbR}iP¨áû<Zz7ö6≤ÛäñF0›ç\nÿe∆2{v•R†òÛêù	©§:∆ùﬂ6séjUe\'3ûÙ÷Î\"nn2>Sö†ch˛V˘èf≠BôîñQ‘f°h¸∏–#Âq«“ò”1föTàb6e\réî‚—HG\"µ&Ä¥aîesÜ¨´´wÇIÕ ‹´“ùäLi&6åÜSôT\r·jé)íUYÉ/fÈüjëã†«éøZ,2hŒUú( ˛tä√ÄôW#¯®ç√F}?áh°îî\n@-‘1ÎHƒÆ!.B»§ë˘Qñ≤0\\0«S–änUB(vW\'/Å¿5:D§3\0åGﬁ\r‹z–K4 £9^€èZù$GO-Ä,zÁ“©∂»WÖﬁß¶›£2êŒp:‚ÄµÕHƒRïå´VÑ>c∑Ô{cVd-Ê∫ëïêˆ≠ƒ◊[¬‰õ;∂·Ö36ã	o\"ÅNë$úízüJÅ ú∆Õˆ¢ º<N1Ã∞ÄØπ±‹ı¢‚ÎπJÓTÛ9gË3“π´È#FVñP7ûôÈÙ≠ùBVâWs¶Ê8⁄5À^¬óæhÉ4MÚ±ˇ\0\n#´‘ﬁ*»c ewtRãê2NI)P—ÔYZ0?ãπ®ÑêgÓ∑∑J∑\Z§˘[^Ü¨dIå˚˚∫÷áéC a[ßΩYÜ!|¨`|£5™Óƒ3ûüÏäR∏TgQ;A⁄}I´ çHaíè-\"r 2Á†©¢M€û^1»€‘”lC·cÖ\r$’¯\"dê1\0í:’UK‰I’øá\"¥bRë‰s#òûqÙ©`N†≤|£;ö∞ßÀ@SÁ©®’‰r§s≈Z∂ä8ÿxÁüCRC TﬂªpÀ˙˙TíA˚≤êƒqéı#‡FFM¡pŸ»¥äFh‘‡ë“≤ß˘ÿ∆´Û1b]∫ˆ«j xº°$ûabÌ–ˆ¶äD2;Ÿ\\ﬁºÛ«∑·§∑”‚<ﬁI˝+–.•X·9oêÕÌäÒ≠VÛÌ˙•≈◊8f;sÈ]∏8^\\›é\\dÌw3‰Ù®˚”ÿ‘uÍH¢§å‹úT`”«Z\0€”r»‡É˘÷ÙkÖ‡üZ¡“õÊ\n[∫vÆ2«5å∑4â$HÑ‡å”í2>PªáROjT)U‰‘a§N§Ûöõ…¸ò##◊Ω5áÓ’Éˆ\\Tí[≠ŒZà1TgËäÕ$Nsû¥õs$cé«≠H3å…®ù\\6A†ÎΩ4iÚ;V≈ÛÌÆ∏∏›É“±5Cô£j‚≈$aJõ[\0”Yó\'ìéz‘q“¥3ö^‘Qé(p`è∆ò—s¡ßä(1ISZaNx†VKE\0R—Eä\r%\0QE\nZJZ\0(¢ñÄåS®§i)M¿J(¢Ä\n(¢Ä\n(†Sh¢ä\0(¢ä\0(¢ä\0(¢ä\0(4Q@Q@	E)§¶ ¢ä(\0¢ä(\0¢ä(\0•§¢ÅãER\0¢ä(\0¢ä(\0¢ä(\0¢ä)ÄQE\0QEÄ(¢ä\0(¢ä\0(†Ù¢ÄÙQE\0-Q@œ™⁄£5#Tfæt˜⁄†zô™§R+…TÂ´rUIª–hå€ûıâwﬁ∂Ó{÷%Áz“#g=yﬁ∞ÆO&∑o{÷—‰◊°D·ÆÃ˘öè}:CPÕu§y“eïì(ñ©ßÜ°ƒÀ~oΩi™ª˝Èw“Â)Lµø4áöÖZ§¶∆™W\Z¬òjF®⁄ö&DMQöëçFkDbƒ§ÌKEQòîR“S\0§•§†ä(§EPEPEP ¢ä(\0¢ä(\0¢ä(\0¢ä(QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE(¢äQE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\08TÒûj∏©P–¡\ZP7\"µmﬂ•bB’•o\'J∆h⁄€Ö≤*Ù]´.›≤+J\\ïBí4!Uÿ∫U(j‚äÂgbv-°‚§\rTﬁtÖw;\0?ùRõXà◊Ò4F\rÏg:ânkKpëªãy¨±% ]£˚Á≠PûÊIâyìÿUYòp9Æ®QKsé•vÙB æ{óëãRi@^n)áê28=©òúûeÆÑéfÓ®b9°ÿ,y ÒI7˙ΩŸ9œ•BX\0PísÎLõè{åt„#ÇD$e‰rÁ÷íe@ãÇwzQ§Änr};”∞á,R8/Ç1◊≠E(SìDOﬁ\'ô≠çY7Á\0rO†õ+Yº{;$?ÔÂ«¢˜ÆMŸü<\nø™ﬂ-›Ïå⁄≥»‚µä≤!Í\'~izû)B˚”Ä\\èZ°\r+¥riqëìöp<äëWÂ$˙R03JA∆qRÖ-åü“î∆pOoJW∆Zóü∫*PΩ2F)∏∏†\0ÅRëûÄRÖ-€ävå7~¥$dï©1Ä;üØJ#±Íﬁî20ÿ°p[úÊê SıaéïPı‚ÆÃ£µSaÉTâcH§ßRS\0\"7jéúßÄ:Ok«IîA Ã.zì˜k’,nñXQ∏¡Á#°Ø]Æõ@Á÷∫O¯û[ÑµΩr`ËåÑ˚◊\'ÕÔGsøâÂ˜e±Ïë\"8≈KˆÑ∑PÃN–y¨€)„ïU—πn~øJ—DG;sê{◊î’ôÈ‹–Öπ;r‰g“ü\Z	H¡œz™íå.s¥`ìV#Û\nÇ√ÈäD2U›¸Cz“Ç	 íéÙÏ„∏Õ3Æ`ßoZdçrë∆Ïséîò⁄„jÅé´qDè0ó£dr*7DÂÅœ•rπ\\ÇUä˙Øj≠0&bJ¥≈T©˜™Ó\n®p7‚ÜR(õ4î\r∏¢ñ÷HPƒéúç’§»9*∏ ı£¬í_l„ÈE πI$(Æ≈\n¥}p8ß3¨€]›´R(nSÔ7\rÔUû«kóVÿq–t4\0+ ·∑~ï*∫ÆW….ÑA∆*™M x≈¬ÖC∆Ò–UÖuÀDêrU◊˙”á…àXÑÂT<‘HÈ˜Pllı\'öFﬁUcók8:øZEÚ§¬3aèz@∂,2\"G#lï)*iÀ-‚Ôﬂ ëª≈VÃ†\"H”√NY.3IyeI∆=M\0_Wwà6\\tÎë˘SO⁄‰Á%@õ(ù∞•◊êQπ¶4™ë2Õ)˜ËR+˚ù´à–K(˛6ÌX˘è∫iK1?q{U˚ô‰ùB[*¢($ûÊ®[¬d  …?yÿu≠#°C„P√Á<\n“\\àä«#)$÷ãk≠˛i[Ê\'$“]\\¢É#{∑aÿz–›≈q´πFe`Xû[⁄ïÚTîËz1ÔM€#êd√`/AOeX‚(Ÿ2±˘vÙQH\nIπARC9<∂:Uàïc)$ÃK\nÙé$úπÊö?◊+d¥áÖ†¿Ω<ÑpgÂ≈i€[ÔBwrj•çÉ¨ªÓ$∆Wpµb$∂˝ªTc÷•êﬂb[xLi◊;FI©Q¢Ç2xßFF@nÜ£.<√µ~OZD	*§;U9N[åÌO,»ƒ∂O\\U\Ze\nÍT∂H˘Ω()\rv€∏˚†Åìﬁ©IÛ1cÅö±ì\"∑LgÂSY∫ÖÙVpO<´˚∏î≥cä§õvÏéO∆∫–¥∞603‹ƒ\nıÎŒ§˘SrˆÌı˘ÆÂ»,N—Ë;UM{TiÚF«ç^ß<ÆBi¥¶í∂1NE7µ(Í(^¿ç¿Ø_JÈ†MÉ{©W/§∞[•%sÕu∞çÍC7=´)ÓiK\'∂iPÖ«ØZlâÛaÚé†Pÿ	‹pµgg ìåu«zV;0†˚Th	QÛ`É”÷•ü@Aı†5 Añ-∏ÛRlp7Äﬁıé[\0t≈LÃ|£ªé:PfQì∑≠FTH±‹£ÉWváZçUTg}@¶/®Yõiˇ\0º≠–’B∏l]E›¥Wl#flOZÊfç¢∏daÇ\ris6àÉÌM˙‘˛f–F–s‹‘}™ƒ7öNE)‡–ù ÷Å÷îåP(\nÊìgÒúP:–X¢•8=©•s“êöJq§¶!(¢äb\n(¢ê≈•î\n\0uô•§1\r%)§†BQE-1	EP0†R“\n`-Q@Q@Q@Q@Q@Q@%-%1Q@Q@Q@Q@R–ERQE\0QE\0QE¿(¢ä\0(¢ä@QE\0QEEP ¢ä(¥RQ@UµFiÏiÜæt˜⁄†zô™©)‰™sw´íU)©£Dg\\w¨[Œı≥rx5ãxz÷ê9ÎﬁıÅry5ª|z◊?ry5Ë—Güàe	:‘¶ì≠Bk±tÑ•Õ%…öP‘ Z,4…î‘™j52÷m\Z≈è=*6ßûï“EIë1¶\ZV¶÷®¡Öw¢ô!IKILíñíÄ\n(¢êQ@Q@Q@Çä(†ä(†ä(†ä(†aEPEPEPEPEPEPEPEPEPEPEPEPEPEPEPEPEPäzöe9hÃmÕh@˝+1:’Ë\rg$inZø≠‡\Zƒµ`M_[ù£=+ípmûÑ*(≠M•ï#MŒÿˆ¶I®¸ø∫œsYb„Ã9‚£\rø$fîhÆ¢û!ΩãsH[ÁíL„÷†ë”j&Rzå˝{SWÂ„ØzŸE#ô…Ω…Q¥föÊ\nx›Ñ±f‰>îm\nßüµQ\ríQŒÓ≠0cíO„IÚî Ú=ÍEVh°wûhŸé6ÏìŒ*®ﬁøy:ı5;Áq sGö]ˆ @8‡L\\¿[%≥ª∑µK‰8D,@Va~`G’ O1∂ÅÚ®ŒOAE¿≠n†I¥±#©Ù´\Zºèe§yæj?ÂH‘‰˚ìOhWiPTgΩ`j„Ãùaç…Hóí‘%v\rŸ6ûπ=È∏œΩ8®Æh# `V∆b‡«4cëHz{“‰Ç<Püõﬁ•SÚÌ…®á†8ßåÓ)ìé†”î∞<i√h\0M\nAë€ä@0FORÙ¢$Û%‡{T·7GïÙÁ4¢6HÅSÜ\'®Ì@Ó>~¸ch¿©MºQ≈Õ2ª9˚É™˝jBIV\'æ:”waUG?ƒzä\0ó‰	%πÁÛô*ÒLè∂8Á4)…\rœ^‘Øpä≤	>µJU√ö“∫Uäéæk:NÇ©\":\r(§≈âE-∆I·™€D&AÅÕPjﬁBsIÇgg‡ﬂKÒiwÑDÏqÅËk‘lÂLñ9 pk¡‰ãÕQ$|0Á#≠væÒh˘4˚ÚVppÆO?∆º¸N˛¸OG\rà˚==\n?%äñË©‚fÿ¡¡?“©A*¥{ò·≥¿ˆ´±N—d)»n=ÎÕÿÓdÎíúê¿ªﬁór`©q⁄´Ü\'sÄÛÍ*Uë`Ä˛˛îXDˆÚ˘C‰ó(√ëSâPeOÕ¿«cTŸ#¡hœ˚√4ÌË™®\\ê;”π-\\|–3∏u å}⁄©<&›r	!éJÁÅV€-ÜF»Îöçã∫ÌlúÊÅ´ô± I&9qìÇ1N|9%„⁄«¯ÖXö‹3o∑ 0Ìé\rBÀ2ÚÍ	<¸Ω©qëÌ»ŒJtœz\\∂“ÀÛF§Ç;“óàó€πqåezör2rW#ìCë¢˝”è%ÜÔõ±Ù§kh∂õåú´°ß·Z#ï˜˘{“y,Q^#π1ùπ§i‡êFÅc\\°Œı\'-HR•∆V<.rÁüjï„ïÃÜLØÒ+TE±.eâJÁåéî∆C$`JQÅ‡úäs3+ˆëµæˆ⁄¨8)…UdnTéµ\0Goñ§ö@¬-¶Tì∂0µNE,Ä™ìı5§¬<‰ï~ÄTùÊbW T#‘ı¶R*òá?∫|„ê8<H„j,qé1⁄•kyB4†F@;VÑ]‡‘™û2{”bÌ…!ŸBØROZaäO0P\0‹Ó#µH#Ñ2ô$\0ˆû$íF+ñ=ÇÇJÁ˜\'˜»«Ö«AK\"yIÊqÊøá≠9£ÚÚŒøº<Q $å©⁄]õÄ£∑Ω\0Uênm©◊π5~∆Ÿ#âI˘úûæïÅñM∏\0ı≠\0ç2ÁüÈM∞,€Dß/Ç≈à⁄Øü/xP	«^j≠≤º aA?(&ß ¬qÄXûqRC‹ôùÜnïV‚C \' 3úÅOd)Ä\rFe\0⁄4	\r`™Ééû¶™LÁ(våÛÔR»¨ÒÖ$˙U{â∆8A’âÍhE!í0|Ì+ÿ\ZÛœà:√~ÔIàéy1ÔÏ+¥‘Øc”t…Ô§ ,kúzû¬ºZÓÓ[˚Ÿn¶$ºçìÌ]ÿJWó3ËrbÍÚ«ïu#Ëô™ŒrjiåUrk”Gñ∆¥Pz“S∏•“\nP9†\r]7·pqéı÷€HªÉmÅä„Ùﬁx(3Î]e∂‡†.9Ëk)Óiw0ï¡;ÖL|}9È°Bü«ú“EΩnNÒöÅ°®É úÁ5*ççê<R≤nîE¬æzöRK3©„È@H ê‹é’4{_é˝)çÖaÅìÔN\0.∏s@	8	lågÔUÿéÄ}Í”Ö%d$úôqP4<\r˝\r\rX‘.H…<÷N©d•|‚pGaﬁµ»+3í:\Zá»É\0Ôﬁ©◊CíaÛ\ZB§\nøh–\\Qêy\\Ê4( 	=˝+T»±)^¥–8œj∞—ÊqÅ—{‘$∂1ÈBÊêO<ı¶„ä`:QﬁÅÈGJ@\0RÒI@ÊÄÉMe©ÿ¡†–DIRûi•s@‚äyZmñåQ@Fi3E\0¢ä(\0¢íä\0)hPES\0¢ä(\0¢ä(3Fh¢òÖ¢íñÅÖQHä(†íñíòÇä(†ä(†ä(†ä(\0¥QE\n(¢êQ@Q@QLä(†ä(§EPEPEPEP0¢ä(Íñ¶58”\Zæp˜H⁄†sS1®\\“)‰™sUπ*ú∆ö-∑\rb^ûµµpx5Özz÷∞ÿÁØè&π˚É…≠ÀˆÎXì^ï°ÊbQÍ#R5Fk≠CIKILAJ))E $ZôM@¶§•£D…sQπ‚ç‘∆4í)≤3IJi+Ddƒ•¢ä	\nJZJ`î¥î\0QEÄ(¢ä\0(¢ä\0(¢äQE\0QE\0QE\0QE\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n(¢Ä\n1KäpZ\0@)Í)U(…≠;])ﬂ\r)¿˛Ë§⁄CJÂ8byrkV⁄¡á/ê}+F;·\\&\0≈Iu»ÍMbÂsTí-∞†}—ÎOtU^G≠&„˝ÔjL+	?áJîáq r§™–≤Äp\rçä	‰Ù>î’PØ∏ÛUaêÁíq◊4â∂F‹A8ÈHf%‰Íx>’4Eå#\0–ä‡„8Ê†\"v$|ªI©•;Wj˜ı®›åpÒ˜Ωi\0Fá%IEMÂÎÍ*¥Gb®‹I=OΩYïåj:û1÷ÅéÚ¢Ÿ˜…c€)¢ﬁ=ÏÕŒ5%`\"˝·Ç∆¶ ãéÏ2\0Ù¢¿@àÖÄ‹	‚ß\ncãfYπ^ëëâlÙßñ-çÃIÈ@¥ûLe§Ö^z◊qre∏ôÒ˜œ“∫ùRUãJôWvˆ¿_z‰$cûHÈWDôi‡¶öÃx\0sNQï$÷Ñçı=©¿˙Qí+N€µ#\'µ\0&0)Òu%óüZjrqÎR¡∆iGÃ0jX’§\rµx&°@ŸÒS°%πlgÆ;“*êÖ¿ıÕ6#æB]ÄåsèZVPê4›®¿=ÛH4åX7;G \nT(õòßò`«>µ!àx\0Å⁄ò—m,I»«Ω;ÖÉ±Ìd¿«5$1¸§ø\rüªH>Xæ˘\rËE\nJÄ«∞ÎHd3ÄUﬁ® ∏SW_yŒ„öß\"úgö§K+R—–‚îU§∆:R–E\07•=N\r%-\0^∑ünK<«òÑáÇ+=ÉZV”d85\rôﬂ¯;ƒˇ\0⁄pˇ\0g_JÌ\0Tv8?∆ªËe;WpŒ	º‚9!úOmu9+’<‚Xµ´äC≤˙â?|zäÛ±8{{ÒÿÙ’˘Ω…nv.·Nˇ\0·œÃ{‚ûÄ^.TÙ»Í)ë¸√ê\në‘SñfOóÄlW÷L≠ß€}h,p≤HÉú¸‘“¿\\ı‰böK¶U∞})\'‘,V{Â≥ô¬Œ<∏¿ ë¡ß˝∞‹7ô+ƒÃ‡‡√µW∫”a∏IÃ`OjÁn,µ(Q“…˛^òœﬁ≠#g£*z£≤éERBëêrEL	»S¿aêkò“µ;®¬A{n#q—¿$c]\'ûº¶“ß±1JJƒ¥»ùY\\2ÆTı5ﬂ*n« :ëW≠∂*`r{i%∂]•£V¡Ï}jB˙î”ÜP≤.Xd`“©_1ë¡F\0éÜúlE2m\'aÂG®’œ-£`Tú19¢Âh$ñ≥∆ŸÜ@ŸÁëQ˘ìÌƒ—§†u¿≈9ñx]]út†^2≥+≈çﬁùç®…\"ç∂¥,x<\ngï>J#´ÏÎ ©ZUí0ì˘}zöÖñéFeÓÅöÅ ∫t-Ê/ìéµRkt\0…-¡\rú«Z∞Ü…\"útœJykf⁄òwı»\\z¢èó\0±v>Ä(e˘ëŸ#œFI5mö(˛‰,PÒ«j êJ2Ìí‘¿ÆñPWëYõ∂{\nóÁç6D‡ 9⁄&ß;]Õ?/Ö™¬eÚÿ*∞s¬˝=i∆)íF%œ\0\0ÈOEƒ°≤yßóO)>b√éï¯@U>Ò=\r1iAwì´é)Íy∆Ïû\0™Í¸‡‡63VaVWêáÃ})Å°n6Äd`=* ymÂRX*ä>ÁyÄ*‘[é1Ú™ÛüZD1ì<Æ·qÅ–ÅQ∫F†íÿ\n3«≠NÍ‚3Ç‹ñ=j¨¨>e˚¿‚ã\Z%Âdd’iF·Û`Æsäëüo\0≠P’5”Ù˚õÈÀG±nÉı™ämÿmŸ\\·>#j∆K®¥∏à Hı=ÅÆ!F>Ê‚KÀπ.%bœ#n$‘lÿÌRá$TO¨˘ÊŸçìQ\Zs\Za≠åD4\nNÙ∏ÊÄÅ÷é‘‰74•ßd7+¨∑ ¢që”öÊÙ}ç6∆é™=Î§S∂Áî∑4é≈π¨g¶z„\Zçƒ;qÉ«µ7Õ \r¿íF>î•h∞‰pM@≈∏sˆêFÓi°∂3íz‘roPºdÁöë‹6∆°õ©≠q≤∆<ºÁØ\0”ê\"√µ«Õÿ˙“ÄZ%0z‡P ¿ÓÍ{\nÜ… ï«µ(ÂU[ÕK&YF—˜Gj™ƒ¡˘àÁä2l0òûÇõ—vÛRI	\\7#5^v?/ÃAÔLE]BŸßâLgÁ\"π˘*z˜Æ≥Â1Ä¨2zf≥ØÏ„Ç_8(e=W5Qv%£\0≥p¶ìíH´>Wˇ\0•GîÖº‹|‡é3ÌZ\\íôO\"õÎRÌπÈL«\\P!¥SÄœSMÈLÎ÷ä:—ä@.r(Õä?\n\0^¥{Rfå˜†êäZ:Û@\"í§≈&(<R‚ü∂ì\0 )‹RbÄE-JZJ(hÕ%¿Z(¢òQ@	EP •§•†aEP ¢ä)))M%1Q@Q@Q@ä(hÕ%Z(¢êQ@Q@QLä(†ä(†ä(§EPEPEP0¢ä(ÍriåiI¶_8{√Z´ΩL∆†sH§A%Ròı´r\Zß1¶ãFu…¨”÷∑.OZ¡Ω=kja-én¸Úks…≠ªÛ…¨9è5È—ÿÚ±ïöòiÕM5“é¥î¶ÉL•îR‘†”h¢√∏˝‘Ñ”sEäi(¢òÇíä)íQE\0QE!ÖQ@Ï%¥P!(•¢Ää(†AEPEPEPEPEP0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢ä(\0¢äZ\0J)qJ\0%(‡µbInºzö∞$@Æ€È”L7µ}ÎJﬂMä‹ìÊÂZ*Ω´7>∆ä ÷ˆ@†®…«$ä∂¿®fìv\n·I„öê#2=}+2∆≥ùßo$u>îë.‚§π¿=õUÇÉÉB´;Wƒ¿ÇÃ¯\\(ÈQ˘RùæÇß,Ä¿qŒiwï»›êh;ìª1NÚÑkπX∂OJz—±…œzG.íz\0ÄÜV⁄√Õ[IãÇ6Öﬁ©ÀÊ4®…‘’∏ãŒp=®ó~x;”º∑\r±‘åıŒiªﬂaS¬Éê=£\nûBIÏ\0)åd`˙Téõ∫m\'öÆâ%ízëayTñR\r\0X]±°9\\’j÷(§ç‹N®BÒì…ˆ™€\0§Úƒô•ä%%à„ΩÈ4$.c‹1ÈCU∆@e9f\'†°≠D!\'‡n˜ÁÚ®§Úr]ó‰∆NOZekÚÔdÇ<.Ê≈sƒ2∏……´˜-Õ‰Ñ…ÂØ8`?J©+´ØaÇ}kXËf˜!Œ\'övrxÈH»T)$a©BÇN”¿™†Ü`\rÁÄ(gÅRF≈∞@x«4ÄhO#≠?<åwßHÓ˚w.3ÌNãpò™[<fÄCvÁ52ò˜Æ\'˝ií;8«^Ω™X íLJÿTœ$öC*„Ò…»«ZÌ+Ñ…Õ2iVF\nπ⁄:Sï‰œ £\0RfƒÅFﬂú∂\0ª Ó,‰‡dR[Œ∫NÉ˜ë∂‰8œ4Y¯‹IbxÊê ≤å‰úÛÕ=U@M¿‰wñE~ÉÍCÉT‡•0$Ã•ë@˙öŒt ‡ûÇ¥›∂≈Ú\rºsÕf±nπÕL•\"ïrß®4îØ˜ç4u≠ñíñÄ\n(•Ô@ßäB¶°ÔJ84Ül@‚X¸≥èzlR]i7Òﬁ⁄>…c;ó–˚\Zß•HÊµ÷xˆëÛc\rt*,ıè¯¢€^±FL%⁄åK	Í®ˆÆår1¥_>£›È©yg)IÇË}çzˇ\0ÖºSâ-\'ÓÓ‘~˛OqÌ^^#\r…ÔGc”°_ü›ñÁB7Ü \'N*Bâ.›£ë∆\rCﬁ	H€«≠5Ÿd¡$ˆÆ3¨∞∞G∏âÄËB‘€LG{˙Tât#ﬁem…–5Ë¯x§Sª∫ö©√ø,‰g98©#ë8Y–—4lœåç√¡®…!Ñsé‹P=ÀbVO>∆¶À\Zl# ú’@6∫ï|cµL_|ï˜ÌLù…T®%ópfÍ(î∑\n√ÎLR„®Í<\ZîÜ9a;∫„µ!√·Ñ±ÁúÇæïñΩ”$A=EZFps	√wV§Ãß‰‹†ı¡°Ê{ÈÓcÀ\rÁ8™Î`A¬ÇæŸ≠gÛ°AÚœøJÆ˚ÂM≤Äô=A§ Re6µÜöI2›ÌM.∂ôc:ëú/&Æ,0™∂˘§úÓœJï!}°Xq‘Ù‘!Û»í‹ƒÆƒ≠»SS≈j„*JÅéA´On˛nVL˛Ui#€!iemÕ¿U>¥Ó+åkv/∑~iÖ\"7^Hí¿SÂdH yÑÓÍ*æ¡f˝‹K‘ì÷ÅèÃ1,ÖYzZœíwŒÁè\'Æ—R…qx\0\ræ§‚´I)q∆p«öh#~Ò•ïvÜÂTTˆÆÚŒŸ»ıUâv]ß.x®£\n,iñ|Ä©™`XÇpN:ÎVcy%Ñ+ÄÄ’dÛ«ÀÑ˚ö≤\\©RƒdÙ$±Ãw‰ÙR`P»⁄x$sS Ø∞ûΩª\n¶ÚÖ@ä>¥ƒ1ÒÄ cÛØ?¯ã¨dA§C&@˝ÏÿıÏ+∏ææM2¬k˘@Ú„é}{ŒºB˛Ú]KQûÓ\\oô˜ÈÌ]ò:|“Ê}L]NXÚÆ§+¿…®ù©Ïx˙T,ŸØPÛömö:”P(¥\0µ,\\!85\rNô8Ù†\rM!	πV»ÙÆñ&ƒô\'Ò\"∞tXù§ åı–+¡8»¨gπ¢ÿî2Ó8‡∑\"ñHQÉÕFåÄ)åÙ≠I#ï%JäíàXê√\'êi° >‰·èZìÃå$aî˙g4œ,˘ôp6ì◊?vÅäiÓb¥ÅâbNzÚi¨Ö˜ÙÌäò»°1”‘–1thOÃÙ®πüZê˘í.ÈOÀûùç+aê~Py†dLÔΩÅ√cüjç–?\'Ø=™`õ\\I∑Â\'Ω$Àïfœß≠+2\'µZÓ\'ê©L5sh\'a&ñ\n6\0=M;ÿM∑6K	óú∏¨Èy«π®¢∑\'ÜŒEemÃÄ85§^Ñ¥Vh6ÆHÁÕAÅŒ_ôk„´Ì«AÕ;àÆ±3Á„÷öG®©∑«ò‡Á>¥ƒFz“\0iX`“q@\0˙“g\"îsLÌM†úöJ@îQ÷Ä(qE.M!4\0∏§•«•––H§\"ùE #§©1öiZ`6ì¥Pw•¢äb\n))iÄQE\0îQEQEÜQE\0QI@IEƒQE\0QE\0QE\0QE\0QE\0-îP1h§•§EPES\0¢ä(\0¢ä(\0¢ä(\0¢ä)\0QE\0QE(¢ä\0˙àöi4„Lj˘≥ﬂ∆†sR±®^Çë^Jß1´rU)©ñåÎì÷∞/èZ›π=küæ=kj{ì=én¯Úknµ≥|y5ã7Zı)ly5˜ jJSI]⁄JSIL¢äJ-îP©(¢ÄäJ)ÄQE(¢ä\0(¢äLaEPPQE- ä(¶ §•§†AEP ¢ä(\0¢ä(\0¢ä(QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE\0QE.)Äî†RÅOT,p&ê\rSCo$Ó5…´∂ö[ÀÜ~•m€Ÿ«l3é}™ÏZÖÃÎm \'3|«–v≠„T¿¿ÈS…\'$Å⁄ò≤íŸ?•gv˜.…\n‰1+üjzI∞\0I„ßJXQQUrzì@òÄ1Õ ñ\n&@‰{”ã|Õé˚¢üå&ö]®@n*@ã*Ú«q\'8Ù©$∑\0‡û‘Ûç∏úıß$j¿c¡†EUÅôπ€ëRà@^[-ﬁ§ÿ¢OîıÎÔMu\nŸ^Ω1~Á$¸Ÿ„îôFON‘Ùô_íséÿÎ@˜gØP\0¶P2π\'=*Bw ‡.ÁF‡\0œﬂ˙qQ∆àƒπ,BÛÅHc∑9Ö{—¥2˝ÒHpŸVıßDæYi<≤F02x¶ à?)È…´QÊS¥0´f™m†\r«=jkxÅëf(Ñ¸∆ê!–£ôƒqÂò∂ö≥4ë„ÅP∆H$w5è íMåÅéi$+πÜ‘\'\'&ÄàˆìπâÕV÷^}ù\\$!UqŒjQ›√{Ú+UÛ$ú¨å™àªπ°j¡Ï`ªoP∏∆:üZCÄ£Ω#∞,@ı•«ÀÌ[ç<û{SêÌ‰iB‚,ı&åßdJ\0wy<˙R‰‰1A?wÙ•,ƒm=œ4\Z]Í$„•=r“PI5\0\rYµï!b“)$åzˆ†Hc´ÿ~ïaã¨A[ï®,Ÿn§‰Rôæ\\¸π§2F;p†üJì~ﬁT†c5¬ê√$˛îæ[ÚXÏœAH	Ì ÓqŒJqåõv|Ù8⁄z’xˆ¢ñå*E#9…†b2∞¬∂zt©ë≠æÚ™é…£!é7˜8©O2),Jèj\0aå¥Ñs˝Ê™R*éú’˘^t\r‚\"cñNô™Ré@#\0Ù°	ô“Æ9®«Zµ1Á»™ÿ´ )h†S@Õ.(Õ:ê\r≈(ßM€œ4zúz∑≈MSß´hh\rÿ‰Iî#cöØ∑∫5˙ﬁXLbïOPx>«⁄™¡9FÎZ–òßàÜÈéµõFëg¶¯kƒ6˛ ≤€¸∑®∏ûﬂﬂ‘zä◊épFŸfﬁÎ^#∑ö¸w˙|¨éçê{c^Ø†xßOÒ=©ìÀÚ5\0?{\0<g’}´Ãƒa˘=ËÏzx|Büª-ÕÃ˘®πdN2{”VÃ,≠∑jÛú÷ô(…ù√évìÕF∆b~F\0zµ∆u˙ ¨[wÔ:zR…\"©\"PO?~´lU˘C>[©ŒjPwì6Tp	¶+,`ëÀŒjx&\r	éd‹√¯≥U\r∂÷,≤8v©7ÌeS»»a––\'©i$çp≠&:T fä?:€là\n±ÎU#oì!C)Ô‹P\Z0[»l˜Å=Ë&≈◊a3!°~∏ZÖ ª$ü·p›iÑºär‡qäà›ŒØµ£\r∆AÕ\0ë3´yL˝ñniqÚ§°_@sQiNcçëœ\'üÁ∏}≠û1ñÓhU6 ÿé†ÅHÀ!\rô¬ÓGJ∞_ïO™ïﬂ!UŒÅ°‚	]<®•%œÒ‘S	 ;W|`±=)∆Y_1Fc{=iè,\"§õŸ˝z–\ZïÂö(πÿeì–z’9dêˇ\0««9Ú≈Iqu\'j˜‡w5BGög ¸Äáö§äDnÇÓA##\0áÂπ•√˘}:MI±ŸpÕÚ„\'¥¿Ï ¡8è8˙”¯C,Ï‹é’~Õ>_ì…ÌT£%8N§c\'“Ø[ƒ!!Ÿ∑±ï&K,©oºN–:‚ìÕLÜdË}iíI$àÈ9«≠BÍJ\")˙Êê$=§yY»%Yé†q2ÄeÅÎû¥¸L)¿_ºOz´y{ïc>£;∫∑?yèATìn»ô4ïŒ#‚F≤1çpßÃüøa\\\0˘qS^]…®ﬂÕw/ﬂëãc“†sÅ^’\ZjQ<j’9‰ÿ…5ÎOcL5±àîî∏‚åP““R–\0Ωjƒ\\∞^’ÄZ∂4Õ2k∏ûh◊*ùI§›ÜëØ£ƒÒ∆[p«^j‘G‹\\éØ‘Qi$\nç‰åu≈5≤˘2π¿¡¨^¨’h9§~UÕŒdÖè«›5	b$ƒkèV=™H…˝–$˝“)ƒa`	√{Ù£ |dM?ÀV@H…Ù=©±;\0 Ÿ9Ô@Ñä5P≈òáŒ1äîFÄ‰Ú\0ÔL¿3ß™NÚ‡cäa~¸gÊ Ù⁄;RHª@\\Áµ3ò»Yx„n:“y•HÎì@\n˘*6A‰Q…¿©L;]èL”\na¡›÷òÃçú}Í*π‰˚UíÂóqœ´6ÿﬂ¶ÍM\0BË∑)\\s÷©ﬁ⁄º# ÉW∑ê∏#∂*9ƒ∆-¨õásöià≈íFw‹˘$”$úqVn∆zd{RT†m≠í*…*H±åòÚ@ÓiåΩ{zTí´çÀ¿ölQ±…pQŒiàÄ®9#∑jç¯8∆*pSaRÑπ9\rûïI≈1ÅG•§\"òhR–å—Õ∏§sKíx£˙\Z\04\0r†äoΩ8Á<“@\0Õ-£4LPE-%\0!PM0åTô£äEä*VQL*E;ÖÜ—E(¢ä\0J)h†ä(†ä(¶EÜÄ\n(¢Å.)@ß™Êï H`bßJb>îπäÂelQS2b¢#”%°¥R“S$(¢ä\0(¢ä\0)E%\0¥QE!ÖQLä(†ä(†ä(†ä(§EPEP0¢ä(Í#Qµ<‘m_6{Ëç™©ö†z\nDU)™‰ïJnÙÀFe◊zÁÔèZË.∫\ZÁÔª÷Ù˜&{ÕÔSXÚı≠{ﬂºk^µÍRÿÒÎÓBi)M%nrài¶úi¶ò	IJi(QE\0R“R”\0¢ä(QE\0QE\0QE)i(§4¥QHaIKI@Çä))à(¢ä\0(¢äQK@–î¥QAV\nJZCA!EPEPEPEPEPEPEPEPEPKäJZ\0JP(•ò)@©aÅÊp®π&µÌt†ÑyúµKíE(∂g[YI9_S[v∂A eèsWD(òzT™<=k&ÕR\"P`zTÃ†(…œïF„”=©·€8¬èN¥Ü8¢dmÒR∑!]€¿<!»SÅ¡9‰–N˝≠åû¢ò»‡ÆI¿=©ÃŒ©P<ÛO_ïT\r¢òÖŒÁ\nN/\'ﬁûãπ	/¿„ÎQ≥Á `˙‘±™69€É“ì∏\\‡~t†|ˇ\0/ß4„´∂	Î…†ê§∫éá4å™ÌúfúÒ*\r§Ó…œ4≈+Ä	„Æ3Rl‡Ü»†L•∂„∞ßF9ÊÈNú„Ö#ÈL›îÂâÌ⁄Äπ+œh\0L∂9‚ò\'_/fŒzê)B‹åïËN)Ü<FH‡t…§1ÜFfûHKHÿÂsH≥1ò«»8«SJÚ°8A‡”iQàA∞)‡öå,õôN÷¿5˝ÚÖ,I5dgi@=â§}ºÜbªOcû¥‚%t\02‡ûj\0éW?ﬁ<˚‘√z„˜x…„ö\0öXÊÄ]@å\'ä·µ	$ª∏íw\'Ê<WK≠ﬁ≤iÔndlkñë¡˘G\n;Vê]Iób\rΩ;{”„éFS\"∆ÃàF„é,õ[#“¶S√k%¢7ÓúÜ`;‚¨î00b«6:≈DBï„Ô¥¿”÷ìä(¿¡»Õ?¯3è∆öSn>e‰S‰e%B1Õ\03\0∞üJêêF6˝ià…πq≈IÛeÅZ9+Õ«jñ<+ó@/≠BÂJ,`|›X“\r¡0;“{eyn≥]√\'Ê8ì6Á∆p;‚ë’£FyÎ≈\"Ñ»‹M %çZeUoïW°#•,L™ÌúaGSﬁÉ≥…/∏û›1MTln=3∆hbŸyy«v©!E2è1ü…1AöÅC≥hœe©2©ødÑ¶;“y˚yrI˘X@¨€ÄZNy¿¿5zÈìlJ™¿Ä7‹’)ƒÖXí∏ˆ4–=L˜…$P∏\nx9´\'9¿»QH´!ëä^îÇñòÖ·Möx§≈)¶é¥ÓÙi_CK‘”±I⁄Äßvﬁb†U\0{‘®q“ì\Z6ñTù67Zßõù*˙;€)r! ë¸çE≈Z¥–≈tõ	«ΩCV)7∫=√\"±ÒEõâ%˙í`5π˛/ˆî◊EB@„®˙◊ÉÀou¶\\≠’£≤∫6VEØYoå†Ò†≥π>N≠˘î˝Ÿá®˜ˆØ7ÜÂ˜°±Ë–ƒÛ{≤‹›hŸXÏ?ÅiKÖ\\‡r0G•Lììî~õ[äãj\rå1ÎÔ\\w;@	c€≥ÊàÚGzvYô◊9P√ßµGôbŒ®°∑ïä∞4\0ÛøfPÌ=¡°]]7ë∞ìÈ÷†ûKÑb í9Õ2)‰Ú¬Õ0#™cÂ¸ËdûRØ»√Ä@»4=”´Æ¯Ú\0‰Øzl$m√HG¶E=¡\nylÅ√bÄ=»b\\îr\nˆÙ´KÁm…ªÒUP‹H†∫!„ÌﬁLd‰Ø“ñ‰≤WºeÂmõ™ìå˚‘K!êm±‰‰Á∆æà|∏ „ø4Ÿ)FÚŸeË1ÿt•d\'|ô#ì¥`Ui‰UR£=i$rPßñy˛,÷l™áÊlÓÈ÷öW\ZBŒ»˜…◊q<\ns01Ö«œúñœZä\'‰„û*¡T‹0˚õ\0Ul6G∏‡Æ~\\¸ŸÔK±§¬&;\ZìÀ2≤6RH¢%¬¸π\'ﬂ¶)\0±à≠óóÀñ⁄1Œj“IåF9Í∆¢	7∞€èNMMnûcê=3A \nV0Cü‚«AJ¿A∫<ÊBπÊù (U+πéIÕB8s+ì«<Êê\\r»äÉú`wØ9¯ì≠$∑±Ëñè∫+ûf≈\'ß·]æø¨\rhÍ%Åπê˘vËº{˛ºL…%ÃÔ<¨ZI≥1ı5ﬂÉ•wŒŒ][.T1Wh…ÎQH‹‘í6=*ªöÙëÁ\r4ùii)àAKE-\0P(≈\0:>k™–möxG3*Éπ¿Æb,cΩu∫>a∑ﬂ˜\0q÷¢{\rÀ‚ˆ++ïéË±çŒ–›\0˙‘óG¿É˜JzW5™N≤MÇKLÙ´∫^¨∑∂◊!QÚZé].]˙\ZH\"Oõ2Ú1ä¥8ÂG!GZç]C\'˝Ïöñ\"Œ°S\05,bHªT∑vœ\"£%–n#åRïE` ÉåöéXïèÓœÔ• ˜(6Ìœ~¥Ë¿ó√)\0ÔM9XÅ1í›(À*Ì‰sœJl+é\'èSQƒåØÛÆ>µ*f$„<üZléGﬁÍh\0ë~PI=≈Dà¿nc¿©Lª£»NWΩ#√*>S@Ôg*≤0ÎMìÁ‹rø7µ8∆\n¿ÅQc#ê¿˜†≠|¥ê;~n	ÎØ3Œ‹Hÿj7sé~ï éÉq\'‘zS∞	t!Ú:Ç«Ä}ÍìJV Æπl„#“Æ-∫»H„Â‰\0)/,”ÏÃÎù√ı™ZŒ´´H_Äx^Ê´yl	<ÄjaÑ íz–U≤Aoz¢H§é%*Pú„ú˙‘2+A&ßÚŒÓù}iå´∏ûΩ®¶\0?6EFÿœl™ªA®ù6Ÿ™∏ä‹ÊóÈ˚	<d”¡≈z‚î∑ÀåSG\'öw\0n8£∂i@îÄ¿g=Èx≈.ﬁy§#“ê\rŒ)Eı§†4gµ§≈\0/ZNÙΩx†ö\0L“Á¶iZZ\0B¶≈IﬁÉä\0ääy¶ï4¿J(≈(§Õ-\0QE\0QE\0%(¢û¢Å°»π´QCöd)ìZpCúVRïçÈ¬‰IoÌJ÷¯¶êqMí0cœ©”ÏÙ1%ã™n∏≠kÖ≥•÷—g-Hÿ™i)Õ÷õZ£QE1¢é¥PJ)(†¢ä)(¢ä\0(¢ì4¿Z(¢êQLä(†ä(§EP0¢ä(ÍQ±ß±®ò◊Õü@Ü5@ı3T/AHØ%SõΩ\\í©ÀﬁôHÃ∫ËkûæÔ]\r◊C\\ıˇ\0zﬁô3ÿÊo~Ò¨yz÷≈ÔSY˝Íıilxı˜ 4î¶í∂9BõN¶ö`%!•4îƒ&(•§§—E¿(¢äQE\0£¥P1(•§†AE\ZCäî\Z(R\ZZJQE\0QEä8\nE§&(ßbê“”HiM!™%ÖQ@Çä(†ä(†ä(†ä(†ä(†ä(†ä(†äZ)Äbó†pM]∂”%òÇ√jöM§4õ)™8PIÙ~€Ly2¸ã÷µ≠¨c∂e)Éìåöª,6ÊÁú`\n…œ±jx-·Å∆π«ÎR©cí›}©¿Nﬂ^r)Í‡Á‘T∆8ÎÎV6é:û:äÖ	+∏)˚›ML7cú~]Ç´„öê»åsÌS¨>`‰ÅéÙ4JÆ€H*8÷Äd2±UÙÔöâe<7,‡UôS∞Ói6ƒ†9«\\–\"∑öÃÄÌÀgÚ©|õwa•8mL0l{T‡ÇàŒH¶ASvqèÎS¨ .Ú~Ç§é4)Ö^zí{Tò<aÎöC)®fòéπ©lçµõ\0û’h¶·∏BH\0$à‚È‘ûÙÄ¶\"VõØäz\r™ÀÇ∏<TÏÃ≤c`„∏¶Iøi,∏…‡”ä“!f«Êi äãê	8©†G#ÓåÅù’+¢˘ÄLπ˘«j.ÍSƒ€pc©.–Æ√nr\0’’B w£SD∫<©ÂèúR∏ÏU˘Å¬\0	˜•Å»$˚éµ3Eª˜°∂ë∆*T⁄£*ﬂºÔ«A@bÄbUSú∞‰äjÏπúÊ•UI‰”åjÿ˘±ëÛP\"8`kâ&Êc–})“»™GmÈ≈J∞¥r*¨Â@Ç&´_<P¡$˛a&5·OÒ1†g7®‹ãÀÇäÑy|¨¢ÄJÛJZy$ëÉu9jàñnr+d¨f=X∂zÙ˘\n¨Cnsﬁ£)∞ÏzSBócŒ3Õ1€˚¢ƒÛÈG>Ω{SNx©\0$‰(åNGrOÀ¯‘ë£Hvådús“¶˚,¢uäB®Gò¿|£”öG\Zm`wc>‘æYf8\'Íha#Ä˝èF¨OÃp=})\0„¨{à=≠9Ó06Û¯“ì1EW¢t®¶CúœjÀp“«πÒírƒT0v›&·˜Ä©åå·Å#–2ë0»<)§1–aI,ﬁŸ©Z#√JBñËŒ*PP7\'ú`ÒO+\"CÊsÉÚÚ(Bü/˜I<∆úR0Wb1r«¶i{yÃAÂ_JñXßµXZMÖ_Ê@<{˙Rµ…›&#f|u$TrDvÇ09Õ\\DàπvaÇ{v•û\'Pÿm~É<ö.1ÊåØŒ;Ù™ídÚ∆µßàÇT/8Á⁄≥•åÄs«ßΩZd¥V¢î“f®ëGZêt®¡©êûiTÄ)Lfìißé;Q€•\0GÉú\nr“ï≈ „ä\0x\'5f	∂7Z´èzQÚûº–3z7I‚ÿ«5FÊŒ‚∆Â.¨›ë–Â]x\"¢äb:qZ÷◊+\"l~sﬁ°´ô‹¯K∆–¯Å>√´∫√©ØC¬Ã?°Æ≤Kf¬ì∑û∏5·ó⁄{Û°bÆß*VªÔx]Ö“µπí+Öaπ#Üˆ>ıÁ‚0ﬂn}K¯dv^däb<∂Èû¢ò®	‹ÕÇnï<±ó&9W0r;äD# rƒqë¿Æ∂ÂgIÁÛ2ü‹§S *AÍ=1V0©Úé9ozbâÁZq¬@¯Vv;Sï \'îÚÚ«å”_cH¿ù≤¿¶∂Ã™»r 84/⁄ §Ñ`Ù+Œhkô0D(8>µàqî*l“F≤2ÄLfO“Ñ+ XÂÔ=çG$®çÚ.	≈+Õ∂B≠\'$pqQº`¸ŒN;S)ï•ú,cçµQêßﬁ9^ıdGlƒJ√A®às.O:–ÄÉÜ€ŒjeUÄÉ∞íy…©ß*£‘“&$cí¿/Ù¶W˜Ás3Ä*\\˘I ísÄ#BfëG*´»\"ß*ésÍ∆Ä´óRx\0r=È[v“‡ì…‡Ü5.{ñ¿\\u2Ì#îu<R$ÆSlfF`ê\0ı•2Çè#\r±∆2\\˙wß0‹[q ªÔ\\gƒ—mI3ç◊?Ö;∆¥•M‘ó*2©QB7g#‚Ôøàµå©\"“ﬂ)\nˆ˜5ÜHE4‘\\ˆ®Â|Ò^‘ ¢πQ„NNNÏç€\'≠GJM%h@îRÙ§†¢äZ\01IK@‰ä\0≥i< Éík≤Ï⁄`À/ÀèîéµÀÿB^˙1Á⁄∫}Hî”Œp{÷sﬁ≈«còºp“;w=1UwÌàåa≥ê’$ß,{”EI2U\\`‰7≠XéóGæ[®<ß HæßÔ\n’Tp	P”ûz◊\rœã*¨úäÎ,5%ªçdW˝ÔÒ‰t¨‰äNÂ∏ÂcøÊ\r◊û¥÷‹Æ«Ê‰P\Z$H?+g UâJ71–‘b\\oèc/-–˙T2##U≤sú“ç¿¸™•zÓ©6y¡ó„®Ù†bm,Õ!aÅ∆–i0å3Ê}F9÷6∆Ò∑∂)≤ ﬁ	lÎé‘\0»âÿXÓ\r–éµ**¿ÜÈ≈F7Fg\n√˙‘å¸‡åg±†,Bpß<ÌÔMñ2ƒ˚ß°5cxxŒN	Î≈@ä¸«ÿ–Õ°ê†è¿‘I’f~3Vù°Éπ¿ÈQ1ê\0¡=¶\"ày2wcøO1ŸÂåü^¥I7\"2\núÚE>‹⁄≠¬õÜ\" ﬂ1zò◊°ênˆ™π99Îûkfˇ\0R∂πGâÇ\' úrGj≈)Â˜\'“©>‰≤VLŒE2\Z&$(ﬁûõäåO•FÍ‡tÁ4¿Ö„$‰\Zè…f…∆qVˆÁì˙R≥q¡$Ù¢‚*}ö@‰ Àú\n¨‡ûjÔù$Y###U±åö§}J3öS»¶ëLC¡≈I¿èsPÉ»Õ<cµ \"[µGRÑ»¿$˚S“x€3q—Xu†er\r Z~‹„ﬁÅ9>îcö3ìKL\0\ZRZL—ú“π¢ú#ﬁêÒ≈\0i9œ^)E\0cé¥E–Õ0©&x£≠\0Eä*BÇòTÉN·a(£∏†BQKä]¥Üäï0-JÉöMîã∂Î»≠kuVTV§/Ä+ö°›Hæ0WòåRôx™≥…¡¨¢µ7ì–ßp’õ)Ê≠Œ˘ÕQê◊T¡Që\ZJS÷íµG;ä(¶ ¢ä(\0¢ä(\0¥ÇñÅÖQ@ä)\0QE¿(†R“:QE%0ä(§EPEP3È÷<‘liÌQ5|ŸÙ#X‘-R5D‘ÜJ©5Zz©7CL§f]\rs◊«≠o›\rs˜›Î¢û‰œcôΩ˚∆≤%˚’±y‘÷DøzΩJ[=}»M6úiµπ Üñä\0m%-%\0%%-ƒ%-P ¢ä(\0¢ä(\0•§¢Ää(§0¢ä((¢äQE\0î¥î(¢ä¢íîu°ç)™*P*4Ha”RëQ∞°1¥0”M8“U£6%¶íÅQ@Q@Q@Q@Q@†R‚ÄäP*ƒ6SÕÇÖı\"ÜÏπ_n€Oñ‡Ç~Eı5©o•≈¡gÏOJæAå\rõKz’õücEÂ,#∑9üSZQÉ≥ÓÒQ(ﬁÏ<ÈR†2LWïA≈FØr˝∆‹2*Tê≤íW8§¿F⁄Ã1ÈLà‰˘Ä‡g¶)\n‰˚2ŸÔﬁöT£|ºÁµ=§`\0«^sBª*ïM•ès⁄Åè¯*©ízT≠Ÿ\0SúsÎUƒ≤Ì áÛ©AbC◊≠\0IÂ∂B©‚û ®ÖWÊ=Õ4E)»:˛“ûZùÕ¯R	∑*≈Åˆ˜®dùQvıßÏ\\!<7ß†®<‰F	Ê©\0ÿ‹|¿úìœJõ|å\0H]’Pdp}M-ºÏ$g•4Ç…Â/ñÔÜÂÉÂRDí´±2p8\0ää)6Ê¿•LI-ú„˙“„8â@;èúwˆ¶3∏@@\'∞ßÂ≥ñ‰c\0‘Å_oÀí})\Zë∏ç«wcMú €Œx\0t•ÚÂ?Í¿9$ˆ©<∑F»pKΩ©Ä∞∆…ü7ÄGL–ÊF9çNÑìPòüx,3ûµl°D?0Á\nî\"%fhfí⁄±?8ı>Ù9b™ﬁ\'54ëâcƒ≥ÂÅ∑≠!ï£Cïﬂ∆y…ßõˇ\0“úÔÜWbñ]åAœ¸QqIl\"0í‡£|ƒÁëIÂ™1rC´ê4…›Wy¿\nã⁄¢+!a∆÷Ù\'•bÀ†¬ïl±ÈÌ\\Ê∑zëœ™d…ï˚}+ZYM¥2 ]Uîdn=Îç∫ÛûGê;π‹MTU…lâÂWf«sQÖœ¶i‹Ä£ûÙØ¡Ù>ï©›ÿ†ù®»dÛﬁÑ∆y‚ç§dÅÚ˙–p)7‡Åé*Aúè≠F=≈\0Xç]∆u˙”⁄ˆ„ kfïÑ,Ad	)$ì|@≥„Ö«@*˜§1€§\\\0=ÖH®NI‰Ÿ•ôë„èhPG\nE~îãÑŸúáÏ4˚(7ÃIìaAπs‹é’$6ÊÊÌ§Fñ@KÜ;B…‰”$å+∏V%A¡«4Ü6c4ìô\'‹Õüö§*å#4·æ˛x“ô√˝ÏçÃ:vß£Ïw íÕHXË∫úˆ•èsí\\ùπ»=≤£á.ºätKYprÙ4á,ƒ‹åÇi#âßê,«p\rXFè¯FXÙ»´˚8gA≥o R∏I…‘e‹$Á®´∆Ëú°x˘π≠%2≤,AOEßK√Ì∆_Ø∞§ÿXœñŸñ†\r«Æk\"Í—ê\' t‚∫FåÃ°V@∂GZŒ∏åƒ™q8»\\Sãém¢˚¡∏b8\\Ç¡Ehµ√%ÍN¯.=8®uI#õQöxSdr1`πÈö‘Õ¢†5*öåTÉ•1\nzÙ≈1z”≈H—&3ﬁêıˆ†~î∏Ä\ZxhÙ4∏Öx≈Ó(Ôä\\RÅ¿≈ ßßäF\\cÛ®TsRyÈ@ÕK{†T,ô\"°Ω”ñu2≈Ä›x™°à5£i9#c‘Z√GE·/àZEëØ—)€÷2»=‘W•ôb¬≤7ö¨†´/B=kƒØÙ¥∏@—ï\rå’œx∫„@∏[H¥ñ9¿n¶/ßµq‚0‹ﬁÙ7;(b9}ŸûπΩdç∑¬√úTÈ›P∂‰8¡‰πÜ‚í)R{yRXœ√‰˘ã)Í8Î^sMål…∑´ÇÏqë‹w•e†ÜW=çDee8ÿ;êiT#Ö*HûîÅêò\nIÊ;¸©ÕòrÄüj≤c\0mÛ£5öEó¯vN¶ò\\ç®L÷°i‘»Wcc˝™¥gƒúß^j¨éØñ∆HÙÑRó\nIP®ßn2i%V2b •1…ËW\r(Bè^ÙÂc∑1ûΩià#H‘ÇƒuÕ.–„Ó”ƒlqÛ5(˝Ë\nÉi–ìç£¶òÀ0¡;\0Ê¶Ûé3Mq Òû¥Öq±§π_ît£poûRW=8©q˙SDbI1∏($ûä;öbπCR‘a—Ù;ùR„ÂD\"Sˇ\0-$=\0˛u·˜3j7≤›\\9i$mƒûﬁ’—¯„ƒ?€∫†¥µs˝ühHåvvÓ’Œ\"ÙÊΩl-gΩŸÂbjÛ Àaí0A¥UF95$çöÑÛ]h‰bu¢ñä`îQ@-PNåê…Ù”R€»– $SÜ≈\0mx|wª≤Á´∫ï·ex]pc÷ù·†aåŒÒolÂGsUµó>sH &≤ﬁFõ#néï˚√äïüsg\Zåå‰ä–ÅÕÄôööŒÈ¨¶©?Ì(Ó*Ü46¬ﬂ&vÁå—`;ãg[ò‚,œRz‘‡ïYÂ˛u«È⁄ú∫t∏ÎpÍ}+©éÊ)cY\"9F‡{VRãFäW&n%¿_îO•F∞|∏•9¿(0&£Tbü3;äî;éeRòß9®#‘sS Y¢€¿ÍT*0ﬂáJrO-ä)gR_jÅPøJïw:¸π«Jã `	ï98Ù¶\0UÇ¸ Vò—Óàq≈M#yåæY<öc+)ÚÛ¥fÄ íQ∞vúu¶ô\Zvÿ’#B∫dµë¸ù=E1JÄH9F\'ì÷ôQuf/ËjOñAÊpXAÎP¥Âò(ådL-∫ıfPŸÈöª5¨KfÂ-Ua⁄√t™z’iù˜F<˙P\"Øú—π\0ê¬úìÔ\\oœ·ﬁ¨<…ld»£üzŒ\n@¿\\Uh≈™4‘\06≤Ç}çN∞∆c€∑ì¸Uón¬=€≥ûﬂZ÷Ñ«ÖV|¸π¿§∆Ü≠;@⁄ŸG&≥Æ≠UX›8‚∫Ñl0©¶]Y´G‘ıÁäJVéE·d#èZÖÅ≠k´f]¿é3úVcÆ÷Ê¥LÜ¨2¨[\\}‡∆ØΩqÛ„ÈUÿs@¶\"¬H+◊ﬁûÒ»Æ2j$ÕXWÔö@C»Í*\"9´l7ˆ®]6úbÅêw¢úF\r\'C@Ö≠«JniÂ√iÄŒiZy∆:“Ù§é)\0£ß¢Ä#ßj(≈\0båw§Õ(4\0fÄs@4¥\0÷Q⁄Äô•ÔJ(¢#ÈN\Zí)0pzVÑ§Àî ë⁄≥îö5å∂3|ìOXà≠o±˚QˆLv®ˆÜ™âF5\"ÆFHß}ü·*Æk¥)~*¨œVN*¥™hàÂ{e=j£ı´rä™‚∫\"qLå“R“Uô0¢åQLAEPE¥\0\n(¢ÅÖQ@Q@Q@-R\0§4¥î\0QE\0Üñä(\0¢ä(Ù„\nâÖN’WÕüBàZ¢nï3t®[•1ï‰™sµrJ•7ze#2Ëk˜Ωn›w¨+ﬁıµ=…û«5x95ì(Ê∂o:ö»õ≠zî∂<öÎR±§4¶öktqÖQL4⁄q§4\0”E-%1E%-\0î¥R(•¢ò	EP •îP—EÜî¥î\0QE%\0-%PEP!i@§ı§ÀC–T†SPT¢≥f±C®òUÉ“¢zI\Zm8”kDdƒ¢ä)íQE\0QE\0QE\0R–)Äbó†SÄÊê\r≈YÜ∆ipvæ¶¥¥˚8ZH˜.sÎZíÄ©¿¨‹˙\ZF|:RB0œ÷Æπ\Z¢p*xÄh≤y‚Äã◊ùÔπv∞ƒ 0ÈﬁñIS<r=qMêb2√≠@daè^(»,‰\0Ç3äqWŸº==iÿÁÉO¿c∂iÄ*@<ûïa#ëAb2Ω3QG+4íå/Jî»ﬁJßl“Q\Zá*ƒ1«<T5ﬁπ ÁΩ?€qÎì“ßñ%«8†$J «8«CÎO	=—¿¥≈‡-I—¯„ÈHÑŒq“ò±îìÎSA+FÃ´èúm?JIê.‹w‡–äb≈åäÍqÕEπê`úÎF7nœf‚îF≠í√\'9Êò¸«ëœ\"¶T‹y=NJëqñ‡Uàp∞3`ı4\0@ªpAÌëR§a_∞\"†.ŒõòÛ÷•àŒOzC%ö+Ud¡b ∏8=M@#íI§ªyÈﬁîùé¯¶y¢ÿÓóüÃP!J0rùÅ…Áö.%ÇVÀíÉ¯QjI>iéGl—\"+F\\®»‚òäa:∞fa‘TKÛ`£`IÌLçà\nûï*\r÷≠)\'wõ≥≈hf∆CÄXÛ˙Tßrcp!q¿¶D«{¬ÑbK99;±œ•!Öª≥#+%∏QéîP≥g‘äëœ ÿ„åTñ E<Ü<–H…-Oê≥Bè±OŒ«†=©™å·Ür8;ªT‚Wç•@rÄ¥Ù™±»…nŒ=q⁄Åò>(∫ÚféÕ0JÄÚcÙœº≠#ñ€åˆ™˝«ÔÔ|…~fy>b{’)¿KßE\\„¥UïåŸaCÜpJgë‹“∞ñ<SÊQ^ò®øÑ}ià\0S–úÖ\'èJc)–ˇ\0ØC˛–\"üîézÚh éMZ’¶°*Fää1Ä£äØl°Á\0Ù•Ê>∂ë‰4gÄœZbóE,8π•bDÃ£†4≤1€@ÿ˘ärÖf\'qZc1yA>ù®F?7÷ò√É&õA,{TäÊ5¿Áp˘M6‘rX∆iKgP«Å–TåïbwA.ÛÊte\0ßmüº6ûßΩXD91ÿUH◊.A$å“rﬁOôTc-ﬂµ\r(UdÚÿ‰˙’Wfﬁq\n´w\0}ö3èò∂“{‚Ü«\ZEΩÿ≥cÂ±´0Üy3,òÑ‡nëU|µ\\`w©I?`oòç§c#-«#3\"éTÇ√‚Ì\"~Ï\0§‰n?Œ´ÃIQŒ6ØR8≈§á\'<\n[É<©ì\ZfI∆T`(ı™:ÇÖêIúÜÁ≠i≈oQé£üzØ©™ò\0\n=)ß®5°Àﬁ&[rëåf´2´€ﬁßüzΩ*èüæ*àr°‘taÕlåŸ©ö`ÎNiíâE=1“¢ ‡‘åìΩ/„B“I§ı˙R\nZ=)ÄÏqäPÉ“úÜ*é4‡q÷Ö§\'&Ä$\rë«·V!cêrAÙ™Í:\ZëFr{“c5-Ê,˚O\'÷üy`/!,\0»Jıú’≠d«g\\˝jÖ#?AÒ\rÁÖnÃ2£ÕbÁ˜êì”‹WÆÈ˜ñ\ZŒù÷ùp≥D√ëﬁ?b+ÀuKXôA+…¨ﬂ\rÍwz/â-≈úÖRW	\"7*¿˙äÁØB5í—ù4+JïÏ{j∆mò*ºT`4_ª#jûjy†HÓé‹Å¥gäk®,3œÂï»^%.y¿Ù°‘6‚}0)·Œ‡ΩàÊò“6ˆN0:P=∆5ƒd«piâ(9PÜßÚ◊fÌ£4±®/»¶;êã°¿≈DUó\0t˛*∫PHÍß!AŒV?Ωï–†„ÄB#Âª„µO±8+å˜°cU⁄†p)[ãåÄtÌB`´eè“ê¶d…=3Oˇ\0[Ç›Ω*GP~^ÄÛ≈πá.\0#ì≈q|Nöm´h∂Óªõ˛>]Âöˇ\0t{öÌ/Êk[€®¿Û Ä∫dqö˘ÚYÂºªí‚w/,åYò˜5€Ñ§•.g–‰≈UqçóQa@u2i2H©‹mQä¢‰ñØQ[\ZNi¥ß®¢®BQKH(\0†““¥\0¥w•§\0á“•CÑ#öä§è®˙–o°*€ÈÊW\0·{˚÷•p.dl¡Ù≠òÜ›*,Ü\\ö¡º@•äÒö ;ñˆ)å`g◊ö@#√ÁvÔ·Ù¶…†ı≠	`*Ilcı§ë≈8‘¸ ÅœΩ\0E√Ã¿}kCL‘⁄¬‡yÄò[ÔOqW<$\":√4÷–Œ¢ﬁC≤U‹π⁄y≈b1$±Ù<\n[Ë=µ;õy¸’∆Q£~¬•ç›2HˆÎï—.Êéc∑Ó‹Ú\rtÖé”€≥jÃ§ÓX$ï€∑ÚjÅÒÅÄtÕIÊÖsäØŒÓpx©+bX…E .?≠=îc$ï»‰äçIm‰‘Ë7ƒXı≈+Ñ7´pMWê˚ôànô´Ä|\01äŒ∏bFœ\"Ñ&JdÚ∆#!πÔﬁ´ÀêLáÄx9ÌNAô√†UVc5¿ﬂ»›”µPÑïÃíÌQ¥¡Í1«-€ı©oê)dS°E!sÎN‚≠nó*V\'‰7J∞∂K\Zê@Í*⁄˛ç‰ú=™UE»>µ-éƒä[æƒ$c∞¨K®dñ\"´‹zVçÙØÏC¥gU\rJÊTUâNØ5Hûß\'=™Ï$∏<û+;ßJªn7FπÏjŸ‘ùàúz’∆TV€ø5óo#€û=+V%A#95õ,©{Àr2F+ó∫Ä∆ﬂ2ë]ú»æYïì©∆ç$vß\rª.:t§_J±*\r§„ΩWkr+C2WÇX§€,oppÍT‡Ù<‘äòSÛs€ﬁñÛQ∫‘Æ<˚πLím∏˙Ä)ëö\0p±ÕNW‰S „±®3â8´ë|√ûi1¢ì¢êH*πzp8™ƒd\nhjZ{®òià\\”á4ŒÙΩ\r @sﬁîässäD·®\0(i≈\\Ñl≈4¢∞|éù(∏ Fì+®äå”¢î”i})\0P\r!†P≥V ù£` H5W<”«JM\\iŸù=•Ï2ƒ¢Bz˙’Ω±ø› ◊/nÏ¡≠h&m£•sŒù∂:È◊oFhò@¶häF=Nj≈b’é® Â\'ã©Õk≤ä©*ä®±J:ìGT§LVÃ»9¨ÈTWDY«R%)∏©ú\nàä’3ô°¥¥QLAEPE%¿Z(¢êQLä(†ä(†äZ)\0RQA†íñäQE\n(¢Ä?ˇŸ',6,7,'-1143','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',10,20,30,0,0,0,0,0,0);
+insert  into `productos`(`Codigo`,`producto`,`codigoAlterno`,`codigoBarras`,`base`,`costo`,`impuesto`,`iva12`,`iva14`,`iva0`,`ice`,`ProductoOServicio`,`costoConIVA`,`utilidad`,`pvp`,`cantidad`,`unidades`,`ubicacion`,`observacion`,`minimo`,`maximo`,`garantia`,`serie`,`imagen`,`Modelos_Codigo`,`Modelos_Marcas_Codigo`,`b1`,`b2`,`b3`,`b4`,`b5`,`b6`,`b7`,`b8`,`b9`,`b10`,`b11`,`b12`,`b13`,`b14`,`b16`,`b17`,`b18`,`b19`,`b20`,`p1`,`p2`,`p3`,`p4`,`p5`,`p6`,`p7`,`p9`,`p10`) values (40,'SAPOLIO 6 EN 1','123','113080421620',4.46,'5','IVA 12',0.54,NULL,0,NULL,1,NULL,'70','8,50',-20,'UNIDADES',' ,  , ','','3','10','SIN GARANTIA',NULL,'ˇÿˇ‡\0JFIF\0\0\0\0\0\0ˇ€\0Ñ\0 !!3$3Q00QB///B\'\'\"\"\"334&4\"\"ˇ¬\0–\"\0ˇƒ\0\Z\0\0\0\0\0\0\0\0\0\0\0\0\0ˇ⁄\0\0\0\0\0˙\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0W]uÛƒG]kÿ\0\0\0\0\0\0\0\0\0\0\0\0\03ÂÕöÆ8Æ\" Yı:¿\0\0\0\0\0\0\0\0\0\0\0\0úX≥◊ƒsœÑ\'ÿ˙0\0\0\0\0\0\0\0\0\0\0\0\0è;\rqœ<◊«0ÑJˇ\0≥ê\0\0\0\0\0\0\0\0\0\0\0\0\nºú”øwü‚s™+¢®òA=}O†\0ÚÓ‹\0\0\0\0\0\0\0\0\0\0\09Úq∆Ω÷¯^UûÖudÊ:DDÀ^ﬂK]¡FO\'\'±ÌÄ\0\0\0\0\0\0\0\0\0\0<öß^ŸÒ<À}*™¡‘DI◊|€´fÌq◊fZ9˙›\0\0\0\0\0\0\0\0\0\0\03œ·Ød¯˛eû•‡;ÑBeo[o|&i¶>á’\0\0\0\0\0\0\0\0\0\0\0y8´k€OôoßE¢e:é˚Ê€c.é˘Æπ˙\\\0\0\0\0\0\0\0\0\0\0‰b·´o_õo©ûåú§@ugm∏„uy˘ÔËΩ`\0\0\0\0\0\0\0\0\0\0Ú1’≤ø7Õø–¢åàÈâín„´*œ≤sEüEÍÄ\0\0\0\0\0\0\0\0\0\0GëèÜ≠ïyû}˛éjq√∏A(î›ÕúfŸœ}ÔP\0\0\0\0\0\0\0\0\0\0<|ú5Î´ÃÛımœN4wâôÓô„LŸ{^ò\0\0\0\0\0\0\0\0\0\0>>N[4◊Ê`◊™ärÚí3=◊NΩ0≥÷Ù¿\0\0\0\0\0\0\0\0\0\08Ú2s:Ù◊Êa€}eÑëíCª:Ì’ûß®\0\0\0\0\0\0\0\0\0\0«èóé∂iØÀ≈∂Í(ÕÃá2íDœ}u◊}˙û®\0\0\0\0\0\0\0\0\0\0~F^\'né|ú{≠¢åº∫A$ƒƒ˜‘ıﬂvz^∞\0\0\0\0\0\0\0\0\0\0^Fn:Ÿ¶Ø#>Îs”ìóqLƒíXÎÆ¨Ô“ı¿\0\0\0\0\0\0\0\0\0\0*Ú2Û÷›˘k∂ä3rîO2êK©ÔÆ˚Ô—ˆ\0\0\0\0\0\0\0\0\0\0\0)Ú3sﬁ€ËÚj◊e4fàî2&%3ﬂ}˜ﬂ°ÏÄ\0\0\0\0\0\0\0\0\0\0Q‰ÊÁ≠˜ÁÚ©’eT‰GPÑLââu=u›ùÓˆ§\0\0\0\0\0\0\0\0\0\0\'?=Ôª/óVæÍß\'.àC§É∑]ıg{Ω©\0\0\0\0\0\0\0\0\0\0õ œœ{Ô≈ÊU∂‹ıbápàô$‹ı›ùnˆ‰\0\0\0\0\0\0\0\0\0\0_*àÔm¯|ﬁ6˜M8˘tÑƒí	û˚ÍŒ∂˚}\0\0\0\0\0\0\0\0\0\0\0…ÂÁã7]Áy¸zMY8é°(íBfzÍŒ˙ŸÓt\0\0\0\0\0\0\0\0\0\0õG6o∑ÃÛ„“äjÕRP%1$ªu◊]˜Ø‹Ï\0\0\0\0\0\0\0\0\0\06Öûã ¡◊©Õg¶:D&BRÎ©Îæ˙◊Ìÿ\0\0\0\0\0\0\0\0\0\0œÛ™ã=9±YÎqEtgéë1$ÑıﬂVu÷Øn–\0\0\0\0\0\0\0\0\0\0n\n¢ÔSü%û∑UVng®BBDı’ùw÷ün‡\0\0\0\0\0\0\0\0\0\0V:˘—È`ÚÍÎ_◊«ƒ¿íS2ïù˜◊Z=ª¿\0\0\0\0\0\0\0\0\0\0ykØÜn:&9‚9ò@ôÎª˚Íˇ\0kH\0\0\0\0\0\0\0\0\0\0‰yŸy∑_°>7ü£}ue‚& :ò&ztGVÌıˆ\0\0\0\0\0\0\0\0\0\0«Õ]O6z∫<øüW–…õœá\\Çzâ&\'πÔæÌÔ”ÙÄ\0\0\0\0\0\0\0\0\0\0ÁÃ≈ùo–œÕ˘G‘…õœá\\¬IÍyî¶zÎª:ınÙ\0\0\0\0\0\0\0\0\0\0\0`Ú®YÙ¸ßü’˛ﬁZ|Ωÿzø\"f:Í]◊$ı◊Vœ©Ëﬁ\0\0\0\0\0\0\0\0\0\0ŒÚÈúU≥Âõ≤zS∆>Èß≠>7¶ÓÏ’N¨Ÿ¨‚uﬂ^ÆÌ \0\0\0\0\0\0\0\0\0\0<ﬂ2ù|z⁄˛KØNç…ÕöÃºz©gWUûuÁß≠´}zûÜÄ\0\0\0\0\0\0\0\0\0\0gù;<ﬂW“¯˙˙’ÍeœÇ´,œÀª,∫ßSﬂı‹˜Áw;=õ¿\0\0\0\0\0\0\0\0\0\0yævàØ‘ªÂ±6˚9(«E∂g≠ws‘Û‘zû◊{◊Ä\0\0\0\0\0\0\0\0\0\0Û|˙˜g—Ë|ﬁ8€Ïd£}[∆I—3=-Â<rôû÷{⁄\0\0\0\0\0\0\0\0\0\0\0y∏)yﬁüªÛπö=|¥e‚lß7z%”øW. ´Ô È◊k˝ù\0\0\0\0\0\0\0\0\0\0\0<‹lÛ}_oÁqı±ìå‹u’ıt¶,’Â˙¥cˆ1œ<u:}ãÄ\0\0\0\0\0\0\0\0\0\0yò®Î…ˆΩù…g^Ó>sq◊TU›˚ªÈﬁ_/‘ö}o6,ú”wµh\0\0\0\0\0\0\0\0\0\0/‰Ù}ÖæÆz2◊ß\\sÉ”Ú®N˚|ØW6?{ƒøèBâ≥⁄∏\0\0\0\0\0\0\0\0\0\0óô÷]æüâí4˙Y¯Õª^}~Ì>OvS∫ˇ\0+÷…ìﬁÒ=Ø+}3◊≥†\0\0\0\0\0\0\0\0\0\0óC¨ª=OGâøŸßﬂÛçû_°£»›wôÍÂ«ÔxûœóËRÁﬁº\0\0\0\0\0\0\0\0\0\0óLÕ>çø/ß]ôsz>nO[?Fﬂ+—ø»›ïÍÊ…Ó¯û«õæû£Ÿ“\0\0\0\0\0\0\0\0\0\0À™\\Êˆ~jÔc¿ˆ≤ÊÙ|ÃæÁüá—≥ÀÙt¯˚4˘>•8ΩﬂÿÙÛ˜œµ†\0\0\0\0\0\0\0\0\0\0ï_Vx˙=üöø_ôÙû~/K…œÓ˘∏Ω.¸øGGè∑OìÈ◊ìË2˜njÁègH\0\0\0\0\0\0\0\0\0\0*æ≠˘˝˛ﬂÃl≥œ˙?3/ß„—Ó˘ò˝9Û5uó~åûï¥‰ [™+ˆtÄ\0\0\0\0\0\0\0\0\0\0ÚÍõ<G€ÛΩ/7æ±eı<Z}Ô+\'ß>dı∑‘Á.Jz≤Œ∫Î®ØŸ“\0\0\0\0\0\0\0\0\0\0À©oÅË˚˛~õ<-ô≥zæ%;ÒÌ€Éeôp¨≥¢]u‘qÏi\0\0\0\0\0\0\0\0\0\0Êpü≥Û^çæOΩè±‡W<˙]`◊ïuùH&z∫∫˝ç \0\0\0\0\0\0\0\0\0\0<⁄Áü—ˆ>g–Ø\'‘˘8Ωüû„ŸÔŒÛ˝	Î± ô∫∆_g@\0\0\0\0\0\0\0\0\0\02πx>á≥Û^Ö9>É_gÁx˜ævÎÌÈ!!=o„åæ∆ê\0\0\0\0\0\0\0\0\0\0s¶€ßÊ=˘=∫ıŸÛ˚ﬂ;∫{È2A$ﬂØ∫p˚\Z@\0\0\0\0\0\0\0\0\0\0bÃ¢ËﬂÛû|_O>Ø?‘ØÁΩ	Ó]¬V€«VSÈÈ\0\0\0\0\0\0\0\0\0\0Á‘ü”Ù˛g◊∫lÛ¶Ó|©vÔ©îêîËÀ÷™nﬂ§\0\0\0\0\0\0\0\0\0\0õ√?ë∑⁄˘ÔS≈≥€ä|¶´)ás)ë	ù5bù˜l“\0\0\0\0\0\0\0\0\0\0Õ„ö|ç~Óo]ûçTeÍTÛ= dî_£ÃÔlo–\0\0\0\0\0\0\0\0\0\0Œ‚ö¸ù_MÛµhüJ™iá5CπîÃJ%:ss‘hÙÙ\0\0\0\0\0\0\0\0\0\0\0Ûy™ø/ËmÒ{éΩ\Z©´îS˙&`&mÛıu∂ØG@\0\0\0\0\0\0\0\0\0\0Òﬂ~_øÂS/F™©àäbzÍ&IÇfﬁ9iÎ~Ä\0\0\0\0\0\0\0\0\0\0Ú∆,^üµ„’‹Ì™öπéhá}LÃƒâôª:˛=}\0\0\0\0\0\0\0\0\0\0\0<ÿ´úº˚û_A£6z9Øä«DÙû˙Îæ˚◊Tkßÿ–\0\0\0\0\0\0\0\0\0\0»Ø.EMÛô{{5QUuÒ\0ë)&›õ,≈±†\0\0\0\0\0\0\0\0\0\0õÉÀßã~óÁ≥:ı˘åµŸóÅ\"RÑœ•g2›Ïh\0\0\0\0\0\0\0\0\0\0<œ/œ„é˛ßƒÛùzØcÁkª\"gük≈û°Ì¯â€ªéÍª◊–\0\0\0\0\0\0\0\0\0\0ygû„ø∞√‚z\Z/ßf(ª∆›f\r˝y˛øÉ≥WëËÍÒu‡ÔûÓ›ﬂ©†\0\0\0\0\0\0\0\0\0\0Ú|Ø>xÎÏ©¯ıqzS‚˚cÊ’~óï∑m?´oëÈjÒ#ªu˚\Z\0\0\0\0\0\0\0\0\0\0\0è+ Ûú€ˆmxΩ/;’≥?ùØ…ı3‰πœßöÌ8gW_ßœó◊}oıÙ\0\0\0\0\0\0\0\0\0\0oëÊı]ˇ\0E·WW:µ◊]ƒ	+\\Ô≈≥\'}ıË˙∫\0\0\0\0\0\0\0\0\0\0\0è7»ÛzsÙæOú{¥◊≈T∫Œª÷Õ^>ëª__]wﬂ^áØx\0\0\0\0\0\0\0\0\0\0‰˘~o•«^◊íÎª¥[ûéTyZ®◊~Æ∞j‚‹Ω*Áõ*Ôw≥x\0\0\0\0\0\0\0\0\0\0„˘~w´≥´ää∂5ÒM1ïÅg≠õF?A~^4ÁÎçVyoˆ4\0\0\0\0\0\0\0\0\0\0OóÊ˙W‰ﬂÊÊ—«{)Ø5d Œov∫…”ÂıËz˙\0\0\0\0\0\0\0\0\0\0\0è\' Ûm™Õÿk4Ì¶º‹ Ãƒìﬂ]ıﬂ°Îh\0\0\0\0\0\0\0\0\0\0<ü+Õ≤æˆ‡òÔN‹¸’nJ	A6«)â≤{ÔøG’–\0\0\0\0\0\0\0\0\0\0ygôg7lØF.ÓŸõï˘|ËÔ_U=‹\"D˜◊•ÍË\0\0\0\0\0\0\0\0\0\0<úª´OßÂﬂóõ4s¢ärÍ≥ÀpÂõ,Ètôòz∂Ä\0\0\0\0\0\0\0\0\0\0#…Àã∫xˆ|ãπœµ£G~6{Ô«ËUFGVtLÙÎ≥g±x\0\0\0\0\0\0\0\0\0\0‰b√}¥SüEëlÈ∫Æ|˛Æœª6^#Æ˙&{û∫ñüg@\0\0\0\0\0\0\0\0\0\0‰`√æ(√≈ì≤ﬁfË∑ŒÁVX∂úŒÏôLı‘˜3£ÿ“\0\0\0\0\0\0\0\0\0\0y>vAoÜlı\'\r\Z;ªZq’e˘∏ÔÆì+&zÍuz⁄@\0\0\0\0\0\0\0\0\0\0åﬁ\':ÏÕì™Ω\r‰kÓ Úıé6]LfÌ)ÎπuﬂZΩm\0\0\0\0\0\0\0\0\0\0\0FO2òœfåëO>•ŸÛY≤ú˝¨ßû9µêû˙ôÔÆµz⁄\0\0\0\0\0\0\0\0\0\0\0è*¨±èª&ißF÷lﬁ›>5õï˘æè´´≈ÛVOs◊ZΩ{¿\0\0\0\0\0\0\0\0\0\0è\"™ºﬁ5ﬂEú’6sß…—Ëd…1v?≠∂|_,ÓzÎπÔ≠>Ω‡\0\0\0\0\0\0\0\0\0\0GëôóªY—Ù\ZÈrqŒó]OõıWı‚yâûªÎÆªù>∂Ä\0\0\0\0\0\0\0\0\0\0#»Õüú”~åÙ}6ï9ú›ﬁŒ<´~™ﬂÕ:û˙Îæ∫—Îh\0\0\0\0\0\0\0\0\0\0<|ÿ.cøu\Z}∫<æ¸Ó3q‘ÌF;>ûﬂÃó]OVw‘Ëı¥\0\0\0\0\0\0\0\0\0\0>_&€rk∂ø†—Ûw·„;ã!£ìÈÌ¸ËÍgÆªÔ∂èb\0\0\0\0\0\0\0\0\0\0#∆ÀÁ´£fö>≥/œl«ö©◊∑≥ﬂÅ}OoÖóé:û∫Îæ∫—Ï^\0\0\0\0\0\0\0\0\0\0x¯pœNÀ˛ü-∂„˘º∑{US€ºøGoáß.›O}OZΩã¿\0\0\0\0\0\0\0\0\0\0èœ¡o6s:˛é%œœyó˚¯Ò_ú}Eæ¸ûW]L˜3ﬁØb\0\0\0\0\0\0\0\0\0\0#«Û€]º∆Ô¢ÁÕÙzÒq”È¯ZvÒäÆ˛¶ﬂÎ|Æ=u=kˆo\0\0\0\0\0\0\0\0\0\0<;ä˚qøË|ˇ\0ù˙-ﬁGõWØ<Rõ>™ﬂFöºnS€Æı˚7Ä\0\0\0\0\0\0\0\0\0?ùÉO+€Ùûgœ˝•‚˘7‰Æ›9jÍﬂ©∑ƒ´©Î\'Æˆ{\Z\0\0\0\0\0\0\0\0\0\0\0èÃ√ßâs´È¸˜—l˘‹ñUëË◊ã´~´ø∂hy…ô≥g±†\0\0\0\0\0\0\0\0\0\0Ò¸œ?^~∫wıº˘~Ø?+Æ)™≠úfN⁄:õyé*L€u˛∆Ä\0\0\0\0\0\0\0\0\0\09Ú<ø?^~∫û~£OQ‚x⁄í£}x¶ Ùo…deÆZ5ÈÀ◊≥x\0\0\0\0\0\0\0\0\0\0„˘^~ºΩwh˙.¸ø6ù0œ≥Ø)≥?´~;„ñãß.}^Õ‡\0\0\0\0\0\0\0\0\0\0GèÂ˘∫(ôéÁã‹U~ãss=Õ\\ÊæÊ≠9=9Àñn◊Ïﬁ\0\0\0\0\0\0\0\0\0\0x˛gômRus®Í/´V|öµqûæuÓÊÓu}xÍ›ª7≥x\0\0\0\0\0\0\0\0\0\0„˘æe¥Lœ][ßäzÓª,¢ xÙ6W›tZ¶˝8∫èB™=õ¿\0\0\0\0\0\0\0\0\0\0èïvió]w™æz–æ≠ô|˘’LÛÓ—ãù=iÛ∏´_∑x\0\0\0\0\0\0\0\0\0\0„‚Ûl»N≠¥j◊FÆr-Ø?ù[U˘-◊¢zSm5Â∑o≥†\0\0\0\0\0\0\0\0\0\0ÒÒy€£Œ´ˆ|œFæß%≥Y]m7}1Õh£º∂ÏˆØ\0\0\0\0\0\0\0\0\0\0<å5jÎ]uyûæ\r{>v´j£øc=∂ÏÕÊÈÛ˝LŒ:≤ÀÔÚõ=´¿\0\0\0\0\0\0\0\0\0\0è+}=hÁŒÛ‹Ï∑N9Á⁄À\Z<˝∏h’äÏªz≥æıgÛªŸÌ^\0\0\0\0\0\0\0\0\0\0yx™œõÖSﬂ£~™{∑\r>Ü^rªÀNï>ù◊Û«,ÙÈÙ=¿\0\0\0\0\0\0\0\0\0\0è3ç´]:ª”‚{uj≈f<ÿ,ä¶ÌV˘Øw∏öxôé4oÀÈﬁ\0\0\0\0\0\0\0\0\0\0yx5ı_^GßùÁ◊eÏøã=6ˇ\0>ØW>nıq:zÊ9ıÔ\0\0\0\0\0\0\0\0\0\0<úYπì\Z≠<„∑“ûtWß∂QüÀn«>áwı“n≥7´x\0\0\0\0\0\0\0\0\0\0„‡≥.´)ÓÌ∂U\Zr[ooÊû=\rı}˝*À£M1ÏË\0\0\0\0\0\0\0\0\0\0<l>u€ÛÍª∫9≤{ÍØ2™jw‹Í£–∫‹{qYüùë÷]>ŒÄ\0\0\0\0\0\0\0\0\0\0#≈≈ﬁobú˚ÈÓ˙y√GßÁﬂ¢Ãv\\”Õﬁ_;mÀf»Øøf\0\0\0\0\0\0\0\0\0\0#ƒ«◊:¯£,E˜’ıŒÕ¯ÁÓÍækÀËŸü“∂q„’ÎË\0\0\0\0\0\0\0\0\0\0<Lúd¶+õ4=¸Zk¶Í≤’ﬁN∫ÓΩ∑sû€ÙSÂoénıÙ\0\0\0\0\0\0\0\0\0\0&\\\\˙‘Y∂âÀ≠ﬁ®«]:h≥´WÛZ∫Á?v…ÎG´†\0\0\0\0\0\0\0\0\0\0ÒrYãŸS’¯±Ïœƒuí(ò›n®√ø?;,« r›gzΩ \0\0\0\0\0\0\0\0\0\0Gçèwüv~3—x◊’TQÙy√ÎR´>Â>ç9˙Ô£—ªVê\0\0\0\0\0\0\0\0\0\0#∆Àíé\"/Õ∂˚ßoÉØÃ˙’yz(ÊﬂK^âWóÀ„’Õ≥≠’Ï–\0\0\0\0\0\0\0\0\0\0xπxçπÔú÷›Œ_GÊ+ÎM=Rò’ÎÛÃ’~lTÏı,éÍÙÔ\0\0\0\0\0\0\0\0\0\0<\\÷gı9Õü\n*œ¿ÍyCNû;ài◊éØNÏµËı¨\0\0\0\0\0\0\0\0\0\0<ló‰≥öÒU b©àã˜ÁfÙ};;ÀûËã/ın\0\0\0\0\0\0\0\0\0\0<L¥e9Æ9&øWÀÂ´–Û+Øﬁ◊ÁÏÎœÀuñNèV‡\0\0\0\0\0\0\0\0\0\0#ƒ…F~Usœ{|‘ıÙﬁvk«˙/ŸÔ?·◊°Øç>ù¿\0\0\0\0\0\0\0\0\0\0Gãéú‹s\\\rOÛ>¶\'©è–å˘uS‚ÛföxæÍ/ªªfˇ\0N‡\0\0\0\0\0\0\0\0\0\0#≈≈N~>ã√…u¯=ok√ﬂgùf…ÊæÒÛ‰˜ËÊÕÕﬁÖ\\ı´æÔÙÆ\0\0\0\0\0\0\0\0\0\0<\\[|ô◊«´œ_\'Ù¸Îﬁv˙n«Á]àüJª2W≥∫8—u˜˙∑\0\0\0\0\0\0\0\0\0\0./O¬—œ°‘œÃ}>-Ÿ¨Ú˚ÛπÍ;Vu∑Wxgû)ª}˜zó\0\0\0\0\0\0\0\0\0\0.OÃß‘Óxß¡ıpu^∫π™æ∏”«ƒŸøg-’◊ßu⁄Ω+Ä\0\0\0\0\0\0\0\0\0\0è©è«ı<˛s«W¨ÔM9xäö*àÉNæº…ÆtnÔw•p\0\0\0\0\0\0\0\0\0\0‚‡´äÈ¨ïÛ’µW:Â{qMæúnÙÆ\0\0\0\0\0\0\0\0\0\0<\\5s]uÛÕúﬂON!’;q†∂c∫∑cÎ}ÓÙ.\0\0\0\0\0\0\0\0\0\0<l«q¡Õ—Eìƒlåúsm[6‰´€≈nØB‡\0\0\0\0\0\0\0\0\0\06\nyé8àWg<Û›WK™Õ‘«.¶uﬂﬁCç˙7\0\0\0\0\0\0\0\0\0\0\0Ò∞S¬9Ê9Ø∏„ñÉV~,§é5—[g£üΩõ*ı≠\0\0\0\0\0\0\0\0\0\0„a£âsœ5◊‹q\rkbém”]TÏ”F/πónÀû≈†\0\0\0\0\0\0\0\0\0\0<lTW(„é*Ó\"#Lw1Õ∂€ä≠Z8„i≥ÕñıÏ⁄\0\0\0\0\0\0\0\0\0\0∆≈Eié+Ææ˘òã∫á}ıG3Õù]5„”m—≤üf–\0\0\0\0\0\0\0\0\0\06*+Jæ*Æƒs[@õc∫˘∂ﬁÁ-ëﬁ≠z+ı≠\0\0\0\0\0\0\0\0\0\0„a¶∏Í8‚∫∫òrß∑1°etÈõ}+yÙÌ\0\0\0\0\0\0\0\0\0\0„a¶∏Í\"™∏Ígò‰\'ÆÎôÌ]∫j´ΩqËug£h\0\0\0\0\0\0\0\0\0\0s“+Øâôéb!3‘YÃGsÃÓ7¥Ô¥\0\0\0\0\0\0\0\0\0\0èÇé9ôq«1¬	Ó€*Êk‚{◊3{G}\0\0\0\0\0\0\0\0\0\0\0xÿh„âÈr\"8û:FâÈ#çÃÍ¶ﬁ}\rˆÄ\0\0\0\0\0\0\0\0\0\0Ò∞Á„óRÁí\"9à|œ|’›ñOvﬂeõ≠\0\0\0\0\0\0\0\0\0\0„˘˘¯ÑÙéHàéQ31oiä‚,∂ Ó”∆ØN–\0\0\0\0\0\0\0\0\0\0?üüàâÍbQÃ9È3\Zxõ9ßç)ªDËıÏ\0\0\0\0\0\0\0\0\0\0„‡œTÀí\"ƒ&Q¶{ä‚Üõ3Óâ”Ïÿ\0\0\0\0\0\0\0\0\0\0»ÛÛ‘á]!àî¥Yœ©Øm’i¶v˚V\0\0\0\0\0\0\0\0\0\0\0Ú<¸’¬]L\"\"\"3v…À:*≈:˝£œ∑wµh\0\0\0\0\0\0\0\0\0\0#Œœ_2w\'<ú¢	≥U©ÈN*¨€mÓ›Ìÿ\0\0\0\0\0\0\0\0\0\0…Ûs◊ ]tû9\"!]Ÿ¶-¶öié¥∏øµ`\0\0\0\0\0\0\0\0\0\0+Ãœ_.é•ÃDBsg]Wﬂy\\DYwwÔˆl\0\0\0\0\0\0\0\0\0\0Âyy∏Ñùu<Òwƒ\"IÑUmN{æ›}ã\0\0\0\0\0\0\0\0\0\0\0yæFz·◊.Êcàâ’3^hLI[´=]f€˝õ\0\0\0\0\0\0\0\0\0\0\0y˛>zπûπéªÍ8·;Ï≤º˘Î!Ãq:ª¢´Æ—´⁄∞\0\0\0\0\0\0\0\0\0\0ôÂg©´7	Ôß9∂˚;∑ö2sLMˆf∫Ì~ÂÄ\0\0\0\0\0\0\0\0\0\0<ø35SËdÊó}π„õ∏éVzV‚«_\rnÙ_Áuvør¿\0\0\0\0\0\0\0\0\0\0góö∏Ùs˙ôs,„¨/cƒÔû}º4Íå}m™ÚΩYrÕ⁄˝€\0\0\0\0\0\0\0\0\0\0\0yû^zûﬂqSg9Í”gëÏ¯µ{xıQe::£E◊øÃ„ªµ{÷\0\0\0\0\0\0\0\0\0\0\0Û|∏ßö4ﬂû=.´À~]úF\Z#›¶ú˛ÁÖË‡ŸöiÆ:∑Ω~Ì†A \0\0\0\0\0\0\0\0\0Û|∂ãºï5G]ˆ„oﬂÁ”È≈U◊v~πâÍf›qNØr–\0í	\0\0\0\0\0\0\0\07À´÷Áü>ã2:Ó.ÀƒGI∑òÖıÛ∫ãóÆ√ŒØr–$`\0\0\0\0\0\0\0Ê˘y˚”~*ΩûÚÒm‡èSÀﬂƒ]\ruW]∫*Ë…:Ωª@J@ \0\0\0\0\0\0\0<Ô+=\\œ{-é{œ◊°Éü>Õ~o±[üUyvlÃ…\Zj˜;	$$Dí\0\0\0\0\0\0\0\0`Ú3qƒO5≈óEÓ™≈«¶æÖôVÊé&Rõl◊ÓI$í$&@\0\0\0\0\0\0\0xò®ØòÎéxéÁÆ£û8é„ÆÅ(ôâõmÎË{JbRîÑÑ\0\0\0\0\0\0\0ÉŒ∏qq«gS‘G5Û“zO)Hôû£◊ı,íbdêê%Ä\0\0\0\0\0l^c©é8XôÍ8Øó]LƒDu$¢7Ôzù•)$â$\0L$DÄ\0\0\0\0WùÕ∏º¸n£ôû∫ÈœßßHÁîÃ4ÓŸœ6u)HòH\0ò$\0\0\0H\0!V*{≥¨π2f®Î£éN†D€£Võ„äÁnûÂ!)DÇa\"`î\0\0ÑÄ\0\0(´5w=w’4QOs=w›∂]dÒ_sv≠3“Ií\"IDÄ\0\0\0\0\0\09Å—O˙é∏≠=DA=G,≤˝(ûÊf&DÅ \0\0\0\0\0\0\0\0G1	î#äx„àÁòî&zÎª,Ì1)LœR\0\0\0\0\0\0\0\0\0$ îH	âÎ†\0\0\0\0\0\0\0\0\0\0 \0@J	\0LÃÄ\0\0\0\0\0\0\0\0\0\0Ñ@J\0\0í$î»\0\0\0\0\0\0\0\0\0\0!\0%\0\0íRê\0\0\0\0ˇƒ\0\0\0\0\0\0\0\0\0\0\0\0\0ˇ⁄\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0≠],ÁÃ\0\0\0\0\0\0ÆÈF|¿\0\0\0\0\0Æ”=±uEË‰\0\0\0\0\0⁄óß-ÿ$ÀMy†\0\0\0\0\0w÷oN[∞$∏Ω<Ÿ\0\0\0\0\0˙ÕÈÀvL›y‡\0\0\0\0\0w÷nÒ´9Õ^0\0\0\0\0\0;‹ÎX›Ä2œ(\0\0\0\0\0/{çk∞	$Áê\0\0\0\0{\\Ì5`	3œ \0\0\0\0˜∏€;∞ôÁê\0\0\0\0{‹mùÿLÛ»\0\0\0\0\0ΩÓw&™39‰\0\0\0\0\0k≥=s.†ôå\0\0\0\0\0\rvgÆcRS3\0\0\0\0\0Î2‘¥Å\"„\0\0\0\0\0zc´\\Èì9\0\0\0\0\0´èyù,íb\0\0\0\0\0”Ùg7P…bÃ@\0\0\0\0zsΩúÓ¶≥\nâà\0\0\0\0\0/F:1kY_=ΩS\0\0\0\0\0]¶§∂kû©Æπ»\0\0\0\0\0Ω∫Áx Ö/l@\0\0\0\0vÂœÆÀsIÆπÄ\0\0\0\0WçI¨‘∫÷Ær\0\0\0\0\0\\öôJÆ∫L§\0\0\0\0\0æ24∆Ωf,H\0\0\0\0\0x∆W\\˝LÇD\0\0\0\0\0\roÛæöœNbX»\0\0\0\0\0\ZﬂûwÈœRK,P\0\0\0\0\0÷∏o— T2†\0\0\0\0´∏d@Ì\0\0\0\0\0≠À%≥\ZQú¿\0\0\0\0\0^⁄∆òiùM%«+\0\0\0\0\0ˆ◊1\ZÕ±ú\0\0\0\0\0∫Îù&ô†âà\0\0\0\0\05÷Ê≤‘Ö	3ê\0\0\0\0zÀYiÖ§fÁ \0\0\0\0ı‘¨Õg\Zö–ôŒ@\0\0\0\0Îfd“Ÿ1jô»\0\0\0\0\0Ω,‰ªiõŒ≠L¿\0\0\0\0w¨ÂkDÁUXÄ\0\0\0\0[≤‹k9S9\0\0\0\0\0\ZÈù*s›ö„”\Z±úÄ\0\0\0\0\rtYæ∆zÕÒÈõc9\0\0\0\0\0µé{rΩ+èIQúÄ\0\0\0\0⁄„|z3±«°‰\0\0\0\0\0k™∏]mN%Iò\0\0\0\0\05‘sÎÀ£R˘˙Jì0\0\0\0\0\0k®Â“)Æ{Ã≥2\0\0\0\0\0\ruß9∏fäÃê\0\0\0\0\0kWuô4É2\0\0\0\0\0\rtÁΩ±Ir≤ÊÊ@\0\0\0\0Æ≤jHk4ÖƒÄ\0\0\0\0]&ufò≤k3$\0\0\0\0\0\ZËí√.íf\0\0\0\0\0\rm.≥Y∂»Ã\0\0\0\0\0\Z’§â6ÄôÄ\0\0\0\0ÍŸ£&ík,‹¿\0\0\0\0nÀí©îÄ\0\0\0\0Í¶ï,ïö1\0\0\0\0\0∫•¬YºçIò\0\0\0\0\0-∂I∏÷•ó79\0\0\0\0\0,iû§π´Ä\0\0\0\0÷§ªì:ô”Y3\0\0\0\0\0∫DùSÊ\0\0\0\0\0tÜŒw|⁄Œus\0\0\0\0\03Zﬁìç7ÜôÄ\0\0\0\0YZ◊Iå.™3\0\0\0\0\0¢iz/%+\0\0\0\0\0›m%âS0\0\0\0\0\0*&¢õ∞öŒ`\0\0\0\0\0§J≤gVÁ0\0\0\0\0\0);W<ıF \0\0\0\0\0¢,ëæÜ6ì0\0\0\0\0\0QG]”9Ä\0\0\0\0¨ã]ÍÃmô\0\0\0\0\0XÑMuëeÃÄ\0\0\0\0™AYËŒŸ‘Ã\0\0\0\0\0RYz3ÇÏƒ\0\0\0\0\0µî÷±∂l÷±ò\0\0\0\0\0uuî∏ÿ&d\0\0\0\0\0\n› ÿŒÆjKò\0\0\0\0\0´d≥7RjTÃ\0\0\0\0\0\n™§¢$ \0\0\0\0\0-íUâRï\0\0\0\0\0\0Y*ƒ,§†\0\0\0\0\0%\0 †\0\0\0\0\0Ö\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0ˇƒ\0\0\0\0\0\0\0\0\0\0\0\0\0ˇ⁄\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0¢\0\0\0\0\0\0\0Rÿà\0\0\0\0\0\0\nöñk3Y\0\0\0\0\0\0MI7ñí*‰\0\0\0\0\0öåÓÜ∞\0\0\0\0\0\nMDﬁe§ŒÆ@\0\0\0\0Eâ©+L Ä\0\0\0\0\0¢À,ñ”$\0\0\0\0\03π-Ä\0\0\0\0\0§´,ïD@\0\0\0\0\0RRjKi\"\0\0\0\0\0Åù≈¢D\0\0\0\0\0J\\“©\"\0\0\0\0\0ïﬁZ*D\0\0\0\0\0MIeJ™ \0\0\0\0\0 ïõíÀ\0\0\0\0\0\0≤*X∂Àê\0\0\0\0\0\Z¢Ê®@\0\0\0\0\05Bi¿\0\0\0\0\0zÈ*MK,\0\0\0\0\0aK—ô∆•\0\0\0\0\0\n7÷uƒﬂ. \0\0\0\0\0R„OONuºÂsÊî\0\0\0\0\0-ÎËÛÙù9jÛÎ2÷<¿\0\0\0\0\0^˙ÈûzÈ«w=9ÛŒ3¨–\0\0\0\0\0æúÛΩgnI|¸Ì¶4\0\0\0\0\0‘‘Á{rÛa™:\0\0\0\0\0◊]o>~ØXù\0\0\0\0\0ÈÆº¸˘ÎÀ`9nh\0\0\0\0\0/≠Á„©h5–\0\0\0\0\0__:\0k†\0\0\0\05õ§\0Œ¥\0\0\0\0\0%X¿3Z\0\0\0\0\0Àr\Zñs”@\0\0\0\0YbÑ¢ƒö\0\0\0\0\0±W\"ŸQù\0\0\0\0\0®§(	@\0\0\0\0TR(TJ\0\0\0\0\03VKRÀ(%\0\0\0\0\0ÎWµ⁄ﬁíÄ\0\0\0\0	ªÀü>ùÆ§sÊª‹P\0\0\0\0\'L3:7,ÂÉz≤Ä\0\0\0\0zÊ≥\Z©œı@\0\0\0\0\0ºªÀÕœÆúıœ7zJ\0\0\0\0\0&±—ŒŒzªŒπÁ{∞\0\0\0\0\0dÃìSS\\ÊˆÄ\0\0\0\0\0õe34Y¨ÕhÄ\0\0\0\06∆:3*Áp‘J\0\0\0\0\09t∆—sπ®f–\0\0\0\0\0k<zÊÙL„M§ñÄ\0\0\0\0”èDÈ\\˘t⁄!@\0\0\0\0Jg[YôVIh\0\0\0\0\0ImÀyXñ¬P\0\0\0\0\0π5S6Ä\0\0\0\0QÃÓ∆m\0\0\0\0\0h°%•Õ\0\0\0\0\0ö\\¨T[\0\0\0\0\0\03ùjÊâe*J\0\0\0\0\0$iLU©H\0\0\0\0\0 ⁄X´4\0\0\0\0\0	õ•R …@\0\0\0\0q´JI(\0\0\0\0\0	õT%öÑµ\0\0\0\0\0‰÷ÏTPç@\0\0\0\0\0úù(,©sõ”4\0\0\0\0\0IùîX3út‹†\0\0\0\0I¥œS)XóE\0\0\0\0\0û:ÓsÌ∂3Lä†\0\0\0\0cèM\\ÔzôKïK@\0\0\0\0Á Î£Z“ÒŒƒŒ¥\0\0\0\0\03éMı]o,„VKõ†\0\0\0\09bo™—	J\0\0\0\0\0\'>s]£Uùf&∫H\0\0\0\0\0û3v∫≠i∆Ù±\0\0\0\0\0s√:]ZÈs«–H\0\0\0\0\0ô≠[f∫¶vê\0\0\0\0\0&0Ã∑VÀ÷Áóf4\0\0\0\0\0L€mu¶7yË\0\0\0\0\0&0ín´wüI¨≠\0\0\0\0\0≥3wºÁï’πö–\0\0\0\0\0úÂôŒı◊:Œ5º±:–\0\0\0\09:Y&§ËEú›(\0\0\0\0\0úıK4∆às]Ë\0\0\0\0\0N]db¥E[yÎ@\0\0\0\0s∆˜KõIôÌ@\0\0\0\0ü;≠„7zÃ!/P\0\0\0\0\0Iñ¶sΩÊ4ã†\0\0\0\0\0®P\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0ˇƒ\08\0\0\0\0!1\"2A` 03Q#4BaR$bq@pÅëCrêˇ⁄\0\0\0ˇ\0¸<Œ!µdC™¨}a÷÷?òuÍ>ê¯à˙|Dˇ\0‘[¯˛¢ﬂÍ‘õˇ\0<IøÅâ‡J5âq€ÒoºÓ>©˝«◊Òµé~±Ø\'≥\r¶6l3yõÃ‹O÷n3&3qâahÔıÎ¸æÌ{’>ºæ∞û∏çqcÃ.L-	ÚÃ3&u˘≥Á·wm≥aÎÓ∑pÉ&]™\'Å¿gÃ…3iõ	Ñcø,B∞¨€&gÚg»J\\÷¡ÑR:˚¶Àc2ÎKNb¶e\Z`›¡MkŒ‘€ÅÌ\0K,…àŸ3∆åa?¢ßx}°È\0üwÈ_‚ìÌ∏QØÆﬁ±æ‹c¥dÀ≠,a9ÇV8ïbZ‹MSq3*Ô#\ZüÃ|èùV2Ø”‚,8ÃØ\\b-Ë›Õf•≥í⁄ìg⁄/9h‘˝i\'”≥ÌÕK‡b1Úæ†ﬁVj˛>UpF°>CÀ?ê˘£`ˇ\0¶[DbDKœ÷W©«G5d˜ÃıÚ2£&ÕsÉÄ«Ωﬂ‰∆`KNL1[\"i≠ık\rı˚kRrLc‰%Gà\ZZ‹MP»Úß‰!FçÊ?K◊ˇ\0%äbò¨DmKV3„nIÏ¥ñò|º1ΩÖ~€ø≥»J∫üÂ,9S‘= ~B£FÛx¸Íÿ1∆9t,\\J€iÖ‚¬—€ôôô·ü_∂ÓÓ7êïı»Àzöûº®¯›Fç◊ËÁÚ£}L6ú@qÊvú@q(9SFÔ…y3√Ü>⁄2Ó·Úæ°˘fq/Íß˘FÍ1è¿ÛœÁì1HaÉ€¡Ä¿e„ê|®>”√ÂXÊh8˚hı.Ó7êïı»À‘u”¸£C©ü!˘±˘≥ºsﬂ◊±.ËyQçÜA3l≠fãÉˆ”te±ºÑØÈ»À%˛ZaÃh“Œèñ ˝PqwŸ-YƒkK*O¥ ∆FfÿVV14}è∂õ£-ç‰%H{2Œ¶¢Ã”és\Z4≥Ø“@Nø( åCR{^gRÆD\0(ƒ$LEIÿ˚i˛&[»J˚ˆeí˘¡î∆ÜY‘«Ê?®·æC0\"˝&—\0…fó‰>⁄≥‚e∞√Ø±>¶X8óœ¨†Fç,Î»˛L˛L˛Ü !íÕ1‰}µgƒÀcy	W»yY‘∏ÊÂFÜY—¸˘˝ygÀÆ¸ÑK4˝è∂≠¯ôd>BT2√ √ƒ≥ìÂ¶·ñÂ«ûHN¶|ÑK(Ï}µw∆Yí ªKOº®8Ã1˙òˇ\0‡àñ`É…eè∂Æ¯À!ÚëìRˇ\0å*ccı‰`ˇ\0‡	‹Ãy	G”Ì´˛2»|Ñß∏%˝GÜS\Z˝yÁÚcÙƒÎ»Aí ~ê}≥®ÍYêî˝`ÍjÊe\"4h˝üÀôﬂÍc˘É¯Úy,ßÈ_lÍz·ÚYW÷¶ß®ÛÎ4„∏∆˝~|˛†Ûy	O“æŸ‘Ù%ê˘,ØÎ>ìPcß®–∆áÚÊ‘‹y	OQzlÍeê˘$¨pg“^yå`î¸cFÜ\\˘b\0Ç!)âÒlÍ{èíJ¯XOÛò‹≈ï,xañwÊ?[XÇ<Ñ¶WÒlÍO1·ÚX£⁄#å	{Ê/rÆÑx–À&<áó?êŒ8ÚœòÄy	TØ‚>Ÿ‘ûc√‰ë~í¡ƒ∂≤Ω√π_ƒFÜ`œò¸√Ù±y	Tß‡>Ÿ‘|åh|´∞35ÒÅ/r˛H1*¯–√\Z‰<±˙πÇ\0É»Jå£·ˆÕÁì\Z*ªÇjòb88õq‹dD’VãÇymZÊJˇ\0@˛!ª?H_˝LÕ”qõå‹f„7M”t›7	∏M¬dybby	\\”¸~Ÿ¥Û\Zc1¨DÏ¡ÆT¯å√‚∑àQ\Z˚¨9Êzv7piœ‘œDÃ∞÷!I≤òÚ«ËbbbbbmõL˜à,aﬂ»ÇÂ˙≈`›!+öcï˚`ı,2›J©¬˚ôΩ[;‡\r1˙ò∫uïiîÙ%z-‹û%∫E≠sô®L‡vI=Õ=%Œ~ûñ!H¿l˛.f@yuÊ\'^Bw6©˙OILÙ?É®ùr‡~Ci¨Áë4ßÇ>ÿ∞·Iñ≥jl5ß¿‘µ(Ñ˘(öz»M–)≥<B”Ré}ÃÂŒO>^˘}á´á1Ñ∞pa§?(áü,¿xôÇ$é¶†÷•ÎöÉ#ÌÜP√zß»⁄yÜ±}†DÒVÀÅÁ·ßÀ#K8˘–œ˜êúA‰<ÑE< œI•1aÒ˚cPyñ˜‰\"8»vXà\'â~Ò)n1kfŒ3J˚,?0åúMMF≤T˜åÒ,–5j\\≤ïà¥•≠œ>xÚÀƒjYT1ÎòÃƒ∆&8É»Aπ_∆P}ølﬂŸñ˜‰\'®Cf!˛´O˜\r<,‚‚g¶+∫Ïu•—\nÏ€\räWÉ§\n…Œ•QÆoS´4’ñ≠îOJák*\0Ó—≠{G∞⁄˙ EVï^´˛÷…EifWÏu⁄ƒJñ∫*WuﬁBQÎ{Î∫Ñ*é”>Ö√NÍ´®lÀ6™ëK·y]=\n‡ªù©®´+UhwKÙæöÔ*ó;@ÂÙ÷VB∞Â™d˘)YàƒA4¸âßË˝≥fYﬂï:c`‹«b&ôé∞jÍ+¥ûIƒNoc<7˜\ZT}M?©˛Aéú®„QÀıõ≤±Å6Y∑˜wÙ}Có§èƒZs(®OMÇ\ry\ri Ê#¶`{»ıÕ‡UiÀ¥≠F¶îPBöµ±÷≥âfEh¨€ú“VÛq#e[Õ[™∆ˇ\0˝¡*R⁄vUÂêmjTÀYML\n\rÓı[Mú˚úñ5RÁs;˙ÍŸ\\ï∞±UvµÙ\"©Ÿù–A4∆Qı˚f˛Ã≥πE^´sÒ≤Õ¸tß≥<=…Lvâ≠Ê”4˜ö∞ïj¨©\rkÒ—jlR+Ÿd.¿c\'ƒd‰Ââˇ\0~U¬1ø1˛ß#˝D}åÀÏı\\≤Áhb:$BIÓWcW ù∞‹Áìõup√J¨50qR	\\.‘≤˙Ÿ≈®X÷‘ú√bÊ÷^ª∆˙@<¥Ô)˙˝≥f?sKÓV¨|ÒQ∞Ú™ÛKw®`¨÷Íââ¢‚¡,ç,Í0ÑJápé\'¶Hœöè,A1Áâè,L@&&OY0<¥˝ ylÍ>F?pGu*„˙´Ók¥ I‹Èu\rk≈OST2Ês14ü∏%ë£é!Ø1pàzÚ,A1ÁÅﬂ°g¸Zz≈†¶√¿S\rÒhQáaºªÄy\0ÑJ{öè€:èëçÖÅ¯Ãk	…√X±9üC5+Ô3â¶q4qƒ\" ÑK8@A;òÄLJøqf´Rh ∫?ÒömOØû6Àµæìî∆`Ò%˙©ö‹5!Ää&& ÉÀLõÿâß¯˝≥»∆úfWà»A9‚xb`∂c&≠äû≥ô8\"n˜`u§|∑1€Ë`$«ÜºLGÄA\0òÚÃ‹%\\ÿ≥ƒª_/\rˇ\0)≠F6íõ¯\"^	”®Æñ“>3÷èÒÜãµh9ÄLM)√JÜ3ˆÕ˝òg°;LÊ{s<,f∑á…äIbG©“Ó.#é`^IÍ8‚à∞« w7¨ä\\Ì^”√…˘4¸+Ú3nô?„=}0„à4ı9WƒÒ.◊À√{i®’ŸSï¿Ò‘6ohﬁ ˘ˆÅÅ‚}B≈Òœ*1©Ee\'@fu+<ÊU»œ€:èîˇ\0‹U, ¨Ì€\r*ÙN!K˛fbbR=‚4h˝F¿õ∑p†±´KsˆÖˇ\0˘∂chÙıúº\Z}-º.3©—5‰;ë\0“’∏¸≠‘Ωá$I=˘¯{ëa_ßâvæ^˛S[˚ß ﬂÌº´•ÏQê%\\Èö\'PÒ+Œ%ˆÕˇ\0(√ô¢ò«>ûÎXï◊u1¬∞qôO»Gá-¬ÇcÈÆ# M=EÓ€hój´”ùÅ}Õ‚6éU≠eV,w=é÷ÃrzÍhÓıì\rÀxë¿Q‰à÷´…∑NÙ„ñÉ˜ÑÒ◊À√ kt˘[˝∑óá˛Ÿò‰ ∑xùFË xöè€7ˆ`ÎÀª3EíN&Úf£ƒ]X≠`•‘çP5∏¨Cß¥ß”KS⁄¿®⁄¶î^_ò˙µNf6Ω◊úVÎp	ØÊ„>~}Êxó¯˘xwÓ‚_Ú–~Ëû%⁄Ãœ\rˇ\0)≠˝÷Ú≥ù4«3√ˇ\0l¬92èÿ∞J˙é82ôG«Ìõ˚1zÛJMÓ@·*∂¥>ïqâ2ˇ\0‹i°b∑¨∑H-ø{|l◊Ìq]X≈§ûLioS√èÙÃ◊~ÛA4´ÇÏ7MrÖ¥Ö√æfxókÂ·ﬂ∏gâtæZ›ƒá+Â·Ω¥◊~Ûy7ˆ≥Î<;‡—ª3MÕ6	W∆7F\"<ß>ﬂ∂oÏƒÍb¶Æﬂ√ ©~~Ú3È/˝∆öoYÆ∑“®„∫F]Dx“Óßá~—öÔﬁh\'á~Ÿû!˚«À√æm<KµÚÔ‹3ƒ:XfÉ˜ÑÒ/ÒÚﬂìMÓü!ŒñbWcWê§¨Óiî≠.«™∫ç—îúÕ?«Ìõ˚1:Ú•wX”Wg©k4Ôëá©ÃÕ\0ÕÀ<T¸£˜Pcôx˜ôoƒœ˝©¨˝ÊÇxwÌôØ˝„Â·ø&û%⁄˘xwÓ‚\'⁄æZnƒø«À√~M5ˇ\0∫b£7@ôH€Rá‚7áÇr¨@OEÏ±Çö+ˇ\0å‘ÍUá¶ùV0±∫2ë4›}≥»ƒÎ ÉçÌ‰gÜåπ◊ˇ\0ôû[7„€‚ø$è‹YYÙ¡c‰ì.¯œ˝ë5º–O“öÔﬁ>^Úi‚=ØññÒCÓ##S©ı»„xzfÈ‚\nXÆ9ã¢µæõfóJh$ììb‘˜€ñ÷‘ùs/÷˙™P‘Xº86;vZ\'È£ıÇ7FU4˝}≥®˘ùyW˚vFÏœ˝”,2øãŸÃ\0Å¿÷Èû˜]ΩS§ØOÜos_fˇ\0˝4ª„4≤&´˜Z	·„˙S]˚ÕÂ·Ω¥Ò◊ÕP∑C2Ω\rèÿ⁄SL∏Ã}eIı…ˇ\0ä«÷Zˇ\0\\OswÃì‹Å‹P!nå¶i˙˚gQÚ1:Ú^*∞∆Ïœ\r;l&oYgâVåF n[órtƒì’⁄£}†É∆ó|fÑEfß˜Z	F∑–BòÃw.≈èsAVƒ.f¢Å©@TÚæa<‡–Vú±›¢öxñxâ?,µÌ9nH®ò)X–∫2ôßÎÌùO» ˙ÑsYs√˛fwÕßÖ±‹√È‚w±)˘¨ZÕçè•£@ñ¸fãˆV_˚ç0xÈ¥D˚¨Î]´\næöwß‘ŸHˆüiÒ–˜Yg»ì∂\"-?Ã\nËè*‘I‚X6Ç¶i˙˚gSÚ1:Ü?ˆœÔëá©wÕßÖ¸⁄xë˛¥ßÊ&ü„.˘wSG˚+-˘¥CZ=D∞Fûû∞\r˛\"œ≈~–™\\ƒ¨(ƒÙó¯Å@Í‘]®•€ê\0…´Ù¬ ¶ü„ˆÕ˝ôX ˘0›ß∞yx»˘_Ûi·_&û#˚∆UÛ^kDioSH?¢≤œôÇxÌoÕ¢—¸ò\0/ò˝0&“†…rO÷—ç∆U4˝}≥©Q¥Öç)πkrØÒ\Zm3ìVñ™…⁄0\\`‚]Ûi·_\'û#˚ÊWÚ‚“÷hã•J∆ÁÊUjYùá\"œëÄfhZπñ¸œö˘”qƒgU¿c∂.O#â®¯ı™i˙˚eŒÚV/Q•…Í\0£ñøO˘[·÷µ∂;7vveø6û>sƒêã≥ÙØ‰%TÁ‹“ÌR◊¬Úu=Ωô·øã•≤Ê$\ntu“77∏ﬂ‚\nÉçƒùÕìÊøê˛ä.„âÍ¯â©´‘±_Â]≈Ö’åï[X§ï)ïœ◊O◊€%∞s¡„£‘[OIªk,k≥ü	8gésì-˘¥–Jñ∞ƒ≤ùjaªM5ù“˝GY≥qÖBÕûØÒØ⁄û‚◊Ω«,g§Xs¿Z’zÔ…Væõ˘< ’ÏÀ.u@pk8î¢i˙˚eæPı;öØÌSÀCÛÚ5õ-(;◊8¢°R≈≠òdJ—ÀÊzÃ#GÖÿeA·i-‹J¬uP˘ØÍ	Y⁄s-´”9´BT÷^∆Àí—$ƒ\0M?GÌó·°õ±5€WÂ£?‘Ú¶Åß\rmùÍ-mEôäª@>B41‡≠Aœ÷záÕ|«Â?êEÉNÔÉÄzãÄ%Avr√(ŸlÕ?GÌõæB”Y≈˘h¡6\0\"®Qì<CT◊6≈·(Øh‹{âÿÜ˛b»æcÙD¨gìÒ∫ÌÁé±ô‘$J?ôGGÌõ˚}3fktıë+≠¨m™2tÙ&ërﬂ7r“íf<ì∏aé&<Ã>cÃ~àçìKc¥nO÷m\"1B=jXJWiƒ”¸~Ÿ∏e3‚¶)j\Z,á—–©?Â]Ô®∏p?›ﬂ#ÊΩ√h|Ã>kÊ?J∑(s-•T˙âÌô«Bdü¨C˝(ñÇ2GøOÒ˚dç DËLMM%ΩÀÿ•ÿÛ4µä»ƒ˙KæG»£òL&1∞ÖÑﬁøÃ.øÃ6/Ú\'®ø»û¢ˇ\0\"-ãéÊÒ¸Õ√˘Äâôü–˘¨ü%‚ô\\”¸~Ÿ\'úGƒ\'òcπeÍßùZó\0ôM^°ëÒàöáv¡Î›é\0ì…ñg8Ãlˇ\01·Üdÿ¸ﬂ˛`3\'˘õ€˘0;}	Ç◊˛gØ`˙¡®y¯¶H5_»ÉT?à5*ôM»‡°8é\n7rÁj˜nvâWSOÒ˚f”Üçaâ©R£;¢⁄®9ç©R∫ñ˛†3v’π{|ΩFÎ&+éaç\Z\Z˙xòÚ‰LÃû¶b)sÖ?É¥Ì0d5[ª •º{O¨ƒ` ¶ü„ˆ»\0∏Ã÷ÿ≈ Áá?Ãnº©˘âÙö±ãOöˆ&yÜ5.FÏ¶4ØIe√(2m8?¶?6êmGqÚ_Á$$ˆIóæô?;k˙àw%SO◊€fOZìó2√Ãnáï!\'àÈ⁄ó‹›y/bîhÁ˛⁄2≠M’Æ‘Èπ9=ÑfË\nˆÄf#±\n0¡ƒ∑G]t›Âè?F±•ı6çÿÛ“^µØ˚búÚÆÖK’O ˙ÆåoNr∂⁄ﬂ¯™Ì;fü„ˆ¡ñw.<«Ó1‡yWÚèjû$æµ«zJ¢¿ÑÌñh¥˙v˛´ù∂x}¢ƒ;VÜ”óÙ’y÷“*`W≠ÍöpXek◊.‡•/àÈ‘/™É√¿Ùsı¢èƒ\\WÈ´‘ù)TÕ-ﬂåB∂ÄNï==V√5öÖ°á¥3Ëıâ ∏∏ç%‰®]wßO©Äcﬁ∂Zó¯˙áUÆ/¢ªiıPm:}9Ω∞#Èt‘Òcù÷Ö\ZRÓJ4Õy¬∆∆ˇ\0Vbåi„K°¡;G‘A+s[^⁄ØPá¨e8,q4ˇ\0∂≤]‹n„í|Ñ⁄EA@ÃÆ¶jﬁª\'ÜÇ∫Ä~$Æ“ÆtSF¨≥ƒ∆\\3•ò…‚kõnüΩÏœ#÷a5∫∑¶Õ°Tè˙ùÉ†ìKa≥R˜‚ü5û˚ÜxóÔM_ˆ”E¶¸C‡¸mæù1ÿà˙û¶ò∂6œ”-ıπã;1ã˝ëöOÈÈãéË∞•ÅÅöÙ‘q5öü@Ç\0f±˜πh âc.Bí%sOÒ˚`À;ó˜∏zT.˚Dæ¬ò4⁄ómCVÁ!jÙı‹u‚ÉôG:9¢l‹≥ƒ`∏1l©©Ã(”QÓ›Ωµöìyˇ\0«E´™™∂π√-∆´7§m^üR∏¥%4iŒÊyß±k∏9·5˜•ÂJOπ)r\\‡k≠[m‹á\"ΩE:äv9ÿh∂Ω%•CoÆ˝-W7®Æ\rãAE`GÜÍ	≠∏ó¯só,ò+m~ñê¨–0∂ìW˘WKzÅ;ºE∆˙◊Î‚ü%>bÂsOÒ˚`À%ˇ\0#≥°Â¶¥S`r7G≥‘˜%ˆ5Wn^µV≥,w=çaÀ«qÎ<i˘hcC’Yånlzˆm€ì∂ªZ£πN“<Nﬂ®\\µ¨ÔΩπ:ΩRÍ\nê\n¡w+Íi˛?l•Ñâ®<∆Ó1ÃJöÃÌä2D≠¿\n35˙g≠∑±\\y™/·Î {ò\n1\0‡)=Àjp7!k•Ì8@Z5.çµÅt÷\0ISÁF\rãô™‘-lÙ—óWB\Z≈’p∫1Ç\\©xAc◊-[/`â∞ûqÂ°©lﬂºfc äÖœ∑!a$@sA*2éæÿ=K{ó˜π·®≠n[ïz¨KmZ¯@»¢∆#tÿÌt∆›F€C*•€hDŒ÷Jı≥™z-´s•≈hãÈSo•ß¨Ä	ºz¬≥ı\"’¥m¿¶≥Èõ∂ıUÕu6;¢TFùB0¨ﬁrµeÉŸ‚W∏∞†8U]ƒ•⁄OIwnFî~‚œ˝„˚9ev†QIUPjs∆ÎçÏ¬´e⁄è√⁄µ(õiÍˇ\0\n5Â’ JÎ™°mãº∂ë\r©è€¸M`©XÓØH¨ªôÖb≠Ÿù•`°˘\0]$á›Ì\"	_èè€©wyóC‹˙ôÎ∑g Â€m∆jÿÊü‚Ü€∏éÙ˜5∫°∏ÊxkY¿˘[~•¡FŒ4çaVÆ}0?ÌÎñ6 Íi®”µ≠æ≤\n–•™O:RvD®¶™ÅQ`Æ⁄A”,≠<AÉ‹Júè*H§ı™”≠ˆoÄjØ]´Mj¸b≠ïëºi,ﬁPæ◊jÈOW˜5:v∫≈±9E±_P “PıµÖÅÒªKY ¡”©ÔM˝ŸîïΩNù¯j®Zˆ%÷5bÊSÇ÷]∏Úƒöè€©orÒÉr≥≥K¡‰Í´5Ú}ˆ‹∑5aa‘z[Ü3ÌEª◊ €¡√[≠∫—µõá’[`⁄ÃH”ªÇ}§òI˛a1œ?£ò	éÀŸ&-Æ£\nHôNA‰Î-=±îÍûû˚˛†¥Ú’jMv˙§d”®©vSÍ&¢ªr≠u»Èn#ye^Hã‹Iß¯˝∞zñKœ0 ¸™˘â®82√ñ¸öoî1°èﬂÎâü.¢Êπq^‚Õ?«ÌÉ‘≥π~Uûaï¸Ñ‘a‰Õßº@	È¥“÷sò’ÍAƒ)=Ê\r∫£Y˝-ß»ø3êã‹Yß¯˝∞zñÀªÚ@I‚*Á˝Jj‹“‰;H1+‹7K´36ÑRG ≥Ω4ÑKvˆ&[¬ ∆1\Z¿\"6.L˝JÙÅL˘Çê√1ÈÎ⁄ A11\nâ∞MÇld€‰\"˜Õ?«ÌÉ‘≥πrsòı«U®‘√ß}Ãñ‘,Lê∞÷ƒYı=≤‘*ƒJé–…Ù”a‚TºCO©ÏÍöÇ‰3db Ò+%π1éﬁDwﬁzÊåÄñfbyè1116¿9ïÕ?«ÌÉ‘≥πo∫ë¥ ògMP;Å€ßl∞[.’œ ◊ıŒ~¥Zj9åKúûˆŸÃL+q-2Ö»è∫†cïµ	Ó2Ï$“∑0»»àπy¥ƒ∞d«Ñè!◊‰úJ¶ü„ˆ¡Í[‹¥‡∆˛~¥\0ÁûÀ5g%ªäµ÷ó^fOUp—»Ä}e}∆‚+‡BÁfs=ÅáÌÍS,q—LúM§EœQ∆€›ì.≥I3à0yÁ»y˘\0ïÒ4ˇ\0∂RﬁÂ—[<M-jrL±N÷§Xˇ\0ì6F 8Öîƒrx1+fÄ;kX‹ç»1_^„ g™Ã£ KF∆8àπ=0f£∞bŸ»Ã|g¶y0¡1ñ|±˘Ñ≈öoè€©j˝e–p`®™näMú~üu[G»÷`Byõ¶ñEdaÀ÷”<|»,6H(yàyàÿpH‡`≥	Y bjTéed„Cgó6`3$D≥åGRN`»˝¸áêÇ öoè€®…ïƒ’.”4îá;õ≠Mû‹@p%/øèÚ‘—±≤>!g¶\'iÎM®vBYÇë∑›]¥≠£kpî%[Ω∏ÅÁê¸™UŸs∆§c®âcaxáòØNXo<Aıñ\'2 véyòò¸¢<á~BìOÒ˚`ı\Z¿’ç√\"i_¸‡°ˇ\0Q;ÃæÌ û°å8äJùÀ› ÁÈªhZµTñ˜}I‡YAÅæL‘g¯ÄqÜïÈkaŒcÈk Káˇ\0‘^1»ÇÒŸÓk8-Z;,˙m\Z™Áœ>CÃyé‚M?_l£òÏâB‰¨~BX≠û$∞Äq˛ˆÓÖ?òÎ∑©Y+◊Jp∑*wWÏ=ZõeVÏ<Ù0€H‰j\n…ãaJÏ\0˚ß≠Ì¿È¨Ç1	9ƒ”Ë∆[⁄¥È+´°ì<KÊ?(Ç<ÑXíèè€©gq\r/v®ÓQ7m€•`écâúq+!	cÓ\"Ã˚•§7#àÜmb8Ã,ˇ\0Âò[◊RqÔnõﬁπ¯äıaˆµ⁄\'_p‰-e∫õXı∏˝bıò9î~ÿÉÀƒ~b<á3qòÉ∏ù >?l•ëé“sû~ñ˚£é%\'=LÇeïVﬂ…ÂΩæÈM{ae:*ÎÔ‹ÿ©rÇß S9ÉÉû¡»ÃÃ”Í\n§ñGe≠˜Å√0~∏ãXcÉ-R™qKU+àN·ë‘Ò‹˘è!Aq&ü„ˆ¡Í[‹∑®È∑ÿeV`MÒå.ßoΩbÓµÇâß†RªGëóçπoÛÙFœ∆%?)kJÚ@?]õÃ‘üiQÿÄí9î¸Àƒ~cœ®AC∏ìOÒ˚`ı-Ó\\€V7wÀê0Œ ‡Ò3û‚0a¥ıpjîÊx]9&√Â~°i=øàŸû\0ÒÎel≠Ì`qÚ8ç¡»éŸ2Æ…Ñd‰Õ6°Uƒ±’î2Ê¿\0b2\nÇ¯˙YåÒ)¯/óà˛Á‰A‰ É»wi˛?l•ùÕW«KëÃ6ï¿K¥^DLÉ˛µ6¬Õ~ùJ!8Ê[iæ‹√B¡±\n6!~1 Ò”è$;fËüÑ∑nÌßúˇ\0Lú\ròlò„ôO¡|º@ˇ\0SÃL„ÃAôÇ$”¸~ÿnå≥πy»ÑÄgr√ƒŒ%6g∏,Ÿü‡R¿X˚*b%U3ú(Ã:qúK!⁄xé1⁄`å£H◊û8·x\\©‹t’Ü¥+u®Ù®√ëŒõR5\0ÒÉzÏµÄÑ<Æÿ„›)¯/óà~‰Zå∆ØlAyØq&ü„ˆ√teùÀOê`‡Lg∏j˙ŒVVﬁØ∑Hü˜\n<µUì`ïTµ\r™<µzqzˇ\0Ê„±ÙPﬂÖ†*ﬁs1(« ÆÕdÒOíœ<∞öæ.h∏‡K ó ıO¡|ºC˜DT 	zc»~AÚ^‚M?«ÌÜËÀ{óı=@s:åÓWä€\"xpÕ„Úô≠Mñ,¨Ø?M(À®ö°O¨¸nûØ€•ﬁæ•_û+⁄œ\n˘4÷~ÛM;‡Ûm$J~Â‚?∏%<†öƒ¿œêÛC…bM?«ÌÉ‘∂j:ã‹˙AÊD±˝c‰N9ñxí´aFÂG°áFxö˚î≈ &;ZH[x•eê0ä•ézd+z©Ô≈{Y·å±\'V¡≠b9∂”˛õπW¿yxóÓâCú-®ÿ%îî<¡Ê ÛY\\£„ˆ¡Í[5E83Nºåi·∫|ºF¬ï{`lObj¡Üxß¯Ã2¶ÂÊ82¥k´u€a√6ßMO(cyı=Q›◊ΩÁ/3;ä3˚•_ÚÒ/‹ÖπEÇ2êqÊ<Ûπ\\”¸~ÿ=K{öÉƒò:ùŒºè3√8ªÀƒ«ÙÑ«9û˚f‚gïm5∂~òSúk°\ràx82≠Ñê“§®Ï¶è%ÃsÓï¸Góâ|ƒÆÌ´=CÑCX∞gÍËP‡˘<ƒïÕ?«ÌÉ—ñ˜5?¶ø.ÄÌΩ|µÈ∫ì14	≤°òfΩ˜Xek∏r 2‹0Á≤IÓ¯ãœ&j0T‹@r1,Â•	π‚6+0¡ÃAë ¶öÄ•sÊ<ÎïÕ?«ÌÜËÀ&´„àN`o:_eäﬁLK·ÿnO±Fµ≈jXÕ€€qõ!m””\rëˇ\0‰%hHÃπr¶\nõÃ®r%É‹L>!aQΩÌ8…bîÚ‡m¡ƒ	õ∂À,-ﬂ‰%lˇ\0òkê3ì\\”¸~ÿnå≥π™¯¡Ø!åEÚléfé·u@˝|¸GR˙k–~bÛÃ Éë§B¸Jœ1gÍ…R«âªjm3p!C+9|b*m∞Åﬂ·;‚ ‡ˆzÜº.a„∏OùZw∞‡\r±4jñ>ˇ\0T!rx≈[jÂ∂£,Ójæ>K‘ÃgÕ”9ö=Y”∑ÚïÍ+¥eXGΩeòMGànˆ◊-*\\ınÅyÊX08â‹S¸ÀmﬁÑŸãw\0-&Tƒ>ÈKä~csj5$ uÈl∑úé·%◊#ßX˙È EÀ’£‹€lm≠]K]dëñu«?p†íeöµ∆±êπÀöÊü„ˆ√teìUÒÚCÌÚ˘)¡å0sÙ<El¡˛„W¸L}>µ©\nL®s.PÄÔ∆\"81≤zãFyÉH£íLru®|ú\"9\'ìòmÕe~à”ŒIµMå	€ô∞wæ—´©k#g≈ó™h‘∑ı~M∞ŸF7r˙∂3◊Ìå≈é[ü*∆x◊‹”¸~ÿ=d’Øíu˘ëøòË#ïqïÏ6{‡ÚD.ÿ‰nÉ>òœkêb≤û,<jiÙŒA‹≤ó\'∏,ƒg›«“Ω;ﬁIAÌ‘Pı0WÓΩ;ÿ¡@Ê≠o(ÁlØIBŒ^**V@ŒÔçÛi´!Ö`sˆ%6/∏i\n¶“‰)g€≥n“Tª`e©ÂT•\'ÃLÉœzè€£,öØâòÃO!Ê8Ä¿gpÄ{å•?⁄°ˇ\0âåÁÎÑ§”±⁄Œ_Mq€Ä¶√eEÏ⁄äQÆ”˙ê·ò\\zÕ„Ç£J≠fôï~J¡Æ}∆ã¢∆n%7ãúÌ`©I<u(î≥jPE\n¶ócóc\ZµS¿ƒ†åÄeÏŸ	^7Ap\0mllﬂ––™Âúç—g∞|^≈L+rP‰Êi˛?l•ùÕ@ ôè§E«ê¸É˝ƒ0û!0Œ\0‹mcm®ﬂÄ∑av\"i¥»…Î]”USãFFÖÌ*\0T∫≈ØP•∏öÌ2Øıóë]æÖõÄ›5\Z¶‘cv\0°ˆi\\ÉÜ“⁄(∞µôî^‘b˚ïµVZƒÆR}≠Ó\\\0∏å±‹ÿ.e\"∆8A¥”a≤¿[∞Å]^¨\"ÅÔM-©^‡ÁÕc:l∆\"‹ô\\”¸~ÿ=orÓ°QûbàG‰—†≤ÂS÷º5∂ÏE‚Ω\r¨€N[¢j ®;•Zz≤ÅΩÙvπ;kA¥jÃ™∆qnNe ∏û?§Òi/B Mb%ñ™ªm\Z´–V(¨Ô±ï:h®	?_cErÑô~ê¢´nÃæÖ§ß§ü√32Ç˚”N™ÕbÙ¬2Ω∂QgJÿa‘\"{0]Mˆ9läTm&\\™i˛?lå≤]‘$4öc®$gh‘%4£Tæ˚Nö¿• ùøÙ«	}=4R\rôı|1Äº3*¥Ω∂:∂k,;j‘Zju¯Í≠Z7\rΩjoJ±_EÇÍâ\'≠Eu˙°è:}¢ûõ.ËuŒ7m¬ÅsÌŸì¥RÓ¶¿=∞ÃD“ZÎ∏/\Zm.ls±’bµ∂Â]=öÉΩÜÅÃ ?¥∆A®Á´7ï¨†÷ÍQY˘˜>®≥D¡™∞«›t¨@Ãs∆–2H«rπ\\”¸~ÿ=dª£.™µ¢∑AÓÂ/Í(Óö}\nô[ı6KíQX©I-j≤kt¯??˛·e]vfÜÍñ∑Æ”ÄnMAÆ∫¢‹-.å8mMÅJ+ä˚é_,\\Ï\0¨{I¡Èß¶¿n¡≈?Ÿ¥”Èê=ßjç◊z©˜&£”›Ë(˜…fIU’fÍL‘P(¥Ö<#]Zä√PÿÏ∆’Åc≤ÇÎ¯õXñz†õ1	∆1∞S∞‰¬}OjÇcÈXäqZ\"WÔ¨MH≈Ø+ÍW(¯˝∞›`óteºij3√õ˜ÔL≈ËbN„k™Û-÷i◊só}r\nçu&∆K\Z∂ß÷3I9ïX’·óÂv∫ÀF”Ö(:7l\r⁄}5ó)ÿ8\Zk,∞Rﬁ”™™ö∆+bœ°§]h™Æı]Í m¨m“∏ö¡ä´\\≠Pö¶Ÿ™‹z‘ÈíÚ,/µhm=~ˆ\'{_ÎZX˛ûe™	%zK∆¬çﬁ	!Iï\nÎ˘Kü‘ ®˜-©waµ®€uòq∫>tË°8ÄÏw\'´/ZáßÚ6ø®≈•rπß¯˝∞zñKáU®™∫ÎW˜5∆ù¡@0⁄Ë\nÌEkú(˜5µöò£w1+≠¨`™2W¬Ì Á\nu\ZEA¡Ã”&û–QW2°ç-ã.&äÍT‚j.Z/VnºCNÅ}dû¿[É≥CŸk©r˛Å#uzÍÕamó÷3[Íà⁄≈û-J;n§‘qÙØ»ƒzlJ√üé÷Ô\Zm≠ä÷c∫öˆƒÄ€@öúÏ∏M]Öâl∏2î€∏∂˚≤\\ Mß«\Zzô∆G≈‘(]≥OÒ˚`ı]—Úe˙Æ®&≤ä@–7[¢”∫Y]§{u∫w]ônÜöóh˘ΩJQÈ€ÖÛã÷%Ö¨πIˆ™˙öDS+%-ÙÄ≈i˝µ≥	©Æ∂‹øQM◊S>ûØT∂(Ææ+V*r\röã-v,ñd6èïeá@ëJŸy!>7“ı·,!á¶€∂„%Îj˛ClUî»∂¡È±¿\0™=µﬁÜ%{úÑkuÔÓ&€òèböTÚD;¨\n@äÃH,6£`>‹\r.sé:èåÅ˛Zè€©d∏eÔ]∫\\†ƒ±˝q4ùY&U˚uB}∫åı≠m∫ä≥÷ªÒ$∂œ⁄–ù∑°<©Æªm$5Äi÷µuû)i¯Ä∞›f\nÁ⁄†ûjŸGïiΩÇÕfîR ©ìñÔCf\0\Z}Ÿ_®Ì¥j¥àÅ=8Ä÷¬•_È≠\'{ÛÈ”Ø %g±N†È›ò\r“˝CjsAj™RIñkP7Kuå¯ÿ=1VÎâw9Åv√f∆p[˚_R@ Ç—VTﬁe\'˙`êµÉ≥Ò6Ôˆß«3OÒ˚`ı,2”ƒ ÆïTw·≠≤ı›ƒØJt⁄Åa#mØU03Y≠≠î•SY´¸Klm]÷Æ∆cµq—È4∆“ﬁû0Wzı&UK;® „Wß5Xæê¿:ñ‹7Q•®’Íÿe…]VË£!c˙ãZwßR°ï€{◊˝õK\n™c÷™ª¨#“8J\rf¶Æ∆öÌEv\"¢¿qò%z]Àñ;c°CÉ+©¨8QôQ¬àXÿBåëfù´ﬁ©Ö¨È*U#í⁄øàSÌ+˚bWzæƒPCmπvû’G ∑O˚`ı,ñta◊’]hà∂ÚÏ_‚lπÌ>ˆ-`Õ.ò_∏±⁄4‘¢í÷‡Ä§pËı∫`X6Õ%/`}≠±h“WÈ-éci+\ZÖ¿ˆ€®µoT*u€ÏπkS(D¨:),«˚)´ÍôrmΩ,lm›UÏXeuJ¥\Zπ‹˙ñ∫±^èƒ›∑éﬁc(∆AÚ”W¥naŒxÃ±M´ÌRgÜpÕ4‘’bÇÃ ¬∫ÕGÿ˘Õ“‚	±3Ó÷`,_í°|9õW∏^ñ¸˜‰Õ?«ÌÜËÀ%ú√KÅºÉ∂±∏Öû%BV…ÈåÎ $D–Vî1a•Æ∫“≥`ﬁı(”∂â‚-æ∫õÎ·ß\"»ﬂŸ◊5Ê≈µ\Z°ñ’X\n÷_⁄˜™ÂµåmVû¢€I$Î?°ËÅ.’Ω¿)‡=œg»ñÛ<cõ9l∆?ù5	uÖ[™È/f‘Ì¥Ã\nÂ∑•î“+p£õ€“F≈zÿÏ\"m©»VøN¨±∞€h,ƒ\"™`˙çcﬁŸxä\0ïûNc{x˙,Æi˛l7FYjÆk4…ë∂h∆ÎPKPø§\\`“≈µèì<4ímœ{ç;/L€◊Qâ´ —N—ÍRÄ·Ûüƒ°j7›iÇµó¨π›aﬁNùqê3.@gàPï*lûÖõwm;i–Ω´º|j–Ø®¡è≥Qß©©ıjÅKïDÔQ•4(,Ÿ:.3@?¨“ØÈ÷ä‹5∂(ıó#u©[°FÂﬂç vö…ä3ƒ~±Öî‘H‚\n;üÖ«ƒ«ÃÆ/sOÒ˚`ÙeΩ«âæ›+WŸ–)[›’¨6Rlr7]©¢õÖ’ùÂºB∫›ö§‚Ø∂§Ù‘åUbõ:∆4Á⁄LM8±K©”R-≠Ÿå.Å\rÓÆÊ\'hRÕ∂ˆ¿¿YoáêÖ˜nm6û¥Ø÷ª≠UbÀ+S–ﬂπÉ`U[“íΩËÚ‘9ÌêÌ—¿ßÇ”≥\'$íiª–≥y£j,µÅ≠Eq˜XŸ∞Ó&ï#é\rçeúX}∏¡„§}åG—H«0a∏0´`ê8¨m@  ı75)ï.Li˛?l•Ω«Ê]Æf\n®6Cc‰æp¿∆Úƒ9`∏;Æ—[BÔqÌ°»≠bTî“Íá&Í—j•Ä\0üÓ¿ó;ÍoÙW⁄\"Ub◊ôzì•@¢^·-®ûµZW±ão⁄ãr\r)B}⁄K⁄êvçËˆX ‚§G sòØàFL*Wë+lØ0Ö˙ÕÅÜÖ$˝Us\rDsç≥R«g\\ıÚ¶iÏ-ñ~ıo»ÉÉò>SMÒ˚`ı-Ó4≤áÍˇ\0Ç\rÃ´<FùÌXL,>C™ìCPzŸ=’ëMif’YΩû¶´á‘Ç4ÑıáÄoîd%˘çK[M[cj◊2´ñ≠S3p≠™•≠yc^™ÍkÌóﬁ˜ÍtÃ\\∏Ì\nOQ5%F:√9^#YÍc#›ufñ⁄NÈ¶”z˚≥ôH$cÍS<JŒ”É3ëèQWà˜—ÙäÚ€26∆ÓW»ór™e¿ßñ˙iæ?l•Ω∆öë∑J—ÆÎêK´`+-›n[Ubì∆ò‚öAèÒ‘¿ ØVÈ®5’CT¨´∑ˆ;ÆkÑL*µ€E[∞ñRIÀ3Z∂å	ÍazÂÓf<úOQúnQÄ˙tH=q~≤ΩØÇp¢›ymÃödKàö^¿lp⁄së1∫XøX≠â@,c\\kIá&D\"8 ëÖÃr\n)rbú÷fõ·ˆ¡Í[‹~åºWm;T‰Ëì“‘c4˙µ5k{õZRnOr_‚›Mcb∂≤÷›Œ!v~…1Neø -⁄FÔè´X=∆gu,®ƒ#úgÈe∏J».±ØÙÔ‡m¸%[¨gËW]ıZåÎõuÕéÅ;Èáˆ¨j\n5¡∑Ïá[ãY¬ÔZ≥…ÍT¬XøY]lÌÅ“–mÓ=Í ‡√ƒW‹JÎç_øû´Ÿi*8é~ê“]Pé≠∆‹é&õ·ˆ¡Í[‹hˆ:˚TÌVÀú≥22cp\"ƒ©C:É÷°EñëPˆ≤8aÉ•—¡v!ù*±oQø§˙ıP\'Ìﬂb[h”*Ä´q¸A®|5k±–uøHïıπÍ˘¨zI‘ã√’Usfxeõwè£∂‚Lmcù§{I±õ9\'…[Ë%562Ò*^Ê’∆1Ö‡F|BI<M`∆\ZYyËM9√OƒmK}AÜa¥\\õmT¨sFòﬁØ-Y¿U˙[iæl•ù∆óÈJ÷.-<?˚Öö¢uu\'mGá™(5í””°.J}√˙Îî\rﬁ,(ˇ\0]ß®”ö·®AE¨7Õ>Ø◊µF›ÅÍj5\"÷”d⁄o$mπ˝G-‰≠¥Ç%∫Àmc¡\\é%W\ZÉ‰<ÃÌ<LÕ5A€9„x◊‹LHÃkIâ~{öãœne\Zv‘1±àãÓdQ<G›X\"Zv;Ÿı”ì∂¢y-f≈»Ï7™Âå†aqˆ¡Í[\Zk)JZ>˝¬À1ÎRˆÍ8F›\rl∫Ìƒ{JõíÍóÂ‚é-cô¢j*÷lYWâzn‰çÀ®÷õ]Yß/’Ÿx√û\råF	8¸ÄëÁÀØ:&í`9õÄ2´¿„1≠ï≈≠ÓSg\nèE-jVùiÍÙØpS°‘l?=ﬂrKÎaCÓéæ©z˛¢ıÆøOˇ\0‰L∑-ÃCÃØëü∂Rﬁ„AIJH~òÆüUÜ>√≠AZ„õ5Z·xX(-Òü)7XXæ„πâÔœ?úf31Â¶®]`C¿÷È“ùÅñ@Ê=õøınëN,\\ñ¢±¯`1Õ~›!ã]z{QTJ‹∂•‘ÙÃ[H‰œ‘,e:∞ıŸÍòÔeÔÍ/Ù∆¿88ã(¯˝∞zñ˜πôÄíÉ…åÃœê˛w–-tócñ¥ûfáã÷xØ\"ÿ√MƒúàF\"˙#*lÆ^=:%ﬂøL≠\nÍ]èMr\r;VOæ¶≤Æ\n‘)8Â@¡\"¿o†ä>≤èè€©oq£ı\ZLc3˘¡ÓUYµ¬ıö!¶U9‹ﬁBzó†ÅŸ¬v}˙-7ÆŸoçVV\\‘¢5\"≠ZÌ‡x∑¯≈#=o”i«¯ÊÁÏ√Ø\r;ÈdÅøÔ1<I¿dQ÷´X—™Ó€¨π≤ÁlaÇD®∂?ƒôZñÉYÈôG«ÌÉ‘ª∏cı»ò.ï=KUH·ËBÖT	§ˆﬁ≥≈˛+4ænòÌ[ÙA-Z–ìi“ÌBÔ”™ÅbåK,5”ºwß¥›PsﬂÜ®ì4g˛È¶£˚öÁä∆ û:ûìm›ènìW¯lÒ∫Y®gsg≈∑íyÊPx(D8=w®ÓSÄÀıó îpsë«J3\0	G√ÌÉ‘ª∏“√ÅÃŒD#<M?áUZh⁄Í’.eAÖ*GrΩ5ñ √ÌÆøP„¬”uŸîYæÀŸ≥Wâ‚ã∏\"Õk˛å\'√I{≤«3ƒı“xèÏ®˛ÿÕÏ	·Æ\n≤˝j”\ZÔk≈ı\n˙•l˚<GPñÖrb.„â≥“ˇ\0Ke#‰º§w‰¨ä¿Û˛:Ñˆ¥c[9ó8l` ÿÓ¡‡Z@\n≤æcå%∂ª∏”Fµ÷ÜÎz∏Ü± ¸tâæÙY‚˜‚±◊Ü—Îπ±˝¡≈z [höGŸ•\r\rûæòπÚÑ·ûQ¶ÙYõ9ö§€´FöÛÜ™xö´â·πKpxö≠3[j0Î≈.EcΩM®(+ëù6∫∫jrZªö¶ﬁá›u∂ÅÊ ∏\\õOA#òSûC“G+“„=‘˘Mü]A8A«∆Á2ªU∞OmÀgËçàNL£·ˆ¡ów\ZW¶\Zç:°8Y©ôÔÓVxØÔô·C1û¢”O˝ôöoÏ¸¥ü—“Óö=]ñ\\°€#Vø‘©ßä∏⁄∏<’‚U2˚˝≠´’l\r_∂ª„.ÏÁsò!ï‘÷p±Ít˘»≠ƒ0(Ë¸µ4zg#™H‹1NFxXrbÙè–˛k¡1Ü”éÂ∂ª∏—-d™ù≥^¨/rFë˝=B◊àh^ˆù¯z˙[Ë\'‹â¯*wzvGÇD£SZivñ˜F◊ß“Ä°º5ó[gÃì\0%Üa®Üg·ÿv6«§/f0\\qŸà˚sÂJ1˜#;gía ÛıÚ= ¯œÚ¨ârÜ\\o8å›˘\'+ƒ$¿ñ«æíüè€©wf4—25A\\«’£WvO∏èˇ\0i‚Ï´Ü\\≥jﬂ’7µÆ’ŸÃÊn=y9Çyá\0Áu#oﬂŸ\'tŒÓOf∆^Aöìå∆m«#àN-WânˆˆU∫œw^BTy¿Äees<J~ÌÉ.Ï∆Ñfòaêy%aÙÑdNÅ¨√Ãv$‰¡ÃÎÚÅ9^£XXcÕWt~ØÇ1+ô_båß‡>Ÿø∏–√‰√»è \'pyé`rbüÊıÚˇ\0ﬂí‘Œ§àF%T+Æ‚a8ÑcÚ^9å√bü©È—Hˆˆ®Y∂À<=ÇÓSæWıã^ÚO–Èào`˚0;≠r”J>Ìõª1°Ú1Ñ\"mƒòÚÃ&≈9çÁß %…ºˇ\0ÂΩÄ€û?(>‹}A«p∏›¿¬Ó„™kÌÃ[p8öä’HeîÒ∆N6WøÏg2§ñqâO¿}≥wq·Ú0¬&&<æ≥ÈüØùlzçÜÎ∂+=Ãês=P›˜rêÚ0Ò«ôR9Ägâ»‡ƒ·xî!±∂â©UqΩx4Y¥éå\ZΩ√$r@·G°ıñú∞èÄ˚fÓ„√˘òÚ0ÒP√ÁG÷à™X‚5ƒe«˛Ò+cå}p–å31ïÃƒ:Vˇ\0t$ë¥Ã¬Iä?¶ß8à˛ò@Ωj)‹>Tú0ÅQärT¥SÂ≥)¯∂nÓ<?êàaÜòΩFáÕT*dv∏<¿yÃkH<B‰úÃ _c2‘VÎ¶°eLd#∏F“i˜ù«„nt∂^V‰Ke%àP‡¿q+|ü@≈™äw\0L)Tn6Ê¬àß&SÒl›‹x!Ü|Åü#‰ß*\"ég ¬¡∞16ˇ\0Ωò1Sƒqú¨aaÁ‡\\Åﬁa`‹J]´L˝˙§åÓúw,Û«∂  ∏à∏%L¨[g≥√Jé;Ö∑s>õ¢e?ˆÕ›ò–ò|Ã0√‰9ùAí7Ú≥˝º0›=t˛M™G∞\'\r¿$ß\n}°É[‰§∆BY∑ -mˇ\0!`=√ßˆÚ>6`>#⁄`·ïñ3¥UÀdƒP{ä6ˇ\0ÈpSß‡>Ÿª≥|Ã0∆„»èÊb%m¶3º~e`F\Z÷ôÈ´.A˜S±;àºdvÑg‡ÑÁ‚‡ÉÅÒµ6û\"ú®hG∫+8Fq+9¸•?ˆÕ›òÒf”yôèŒ9ùEˇ\0pê9R\\üó0.zÄï‰@ }ÿ„<m˙3‹qÙ1Xß≠ yÖ8ÃC*n1qs)¯∂oÏ∆Ü»aÜb«ñ!˛> áë17}Y∞¸éI[)ˆ∑”\\v#`ÃcôJL\0\"˜*\\¿qòyÊSÒlﬂŸç>C»√Ñb11òœë¸Çd£&mƒ‡v&–g\"8¡3\0¬1Ãˆƒ‹«√É\0!Í/bS»9õπ2æLß‚>Ÿø≥\ZÃD3DÎÀÃyu?‘ŸDeõa\\ı6Ãô∏ıs‹T¿Ã€ÒsƒØÅâûeÃ´‚>Ÿø≥\Z)Ñ~Sñ!∏D^òƒw\0á˘Ú¿0†1!Ô ˜s\"7pg0g1≈¡ÓØà˚gQÚ1„L˘è3Âââè,LLOıÊFb∂ 9ÚÃB&‹LyıÄâı¯¡6O1îdb\'Pëêcû´‚>Ÿø≥7ëÚgÚ2<ÒÁâÇ)ÃÓ;Ösƒaè yƒNeá\"+b)Éë$‡¬€àî¸G€:èëçÚ3Ê!ÛÍc3>uÃqäwqı\0¬#.9Ê¶7Òä\"?Û‰≈< æ?lÍ;1„~@!˝~UÔ,DØò«Êë‡JÏ˙†FŸ—öu¿\rÙ≥\n«;ï|G€:èëèÚè˛\n¸†É˘å”8Ü£ Be*Hç[ô]FŒª ‘6òNb§ØπWƒ}≥®˘˛Q˙òò¸ï‘O&-\0Ú›`˛ôxâC<\ZU#æ_M¥daƒIf‹âºªT	ÓYg\'òßπ\\ÆUlÍxc4?î~C˙BV3Ã‹vÔ%õ∂6%éOGé[?Õ’27˙pT‰uß|f%∏Å…üòâ_R±âWƒ}≥™˘Ò°¸£Ú”≠±ò[˘à¯õ≤3É˘å‡\0«£ﬂXƒ†Û[Ä∏naoß`{9ÜŒxÎ~yÖÅÍŒeq;ï¸G€:±Óè\Z `Ü»O80œ˜ÚÚ[ˇ\0“êcˇ\0)ıúü\"Lü©îƒ æ#ÌùX ˇ\0ßç˘0y#«‰L è,y„@„Ã∂ﬁ¶„ú˝K\rŸ«øÙF<áQ9Äq)^DAÉ*¯è∂uÉÎ\Z4>`√f5éÖ=ÌÜ∏ÙÒë1è–#3©Ì8äµú&3,†°„òF%|Ò+˙	éL£\0Û æ#Ìù_Q„CÊ!>B#ò89Å¡µ\r\nÊ0\"2É‹d«˛ø.Ò7¬s+˘ ›Ó∆#˚∫eL^ ‰ì‚!ÊUÒlÍè&<hbçÃö ûÕã»¡êÚ>g±7c®∑c±Âò-ÒÃ\n\Z˝>ü¯å•xÛ<è…úM«“ œ#ß´+ªÍ\"qU‹´‚>Ÿ’|£Û\Zü%û\'˚“™^“B\r∆Í,´Êª|≥ôÜ¯w)Í„ÿ∆a9ÚŒ:âk©„òóÉﬂYºïEﬁT~!ä(˜Xç[î=˘2ˇ\0GJ›hFÍ˙J⁄QA«‡Ì\nŒ}¢äQPYq⁄≠W¶Ê¨ÂYvπEïJæ#Ìù_q„√‰\'ä~Ù°mcä≥ìUüÜuªì®›\Zÿ∫öÕk˜MT«!µ\Z_EEäw◊^öÀkı:Ä›è![?ƒ1Ñ—`ˆø¿Êaÿ\"f€tU\0.˛ ÷!WQ){´‚ºœ\rœ¨s›ï=óæ—ò„±—∑LÙÖfã•UPma\\‘Èç$/…lZtxV_QÙ7+\\B.’ı⁄ÕR°Î_k5åÄ˚uIH-$KuB◊£ÇrI0wU‹´‡>Ÿ’˜0Ã1N3U¶¸[˙ï2ôßVÆõT~Óõ\'OnfÑ˙∫{*ö£ÈikØÍö:™Ae‰ân√£>ûviÿ¶åë¡€ú€µé‡‘˙ö£_”Y´:sÈUÌñXm—ñnÙ⁄áß!\0\'Km÷í._n°v≤éè=JØØY_ßg\r~î–2}…·üÁ4‹4™Õö∆_¶¶¨j6âqjë?«WMvYó∞$’Í+ÿäás)◊`?i©Ù5[\"y5c7>%µÆ±≈`¶–µæ‘;ÑX≤ÆÂ_ˆŒØ∏Úö≈Ø∞√QÙÖøF”X\0%LRW¢D´Rı6‡yob¨¨£\Z\rBÈÏÀ¸|Bı∫¿S„mc]R\Z»›eF≠Brt„˛…ßÜ˛àBÎégâ!z˛∆iPSß7csËu6]v‰jˇ\0}Êa«Ea∂í,û˛sC˝ÀM[‘3»,tªËó‚ˇ\0Tı´“C+Ê[•ÙäÜ ¢∫XXŒ¶~,˙˛æ2-÷+:ŸZ·çåÏ]ª#¯Äb1ÆSlÍ˚è4Á!éüˆ· Îó\'˙zj+®Ø‘¥÷Ωÿ•©Ôæ‡èâƒÒ¥1⁄∂X´±[ŸSµ>OcΩÜ√√‘∑.,@Êœı*5ïöMw¢æõç»öÍjl¢`]h∂÷q¿3ÒZ{1Ω9∑\\=:WjÈu\'Këç“´⁄õ\rÄK,79r\"ÍÌTÙ«ƒ1∫å+-…9õ _§Còhpû°’“Æ0N_PU`6A+î¸€:æ„≈mÆ¶c7µrñ‹ \\PıP†M7˜\"jyπƒ≥BËªÅ∂≠∂∞√`˝`Ú\'3SO¢Wú√:ôòTëê\'∏É1ÊO~zZ≈∂™7V\0Æ :ÓSä©7ã6™¡ê™Nì=¡íöS}°πãUÆ¿{k∫‹π‹˚’.∆s-nÕôÇW)¯Àüµ5}«ÜW™j¨ıΩ¥∫îUTc¥‘ÜÎ)π~4q©˙ÕöÜA)JÍ•dµéÇ›E6}2À_´Z˙å4’˙§ëÌŸM’3V\n≤È–V,π∂\rmfÀ*Dè§%;&Ö›U≤\0e⁄≈|¥<Ql_†üÙ˜#ÇªΩÆ∞Á„ËP˘\0~2íéìJæö⁄Ìµo“Ñ(k;ñÑ™õñ±ñµ+⁄,∑nˆ÷†⁄ñcciu\"†k∞nÆÕÈ÷P•[8T˝D±«·÷√-5Âˆ∂Ê‘8±#k≥≥ÚÁqπWƒyÁÛÁÏ˝XÊ<haäÏüVWaG€6∂≤€ b’øOõXÜ”‹øÜ‹OΩÌ”/§N˝ZŒﬁÆs¢˝ªÑÒVº|W˜´˛SSE,HV\r©c¯ZÒ)T-ã	U‘%IèIãÕÌ[+Ca\n;”W]7…kr´k˙ŸQ≥“†M)¨3•b\\3§ÆUç∫| îçf`.iqQ˜‹-‡€ôNò‹π‹¢]h˚5æ•*T≥[eô¿9∆“N–0r;}C€ÚƒA*æ‘Ãø)ˇ\0_cÍà\'o’„y3˙¬\"Xıú°⁄F¶–≈ÛÓ™Á§0\\JıÖPVÍ,kô›F”e⁄{2≈X=⁄ÖzR±Úo-ı÷Æ∂≥vûí∂,¬Ì8∑÷ÀfçRWs1˝ø∆‘z†eWEEä+G‘o•iƒmSDºB”»\n\n[b±pvµåˆπ-6ÃA˘DU«&ƒÃœÈÅˆgàÓı˘À∏v–˘à|å«®<Ã0©Úƒ8úN?&`‚gÈ3˘ÄÇOZv7>G	_ƒ}≥xà=]ßm9ﬁüp~è»aÜt`>Bg»√bu‰f&?H∏A˛—Rÿˇ\0\Z—jVWÒlÍú¡¸E˛›Wl∂Rp¿âÍÉ‹ü#1Âò?)çÂ‘uÁ‹>YùL˘ÂúB‡u}á\n%Z}÷0É\n0rbå<˝≠bné•ÌqÜ•û[Úáa∑√ÆØ°∏»yõ·qÙÖ¶|≥ôÚ˙˛L˝&|èü,ÃÕ”tõÆez+_úm¯z/.wX¬åM∆g2ö±…Ç,}Æıá‡«”≤ı»\ré›òéå;\\a‘4mt\nGü¯6c¯uÎÙ›Obˆ≠#πôò‘õƒ‹&Ô…∫fôôì‰ûÑ]=ç“òûsv6ƒø˘4]\r)ÿ‹@T¯Ä!xZäçg]U@O˝Å€çRøq¥ƒr∞ñOêã`04\r=LAn{ÑV›™ò⁄Zµº;Nzç·u}	¯b˝\Z\rÛá√Ü˛úﬂÚ˛ûﬂ»üÙˆˇ\0êüÙÊˇ\0êÉ√O¸Ñˇ\0îøV1|:Ø©0hhL≈¢•ÈD@OT}!∂IÖågÃ∑\n3NÌﬂ∂&ôW˝ê1Ê?.~Ÿ¿=«”£v#i¯±Ü´W¯hYó‰¶óÎƒÊnXé&ÛıÖâ‚\0f–f1;áÀ?Í)?X˘#àπú¬√˘õƒı\0û™é†voäìV∑”l\Z6?&â•E˙fØ—ƒƒƒƒƒƒƒƒƒƒ«⁄∏Üµ=Åñ≥ÙáFüM¬˙1üÖ∞t¬zè™√Mﬂ¿Üªø„6]ˇ\0ﬂ¯ô∂ﬂ¯Õó∆zw∆zW~„¸	¯;l –´A°O©cé±ÙÇ§^Äò	âè,}ÕâââââèÀè,y‚cÙzÇ∂q1ˇ\0Õƒ«Â«ñ ˇ\0Ëˇ\0’ˇ\0ˇƒ\0U\0		\0\0\0\0\"2 BR`b#3SrÇí¢≤!0@Ccs¬√”pqÉì£≥„aÄ“‚PÅêë°±ƒÛ$1AQTt¡Dd—·Úˇ⁄\0\0\r?\0˛£ﬂß3È∑Ë˝ı¸zK{ﬁØÊ	ÆƒÁ~gÃ	µ=0‚æ`Eÿ˙â˛`CÉË˘èπÒmºµO‚Ì´-Î‚∑>\Zﬁªù™9ûl˝÷›jÁÕis∂—æ`üı—˝a˚V?ıtÀÊüò~øÚÕüÍ/÷≠g–æçΩÍÊÔZﬁW÷Ÿ∆„	kf>Ÿyh‚Ì≥$ıñk5å÷“˛ZÏû¯è?gf)¨∂\r„›S∑ˇ\0´¥qe?È≠ßùGä;–ˆ¶}◊WKØdÉ∏ò›®êä0˝gÊ£~\09Jl7‡È˜äCwîª≈(•A¬<BÅàÚÑJ|&¨0ıã¨}ÑÌÂè(ô»TGÍCR™ø$ú⁄H_“•tı}™åú<^πJ°@§‚&ßAS†i—q{€KÆ^ÈkiÑaéûOãçgÏ¨úT–¢|ú’#˘ñ=ƒ¬9rØÑÍ™b!ˆç!UÖ’+∞Í”í®ª ﬂ‰’-í\"Â<ÍhÅ_Y7ZÆMïeËÊ©≈Z§”ïÛ— ¶!CÉ-+Èﬂ)Ø√P¢O’Wê»®DıÚ™àF˙ŒKhÙNjlféÌÆ≈Æâw|lÿëhß¥p™›∫õ¯…°,ÆLt…T∆U=¬¬,JºÕ<\"rÜaøz\nåP ˇ\0¥#IGô≥xoVª;|ÀîÖ÷©pi∞√>JÎõôÕ⁄i˘5HøJÁ!M˙lw˘lÏìæñcbN’&u/RΩe’wDó4ó¥Æ˛’≥—D§™®âK≈Ó≠„_MKöôÍªÑîäÀæÒ7Ë\\’NR›◊Eè¯¸Mûù≠˛¶tÛwVÚ‹^êó£%⁄Ì≠\\¬n‚ëYw€∂Äˆ,V3˚Ai5¢-m\'ô\"∏KvËÆ≤Ûvé-ÓMxm{$JEe’‡≤Å≤¢ˇ\07ˇ\0=§mk WµLø›˘•Æ~Èo.†≠U⁄VêÊ“ØYK©Ωí%\"ˆ,+∂Qe^ ôwóÓÌqáÓê‚≤iÓˆPàÙÕNÇ?ÉôRªfR6Sˇ\0ïz T …ë{Iï€2vT™>˘©{;Bw¢ïì_∫ä‚ûeV‘§6Rº6Slâ^≤LÆŸEè€∞∞Ì_S§y†•mÂxîÏõŸS©ŸRêŸ%·≤ï;$JıíR∫•ITµlﬂ5•ˆÄG‚Y+&ôä˙ë)≠fJvTÎ¡dÖIÏï(lWñÚv[ÎqìÌ\'É∫¶•d¯øãc5‚È-oá2eﬁU=ïª›≤CÔ≥7óyn≠ıª¥Ûˆ`Ÿ+öªC`ó_“f^Ô*äÕˆpSa+7ÆÇ‹Z≈µs¯VJ…∫í+∆¶¥îÌ®≥9?à¥∑©`Úˆ∂~ØÖd¨öß⁄Tè∂¶¶¶ˆIT]Î&µa≤÷“Ú¬©ÚHÇÆ∏eï´≥¬Ó_á…Y5!ˇ\0H)≤÷∂J¢ÔYQ*ãΩ‰L◊:\\leJ\0…è·Dã≥—:µ˙OZ∑˜◊:…©\nê©çªÿ›S.ıì%Qwºâxi]ÙÌFœ>_«ÿ©\rìWQ2ò€™¶¶˜ÀÈZ«ÖvøêÈD/rôØn©t~µ\r\\ﬂ™Z;:NÙıèÉ˚¥ÍCÌŸ2OQı¶êÀ—-Ú©k[RÏ-]\"§¨§Üwñ\nâ^Ó´€;W∆≤V9y=ﬁÖìl…·ÚW¿^Í\"v—M¨òK·©>–¯z\0¥w Ù≠/”¢ß≥øªò?yÂmâhé–˛Ít˙^ÓìÚ∂q.ÇÓ©Ud±i¶rökYÓÛ\'îáëÙêSÎ^äkWFó!‘∂f•MZ∑÷Ïˆ±˘{9\rØYmÒ`ı∂:ßgù2ùçg“ßÂR*æ≥\'îFO¨£-Óvri∞fO6vÎy,¬6¶ ÆqX\"⁄N˝8E»|£h&÷\Zmù¥5º€7VıøEíÍqiUôÁ#ÚÖ≠])∞”ƒÇáU^ñ\rYN˛›yﬂåM≥ÛRC›G^¢sÓ÷:±U\rrá§âSÖnØz•WùS%2\"Î)^)&L‰*Wj–M’ZÖÜ˙ªsFÚ“ÜJøÀZ÷Sp¨‘XiOh£˚ìÛ–b©Ï¸”≥\'ÆüVi´w∫®;/)\ré¬\ndØwî™1\\ﬂﬂD˛ •R©(~¬I±ß∫*t™âxUÚSΩºûÔSäEV.M’kÌêÿMspÖ^∞¸E!Töe·N4ÿ⁄*d¶]U›ıqñ™g$Ãı))2ï%—D‹f˙,IÑë^z+ﬂÔ¿ôìT?iÁ‘ÍTó±¥É¢ù68Ioy\'“µl◊íõvPÌêµg∫32w¶ë.Î3Ìe≠+5P„›∂°_B,A™ò^ãµçjxVı¢5ç∫ƒøghƒj*æÆ\n¶W˛ŸH\"ÈjÑL‰:5d≈Cc?îó)ì‰î7ú\"ÂèN\"/Nû™j–Gâ5⁄.·CÅ3]Í£æfWòâ©5[ırâ›jÅ^UyHSó∂ÖØ^¢≥GÔììS˘1QîªéµNYPtñô” £¿\n5·‹∫¶yM πCÖ^ô\ng¢ÒcıH_&\\˛MC\Zˇ\0øä⁄hp√≠ñ˜HæO_˜dΩ“…CL!ß™àbQœ©`1¢ÅB8¢h˙5}\n-Ï*I€ŸPT™\Z7îá\rµyHPikf¢$2*µxø\r	âo–%ë”}<<óS˝EAä¶Øw‚¶#/ìû˜\"´…√Â\0≤_f≤É{†û•ÎÅ⁄ë4u!Ç(Ú_¯Òûk(Ä!¬.x\"öóyN´[G»9ÀYJî˙xPıÎºÙ3!!√ı®¢Ö™®≤Ÿ4fx(O?W∆m˛`fßÛ\0…›2$…∂Ôm+4ñÄ¶D’t≥u∂—¨ïìµÏñcˆ6ﬁ™H|Kh(ò«ﬁÌÆ+˚∫su≥	€çÒÃ+îi&k¡†ùÆóõãöJ¬õlùÏÔßÃëL·ßÛ|ö~*&˜%2’O•d÷ñgke‚=Ñ¯ìˆÜ¸4÷;ghççf±\'m®öV∂k‚DºŸ\'±¸C≠b≤[P˜SÊ ÓÓnÚÎöâı≥‰÷”µÕgqoY%\'Ãv¬¥Ö=çdô=îÌS⁄ÎVÕ+i!≤ù≠ï“Nö‡˚Î5ló_?A)Ò[&≤ùØï]k0çöﬁ$ª÷…¨ñ÷ì)çí∑{3Z…°¿S—≤ë≤[];∆Æm≠ÄìZ_ƒEçT§JÍùíHŸJñ÷:ëÁ=ÙÍi∞Ø°M^R;d6R•µ¥€§IÏí~0KÕ˙µR’Â‡S∂Me;]MÑÙÿ.ˆ^Z`üº∞ïxMn)‘õ6Me;]I˚ª*≤´$ª…Ô\'≥CúÜ˛lö vπÍ\ZGcﬂÎX7sül…5í⁄Ê&±ÌfN˘Ì‰’tT™= º÷“5¬Ã”Òßn:IwìgÎ·)’‡T\'Ö\0(”ªÔ#\"°¿Ì#„{nøâl“|•K	ÊüQ=“—ÊÂSÅE ;#íP≤TÄÚë®R˘WZ®j+S)£—mig6d’W!Ë–ÉjYLú4AZxg§åÃbû§8u‰–◊çxCD`˛èŒmF¶{Ák\Z—•=‰Õ_ED∫<ôhÃ=æ-HAñNÚ(<&ÎCQ0‰N6ºF¥l*!Åtë;8öïƒS⁄ø4+≤ãÕûägΩ«¬™∫ÇÓzÉ≈íCõ˙je›5î è6§wHèåR¢Â€ñªﬁ–kwYUUØOòÜÔNJÔZ$XàjèƒOµ\ZcÇÑ:\ZÀE5Y*µ(B¸$B”Ùi¡∆≠Íî¯AÁrv6™´·ßv$O|	Jõöä]ÃÜ’\r(oU…∆ØÓÚàÄLÀß¯ø(YX’˝ö®#˘¡Û+_OZ“;®MMﬂƒTÂ/j7¢•joïâ”√Ú1™∏DØw¬!Ô*\n˜Ù¶ƒ|‹Õ]˚HÑ)Á¢™¢/£Œ£ùTÓ)\0S˝*#‹Ë\naç‹°Ü4iƒÑYOƒD˘Jt«hG®)âªÁ‚LŸLñÍà9Hz†âúy™†kÙiÄ*öùjTFˇ\0ó¶\'d˝§DTox`Ê£u™áO4T™áÔV≤g°F/˜)ƒâﬂ‡‘ŒÊ°RwJ\"&nÒç∏k⁄s ï@ú)CÓî4Ù≈<:„n\r<Ñ=B„a˙(ñ\\Ó¢Ìä”m\0A≠Ñ”=ﬁd˘KZÕi.ÿ{»ò©Ë# ´ô…¶\ZhﬁNGıÇ|öf¨zJUÖ:J´›d`\04ÚÄ°›◊CÇ…Ÿ§û$+ö^∑Òb\'/G>MV{=Td–÷ZD\\ËÉª≠qDøvçòböm$X∑¨¸ûíøyrÑá∏ôÈàö˙¢ô‚èiL;™ˇ\0uÇï‰$TorÓsABª≥DÇ«Ô©SH°{ïz>1H)\0ˇ\0‹EQ\"ù^¨ÇÇ≤ˇ\0éæ[˘g·¢zˆx2ıÜ*2úJà4^–:˙hê‚µ”)çiõå/vô‚˜ß ´y∏TâÔjù^q8¢¿ã)wûÉÿ‚‚&¿(±\'¬Sµ⁄íEÖaZ≥ΩˆiﬂÄrôD—B@ËUáWÉLa]\\êyµY…‚yº\\j68.¶±±+›=ù\'Ï°._˝…œ\'”·X=éÅáV?M\nÜ7\"Îí˝‘,4n\\D‚=§#WO÷*£wî:bCÕ!jBçt)¨,Õ˝x\"jD[∂;˚*A∫;à û  VUr?òû DZC“®∏ƒØ!d»úØs·Á&q¶Îö|C£Ö¿˙€9Ä*Á\nòOÿ\\*Àƒˇ\06´¯jÔ¯™j´Ò°©˚&éö)Ω]ƒ7™–∏KÆäÒ?0ûîÌãZ\"gx•z˘ØŸDMØÁ7¢o°+Í}öQ5ÇıQÂ7(A≈àk\'Ìÿÿ˜ˆ÷â ÜÒ?=V=z\"Wíç÷ ãP8ÂØØ≥±¢NÑ/ˆhzû∏}?‚20á’ †äQvØÂˆ22 ≈=d-JÔzÀ™2Ë⁄N»•}bk‘\'ºHü%◊‚„}R„û•Qè%u^Ô¶(}‘¯¥SÂ:‹jŸœõ\rﬂΩOì´\\º⁄ÖQó•°1D B<…óÚgÔ\'¢Ò` ¸ûLî, Zôjx}ûáE‚ªÅ;Â9àpÓ˝ùê∆æzhyQ◊>!n\"¿õåﬂ\"ß˝NRùÂW‡–%è• °nã^ï˚Í∞R…˝bâ¢ûÆÚ”äå›OEPJí,¶Ä\'pyZu™„î·{¥EÚz[ãU<#Ë&‚˜PÏ˛≤wDƒu≈E˚øQVTÚúîEHØS…†z√©ï…ßΩ÷/¸*°˛\".≠≈X3ïO¡~r<KH˙H0”ù§òjS*zudŒÖípÅÎMdﬁÓºRÛàúbx!”Ê”µ‡á¶Ü˝dõD0m\rtt \n©eè®e$Öéçœ\0qjüh”SWQ`ÍCR‚)RÜíØòyU\"“]ÖΩz◊Z÷C≈ºõ∫â;”J°‘èºû/∂ç«&:◊ ⁄∑|⁄q§êæ{lÛDp:d°¥Z˙\n@.áÓ—’ó‘ßÒQç°~|j—◊¸hË≈[»PNÔÙ)^Ù˙(ﬁÅBÿE>^Í©Sﬁ! S◊OWu=]¢L∑ï4]CWoñ[´Dñ„S_≠±ﬁ…&RjÌ}ûÑ‚~≤,4ue(ﬂÕ,#a˜S1e=e)Œ[À&˝‰àq˙Te¥¢R∏5xπjÕxnibEèt–`\rsÒöV∫}û´\'“D@=§NPQU^Ï8j!dœ˚®«å‡—1SªW¬L˜œ~ØvÑG›B‚1dÀºù»kG<:FiöÈ˛ZmT⁄IñÌ≤™Ô·°kª∆ÜÈx…êŸ:vr†/µé´ÓUªåqáÿYOéø(√!ÏÇ™Ø{QJÇ‘Ww”u˝R√cjÿ:£gµc¶!ßùíLa]ÓºÍaÆÁMN¢Áx…ë\'eX˜vp ‹˘M0‡˛Ñ—ª\nÅ+«G˘âÓsÅBºæ¢Ò¥Èy§÷∫—%ØmCﬁDﬂÚPÀ£E»È¢SΩì´‡!π‘N%›ï˜ê–à^◊Â ¢aá‘NıS‚˚Èï0°˝¢wÊŒT—æ∏|‚.⁄—™«!´ößH=€Lîƒ:hÔıì_Ê˘¥¡U*¢T˛û1T‰ç]Ï)e:©›CjBîWãƒÈf?⁄úùﬂJùŒ?´*fÉÔ€göas…H˚©‚îÎEÅîUåúÚ|ö·¢òËá˜ﬁÏ)óÂ∆@EXr¢ôã&úÒ˙≈E(ùÏkÀTl6¢≠\\÷Ò\r›LÓ(‹{»\"SÓêA\ZWe’5O…»wØ\'Ÿ»l\0AÎÒTè∫ù‚ó÷”˛≤˛QÔ!¢|}_≥	Cﬂ«’°´ÉQ™uP`≥ÈÒoú8ïÏ™§h˚µ:æ–”_UÂáÌ8~˝RÙ¸Ôﬁ&j:≥ø((√§¸jàCÊ®Q\n$=ËU≈ˇ\0-Uï?ZÅÍ®u∏¥Xàtì¯˜Z[Ÿó;i¡—ï¨ö6;€˜\r#“¢\"¨ˇ\0\0./Ú’9>xÏ¯‡‹ÚUô?e^≥V¡n‚…Tú˝•∫àn¢3π”Q‚n\r6=ÔRâ∂§ë?G5ƒT™°-‰Ø˜’Â5ª|”∫üydÚhovî=e-jtŒ=•£¥ÛRuRô.“4jtƒB,ùâ9.ºØ+ŸÖ$˙∂Ñâ:g¬úãº¶ß¥¥´¬ö∆“]´Pó≤´NtıóÇ\Z|JÔ}L*ˇ\0¯öO::H.U—4.Vñéæk›BÈóq¯R¨∫[=<ò‘™z9™uu8DÕWHêkk&™ùÿêêâv]≤h—R≤à]Ω)±Ù]c$‚◊tïÓ’õô≠ô†ô≥n¯v{¬e÷4Jë©õ˜UE›Rçﬁ5LK$Qh™ËLKK¡R+Y?ä“±Ït/¥Dy8úŒ\\¨µn©—◊‡î®4%ˆÄ¶d?Âï1\'r h©6ˆn¯∑Ãª{yx6vWÔ!(Ö¡∞SëáciM>ØàlﬁÌ∫æ*yé _0,€`ﬁ!Ò&Xj∑V∆T÷|‘Ìãn&¶üEh†∫]+	Øsë?u7·≠∞oˆŒ»|B›ˇ\0®LËoÛ√ˇ\0Q÷⁄÷œkF⁄ûµüÑﬂ^qlz°™v±¸Cÿˆi|ví˛QbSU\'bÔm{f>$ÿV¶ùÇL}~∆ƒ¥w3‘‘”U€-≥◊]Â£Ωa.◊§ZI”ÈXIÌv€][Y-√S¥]>cm«úxµì]œüÃˇ\0®øX¸˛j€<…æ›k\'Œñ‹in˙DÎuwmk0©m¸æ`•∑èﬂZGô4…∂nÃ\Z®m∆ühÑz‰•WÃP˚’\"õ≈b´;y6-TÿêÁœÉAâ¯àòbC´Tìm\rAﬁT\n“•39C“CMt˝äù0èXü@tÈ.“’“∂üjœ¢“÷D◊JXb•H™SCâEÑt—‡4Ì§é¯˙:EêáU™rª4êI>–Õî©•Ø3ÉR|\\”Má¶?\n_àã1Zbƒá)J!\"º™®ø≥+3^Nﬁ“/—Rv≈Jùü«µ˛\"∫∏NÚ;ù*C$¢∏˚‘¯ü	I∏5\r∆˜1R§©Ê“≤äÔr\Z†ÎRæ^ìhè¨#¡¢|üI˚b›Oé≠4L·rÓ$CJÉ¢áWú•PIˇ\0`5’O∂º*í∫ß˚çA{Rïupù‰$%ŸÜÖà∫ Æ¬vjë=ÔF™4c5ÜüG≈!z˘˛i—Nû∞°8g◊çíN—ÇÍî0ıUÓ”ëà°zK3WE>Çf°bª¨ô>ÆÎ∂äÕ€	WyËî®ËŸÙ¯äÄGÕe8E8êy·âè≥’\naÜ}º∫r˘g∂àrëN≤YHû⁄s%Ë ™VÆiçy≠‚		SeY8{™\\¿ı™!dÎ\re™ÇhYPZ*òfp˘8upX£EıaG¶tÏ˚∂LêÂ»™√√7ÑrQΩk*^ÒG ˘J∞\\‰—ÜPæ§TR8ávÆÕ¢áó£ì?>°^Á£¿:Jû á∆C˛8ƒwπâûõ?vÕJØ¢z7´FY;»Z¢J. h 8A“„›àª\núµ^çeΩìTö!Ö\0˛®¯eÚÜ\0Ü:òÜ¢ÌÎ°|ßI3âÂÈ·Q+áÜµb√≠PûòÇ®Y\"¶ΩKÍè€T,â{™ΩPßR≈ºüJ^ w∫¥µ≈Ì ¶¨Ní*¢k™îÀ∏™41O´R|5¨%Zh…Î˜à,&HöòõÈ¥l›“.V&ŒÀ≈nßlôzµ©4<]Z\nSœO£°ZVö√/¥Ozô`GR‚˛≠!”P∞ö◊í,[J¥á˘ò{[4ˇ\00|üÛ¶–jËØF∑ºØuoÆŒ“}qo≠’Ùy&Ú›eΩµüGã˙—Ûº∑Vˆ÷s¨ÊŸŒ\\ÏﬁrÁf}?‘{ˇƒ\09\0	\0\0\0\0\0 !1PAB02R\"Qbr≤“cÇ3apÉí£¬”‚Cq¢√ˇ⁄\0?\0˝éAÖò¿å(¬å(™òÂ“ëR≤NV•r…HÜRÆ≥:Hy)ß‘UOu<z⁄ËvYÿ–©≤≥ﬂéWC≤P≈j∑„ï–Ïº&+=¯Ât=Ñ/éi&Eg«+°à^+„ï–ÏºW∆°]À≈|j–ÏºW∆≠≈t;/Ò´q]À≈|jﬂ\"óä¯⁄nñ∂wîbF$bD¢Q9üM§ì{I>[_y.œç•≈‰[k+œÖ<j¥M∫b&…ít¥íI$Â|j:ù£B\"…\rY\"Ã¨¯‘nå,àˆ≤Êï§ÍHﬂÇŸ:Ó>A]ÂÇPù5®1±TTt%îΩl¯’vcÈÏ\ruˇ\0lî*Ü…»–EGAqn1Ò™”…‘™´!Ót≈∞Üt)\'Qn>9Z±Gπ–[ès†Ü\'†Üà,¿B§|rµe;\Z!ÓNÇ\Z-äÇ)D˚â|äµb„ﬁ»b•≤ö#⁄®m>”§oîV©I-«ΩíÁ˙}F€Â’™™9B‹tπ>°Ω Tw	™|æì«+W∏ä)◊Î$N€ÊU™‹¶ëΩ0S‚±ÒÍ ïWµà©˙|v.9\nŒ—x*DAÑÇ |ÇµY∂dYÈv‚œb\r∏‰+T\'•FæÕXçòë€˘«πbˆ<¢p™\ZÚíﬁ(&Õq»Vd}mH˜ âXF≠\Za#¥ÇdDën¯‘\"{Jù¶“I3n§ˆâìÔ$íUﬂ¨»˙H˘è‘@ÚnAÃA≠ﬂ≠÷ÌíJ&“&Ng«\'gΩ¶»Å°YØÒ Õç‰VV{r®¶Ã¬»…–WåÔçVWﬂ,ìÓ!ëÎ\Z˜f|j∑[£‘Y?x—xVÉrv”ôÒ™—v/ƒíù™÷Òâ[∑3„PññbZï9d*|∆îÌhb•˜\r€¶g∆°]u„Ø‹yó‚©d’È˝˝ßG %UH∑∑m9ü\ZÖµ˙Ufö)‹]≈4 ;®˘ÍæAogÂ§\\í◊ÈYNËØbùÕô˙âDä›¥ë…!]w©ßÂ(]ƒﬁEπÖı:a‰–ÖeπU1Ú	67áŸª¥í,ì«¢I§õ´=FÖ°(ìu»¢%•Ÿ´A°Ô\' u7ƒG(ÑDËDÕXÕ~ÅÓ@ı¶	‰êø¨ı~C°>c¸?ñEˆ?∏-Ä“……/èBSoÜ¢06}ÊÿIám=$ëv>5˙èW»˜˝≈⁄4àÑ°|$˝g√Û\rÍN£«Ãiw∆°j#Ûâ”´∆#¸\râPHÙ¥rC> m§Eµ>,GMléÜ‰dûAÖÍ°‘_˘ê˜\"/”$‰|rª?)≠¥%n>U–—ík›Ë$íMƒ…õAH¯ıy$õ“:}6¶Ûı\r˝ËEü&ìdZî\'Íi¬Mñ‰<èèçHOŸ§¬∆†cÛROpªÈ˘œY∂î‹ÇZ‰–˜6CÙ~!Ô_Í7¿-∞A? æ»˜Œ¨¯ˆNòI$V‘â\Z¬#˛\'vV|¢÷ÔlâI+>U;µuwÃ++4+@πöo<˚dí-r´æb$T¿ÂI´ó|¬⁄Ìf|¬p+ƒe| »≤>e+∑i&œòDdåèñÜ∆¢…íI6b≥ÂU§jÒe ¥ÚS∏Ÿ&¶„P\"π_Óy˜ëføQ≥≈˙A˜a?ª$Î˚≥“>Iü	;ı„>¬|£ÓˆıåùI&—«¨∞àBDBÜàÂ‰íVI¶ÚI<£œ$Ûsœ…&Üô¥$ím¥jAGÏˇƒ\03\0\0\0\0\0\0\0 !1P02\"3ABR`rÇbp#ÅÉ@Saíˇ⁄\0?\0˛Ç è‡®‰ïﬂ–ëÿ_[«f>æ_@Ævr/„¥?†F,ìëÚpiyÕºÊw\\“Á™Æ<EÍXæÄt’>ëw$ûyîPù8ÖJ«É‡:î™W†\\ƒöö¢ö]gÈ/ò´ß”Ò\"zè])aÉ\r+‹WJK<õ¢®∆&$ﬁ√•Ø\"ä)äj0™}EkCß‚:û?”*Ò®È¯ã⁄Tu>ºÍxï¯Ú)bxPÈT8è¯Œù	˙Í_áÊQ„HüıWçGOƒ~–´∆£ß‚/hu>º©bXJ¸yí÷™äﬂ®´√¸gO√˛≈>E~?ôN‘˝¢ˆï¯‘t¸GK«ã‡+Ò®°•O®ƒïx ´ƒ~•CmÚ=/àÍyœÌ*ƒ˝Uî∫™_ßO≤ÇøÃßj~¡RÒ’Y_âEISÍU/™›F§≤.?•µE{ï¯(†Nj:û?ò∂§´©í™ùD3ÃFu«—Z£JáR≠ï¯xR(Zï‘™Xi»Ø Æ⁄„Ë£≈W≥*QY‘“Çû¢T·lçJ∫èƒ’ˆUCb„˙^?ë^ÁR¨^äL6jD£µ	Tç^ëq˝/©^\'Ë¯™Ô**´‘`kqqÆ”RÙ	G}‘ÈÙ“R≈∆≤IÕçMG®¥˚ÏáeÙ–+ÍÁ˛Ç9ö{I9\Z» z£uÍ‡JÓÎ\"„Xò∆4ƒ‡ß,NUîΩpŸê:dK]∆>U(r!§ÏÌµñFÚ.K\\WíQ6M€{=Ì.I≠q+øWÿ@»‹˜IC–f÷{Ÿ.IëàNI#QÌÜ”#ZYÔe…+lUdá£FÙ∑ºkQrJÃNnˆª#≤‹b‰ïò∑∑\Zdv[Âb„ïò∑µ*fàÉ$[Ê\\|èRl/öÏh©@ñf.N,∂»„3#êVC∂¬z^o<Íº\n—ÃNg†òµÂ…f€ëñ9xÇy’<˚≤\\˚$ZäÀ<ìí\nxˆ!fÿ◊≤∏ˆkàY∂¥ÚÃB€ª/+„X€VHå€_WíD.9ïD⁄-ñ≈«ª-ÛEÁ#¥„ÿá£\"ÃôwåœAj%»;&\'ë9ªÃ†oNAé…í+$\'h\Zå’mu∆±ŸY˚+j1°3|≥®∏÷1Ÿ\nÍ“H›ß&Êq¨wBÌÕó«t\'ù!⁄H)\\É–ù”¥äœQ˙IDr,}©Å9≥Rl-W\"«€ß{¥Sy„ò˚k{∑Úì⁄ﬁ˛9éÓÀ2YW «€UAàò&rÆ5è2¥A5›ó\Z∆!Ôgd-∆“1\nÈ≤≥≥∏÷1\Zœ˚vÑaFîJ˝‘í¥ïn!qÆÿI®ƒJ&üòMAa.Ó$ˇ\0«˜[BQ4˛Û.q\Z≤∆ª-v¥I*tªÜ@ëEõ‘\\sââØîîJ˘èÔAØ˛¨D2ü‹J¯å_bd±éwYáŸKêÇvã¨∞A…nA‘¸H˝§d˛∆§29y$íIDíI?√ˇ\0ˇŸ',7,8,'-24','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',10,20,30,0,0,0,0,0,0);
+insert  into `productos`(`Codigo`,`producto`,`codigoAlterno`,`codigoBarras`,`base`,`costo`,`impuesto`,`iva12`,`iva14`,`iva0`,`ice`,`ProductoOServicio`,`costoConIVA`,`utilidad`,`pvp`,`cantidad`,`unidades`,`ubicacion`,`observacion`,`minimo`,`maximo`,`garantia`,`serie`,`imagen`,`Modelos_Codigo`,`Modelos_Marcas_Codigo`,`b1`,`b2`,`b3`,`b4`,`b5`,`b6`,`b7`,`b8`,`b9`,`b10`,`b11`,`b12`,`b13`,`b14`,`b16`,`b17`,`b18`,`b19`,`b20`,`p1`,`p2`,`p3`,`p4`,`p5`,`p6`,`p7`,`p9`,`p10`) values (41,'IMPRESORA EPSON PCI','','',44.64,'50.00','IVA 12',5.36,NULL,0,NULL,1,NULL,'19.5','59.75',0,'UNIDADES',' ,  ,  ,  , ','','','','SIN GARANTIA',NULL,NULL,2,9,'10','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',1500,4000,5000,0,0,0,0,0,0);
+insert  into `productos`(`Codigo`,`producto`,`codigoAlterno`,`codigoBarras`,`base`,`costo`,`impuesto`,`iva12`,`iva14`,`iva0`,`ice`,`ProductoOServicio`,`costoConIVA`,`utilidad`,`pvp`,`cantidad`,`unidades`,`ubicacion`,`observacion`,`minimo`,`maximo`,`garantia`,`serie`,`imagen`,`Modelos_Codigo`,`Modelos_Marcas_Codigo`,`b1`,`b2`,`b3`,`b4`,`b5`,`b6`,`b7`,`b8`,`b9`,`b10`,`b11`,`b12`,`b13`,`b14`,`b16`,`b17`,`b18`,`b19`,`b20`,`p1`,`p2`,`p3`,`p4`,`p5`,`p6`,`p7`,`p9`,`p10`) values (43,'PORTATIL DEL CORE I7','PORTATIL DELL17','223045431199',223.2142857142857,'250.00','IVA 12',96.43,NULL,0,NULL,1,NULL,'3','750.00',0,'UNIDADES',' ,  ,  ,  ,  ,  ,  ,  , ','','','','12 MESES',NULL,NULL,8,6,'33','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',0,7714285714285.714,11571428571428.57,0,0,0,0,0,0);
+
+/*Table structure for table `proformas` */
+
+DROP TABLE IF EXISTS `proformas`;
+
+CREATE TABLE `proformas` (
+  `Codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `fecha` date DEFAULT NULL,
+  `hora` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `iva` varchar(10) DEFAULT NULL,
+  `Iva_valor` varchar(45) NOT NULL,
+  `subtotaI_con_iva` varchar(45) DEFAULT NULL,
+  `subtotal_sin_iva` varchar(45) DEFAULT NULL,
+  `total` varchar(45) DEFAULT NULL,
+  `utilidad` varchar(45) DEFAULT NULL,
+  `tipo_documento` varchar(45) DEFAULT NULL,
+  `descuento` varchar(45) DEFAULT NULL,
+  `Clientes_codigo` int(100) NOT NULL,
+  `Usuarios_Codigo` int(100) NOT NULL,
+  `Equipo` varchar(75) DEFAULT NULL,
+  `secuencia` varchar(45) DEFAULT NULL,
+  `anulada` tinyint(1) NOT NULL DEFAULT '1',
+  `fechain` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`Codigo`),
+  KEY `fk_proforma_Clientes1_idx` (`Clientes_codigo`),
+  KEY `fk_proforma_usuarios1_idx` (`Usuarios_Codigo`),
+  CONSTRAINT `fk_proforma_Clientes1` FOREIGN KEY (`Clientes_codigo`) REFERENCES `clientes` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_proforma_usuarios1` FOREIGN KEY (`Usuarios_Codigo`) REFERENCES `usuarios` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+
+/*Data for the table `proformas` */
+
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (1,'2018-04-08','2018-04-08 22:55:09','12.0','2.15','17.95','0.00','20.10','5.01','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (2,'2018-04-09','2018-04-09 12:00:48','12.0','1.61','13.39','0.00','15.00','4.41','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000002',1,'2018-04-09 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (3,'2018-04-09','2018-04-09 12:09:25','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000003',1,'2018-04-09 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (4,'2018-04-09','2018-04-09 17:32:09','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000004',1,'2018-04-09 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (5,'2018-04-09','2018-04-09 17:52:05','12.0','1.61','13.39','0.00','15.00','4.41','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000005',1,'2018-04-09 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (6,'2018-04-09','2018-04-09 17:54:29','12.0','1.61','13.39','0.00','15.00','4.41','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000006',1,'2018-04-09 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (7,'2018-04-10','2018-04-10 20:08:31','12.0','0.38','3.12','0.00','3.50','0.81','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000007',1,'2018-04-10 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (8,'2018-04-11','2018-04-11 07:35:04','12.0','1.61','13.39','0.00','15.00','4.41','PROFORMA','0.00',1,4,'DESKTOP-OQEODUI','000000008',1,'2018-04-11 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (9,'2018-04-12','2018-04-12 14:13:29','12.0','0.32','2.68','0.00','3.00','2.01','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000009',1,'2018-04-12 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (10,'2018-04-13','2018-04-13 07:39:26','12.0','0.32','2.68','0.00','3.00','2.01','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000010',1,'2018-04-13 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (11,'2018-04-14','2018-04-14 12:01:01','12.0','0.50','4.20','0.00','4.70','2.21','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000011',1,'2018-04-14 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (12,'2018-04-14','2018-04-14 12:07:37','12.0','0.32','2.68','0.00','3.00','2.01','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000012',1,'2018-04-14 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (13,'2018-04-14','2018-04-14 12:22:18','12.0','3.40','28.30','0.00','31.70','10.93','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000013',1,'2018-04-14 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (14,'2018-04-14','2018-04-14 12:29:22','12.0','3.40','28.30','0.00','31.70','10.930000000000001','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000014',1,'2018-04-14 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (15,'2018-04-14','2018-04-14 13:45:55','12.0','0.00','0.00','0.00','31.70','10.930000000000001','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000015',1,'2018-04-14 00:00:00');
+insert  into `proformas`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`) values (16,'2018-04-18','2018-04-18 23:42:04','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','PROFORMA','0.00',17,4,'DESKTOP-OQEODUI','000000016',1,'2018-04-18 00:00:00');
+
+/*Table structure for table `proveedores` */
+
+DROP TABLE IF EXISTS `proveedores`;
+
+CREATE TABLE `proveedores` (
+  `codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `Cedula` varchar(50) NOT NULL,
+  `Nombres` varchar(200) NOT NULL,
+  `Telefono` varchar(200) DEFAULT NULL,
+  `Celular` varchar(200) DEFAULT NULL,
+  `mail` varchar(200) DEFAULT NULL,
+  `Direccion` varchar(500) DEFAULT NULL,
+  `Provincia` varchar(500) DEFAULT NULL,
+  `Ciudad` varchar(500) DEFAULT NULL,
+  `Nacionalidad` varchar(500) DEFAULT NULL,
+  `NombreComercial` varchar(500) DEFAULT NULL,
+  `Vendedor` varchar(500) DEFAULT NULL,
+  `Observaciones` varchar(500) DEFAULT NULL,
+  `extension` varchar(45) DEFAULT NULL,
+  `PagoPredeterminado` varchar(200) DEFAULT NULL,
+  `credito` int(11) DEFAULT '0',
+  `tiempoCredito` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`codigo`),
+  UNIQUE KEY `Cedula` (`Cedula`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+/*Data for the table `proveedores` */
+
+insert  into `proveedores`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`NombreComercial`,`Vendedor`,`Observaciones`,`extension`,`PagoPredeterminado`,`credito`,`tiempoCredito`) values (1,'1717148371','QUINTANA ALBI√ëO SHEICY ELIZABETH','','','','KM 4 1/2 VIA QUEVEDO','STO DGO TSACHIL/SANTO DOMINGO/ABRAHAM CALAZACON','','Ecuatoriana','','','','',NULL,0,'0');
+insert  into `proveedores`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`NombreComercial`,`Vendedor`,`Observaciones`,`extension`,`PagoPredeterminado`,`credito`,`tiempoCredito`) values (2,'1722239967001','CARRION TORRES JIMMY HOMERO','','','','SANTO DOMINGO DE LOS TSACHILAS / SANTO DOMINGO / SANTO DOMINGO / SAN MIGUEL LOTE 145 Y AV. QUITO',' SANTO DOMINGO ',' SANTO DOMINGO ','Ecuatoriana','CARRION TORRES JIMMY HOMERO','','OBLIGADO: S\nTRANSMISION DE SONIDO, IMAGENES, DATOS U OTRO TIPO DE INFORMACION  POR INTERNET.\n','',NULL,0,'0');
+insert  into `proveedores`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`NombreComercial`,`Vendedor`,`Observaciones`,`extension`,`PagoPredeterminado`,`credito`,`tiempoCredito`) values (3,'1722423967001','GETIAL GETIAL RICARDO MIGUEL','','096803062','','SANTO DOMINGO DE LOS TSACHILAS / SANTO DOMINGO / SANTO DOMINGO DE LOS COLORADOS / AV. QUITO 516 Y AMBATO Y LATACUNGA',' SANTO DOMINGO ',' SANTO DOMINGO DE LOS COLORADOS ','Ecuatoriana','GETIAL GETIAL RICARDO MIGUEL','','OBLIGADO: N\nVENTA AL POR MENOR DE OTROS MATERIALES Y EQUIPOS DE INFORMATICA.\n','',NULL,0,'0');
+insert  into `proveedores`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Provincia`,`Ciudad`,`Nacionalidad`,`NombreComercial`,`Vendedor`,`Observaciones`,`extension`,`PagoPredeterminado`,`credito`,`tiempoCredito`) values (4,'2390021227001','IMPORTADORA Y DISTRIBUIDORA COSMO BELLEZA IMPOCOSMOBELLEZA S.A.','','','','SANTO DOMINGO DE LOS TSACHILAS / SANTO DOMINGO / SANTO DOMINGO DE LOS COLORADOS / AV. 29 DE MAYO SN Y LOJA',' SANTO DOMINGO ',' SANTO DOMINGO DE LOS COLORADOS ','Ecuatoriana','','','OBLIGADO: S\nVENTA AL POR MAYOR DE COSMETICOS.\n','',NULL,0,'0');
+
+/*Table structure for table `reportes_externos` */
+
+DROP TABLE IF EXISTS `reportes_externos`;
+
+CREATE TABLE `reportes_externos` (
+  `ID` int(10) NOT NULL AUTO_INCREMENT,
+  `ATRIBUTO` varchar(100) DEFAULT NULL,
+  `VALOR` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `reportes_externos` */
+
+/*Table structure for table `retencion` */
+
+DROP TABLE IF EXISTS `retencion`;
+
+CREATE TABLE `retencion` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `proveedor_codigo` int(11) DEFAULT NULL,
+  `compras_codigo` int(11) DEFAULT NULL,
+  `usuario_codigo` int(11) DEFAULT NULL,
+  `tipo_comprobante` varchar(245) DEFAULT NULL,
+  `autorizacion` varchar(85) DEFAULT NULL,
+  `compra_secuencia` varchar(45) DEFAULT NULL,
+  `secuencia` varchar(45) DEFAULT NULL,
+  `fechaIngreso` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha` date DEFAULT NULL,
+  `caducidad` date DEFAULT '2515-05-11',
+  `total` double DEFAULT NULL,
+  `concepto` varchar(545) DEFAULT NULL,
+  `sec1` varchar(10) DEFAULT NULL,
+  `sec2` varchar(10) DEFAULT NULL,
+  `sec3` varchar(10) DEFAULT NULL,
+  `estado` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `retencion` */
+
+/*Table structure for table `sataparato` */
+
+DROP TABLE IF EXISTS `sataparato`;
+
+CREATE TABLE `sataparato` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(245) DEFAULT NULL,
+  `parte` varchar(55) DEFAULT NULL,
+  `categoria` varchar(55) DEFAULT NULL,
+  `marca` varchar(55) DEFAULT NULL,
+  `modelo` varchar(55) DEFAULT NULL,
+  `fechaIngreso` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `observaciones` varchar(345) DEFAULT NULL,
+  `satorden_codigo` int(11) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+/*Data for the table `sataparato` */
+
+insert  into `sataparato`(`codigo`,`descripcion`,`parte`,`categoria`,`marca`,`modelo`,`fechaIngreso`,`observaciones`,`satorden_codigo`) values (1,'laptop dell','WSS','portatil','dell','345','2018-03-25 22:22:07','NADA QUE DECIR',0);
+insert  into `sataparato`(`codigo`,`descripcion`,`parte`,`categoria`,`marca`,`modelo`,`fechaIngreso`,`observaciones`,`satorden_codigo`) values (2,'impresora l380',NULL,'impresora','epson','l380','2018-03-25 22:22:18',NULL,0);
+insert  into `sataparato`(`codigo`,`descripcion`,`parte`,`categoria`,`marca`,`modelo`,`fechaIngreso`,`observaciones`,`satorden_codigo`) values (3,'impresora lexmarl','','LEXMARK','LEXMARK','multifax','2018-03-31 00:23:05','',0);
+insert  into `sataparato`(`codigo`,`descripcion`,`parte`,`categoria`,`marca`,`modelo`,`fechaIngreso`,`observaciones`,`satorden_codigo`) values (4,'COMIONETA CHEVROLET SEDAN','','','CHEVRLET','BLAZER','2018-03-31 00:45:42','',0);
+insert  into `sataparato`(`codigo`,`descripcion`,`parte`,`categoria`,`marca`,`modelo`,`fechaIngreso`,`observaciones`,`satorden_codigo`) values (5,'TIERRA VERDE','SDSS','','TIERRA','VERDE','2018-03-31 00:55:30','NADA QUE ACOTAR',0);
+insert  into `sataparato`(`codigo`,`descripcion`,`parte`,`categoria`,`marca`,`modelo`,`fechaIngreso`,`observaciones`,`satorden_codigo`) values (6,'IMPRESORA TMU EPSON','','','EPSON','TMU','2018-03-31 11:07:15','IMPRESORA MATRICIAL',0);
+insert  into `sataparato`(`codigo`,`descripcion`,`parte`,`categoria`,`marca`,`modelo`,`fechaIngreso`,`observaciones`,`satorden_codigo`) values (7,'LAPTOP DELL XPS','','','DELL','XPS','2018-03-31 11:54:58','LAPTOP DELL',0);
+insert  into `sataparato`(`codigo`,`descripcion`,`parte`,`categoria`,`marca`,`modelo`,`fechaIngreso`,`observaciones`,`satorden_codigo`) values (8,'LAPTOP MARCA: DELL MODELO: INSPIRO COLOR: NEGRA SERIE: FANESCA XY N.- PARTE :','','','DELL','INSPIRON','2018-03-31 16:15:00','NO ENCIENDE',0);
+
+/*Table structure for table `satorden` */
+
+DROP TABLE IF EXISTS `satorden`;
+
+CREATE TABLE `satorden` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `numero` varchar(45) DEFAULT NULL,
+  `fecha_ingreso` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `clientes_codigo` int(11) DEFAULT NULL,
+  `usuarios_codigo` int(11) DEFAULT NULL,
+  `descripcion` varchar(645) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+
+/*Data for the table `satorden` */
+
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (1,'000000001','2018-03-25 22:23:10',1,4,NULL);
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (2,'000000002','2018-03-25 22:23:56',4,4,NULL);
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (3,'000000003','2018-03-30 22:14:15',4,1,'NADA QUE DECIR');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (4,'000000004','2018-03-30 22:18:04',4,13,'NADA QUE DECIR');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (5,'000000005','2018-03-30 22:23:21',4,1,'A VER QUE PASA');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (6,'000000006','2018-03-30 22:38:38',4,1,'NADA QUE DECIR');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (7,'000000007','2018-03-30 22:49:19',4,1,'NADA QUE DECIR');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (8,'000000007','2018-03-30 22:49:19',4,1,'NADA QUE DECIR');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (9,'000000008','2018-03-30 22:50:42',4,1,'NADA QUE DECIR');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (10,'000000009','2018-03-30 22:51:41',4,1,'NADA QUE DECIR');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (11,'000000010','2018-03-30 22:54:06',4,1,'NADA QUE DECIR');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (12,'000000011','2018-03-30 22:56:53',4,1,'NADA QUE DECIR');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (13,'000000012','2018-03-30 23:01:01',4,1,'NADA QUE DECIR');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (14,'000000013','2018-03-31 00:46:11',4,1,'TIENE PINTURA DE SEGUNDA');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (15,'000000014','2018-03-31 00:55:54',1,4,'NADA QUE DECIR');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (16,'000000015','2018-03-31 11:10:15',14,4,'IMPRESORA MATRICIAL');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (17,'000000016','2018-03-31 11:55:23',15,4,'');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (18,'000000017','2018-03-31 11:56:46',1,4,'NADA QUE ACOTAR');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (19,'000000018','2018-03-31 16:15:45',1,4,'NADA QUE ACOTAR');
+insert  into `satorden`(`codigo`,`numero`,`fecha_ingreso`,`clientes_codigo`,`usuarios_codigo`,`descripcion`) values (20,'000000019','2018-03-31 19:09:04',1,4,'NO ENCIENDE');
+
+/*Table structure for table `satordendetalle` */
+
+DROP TABLE IF EXISTS `satordendetalle`;
+
+CREATE TABLE `satordendetalle` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `estado` tinyint(1) DEFAULT '0',
+  `diagnostico` varchar(500) DEFAULT 'Esperando...',
+  `recomendaciones` varchar(545) DEFAULT 'NINGINA...',
+  `accesorios` varchar(545) DEFAULT NULL,
+  `presupuesto` double DEFAULT '0',
+  `retiradoPor` varchar(245) DEFAULT NULL,
+  `cerrado` int(11) DEFAULT '0',
+  `ingresado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `SatOrden_Codigo` int(11) DEFAULT NULL,
+  `SatAparato_codigo` int(11) DEFAULT NULL,
+  PRIMARY KEY (`codigo`),
+  KEY `fk_satordenDetalle_SatOrden1_idx` (`SatOrden_Codigo`),
+  KEY `fk_satordenDetalle_sataparato1_idx` (`SatAparato_codigo`),
+  CONSTRAINT `fk_satordenDetalle_SatOrden1` FOREIGN KEY (`SatOrden_Codigo`) REFERENCES `satorden` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_satordenDetalle_sataparato1` FOREIGN KEY (`SatAparato_codigo`) REFERENCES `sataparato` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+
+/*Data for the table `satordendetalle` */
+
+insert  into `satordendetalle`(`codigo`,`estado`,`diagnostico`,`recomendaciones`,`accesorios`,`presupuesto`,`retiradoPor`,`cerrado`,`ingresado`,`SatOrden_Codigo`,`SatAparato_codigo`) values (1,0,'Esperando...','NINGINA...',NULL,0,NULL,0,'2018-03-27 21:26:51',1,1);
+insert  into `satordendetalle`(`codigo`,`estado`,`diagnostico`,`recomendaciones`,`accesorios`,`presupuesto`,`retiradoPor`,`cerrado`,`ingresado`,`SatOrden_Codigo`,`SatAparato_codigo`) values (2,0,'Esperando...','NINGINA...',NULL,0,NULL,0,'2018-03-27 21:27:06',2,2);
+insert  into `satordendetalle`(`codigo`,`estado`,`diagnostico`,`recomendaciones`,`accesorios`,`presupuesto`,`retiradoPor`,`cerrado`,`ingresado`,`SatOrden_Codigo`,`SatAparato_codigo`) values (3,1,NULL,NULL,'sdfsdfsdf',0,NULL,0,'2018-03-30 22:51:41',10,1);
+insert  into `satordendetalle`(`codigo`,`estado`,`diagnostico`,`recomendaciones`,`accesorios`,`presupuesto`,`retiradoPor`,`cerrado`,`ingresado`,`SatOrden_Codigo`,`SatAparato_codigo`) values (4,1,NULL,NULL,'sin accesorios	',25.2,NULL,0,'2018-03-30 22:56:53',12,1);
+insert  into `satordendetalle`(`codigo`,`estado`,`diagnostico`,`recomendaciones`,`accesorios`,`presupuesto`,`retiradoPor`,`cerrado`,`ingresado`,`SatOrden_Codigo`,`SatAparato_codigo`) values (5,1,NULL,NULL,'kkkkkkkkkkkk',30,NULL,0,'2018-03-30 23:01:01',13,1);
+insert  into `satordendetalle`(`codigo`,`estado`,`diagnostico`,`recomendaciones`,`accesorios`,`presupuesto`,`retiradoPor`,`cerrado`,`ingresado`,`SatOrden_Codigo`,`SatAparato_codigo`) values (6,1,NULL,NULL,'SIN ACCESORIOS',0,NULL,0,'2018-03-31 00:46:11',14,1);
+insert  into `satordendetalle`(`codigo`,`estado`,`diagnostico`,`recomendaciones`,`accesorios`,`presupuesto`,`retiradoPor`,`cerrado`,`ingresado`,`SatOrden_Codigo`,`SatAparato_codigo`) values (7,1,NULL,NULL,'SIN ACCESORIOS	',0,NULL,0,'2018-03-31 00:55:54',15,5);
+insert  into `satordendetalle`(`codigo`,`estado`,`diagnostico`,`recomendaciones`,`accesorios`,`presupuesto`,`retiradoPor`,`cerrado`,`ingresado`,`SatOrden_Codigo`,`SatAparato_codigo`) values (8,1,NULL,NULL,'KLLK',0,NULL,0,'2018-03-31 11:10:15',16,6);
+insert  into `satordendetalle`(`codigo`,`estado`,`diagnostico`,`recomendaciones`,`accesorios`,`presupuesto`,`retiradoPor`,`cerrado`,`ingresado`,`SatOrden_Codigo`,`SatAparato_codigo`) values (9,1,NULL,NULL,'CARGADOR DELL	',0,NULL,0,'2018-03-31 11:55:23',17,7);
+insert  into `satordendetalle`(`codigo`,`estado`,`diagnostico`,`recomendaciones`,`accesorios`,`presupuesto`,`retiradoPor`,`cerrado`,`ingresado`,`SatOrden_Codigo`,`SatAparato_codigo`) values (10,1,NULL,NULL,'NADA QUE HACERRRR	',50,NULL,0,'2018-03-31 11:56:46',18,5);
+insert  into `satordendetalle`(`codigo`,`estado`,`diagnostico`,`recomendaciones`,`accesorios`,`presupuesto`,`retiradoPor`,`cerrado`,`ingresado`,`SatOrden_Codigo`,`SatAparato_codigo`) values (11,1,NULL,NULL,'sin accesorios',50,NULL,0,'2018-03-31 16:15:45',19,8);
+insert  into `satordendetalle`(`codigo`,`estado`,`diagnostico`,`recomendaciones`,`accesorios`,`presupuesto`,`retiradoPor`,`cerrado`,`ingresado`,`SatOrden_Codigo`,`SatAparato_codigo`) values (12,1,NULL,NULL,'WERWREWREWERWER24VXCGDFGDFGDFGDFGDFGDGDFGDGD',0,NULL,0,'2018-03-31 19:09:04',20,8);
+
+/*Table structure for table `satseries` */
+
+DROP TABLE IF EXISTS `satseries`;
+
+CREATE TABLE `satseries` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `serie` varchar(45) DEFAULT NULL,
+  `disponible` int(11) DEFAULT '1',
+  `satAparato_codigo` int(11) DEFAULT NULL,
+  `compra_sec` varchar(55) DEFAULT NULL,
+  `venta_sec` varchar(45) DEFAULT NULL,
+  `descripcion` varchar(800) DEFAULT NULL,
+  `fecha_compra` date DEFAULT NULL,
+  `fecha_venta` date DEFAULT NULL,
+  `fecha_ingreso` date DEFAULT NULL,
+  `color` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`codigo`),
+  KEY `fk_Series_sataparato1_idx` (`satAparato_codigo`),
+  CONSTRAINT `fk_Series_sataparato1` FOREIGN KEY (`satAparato_codigo`) REFERENCES `sataparato` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+/*Data for the table `satseries` */
+
+insert  into `satseries`(`codigo`,`serie`,`disponible`,`satAparato_codigo`,`compra_sec`,`venta_sec`,`descripcion`,`fecha_compra`,`fecha_venta`,`fecha_ingreso`,`color`) values (1,'cvcvcv',1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert  into `satseries`(`codigo`,`serie`,`disponible`,`satAparato_codigo`,`compra_sec`,`venta_sec`,`descripcion`,`fecha_compra`,`fecha_venta`,`fecha_ingreso`,`color`) values (2,'nnnnn',1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert  into `satseries`(`codigo`,`serie`,`disponible`,`satAparato_codigo`,`compra_sec`,`venta_sec`,`descripcion`,`fecha_compra`,`fecha_venta`,`fecha_ingreso`,`color`) values (3,'qwqwqw',0,3,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert  into `satseries`(`codigo`,`serie`,`disponible`,`satAparato_codigo`,`compra_sec`,`venta_sec`,`descripcion`,`fecha_compra`,`fecha_venta`,`fecha_ingreso`,`color`) values (4,'XZXZXZ',0,4,NULL,NULL,NULL,NULL,NULL,NULL,'ROJA');
+insert  into `satseries`(`codigo`,`serie`,`disponible`,`satAparato_codigo`,`compra_sec`,`venta_sec`,`descripcion`,`fecha_compra`,`fecha_venta`,`fecha_ingreso`,`color`) values (5,'TIERRA',0,5,NULL,NULL,NULL,NULL,NULL,NULL,'NEGRA');
+insert  into `satseries`(`codigo`,`serie`,`disponible`,`satAparato_codigo`,`compra_sec`,`venta_sec`,`descripcion`,`fecha_compra`,`fecha_venta`,`fecha_ingreso`,`color`) values (6,'TMUTMU',0,6,NULL,NULL,NULL,NULL,NULL,NULL,'NEGRA');
+insert  into `satseries`(`codigo`,`serie`,`disponible`,`satAparato_codigo`,`compra_sec`,`venta_sec`,`descripcion`,`fecha_compra`,`fecha_venta`,`fecha_ingreso`,`color`) values (7,'TTYTTY',0,7,NULL,NULL,NULL,NULL,NULL,NULL,'GRIS');
+insert  into `satseries`(`codigo`,`serie`,`disponible`,`satAparato_codigo`,`compra_sec`,`venta_sec`,`descripcion`,`fecha_compra`,`fecha_venta`,`fecha_ingreso`,`color`) values (8,'FANESCA XY',0,8,NULL,NULL,NULL,NULL,NULL,NULL,'NEGRA');
+
+/*Table structure for table `seriesfacturas` */
+
+DROP TABLE IF EXISTS `seriesfacturas`;
+
+CREATE TABLE `seriesfacturas` (
+  `codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `sec1` varchar(45) DEFAULT NULL,
+  `sec2` varchar(45) DEFAULT NULL,
+  `fac3` varchar(45) DEFAULT NULL,
+  `equipos_Codigo` int(100) NOT NULL,
+  PRIMARY KEY (`codigo`) USING BTREE,
+  KEY `fk_SeriesFacturas_equipos1_idx` (`equipos_Codigo`),
+  CONSTRAINT `fk_SeriesFacturas_equipos1` FOREIGN KEY (`equipos_Codigo`) REFERENCES `equipos` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
+
+/*Data for the table `seriesfacturas` */
+
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (1,'001','001','000000001',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (2,'001','001','000000002',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (3,'001','001','000000003',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (4,'001','001','000000002',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (5,'001','001','000000004',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (6,'001','001','000000005',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (7,'001','001','000000003',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (8,'001','001','000000006',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (9,'001','001','000000004',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (10,'001','001','000000005',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (11,'005','001','000000006',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (12,'005','001','000000007',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (13,'001','001','000000008',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (14,'001','001','000000009',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (15,'001','001','000000010',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (16,'001','001','000000009',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (17,'001','001','000000011',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (18,'001','001','000000012',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (19,'001','001','000000013',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (20,'001','001','000000010',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (21,'001','001','000000014',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (22,'001','001','000000015',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (23,'001','001','000000016',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (24,'001','001','000000017',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (25,'001','001','000000018',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (26,'001','001','000000019',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (27,'001','001','000000020',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (28,'001','001','000000021',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (29,'001','001','000000022',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (30,'001','001','000000023',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (31,'001','001','000000024',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (32,'001','001','000000025',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (33,'','','000000011',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (34,'','','000000012',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (35,'001','001','000000026',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (36,'001','001','000000027',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (37,'','','000000013',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (38,'','','000000014',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (39,'','','000000015',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (40,'001','001','000000028',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (41,'001','001','000000029',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (42,'001','001','000000030',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (43,'','','000000016',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (44,'001','001','000000001',21);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (45,'001','001','000000031',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (46,'001','001','000000032',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (47,'001','001','000000033',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (48,'001','001','000000034',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (49,'001','001','000000035',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (50,'001','001','000000036',20);
+insert  into `seriesfacturas`(`codigo`,`sec1`,`sec2`,`fac3`,`equipos_Codigo`) values (51,'001','001','000000037',20);
+
+/*Table structure for table `seriesretencion` */
+
+DROP TABLE IF EXISTS `seriesretencion`;
+
+CREATE TABLE `seriesretencion` (
+  `codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `sec1` varchar(45) DEFAULT NULL,
+  `sec2` varchar(45) DEFAULT NULL,
+  `fac3` varchar(45) DEFAULT NULL,
+  `equipos_Codigo` int(100) NOT NULL,
+  PRIMARY KEY (`codigo`) USING BTREE,
+  KEY `fk_SeriesRetencion_equipos1_idx` (`equipos_Codigo`),
+  CONSTRAINT `fk_SeriesRetencion_equipos1` FOREIGN KEY (`equipos_Codigo`) REFERENCES `equipos` (`Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `seriesretencion` */
+
+/*Table structure for table `sri_formas_pago` */
+
+DROP TABLE IF EXISTS `sri_formas_pago`;
+
+CREATE TABLE `sri_formas_pago` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `id` varchar(5) DEFAULT NULL,
+  `formaPago` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `sri_formas_pago` */
+
+/*Table structure for table `sri_porcentajes_retencion` */
+
+DROP TABLE IF EXISTS `sri_porcentajes_retencion`;
+
+CREATE TABLE `sri_porcentajes_retencion` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `id` varchar(5) DEFAULT NULL,
+  `porcentaje` double DEFAULT NULL,
+  `descripcion` varchar(300) DEFAULT NULL,
+  `tipo` varchar(100) DEFAULT NULL,
+  `cod` int(11) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+
+/*Data for the table `sri_porcentajes_retencion` */
+
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (1,'321',1,'TRANSFERENCIA DE BIENES MUEBLES DE NATURALEZA CORP','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (2,'721',30,'RETENCION IVA BIENES 30% ','IVA',1);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (3,'332',0,'OTRAS COMPRAS DE BIENES Y SERVICIOS NO SUJETAS A R\r\n','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (4,'303',10,'HONORARIOS PROFESIONALES Y DIETAS ','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (5,'309',1,'SERVICIOS PUBLICIDAD Y COMUNICACION\r\n','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (6,'723',70,'RETENCION IVA SERVICIOS 70% ','IVA',2);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (7,'310',1,'TRANSPORTE PRIVADO DE PASAJEROS O SERVICIO PUBLICO','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (8,'341',1.25,'IMPUESTO UNICO A LA EXPORTACION DE BANANO DE PRODU','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (9,'725',100,'RETENCION IVA SERVICIOS 100%','IVA',3);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (10,'304',8,'SERVICIOS PREDOMINA EL INTELECTO-NOTARIOS REGISTRA','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (11,'307',2,'SERVICIOS PRODOMINA LA MANO DE OBRA','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (12,'308',2,'SERVICIOS ENTRE SOCIEDADES','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (13,'322',1,'SEGUROS Y REASEGUROS (PRIMAS Y CESIONES) (10% DEL ','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (14,'334',0,'POR COMPRAS CON TARJETA DE CREDITO\r\n','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (15,'303',8,'OTRAS RETENCIONES APLICABLES EL 8%','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (16,'343',1,'OTRAS RETENCIONES APLICABLES EL 1%','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (17,'344',2,'APLICABLE A OTROS SERVICIOS 2% RENTA','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (18,'343B',1,'Por actividades de construcci√É¬≥n de obra material','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (19,'9',10,'RETENCION 10% IVA ENTRE ESPECIALES','IVA',9);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (20,'10',20,'RETENCION 20% ENTRE ESPECIALES','IVA',10);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (21,'320',8,'ARRENDAMIENTO DE INMUEBLES 8%','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (22,'311',2,'POR PAGO A TAVES DE LIQUIDACIONES DE COMPRA ','RENTA',NULL);
+insert  into `sri_porcentajes_retencion`(`codigo`,`id`,`porcentaje`,`descripcion`,`tipo`,`cod`) values (23,'314',8,'REGAL√É¬çAS POR CONCEPTO DE FRANQUICIAS DE ACUERDO A ','RENTA',NULL);
+
+/*Table structure for table `sri_sustentocomprobante` */
+
+DROP TABLE IF EXISTS `sri_sustentocomprobante`;
+
+CREATE TABLE `sri_sustentocomprobante` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `id` varchar(5) DEFAULT NULL,
+  `sustento` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+/*Data for the table `sri_sustentocomprobante` */
+
+insert  into `sri_sustentocomprobante`(`codigo`,`id`,`sustento`) values (1,'01','Cr√É¬©dito Tributario para declaraci√É¬≥n de IVA (servicios y bienes distintos de inventarios y activos fijos)');
+insert  into `sri_sustentocomprobante`(`codigo`,`id`,`sustento`) values (2,'02','Costo o Gasto para declaraci√É¬≥n de IR (servicios y bienes distintos de inventarios y activos fijos)');
+insert  into `sri_sustentocomprobante`(`codigo`,`id`,`sustento`) values (3,'03','Activo Fijo - Cr√É¬©dito Tributario para declaraci√É¬≥n de IVA');
+insert  into `sri_sustentocomprobante`(`codigo`,`id`,`sustento`) values (4,'04','Activo Fijo - Costo o Gasto para declaraci√É¬≥n de IR');
+insert  into `sri_sustentocomprobante`(`codigo`,`id`,`sustento`) values (5,'05','Liquidaci√É¬≥n Gastos de Viaje, hospedaje y alimentaci√É¬≥n Gastos IR (a nombre de empleados y no de la empresa)');
+insert  into `sri_sustentocomprobante`(`codigo`,`id`,`sustento`) values (6,'06','Inventario - Cr√É¬©dito Tributario para declaraci√É¬≥n de IVA');
+insert  into `sri_sustentocomprobante`(`codigo`,`id`,`sustento`) values (7,'07','Inventario - Costo o Gasto para declaraci√É¬≥n de IR');
+insert  into `sri_sustentocomprobante`(`codigo`,`id`,`sustento`) values (8,'08','Valor pagado para solicitar Reembolso de Gasto (intermediario)');
+insert  into `sri_sustentocomprobante`(`codigo`,`id`,`sustento`) values (9,'09','Reembolso por Siniestros');
+insert  into `sri_sustentocomprobante`(`codigo`,`id`,`sustento`) values (10,'10','Distribuci√É¬≥n de Dividendos, Beneficios o Utilidades');
+
+/*Table structure for table `sri_tarjetascredito` */
+
+DROP TABLE IF EXISTS `sri_tarjetascredito`;
+
+CREATE TABLE `sri_tarjetascredito` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `id` varchar(5) DEFAULT NULL,
+  `tarjeta` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `sri_tarjetascredito` */
+
+/*Table structure for table `sri_tipocomprobante` */
+
+DROP TABLE IF EXISTS `sri_tipocomprobante`;
+
+CREATE TABLE `sri_tipocomprobante` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `id` varchar(5) DEFAULT NULL,
+  `tipoComprobante` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+
+/*Data for the table `sri_tipocomprobante` */
+
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (1,'1','Factura');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (2,'2','Nota o boleta de venta ');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (3,'3','Liquidaci√É¬≥n de compra de Bienes o Prestaci√É¬≥n de servicios ');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (4,'4','Nota de cr√É¬©dito');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (5,'5','Nota de d√É¬©bito');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (6,'6','Gu√É¬≠as de Remisi√É¬≥n ');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (7,'7','Comprobante de Retenci√É¬≥n');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (8,'8','Boletos o entradas a espect√É¬°culos p√É¬∫blicos');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (9,'9','Tiquetes o vales emitidos por m√É¬°quinas registradoras');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (10,'11','Pasajes expedidos por empresas de aviaci√É¬≥n');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (11,'12','Documentos emitidos por instituciones financieras\r\n');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (12,'15','Comprobante de venta emitido en el Exterior');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (13,'16','Formulario √É≈°nico de Exportaci√É¬≥n (FUE) o Declaraci√É¬≥n Aduanera √É≈°nica (DAU) o Declaraci√É¬≥n Andina de Valor (DAV)');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (14,'18','Documentos autorizados utilizados en ventas excepto N/C N/D ');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (15,'19','Comprobantes de Pago de Cuotas o Aportes');
+insert  into `sri_tipocomprobante`(`codigo`,`id`,`tipoComprobante`) values (16,'20','Documentos por Servicios Administrativos emitidos por Inst. del Estado');
+
+/*Table structure for table `tickets` */
+
+DROP TABLE IF EXISTS `tickets`;
+
+CREATE TABLE `tickets` (
+  `Codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `fecha` date DEFAULT NULL,
+  `hora` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `iva` varchar(10) DEFAULT NULL,
+  `Iva_valor` varchar(45) NOT NULL,
+  `subtotaI_con_iva` varchar(45) DEFAULT NULL,
+  `subtotal_sin_iva` varchar(45) DEFAULT NULL,
+  `total` varchar(45) DEFAULT NULL,
+  `utilidad` varchar(45) DEFAULT NULL,
+  `tipo_documento` varchar(45) DEFAULT NULL,
+  `descuento` varchar(45) DEFAULT NULL,
+  `Clientes_codigo` int(100) NOT NULL,
+  `Usuarios_Codigo` int(100) NOT NULL,
+  `Equipo` varchar(75) DEFAULT NULL,
+  `secuencia` varchar(45) DEFAULT NULL,
+  `anulada` tinyint(1) NOT NULL DEFAULT '1',
+  `fechain` varchar(45) DEFAULT NULL,
+  `calveAcceso` varchar(100) DEFAULT NULL,
+  `estado` int(1) DEFAULT NULL,
+  `DescripcionElectronica` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`Codigo`),
+  KEY `fk_ticket_Clientes1_idx` (`Clientes_codigo`),
+  KEY `fk_ticket_usuarios1_idx` (`Usuarios_Codigo`),
+  CONSTRAINT `fk_ticket_Clientes1` FOREIGN KEY (`Clientes_codigo`) REFERENCES `clientes` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ticket_usuarios1` FOREIGN KEY (`Usuarios_Codigo`) REFERENCES `usuarios` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8;
+
+/*Data for the table `tickets` */
+
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (1,'2018-04-08','2018-04-08 12:48:16','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (2,'2018-04-08','2018-04-08 12:55:44','12.0','1.79','14.91','0.00','16.70','4.61','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (3,'2018-04-08','2018-04-08 12:57:19','12.0','1.79','14.91','0.00','16.70','4.61','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (4,'2018-04-08','2018-04-08 22:01:48','12.0','1.79','14.91','0.00','16.70','4.61','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (5,'2018-04-08','2018-04-08 22:04:06','12.0','3.40','28.30','0.00','31.70','9.02','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (6,'2018-04-08','2018-04-08 22:07:10','12.0','1.79','14.91','0.00','16.70','4.61','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (7,'2018-04-08','2018-04-08 22:13:57','12.0','1.79','14.91','0.00','16.70','4.61','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (8,'2018-04-08','2018-04-08 22:19:07','12.0','1.79','14.91','0.00','16.70','4.61','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (9,'2018-04-08','2018-04-08 22:20:30','12.0','96.43','803.57','0.00','900.00','264.6','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (10,'2018-04-08','2018-04-08 22:22:21','12.0','51.65','430.45','0.00','482.10','122.85','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (11,'2018-04-08','2018-04-08 22:23:24','12.0','60.26','502.14','0.00','562.40','158.75000000000003','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (12,'2018-04-08','2018-04-08 22:23:51','12.0','10.93','91.07','0.00','102.00','12.0','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (13,'2018-04-08','2018-04-08 22:25:50','12.0','0.56','4.64','0.00','5.20','1.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (14,'2018-04-08','2018-04-08 22:30:43','12.0','0.36','3.04','0.00','3.40','0.3999999999999999','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000001',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (15,'2018-04-08','2018-04-08 22:50:05','12.0','1.61','13.39','0.00','15.00','4.41','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000002',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (16,'2018-04-08','2018-04-08 22:50:26','12.0','1.61','13.39','0.00','15.00','4.41','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000003',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (17,'2018-04-08','2018-04-08 22:56:47','12.0','1.61','13.39','0.00','15.00','4.41','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000004',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (18,'2018-04-08','2018-04-08 23:46:55','12.0','1.79','14.91','0.00','16.70','4.61','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000005',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (19,'2018-04-08','2018-04-08 23:52:31','12.0','1.79','14.91','0.00','16.70','4.61','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000006',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (20,'2018-04-08','2018-04-08 23:57:42','12.0','0.56','4.64','0.00','5.20','1.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000007',1,'2018-04-08 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (21,'2018-04-09','2018-04-09 00:00:16','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000003',1,'2018-04-09 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (22,'2018-04-09','2018-04-09 12:00:29','12.0','1.61','13.39','0.00','15.00','4.41','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000008',1,'2018-04-09 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (23,'2018-04-09','2018-04-09 12:01:15','12.0','1.61','13.39','0.00','15.00','4.41','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000009',1,'2018-04-09 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (24,'2018-04-09','2018-04-09 17:53:42','12.0','1.61','13.39','0.00','15.00','4.41','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000010',1,'2018-04-09 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (25,'2018-04-11','2018-04-11 16:27:22','12.0','0.54','4.46','0.00','5.00','3.5','TICKET','0.00',16,4,'DESKTOP-OQEODUI','000000011',1,'2018-04-11 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (26,'2018-04-12','2018-04-12 14:11:25','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000012',1,'2018-04-12 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (27,'2018-04-12','2018-04-12 14:13:01','12.0','1.93','16.07','0.00','18.00','6.42','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000013',1,'2018-04-12 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (28,'2018-04-12','2018-04-12 14:45:31','12.0','0.32','2.68','0.00','3.00','2.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000014',1,'2018-04-12 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (29,'2018-04-12','2018-04-12 15:14:42','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000015',1,'2018-04-12 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (30,'2018-04-12','2018-04-12 15:25:30','12.0','2.84','23.66','0.00','26.50','9.92','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000016',1,'2018-04-12 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (31,'2018-04-12','2018-04-12 17:13:23','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000017',1,'2018-04-12 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (32,'2018-04-12','2018-04-12 17:15:49','12.0','3.02','25.18','0.00','28.20','10.120000000000001','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000018',1,'2018-04-12 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (33,'2018-04-12','2018-04-12 23:57:51','12.0','2.11','17.59','0.00','19.70','8.53','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000019',1,'2018-04-12 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (34,'2018-04-12','2018-04-12 23:58:48','12.0','1.79','14.91','0.00','16.70','6.52','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000020',1,'2018-04-12 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (35,'2018-04-12','2018-04-13 00:00:48','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000021',1,'2018-04-12 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (36,'2018-04-13','2018-04-13 00:07:29','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000022',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (37,'2018-04-13','2018-04-13 00:08:11','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000023',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (38,'2018-04-13','2018-04-13 00:13:13','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000024',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (39,'2018-04-13','2018-04-13 00:17:38','12.0','0.32','2.68','0.00','3.00','2.01','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000025',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (40,'2018-04-13','2018-04-13 07:39:02','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000026',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (41,'2018-04-13','2018-04-13 07:41:54','12.0','0.32','2.68','0.00','3.00','2.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000027',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (42,'2018-04-13','2018-04-13 07:42:24','12.0','1.61','13.39','0.00','15.00','4.41','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000028',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (43,'2018-04-13','2018-04-13 07:45:27','12.0','0.32','2.68','0.00','3.00','2.01','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000029',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (44,'2018-04-13','2018-04-13 08:02:59','12.0','0.32','2.68','0.00','3.00','2.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000030',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (45,'2018-04-13','2018-04-13 08:03:20','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000031',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (46,'2018-04-13','2018-04-13 08:07:46','12.0','0.32','2.68','0.00','3.00','2.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000032',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (47,'2018-04-13','2018-04-13 08:08:22','12.0','0.32','2.68','0.00','3.00','2.01','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000033',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (48,'2018-04-13','2018-04-13 14:40:36','12.0','0.32','2.68','0.00','3.00','2.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000034',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (49,'2018-04-13','2018-04-13 14:41:30','12.0','0.32','2.68','0.00','3.00','2.01','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000035',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (50,'2018-04-13','2018-04-13 15:25:58','12.0','0.32','2.68','0.00','3.00','2.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000036',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (51,'2018-04-13','2018-04-13 15:26:16','12.0','0.38','3.12','0.00','3.50','0.81','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000019',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (52,'2018-04-13','2018-04-13 15:46:39','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000037',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (53,'2018-04-13','2018-04-13 15:46:54','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000038',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (54,'2018-04-13','2018-04-13 16:16:00','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000039',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (55,'2018-04-13','2018-04-13 16:20:12','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000040',1,'2018-04-13 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (56,'2018-04-14','2018-04-14 10:51:24','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000041',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (57,'2018-04-14','2018-04-14 10:52:30','12.0','1.98','16.52','0.00','18.50','5.220000000000001','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000042',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (58,'2018-04-14','2018-04-14 11:23:13','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000043',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (59,'2018-04-14','2018-04-14 11:28:46','12.0','1.61','13.39','0.00','15.00','4.41','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000044',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (60,'2018-04-14','2018-04-14 11:51:24','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','FACTURA','0.00',17,4,'DESKTOP-OQEODUI','000000045',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (61,'2018-04-14','2018-04-14 12:16:22','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000046',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (62,'2018-04-14','2018-04-14 12:18:11','12.0','0.32','2.68','0.00','3.00','2.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000047',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (63,'2018-04-14','2018-04-14 12:20:48','12.0','0.32','2.68','0.00','3.00','2.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000048',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (64,'2018-04-14','2018-04-14 12:50:56','12.0','4.68','39.02','0.00','43.70','13.33','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000049',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (65,'2018-04-14','2018-04-14 12:53:18','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',2,4,'DESKTOP-OQEODUI','000000050',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (66,'2018-04-14','2018-04-14 13:06:01','12.0','0.32','2.68','0.00','3.00','2.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000051',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (67,'2018-04-14','2018-04-14 13:07:56','12.0','161.04','1341.96','0.00','1503.00','1502.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000052',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (68,'2018-04-14','2018-04-14 13:10:04','12.0','1414.29','11785.71','0.00','13200.00','12111.0','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000053',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (69,'2018-04-14','2018-04-14 13:18:08','12.0','321.43','2678.57','0.00','3000.00','2999.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000054',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (70,'2018-04-14','2018-04-14 13:36:35','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000055',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (71,'2018-04-14','2018-04-14 13:42:52','12.0','0.38','3.12','0.00','3.50','0.81','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000056',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (72,'2018-04-14','2018-04-14 13:43:37','12.0','56.14','467.86','0.00','524.00','156.8','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000057',1,'2018-04-14 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (73,'2018-04-19','2018-04-19 18:10:55','12.0','1.61','13.39','0.00','15.00','4.41','TICKET','0.00',19,4,'optimus','000000058',1,'2018-04-19 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (74,'2018-04-21','2018-04-21 10:36:47','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',19,4,'DESKTOP-OQEODUI','000000059',1,'2018-04-21 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (75,'2018-04-21','2018-04-21 10:48:12','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000060',1,'2018-04-21 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (76,'2018-04-21','2018-04-21 11:35:21','12.0','1.61','13.39','0.00','15.00','4.41','TICKET','0.00',15,4,'DESKTOP-OQEODUI','000000061',1,'2018-04-21 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (77,'2018-04-21','2018-04-21 11:38:42','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000062',1,'2018-04-21 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (78,'2018-04-21','2018-04-21 11:40:08','12.0','0.32','2.68','0.00','3.00','2.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000063',1,'2018-04-21 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (79,'2018-04-21','2018-04-21 11:41:59','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000064',1,'2018-04-21 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (80,'2018-04-21','2018-04-21 11:43:54','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000065',1,'2018-04-21 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (81,'2018-04-21','2018-04-21 11:45:48','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000066',1,'2018-04-21 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (82,'2018-04-21','2018-04-21 11:47:41','12.0','0.18','1.52','0.00','1.70','0.19999999999999996','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000067',1,'2018-04-21 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (83,'2018-04-21','2018-04-21 12:12:03','12.0','0.00','0.00','0.00','3.00','2.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000068',1,'2018-04-21 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (84,'2018-04-21','2018-04-21 12:26:05','12.0','0.32','2.68','0.00','3.00','2.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000069',1,'2018-04-21 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (85,'2018-04-21','2018-04-21 12:31:22','12.0','0.32','2.68','0.00','3.00','2.01','TICKET','0.00',17,4,'DESKTOP-OQEODUI','000000070',1,'2018-04-21 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (86,'2018-05-22','2018-05-22 15:55:19','12.0','0.00','0.00','0.00','1.70','0.19999999999999996','TICKET','0.00',19,4,'DESKTOP-OQEODUI','000000071',1,'2018-05-22 00:00:00',NULL,NULL,NULL);
+insert  into `tickets`(`Codigo`,`fecha`,`hora`,`iva`,`Iva_valor`,`subtotaI_con_iva`,`subtotal_sin_iva`,`total`,`utilidad`,`tipo_documento`,`descuento`,`Clientes_codigo`,`Usuarios_Codigo`,`Equipo`,`secuencia`,`anulada`,`fechain`,`calveAcceso`,`estado`,`DescripcionElectronica`) values (87,'2018-05-22','2018-05-22 15:55:53','12.0','1.61','13.39','0.00','15.00','4.41','TICKET','0.00',16,4,'DESKTOP-OQEODUI','000000072',1,'2018-05-22 00:00:00',NULL,NULL,NULL);
+
+/*Table structure for table `tipos_usuarios` */
+
+DROP TABLE IF EXISTS `tipos_usuarios`;
+
+CREATE TABLE `tipos_usuarios` (
+  `codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `tipo` varchar(45) DEFAULT NULL,
+  `Descripcion` varchar(95) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `tipos_usuarios` */
+
+insert  into `tipos_usuarios`(`codigo`,`tipo`,`Descripcion`) values (1,'ADMIN',NULL);
+
+/*Table structure for table `usuarios` */
+
+DROP TABLE IF EXISTS `usuarios`;
+
+CREATE TABLE `usuarios` (
+  `codigo` int(100) NOT NULL AUTO_INCREMENT,
+  `Cedula` varchar(50) DEFAULT NULL,
+  `Nombres` varchar(35) DEFAULT NULL,
+  `Telefono` varchar(40) DEFAULT NULL,
+  `Celular` varchar(40) DEFAULT NULL,
+  `mail` varchar(50) DEFAULT NULL,
+  `Direccion` varchar(150) DEFAULT NULL,
+  `Usuario` varchar(20) DEFAULT NULL,
+  `password` varchar(20) DEFAULT NULL,
+  `Estado` varchar(15) DEFAULT NULL,
+  `Tipo_Usuario_codigo` int(100) NOT NULL,
+  PRIMARY KEY (`codigo`,`Tipo_Usuario_codigo`),
+  KEY `fk_usuarios_Tipo_Usuario1_idx` (`Tipo_Usuario_codigo`),
+  CONSTRAINT `fk_usuarios_Tipo_Usuario1` FOREIGN KEY (`Tipo_Usuario_codigo`) REFERENCES `tipos_usuarios` (`codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+/*Data for the table `usuarios` */
+
+insert  into `usuarios`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Usuario`,`password`,`Estado`,`Tipo_Usuario_codigo`) values (4,'1722239967','JIMM','00','0992669329','ADAD','ASD','ADMIN','ADMIN','1',1);
+insert  into `usuarios`(`codigo`,`Cedula`,`Nombres`,`Telefono`,`Celular`,`mail`,`Direccion`,`Usuario`,`password`,`Estado`,`Tipo_Usuario_codigo`) values (5,'1722423967','MIGUEL GETIAL','','','','','MIGUEL','123.','ACTIVO',1);
+
+/* Trigger structure for table `detallefactura` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `UpdateInventarioonDelte` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `UpdateInventarioonDelte` AFTER DELETE ON `detallefactura` FOR EACH ROW UPDATE productos
+     SET productos.cantidad = productos.cantidad + old.cantidad
+   WHERE productos.codigo = old.Productos_Codigo */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `detalleticket` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `UpdateInventarioOnTickets` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `UpdateInventarioOnTickets` AFTER INSERT ON `detalleticket` FOR EACH ROW UPDATE productos
+     SET productos.cantidad = productos.cantidad - NEW.cantidad
+   WHERE productos.codigo = NEW.Productos_Codigo */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `detalleticket` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `UpdateInventarioonDelteOnTickets` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `UpdateInventarioonDelteOnTickets` AFTER DELETE ON `detalleticket` FOR EACH ROW UPDATE productos
+     SET productos.cantidad = productos.cantidad + old.cantidad
+   WHERE productos.codigo = old.Productos_Codigo */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `facturas` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `EliminarDetalleFacturaAntesDeEliminarLaFactira` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `EliminarDetalleFacturaAntesDeEliminarLaFactira` BEFORE DELETE ON `facturas` FOR EACH ROW DELETE from detallefactura WHERE detallefactura.Factura_Codigo = old.codigo */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `kardex` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `kardex` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'%' */ /*!50003 TRIGGER `kardex` BEFORE INSERT ON `kardex` FOR EACH ROW CASE
+WHEN NEW.bodega= '1' THEN   UPDATE productos
+     SET productos.B1 = B1 - NEW.outcantidad +NEW.incantidad
+   WHERE productos.codigo = new.Productos_Codigo;
+WHEN NEW.bodega= '2' THEN   UPDATE 
+productos SET productos.B2 = B2 - NEW.outcantidad +NEW.incantidad
+   WHERE productos.codigo = new.Productos_Codigo;
+WHEN NEW.bodega= '3' THEN   UPDATE 
+productos SET productos.B3 = B3 - NEW.outcantidad +NEW.incantidad
+   WHERE productos.codigo = new.Productos_Codigo;
+WHEN NEW.bodega= '4' THEN   UPDATE 
+productos SET productos.B4 = B5 - NEW.outcantidad +NEW.incantidad
+   WHERE productos.codigo = new.Productos_Codigo;
+   WHEN NEW.bodega= '5' THEN   UPDATE 
+productos SET productos.B5 = B5 - NEW.outcantidad +NEW.incantidad
+   WHERE productos.codigo = new.Productos_Codigo;
+   WHEN NEW.bodega= '6' THEN   UPDATE 
+productos SET productos.B6 = B6 - NEW.outcantidad +NEW.incantidad
+   WHERE productos.codigo = new.Productos_Codigo;
+   WHEN NEW.bodega= '7' THEN   UPDATE 
+productos SET productos.B7 = B7 - NEW.outcantidad +NEW.incantidad
+   WHERE productos.codigo = new.Productos_Codigo;
+   WHEN NEW.bodega= '8' THEN   UPDATE 
+productos SET productos.B8 = B8 - NEW.outcantidad +NEW.incantidad
+   WHERE productos.codigo = new.Productos_Codigo;   
+   
+   
+   WHEN NEW.bodega= '777' THEN 
+SET NEW.saldocantidad=NEW.saldocantidad + 
+NEW.outcantidad - NEW.incantidad;
+SET NEW.saldocosto=NEW.saldocantidad * 
+NEW.incosto; 
+SET NEW.saldopvp=NEW.saldocantidad * NEW.inpvp;
+    END CASE */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `tickets` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `EliminarDetalleTicketAntesDeEliminarElTicket` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `EliminarDetalleTicketAntesDeEliminarElTicket` BEFORE DELETE ON `tickets` FOR EACH ROW DELETE from detalleticket WHERE detalleticket.Ticket_Codigo = old.codigo */$$
+
+
+DELIMITER ;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
