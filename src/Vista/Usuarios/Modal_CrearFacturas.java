@@ -2697,10 +2697,9 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         } else if (evt.getKeyCode() == com.sun.glass.events.KeyEvent.VK_ENTER) {
     calculosAlseleccionarProductodesdeJList();
         } else {
-            System.err.println("TECKAS" + evt.getKeyChar() + " " + evt.getKeyCode());
+            System.err.println("TEClasAS" + evt.getKeyChar() + " " + evt.getKeyCode());
             txtbuscarx.requestFocus();
         }
-
     }//GEN-LAST:event_listxKeyPressed
 
     private void listxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listxMouseClicked
