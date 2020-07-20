@@ -13,7 +13,7 @@ import Controlador.Usuarios.TicketsDao;
 import Modelo.Facturas;
 import Modelo.Cxc;
 import Modelo.Tickets;
-import static Vista.Usuarios.Crear_Facturas.RegistrodeEfectivoyCambioExitoso;
+import static Vista.Usuarios.Modal_CrearFacturas.RegistrodeEfectivoyCambioExitoso;
 import Vlidaciones.ValidaNUmeros;
 import java.awt.event.WindowAdapter;
 import login.login;
@@ -255,10 +255,10 @@ public class PagoEfectivo extends javax.swing.JDialog {
             txt_entrada.selectAll();
 
         } else {
-            Crear_Facturas.efectivo = Double.parseDouble(txt_entrada.getText());
-            Crear_Facturas.cambio = Double.parseDouble(txt_cambio.getText());
+            Modal_CrearFacturas.efectivo = Double.parseDouble(txt_entrada.getText());
+            Modal_CrearFacturas.cambio = Double.parseDouble(txt_cambio.getText());
            
-            Crear_Facturas.procedeVentaExitosa=true;
+            Modal_CrearFacturas.procedeVentaExitosa=true;
             this.dispose();
         }
 

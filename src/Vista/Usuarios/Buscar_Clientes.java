@@ -46,7 +46,7 @@ public class Buscar_Clientes extends javax.swing.JInternalFrame {
         ClientesDao obj = new ClientesDao();
         //String sql = "select * from usuarios where estado = 'Activo'";
         jTable1.setDefaultRenderer(Object.class, new JTablesOPciones());
-        jTable1.setModel(obj.Buscar_table_only_Activos(sql_all));
+        jTable1.setModel(obj.Buscar_table_only_Activos(0));
         jTable1.setRowHeight(25);
        
       
@@ -286,7 +286,7 @@ public class Buscar_Clientes extends javax.swing.JInternalFrame {
     private void txt_cedulaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cedulaKeyReleased
         // TODO add your handling code here:
         ClientesDao obj = new ClientesDao();
-        jTable1.setModel(obj.Buscar_table("Cedula", txt_cedula.getText()));
+        jTable1.setModel(obj.Buscar_table("Cedula", txt_cedula.getText(),0));
         this.ocultarFIlasJtable();///
 
     }//GEN-LAST:event_txt_cedulaKeyReleased
@@ -294,7 +294,7 @@ public class Buscar_Clientes extends javax.swing.JInternalFrame {
     private void txt_nombresKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombresKeyReleased
         // TODO add your handling code here:
         ClientesDao obj = new ClientesDao();
-        jTable1.setModel(obj.Buscar_table("Nombres", txt_nombres.getText()));
+        jTable1.setModel(obj.Buscar_table("Nombres", txt_nombres.getText(),0));
         this.ocultarFIlasJtable();
         ///
     }//GEN-LAST:event_txt_nombresKeyReleased
@@ -302,7 +302,7 @@ public class Buscar_Clientes extends javax.swing.JInternalFrame {
     private void txt_usuariosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuariosKeyReleased
         // TODO add your handling code here:
         ClientesDao obj = new ClientesDao();
-        jTable1.setModel(obj.Buscar_table("Usuario", txt_usuarios.getText()));
+        jTable1.setModel(obj.Buscar_table("Usuario", txt_usuarios.getText(),0));
         this.ocultarFIlasJtable();
         ///
     }//GEN-LAST:event_txt_usuariosKeyReleased
@@ -343,13 +343,13 @@ public class Buscar_Clientes extends javax.swing.JInternalFrame {
         //obtengo el codigo del usuario
         String Valor = table.getValueAt(row, 0).toString();
         //mando a buscar la informacion del usuaruio con el codigo obtenido dle evento click
-        usuario = objDao.buscarConID(Integer.parseInt(Valor));
+        usuario = objDao.buscarConID(Integer.parseInt(Valor),0);
         usuario1 = usuario;
         //lleno el fomulario 
         obj_crea.txt_codigo.setText(String.valueOf(usuario.getCodigo()));
         System.out.println("CODIGOOO:  "+obj_crea.txt_codigo.getText());
        // JOptionPane.showMessageDialog(null, "codigo: "+usuario.getCodigo());
-        obj_crea.txt_cedula.setText(usuario.getCedula());
+        obj_crea.txt_cedulax.setText(usuario.getCedula());
         obj_crea.txt_nombres.setText(usuario.getNombre());
         obj_crea.txt_celular.setText(usuario.getCelular());
         obj_crea.txt_dir.setText(usuario.getDireccion());
@@ -454,7 +454,7 @@ public class Buscar_Clientes extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         ClientesDao objDao = new ClientesDao();
 
-        jTable1.setModel(objDao.Buscar_table_only_Activos(sql_all));
+        jTable1.setModel(objDao.Buscar_table_only_Activos(0));
 //        for (int i = 0; i <= jTable1.getRowCount(); i++) {
 //             if (jTable1.getValueAt(i, 7).equals("Inactivo")) {
 //                //jTable1.setBackground(Color.MAGENTA);
@@ -475,7 +475,7 @@ public class Buscar_Clientes extends javax.swing.JInternalFrame {
                 obj1.eliminar(usuario1);
                 ClientesDao obj = new ClientesDao();
 
-                jTable1.setModel(obj.Buscar_table_only_Activos(sql_all));
+                jTable1.setModel(obj.Buscar_table_only_Activos(0));
                 this.ocultarFIlasJtable();
             }
         } catch (Exception ex) {
@@ -485,8 +485,7 @@ public class Buscar_Clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_EliminarActionPerformed
 
     private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
-        // TODO add your handling code here:
-
+        // TODO add your handling code here:        
     }//GEN-LAST:event_formInternalFrameClosed
 
 

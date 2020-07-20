@@ -15,14 +15,14 @@ import Modelo.sri_sustentocomprobante;
 import Modelo.sri_tipocomprobante;
 import Vista.Principal;
 import Vlidaciones.ProgressBar;
-import ec.unomas.elements.ArchivoUtil;
-import ec.unomas.factura.Detalle;
-import ec.unomas.factura.Factura;
-import ec.unomas.factura.Impuesto;
-import ec.unomas.factura.InfoAdicional;
-import ec.unomas.factura.TotalImpuesto;
-import ec.unomas.service.Comprobante;
-import ec.unomas.service.Config;
+import ecx.unomas.elements.ArchivoUtil;
+import ecx.unomas.factura.Detalle;
+import ecx.unomas.factura.Factura;
+import ecx.unomas.factura.Impuesto;
+import ecx.unomas.factura.InfoAdicional;
+import ecx.unomas.factura.TotalImpuesto;
+import ecx.unomas.service.Comprobante;
+import ecx.unomas.service.Config;
 import login.login;
 import java.io.File;
 import java.io.IOException;
@@ -254,12 +254,12 @@ public class ComprasDao extends Coneccion {
 
             f.setFechaEmision(HoraFecha.fecha_ddmmaaa_conSlash(fac.getFecha().toString()));
             f.setDirEstablecimiento(login.direccionEmpresa);
-            f.setContribuyenteEspecial(login.contribuyenteEspecialNUmero);
+            f.setContribuyenteEspecial(login.contribuyenteEspecialNUmero.toString());
             f.setObligadoContabilidad(login.ObligadoSiNOEmpresa);
             ClientesDao clienteDao = new ClientesDao();
             Clientes cliente = new Clientes();
 
-            cliente = clienteDao.buscarConID(fac.getProveedores_codigo());
+            cliente = clienteDao.buscarConID(fac.getProveedores_codigo(),1);
 
             if (cliente.getCedula().length() == 10) {
                 f.setTipoIdentificacionComprador(Variables.FE_TIPO_IDENTIFICACION_CEDULA);

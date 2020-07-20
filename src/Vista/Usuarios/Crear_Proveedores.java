@@ -594,7 +594,7 @@ public class Crear_Proveedores extends javax.swing.JInternalFrame {
             u.setVendedor(t_vendedor.getText());
             u.setExtension(t_extension.getText());
             u.setObservaciones(t_Observaciones.getText());
-            if (!jcb_tipo.getSelectedItem().equals("SELECCIONE")) {
+            if (!jcb_tipo.getSelectedItem().equals("SELECCIONE")||!jcb_tipo.getSelectedItem().equals("")) {
                 u.setPagoPredeterminado(jcb_tipo.getSelectedItem().toString());
             }
             if (evt.getActionCommand().equals("Actualizar")) {
@@ -604,9 +604,10 @@ public class Crear_Proveedores extends javax.swing.JInternalFrame {
                 obj.modificar(u);
                 this.dispose();
                 ProveedoresDao cu = new ProveedoresDao();
-                String sql = "select * from Proveedores  order BY Nombres ";
+                
+               // String sql = "select * from Proveedores  order BY Nombres ";
 
-                Buscar_Proveedores.jTable1.setModel(cu.Buscar_table_only_Activos(sql));
+                Modal_buscarProveedores.jTable1.setModel(cu.Buscar_table_only_Activos());
 
             } else {
 

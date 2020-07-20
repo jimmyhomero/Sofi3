@@ -32,8 +32,9 @@ import Vista.Usuarios.ErrorConexion;
 import Vista.Usuarios.NuevoEquipo;
 import Vista.Usuarios.SelectCaja;
 import Vista.alertas.MnesajesOption;
+import Vista.jc;
 import ec.gob.sri.comprobantes.ws.Mensaje;
-import ec.unomas.service.Config;
+import ecx.unomas.service.Config;
 import java.awt.Frame;
 import java.io.File;
 //import static Vista.Usuarios.DatosEmpresaForm.txt_nombres;
@@ -58,11 +59,12 @@ public class login extends javax.swing.JFrame {
     public static String usuario;
     public static String nombresUsuario;
     public static Integer CodigoUsuario;
+    public static Integer CodigoTipoUsuario;
     public static String nombreDelEquipo;
     public static Integer CodigoDelEquipo;
     public static String nombreEmpresa;
     public static String rucEmpresa;
-    public static Integer contribuyenteEspecialNUmero = 0;
+    public static String contribuyenteEspecialNUmero = "";
     public static String direccionEmpresa;
     public static String telefonoEmpresa;
     public static String celularEmpresa;
@@ -73,8 +75,8 @@ public class login extends javax.swing.JFrame {
     public static String __unidadPersistencia = "pu";
     Map<String, String> persistenceMap = new HashMap<String, String>();
 
-    public static EntityManagerFactory __factory;
-    public static Persistence p = new Persistence();
+   // public static EntityManagerFactory __factory;
+   // public static Persistence p = new Persistence();
 
     public login() throws ParseException {
 
@@ -232,7 +234,7 @@ public class login extends javax.swing.JFrame {
         });
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 50, 60));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, 60));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 60));
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 102));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -319,7 +321,10 @@ public class login extends javax.swing.JFrame {
 
 
     private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
-        //   Persona per = new Persona();
+        
+/////////////////inicializa la condiguracion de los direcctorios detectando si el equipos es linux o Windows
+Config.iniciarConfig();
+//   Persona per = new Persona();
         //JOptionPane.showMessageDialog(null,Config.GENERADOS_DIR );
         String u = txt_user.getText();
         String p = String.valueOf(txt_pass.getPassword());
@@ -335,7 +340,9 @@ public class login extends javax.swing.JFrame {
                     if (usr.getPassword().equals(p) && usr.getUsuario().equals(u)) {
                         nombresUsuario = usr.getNombre();
                         CodigoUsuario = usr.getCodigo();
+                        CodigoTipoUsuario=usr.getTipo_Usuario_codigo();
                         usuario = usr.getUsuario();
+                        
                         if (estaregistrado) {
                             DatosEmpresa obj = new DatosEmpresa();
                             DatosEmpresaDao objDao = new DatosEmpresaDao();
@@ -350,7 +357,12 @@ public class login extends javax.swing.JFrame {
                             persistenceMap.put("javax.persistence.jdbc.password", "miguel66677710101418/2=golosos");
                             persistenceMap.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
                             System.out.println("Base seleccionada Persistence "+ Coneccion.bdd);
-                            __factory=Persistence.createEntityManagerFactory("pu", persistenceMap);
+///////                            __factory=Persistence.createEntityManagerFactory("pu", persistenceMap);
+                          
+//                            jc principal2 = new jc();
+//                            
+//                            principal2.setVisible(true);
+                            
                             Principal m = new Principal();
                             m.setVisible(true);
                             this.setVisible(false);
@@ -452,6 +464,7 @@ public class login extends javax.swing.JFrame {
 
     private void btn_login1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_login1ActionPerformed
         // TODO add your handling code here:
+                System.exit(0);
     }//GEN-LAST:event_btn_login1ActionPerformed
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked

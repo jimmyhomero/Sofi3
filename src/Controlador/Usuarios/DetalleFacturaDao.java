@@ -335,6 +335,11 @@ public class DetalleFacturaDao extends Coneccion {
             while (rs.next()) {
                 DetalleFactura per = new DetalleFactura();
                 per.setCodigo(rs.getInt("Codigo"));
+                if(rs.getString("iva").equalsIgnoreCase("0")){
+                per.setTineIva("no");
+                }else{
+                per.setTineIva("si");
+                }
                 per.setIva(rs.getString("iva"));
                 per.setDetalle(rs.getString("detalle"));
                 per.setCantidad(rs.getString("cantidad"));

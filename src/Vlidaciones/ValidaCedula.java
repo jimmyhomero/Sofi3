@@ -19,8 +19,6 @@ public class ValidaCedula {
     boolean existeUsuario = false;
     boolean cedulaCorrecta = false;
     UsuariosDao obj = new UsuariosDao();
-    
-    
 
     public boolean isCedula(String cedula) {
         String ruc = "";
@@ -113,7 +111,7 @@ public class ValidaCedula {
         boolean pub = false;
         boolean nat = false;
         Integer numeroProvincias = 22;
-        Integer modulo = 11;       
+        Integer modulo = 11;
         /* Aqui almacenamos los digitos de la cedula en variables. */
         String d1 = numero.substring(0, 1);
         String d2 = numero.substring(1, 2);
@@ -134,13 +132,13 @@ public class ValidaCedula {
         Integer p7 = null;
         Integer p8 = null;
         Integer p9 = null;
-        
+
         /* El tercer digito es: */
  /* 9 para sociedades privadas y extranjeros */
  /* 6 para sociedades publicas */
  /* menor que 6 (0,1,2,3,4,5) para personas naturales */
         if (d3.equals("7") || d3.equals("8")) {
-System.err.println("El tercer dígito ingresado es inválido");
+            System.err.println("El tercer dígito ingresado es inválido");
             return false;
         }
 

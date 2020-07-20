@@ -53,7 +53,7 @@ public class TicketsDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            System.out.println("Controlador.CUsuarios.BuscarConCedula()ssssfs" + ex);
         } finally {
             this.cerrar();
         }

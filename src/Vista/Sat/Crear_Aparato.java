@@ -137,6 +137,7 @@ public class Crear_Aparato extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
 
         setClosable(true);
+        setTitle("Registra Nuevo Aparato");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Nuevo Aparato"));
 

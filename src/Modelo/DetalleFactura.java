@@ -25,6 +25,10 @@ public class DetalleFactura {
     Double costo;
     Double utilidad;
     String observaciones;
+    String tineIva;
+    String tienteIce;
+    String tineIRBPNR;
+    String tineIsd;
 
     public Integer getBodega() {
         return bodega;
@@ -148,5 +152,38 @@ public class DetalleFactura {
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
+
+    public String getTineIva() {
+        return tineIva;
+    }
+
+    public void setTineIva(String tineIva) {
+        this.tineIva = tineIva;
+    }
+
+    public String getTienteIce() {
+        return tienteIce;
+    }
+
+    public void setTienteIce(String tienteIce) {
+        this.tienteIce = tienteIce;
+    }
+
+    public String getTineIRBPNR() {
+        return tineIRBPNR;
+    }
+
+    public void setTineIRBPNR(String tineIRBPNR) {
+        this.tineIRBPNR = tineIRBPNR;
+    }
+
+    public String getTineIsd() {
+        return tineIsd;
+    }
+
+    public void setTineIsd(String tineIsd) {
+        this.tineIsd = tineIsd;
+    }
+    
     
 }

@@ -1,15 +1,15 @@
 
 import ClasesAuxiliares.FeCodigoNUmerico;
 import ClasesAuxiliares.Variables;
-import ec.unomas.elements.ArchivoUtil;
-import ec.unomas.factura.Detalle;
-import ec.unomas.factura.Factura;
-import ec.unomas.factura.Impuesto;
-import ec.unomas.factura.InfoAdicional;
-import ec.unomas.factura.Pago;
-import ec.unomas.factura.TotalImpuesto;
-import ec.unomas.service.Comprobante;
-import ec.unomas.service.Config;
+import ecx.unomas.elements.ArchivoUtil;
+import ecx.unomas.factura.Detalle;
+import ecx.unomas.factura.Factura;
+import ecx.unomas.factura.Impuesto;
+import ecx.unomas.factura.InfoAdicional;
+import ecx.unomas.factura.Pago;
+import ecx.unomas.factura.TotalImpuesto;
+import ecx.unomas.service.Comprobante;
+import ecx.unomas.service.Config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

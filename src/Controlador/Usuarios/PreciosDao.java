@@ -5,6 +5,7 @@
  */
 package Controlador.Usuarios;
 
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Coneccion;
 import Modelo.Cajas;
 import Modelo.Precios;
@@ -22,21 +23,30 @@ import javax.swing.table.DefaultTableModel;
  */
 public class PreciosDao extends Coneccion {
 
-    ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
+    //ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
     String tabla = "Precios";
-    private ArrayList<Cajas> lista = new ArrayList<Cajas>();
+    private ArrayList<Precios> lista = new ArrayList<Precios>();
 
     public void guardar(Precios tarea) {
         try {
             this.conectar();
             PreparedStatement consulta;
 
-            consulta = this.con.prepareStatement("INSERT INTO " + this.tabla + " (nombre,valor) VALUES(?,?)");
+            consulta = this.con.prepareStatement("INSERT INTO `precios`(`nombre`,`valor`,`utilidad`,`codigo_centrocosto`,`codigo_tipo_usuario`,`eliminaDescuentos`,`cantidadMinima`,`utilidadRespectoAlcosto`,`utilidadRespectoAlPvp`,`actualizaalcostoOalpvp`,requiereClavaAdministrador) VALUES ( ?,?,?,?,?,?,?,?,?,?,?)");
             consulta.setString(1, tarea.getNombre().toUpperCase());
             consulta.setDouble(2, tarea.getValor());
+            consulta.setDouble(3, tarea.getUtilidad());
+            consulta.setInt(4, tarea.getCodigo_centrocosto());
+            consulta.setInt(5, tarea.getCodigo_tipo_usuario());
+            consulta.setInt(6, tarea.getEliminaDescuentos());
+            consulta.setDouble(7, tarea.getCantidadMinima());
+            consulta.setDouble(8, tarea.getUtilidadRespectoAlcosto());
+            consulta.setDouble(9, tarea.getUtilidadRespectoAlPvp());
+            consulta.setInt(10, tarea.getActualizaPrecioRespectoalCOSTOalPVP());
+            consulta.setInt(11, tarea.getRequiereClavaAdministrador());
             consulta.executeUpdate();
-        } catch (SQLException ex) {
-            msg.setProgressBar_mensajae("Error..!! " + ex);
+        } catch (SQLException ex) {            
+            ProgressBar.mostrarMensajeAzul("Error..!! " + ex);
 
         } finally {
             this.cerrar();
@@ -138,8 +148,8 @@ public class PreciosDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-
-            msg.setProgressBar_mensajae("Error..!! " + ex);
+            ProgressBar.mostrarMensajeAzul("Error..!! " + ex);
+            //msg.setProgressBar_mensajae("Error..!! " + ex);
 
         } finally {
             this.cerrar();
@@ -177,8 +187,8 @@ public class PreciosDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-
-            msg.setProgressBar_mensajae("Error..!! " + ex);
+        ProgressBar.mostrarMensajeAzul("Error..!! " + ex);
+            
 
         } finally {
             this.cerrar();
@@ -218,39 +228,43 @@ public class PreciosDao extends Coneccion {
 
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
         } catch (SQLException e) {
-            msg.setProgressBar_mensajae(e.toString());
+            ProgressBar.mostrarMensajeAzul("Error..!! " + e.toString());
+            
         } finally {
             this.cerrar();
         }
 
     }
 
-    public ArrayList<Cajas> listar() {
+    public ArrayList<Precios> listar() {
         ResultSet rs;
         try {
             this.conectar();
             PreparedStatement st;
-            st = this.getCnx().prepareCall("Select * from " + tabla + " order BY caja");
+            st = this.getCnx().prepareCall("Select * from precios order BY nombre");
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
-                Cajas per = new Cajas();
+                Precios per = new Precios();
                 per.setCodigo(rs.getInt("Codigo"));
-                per.setCaja(rs.getString("caja"));
-                per.setDescripcion(rs.getString("descripcion"));
-                per.setEstado(rs.getInt("estado"));
-                per.setFechaApertura(rs.getDate("fechaApertura"));
-                per.setFechaCierre(rs.getDate("fechaCierre"));
-                per.setSaldoInicial((rs.getDouble("saldoInicial")));
-                per.setTotalCierre(rs.getDouble("totalCierre"));
-                per.setCajer(rs.getString("cajero"));
+                per.setNombre(rs.getString("nombre"));
+                per.setValor(rs.getDouble("valor"));
+                per.setUtilidad(rs.getDouble("utilidad"));
+                per.setCodigo_centrocosto(rs.getInt("codigo_centrocosto"));
+                per.setCodigo_tipo_usuario(rs.getInt("codigo_tipo_usuario"));
+                per.setEliminaDescuentos((rs.getInt("eliminaDescuentos")));
+                per.setCantidadMinima(rs.getDouble("cantidadMinima"));
+                per.setUtilidadRespectoAlcosto(rs.getDouble("utilidadRespectoAlcosto"));
+                per.setUtilidadRespectoAlPvp(rs.getDouble("utilidadRespectoAlPvp"));
+                per.setActualizaPrecioRespectoalCOSTOalPVP(rs.getInt("actualizaalcostoOalpvp"));
+                per.setRequiereClavaAdministrador(rs.getInt("requiereClavaAdministrador"));
 
                 this.lista.add(per);
             }
 
         } catch (Exception ex) {
-            msg.setMensaje(ex.toString());
-            System.out.println("Controlador.CUsuarios.listar() listar cajassss " + ex);
+            ProgressBar.mostrarMensajeAzul("Error..!! " + ex);
+            Deb.consola("Controlador.CUsuarios.listar() listar cajassss " + ex);            
         } finally {
             this.cerrar();
         }

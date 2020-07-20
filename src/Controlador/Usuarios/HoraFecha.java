@@ -6,7 +6,7 @@
 package Controlador.Usuarios;
 
 import Controlador.Coneccion;
-import Vista.Usuarios.Crear_Facturas;
+import Vista.Usuarios.Modal_CrearFacturas;
 import Vlidaciones.ProgressBar;
 import com.toedter.calendar.JDateChooser;
 import static java.lang.Thread.sleep;
@@ -89,7 +89,7 @@ public class HoraFecha extends Coneccion {
                     hora = calendario.get(Calendar.HOUR_OF_DAY);
                     minutos = calendario.get(Calendar.MINUTE);
                     segundos = calendario.get(Calendar.SECOND);
-                    Crear_Facturas.txt_hora.setText(hora + ":" + minutos + ":" + segundos);
+                    //Modal_CrearFacturas.txt_hora.setText(hora + ":" + minutos + ":" + segundos);
                     sleep(3000);
                     getHoraActualmyMachine();
                 } catch (InterruptedException ex) {

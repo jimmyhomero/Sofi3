@@ -5,6 +5,7 @@
  */
 package ClasesAuxiliares;
 
+import ClasesAuxiliares.http.getUrlFromGoogle;
 import java.io.IOException;
 
 /**
@@ -20,9 +21,9 @@ public class MainPruebas {
         // TODO code application logic here
       //  CodigodeBarras.CrearCodigoBarrasAutomaticamente();
       //codigoBarrasPDF.newcodigoBarrasPDF();
-      Fowiz f = new Fowiz();
-      
-              f.sms();
+////      Fowiz f = new Fowiz();
+////      f.sms();
+//getUrlFromGoogle.getImagesFromGoogle("casa");
         
         
       

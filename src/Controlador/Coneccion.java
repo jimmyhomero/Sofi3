@@ -23,9 +23,11 @@ public class Coneccion {
 
     public  Connection con, conN;
     public final String JDBC_RIVER = "com.mysql.jdbc.Driver";
+    //public static String bdd = "a";
     public static String bdd = "mysql";
-    //public static String bdd = "aaaaa";
+   
     public static String host = null;
+   
     //private final String URL = "jdbc:mysql://localhost/mysql";     
     public static String user = "root";
     public static String pass = "miguel66677710101418/2=golosos";
@@ -65,14 +67,17 @@ public class Coneccion {
 //             configuracionInicial ci = new configuracionInicial();
                 if (sesionok == false) {
                     host = Ejemplo.getPrpertyValue("servidor");
+                    System.out.println("Servidor: " +host);
                     rutaConfig = Ejemplo.getPrpertyValue("ruta");
+                    
+                    //host="localhost";                 
                 }
 
                 if (!host.equals("error")) {                  
                     System.out.println("Controlador.Coneccion.conectar()hostttt: " + host);
                     Class.forName("com.mysql.jdbc.Driver");
                     con = DriverManager.getConnection("jdbc:mysql://" + host + "/" + bdd, "root", "miguel66677710101418/2=golosos");
-                    System.out.println("Controlador.Coneccion.conectar()con: "+con);
+                    System.out.println("Controlador.Coneccion.conectar()con: "+host +"--- "+bdd);
                     if (con != null) {
                         sesionok = true;
                     }

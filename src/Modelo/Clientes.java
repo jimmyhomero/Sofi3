@@ -13,6 +13,29 @@ import java.sql.Date;
  * @author USUARIO
  */
 public class Clientes {
+
+    public Clientes() {
+        this.empresa = "";
+        this.cedula = "9999999999";
+        this.nombre = "CONSUMIDOR FINAL";
+        this.celular = "9999999999";
+        this.telefono = "999999999";
+        this.Direccion = "CONSUMIDOR FINAL";
+        this.mail = "";
+        this.provincia = "";
+        this.Ciudad = "";
+        this.nacionalidad = "";
+        //this.pagoPredeterminado = "";
+        //this.tipoCliente = "";
+        //this.VendedorPredeterminado = "";
+        this.observaciones = "";
+        this.estadoCivil = "";
+        this.huella = "";
+        this.genereo = "";
+        this.Nacimiento = "";
+        this.proveedor = 0;
+    }
+    
     Integer codigo;
     String empresa; 
     String cedula;
@@ -32,6 +55,7 @@ public class Clientes {
     String huella;
     String genereo;
     String Nacimiento;
+    Integer proveedor;
 
     public String getEmpresa() {
         return empresa;
@@ -192,8 +216,17 @@ public class Clientes {
 
     @Override
     public String toString() {
-        return nombre+ " "+cedula;
+        return nombre;
     }
+
+    public Integer getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(Integer proveedor) {
+        this.proveedor = proveedor;
+    }
+
             
     
     

@@ -7,6 +7,7 @@ package Vista.Usuarios;
 
 import ClasesAuxiliares.FeCodigoNUmerico;
 import ClasesAuxiliares.Variables;
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Usuarios.ComprasDao;
 import Controlador.Usuarios.DetalleRetencionDao;
 import Controlador.Usuarios.HoraFecha;
@@ -47,11 +48,11 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
     private static ArrayList<Sri_porcentajes_retencion> listaporcentajesRetencion = new ArrayList<Sri_porcentajes_retencion>();
     public static Proveedores proveerdor = new Proveedores();
     public static Compras compra = new Compras();
-    public static boolean isOpenfromCrearRetencion=false;
-    
+    public static boolean isOpenfromCrearRetencion = false;
+
     private String claveAcceso;
     private String tipoDocID;
-    
+
     /////tabla de impuestos
     Integer numero = 1;
     Integer indexnoselected = -1;
@@ -88,17 +89,15 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
         t_ClaveAcceso.setText(claveAcceso);
         ComprasDao cpDao = new ComprasDao();
 
-
         listaTipoComporabante = cpDao.getlistaTipoComprobate();
         for (sri_tipocomprobante object : listaTipoComporabante) {
-            jcbtipoDocumento.addItem(object.getTipocomprobante());
-            tipoDocID=object.getId();
-            
+            jcbtipoDocumento.addItem(object.getId() + "-" + object.getTipocomprobante());
+            tipoDocID = object.getId();
+
         }
 
     }
 
-   
     private void llenarSecuenciaFacura() {
         DecimalFormat formateador = new DecimalFormat("000000000");
         SeriesRetencion objSF = new SeriesRetencion();
@@ -485,6 +484,7 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
         txtTotal.setBackground(new java.awt.Color(204, 204, 255));
         txtTotal.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtTotal.setForeground(new java.awt.Color(204, 0, 0));
+        txtTotal.setEnabled(false);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -659,7 +659,7 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
                 modelo.addRow(registros);
 
             }
-    
+
         }
 
         return modelo;
@@ -706,11 +706,11 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-                        isOpenfromCrearRetencion=true;
+        isOpenfromCrearRetencion = true;
         Frame f = JOptionPane.getFrameForComponent(this);
         SelectPorcentajesRetencion dialog = new SelectPorcentajesRetencion(f, true);
         dialog.isChekiva = true;
-        
+
         dialog.jTable11.setModel(llenartableIva());
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
@@ -721,7 +721,7 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         Frame f = JOptionPane.getFrameForComponent(this);
-        isOpenfromCrearRetencion=true;
+        isOpenfromCrearRetencion = true;
         SelectPorcentajesRetencion dialog2 = new SelectPorcentajesRetencion(f, true);
         dialog2.isCheckrenta = true;
         dialog2.jTable11.setModel(llenartableRENTA());
@@ -868,41 +868,51 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
         r.setProveedor_codigo(compra.getProveedores_codigo());
         r.setSecuencia(tsec1.getText().toString() + "-" + tsec2.getText().toString() + "-" + tsec3.getText().toString());
         r.setTipo_comprobante(jcbtipoDocumento.getSelectedItem().toString());
-       
+
         r.setTotal(Double.parseDouble(txtTotal.getText()));
-        r.setUsuario_codigo(compra.getUsuarios_Codigo());        
+        r.setUsuario_codigo(compra.getUsuarios_Codigo());
         r.setSec1(tsec1.getText());
         r.setSec2(tsec2.getText());
         r.setSec3(tsec3.getText());
 
         Integer codigoRetencion = rdao.guardar(r);
-        
+
         int rows = jTable1.getRowCount();
         for (int i = 0; i < rows; i++) {
-            
+
             DetalleRetencion det = new DetalleRetencion();
-            DetalleRetencionDao detDao = new DetalleRetencionDao();            
+            DetalleRetencionDao detDao = new DetalleRetencionDao();
             det.setBase(Double.parseDouble(jTable1.getValueAt(i, 2).toString()));
             det.setEjercicio(Principal.periodo);
             det.setId(jTable1.getValueAt(i, 4).toString());
             det.setImpuesto(jTable1.getValueAt(i, 3).toString());
-            
+
             det.setPorcentaje(Integer.parseInt(jTable1.getValueAt(i, 5).toString()));
             det.setRetencion_codigo(codigoRetencion);
             det.setRetenido(Double.parseDouble(jTable1.getValueAt(i, 6).toString()));
             detDao.guardar(det);
         }
- RetencionCDao rda = new RetencionCDao();
- rda.creaxmlRetencionElectronica(codigoRetencion);
+        RetencionCDao rda = new RetencionCDao();
+
+        try {
+            String fa = rda.creaxmlRetencionElectronica(codigoRetencion);
+            com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
+            com.ws.localhost.Response resp = new com.ws.localhost.Response();
+            resp = wslocal.getWSElectroPort().receiptXMLIn(fa, "admin", "admin", "homer_loading@hotmail.com;homer.loading@gmail.com");
+
+        } catch (Exception e) {
+            Deb.consola("erro al enviar al WS: " + e);
+        }
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jcbtipoDocumentoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbtipoDocumentoItemStateChanged
         // TODO add your handling code here:
-         for (sri_tipocomprobante object : listaTipoComporabante) {
-            jcbtipoDocumento.addItem(object.getId() + " - " + object.getTipocomprobante());
-            tipoDocID=object.getId();
-            
+
+        for (sri_tipocomprobante object : listaTipoComporabante) {
+            //   jcbtipoDocumento.addItem(object.getId() + " - " + object.getTipocomprobante());
+            if (jcbtipoDocumento.getSelectedItem().toString().contains(object.getTipocomprobante()));
+            tipoDocID = object.getId();
         }
     }//GEN-LAST:event_jcbtipoDocumentoItemStateChanged
 

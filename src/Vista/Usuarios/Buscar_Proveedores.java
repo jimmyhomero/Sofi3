@@ -37,7 +37,7 @@ public class Buscar_Proveedores extends javax.swing.JInternalFrame {
     Integer clicJtable = 0;
     Proveedores usuario1 = new Proveedores();
     //String sql_allss = "select * from usuarios";
-    String sql_all = "select * from Proveedores  order BY Nombres";
+    
 
     //CUsuarios obj = new CUsuarios();
     public Buscar_Proveedores() {
@@ -46,7 +46,7 @@ public class Buscar_Proveedores extends javax.swing.JInternalFrame {
 
         ProveedoresDao obj = new ProveedoresDao();
         //String sql = "select * from usuarios where estado = 'Activo'";
-        jTable1.setModel(obj.Buscar_table_only_Activos(sql_all));
+        jTable1.setModel(obj.Buscar_table_only_Activos());
         this.ocultarFIlasJtable();
 
         ///
@@ -249,7 +249,7 @@ public class Buscar_Proveedores extends javax.swing.JInternalFrame {
     private void txt_cedulaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cedulaKeyReleased
         // TODO add your handling code here:
         ClientesDao obj = new ClientesDao();
-        jTable1.setModel(obj.Buscar_table("Cedula", txt_cedula.getText()));
+        jTable1.setModel(obj.Buscar_table("Cedula", txt_cedula.getText(),1));
         this.ocultarFIlasJtable();///
 
     }//GEN-LAST:event_txt_cedulaKeyReleased
@@ -257,7 +257,7 @@ public class Buscar_Proveedores extends javax.swing.JInternalFrame {
     private void txt_nombresKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombresKeyReleased
         // TODO add your handling code here:
         ClientesDao obj = new ClientesDao();
-        jTable1.setModel(obj.Buscar_table("Nombres", txt_nombres.getText()));
+        jTable1.setModel(obj.Buscar_table("Nombres", txt_nombres.getText(),1));
         this.ocultarFIlasJtable();
         ///
     }//GEN-LAST:event_txt_nombresKeyReleased
@@ -265,7 +265,7 @@ public class Buscar_Proveedores extends javax.swing.JInternalFrame {
     private void txt_nomComercialKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nomComercialKeyReleased
         // TODO add your handling code here:
         ClientesDao obj = new ClientesDao();
-        jTable1.setModel(obj.Buscar_table("NombreComercial", txt_nomComercial.getText()));
+        jTable1.setModel(obj.Buscar_table("NombreComercial", txt_nomComercial.getText(),1));
         this.ocultarFIlasJtable();
         ///
     }//GEN-LAST:event_txt_nomComercialKeyReleased
@@ -439,15 +439,7 @@ public class Buscar_Proveedores extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         ClientesDao objDao = new ClientesDao();
 
-        jTable1.setModel(objDao.Buscar_table_only_Activos(sql_all));
-//        for (int i = 0; i <= jTable1.getRowCount(); i++) {
-//             if (jTable1.getValueAt(i, 7).equals("Inactivo")) {
-//                //jTable1.setBackground(Color.MAGENTA);
-//            } else {
-//                //jTable1.setBackground(Color.GREEN);
-//            }
-
-        //oculta la columna CERO,  q es la que contiene el codido del elemnto pk
+        jTable1.setModel(objDao.Buscar_table_only_Activos(1));
         this.ocultarFIlasJtable();
         ///
     }//GEN-LAST:event_btn_MostrarTodoActionPerformed
@@ -460,7 +452,7 @@ public class Buscar_Proveedores extends javax.swing.JInternalFrame {
                 obj1.eliminar(usuario1);
                 ClientesDao obj = new ClientesDao();
 
-                jTable1.setModel(obj.Buscar_table_only_Activos(sql_all));
+                jTable1.setModel(obj.Buscar_table_only_Activos(1));
                 this.ocultarFIlasJtable();
             }
         } catch (Exception ex) {

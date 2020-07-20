@@ -9,7 +9,7 @@ import ClasesAuxiliares.Exporter;
 import Controlador.Ejemplo;
 import Controlador.Usuarios.ComprasDao;
 import Controlador.Usuarios.DetalleFacturaDao;
-import Controlador.Usuarios.FormasPagoCDao;
+import Controlador.Usuarios.FormasPagoCVDao;
 import Controlador.Usuarios.HoraFecha;
 import Controlador.Usuarios.ImpresionDao;
 import Controlador.Usuarios.MarcasDao;
@@ -19,7 +19,7 @@ import Controlador.Usuarios.ProveedoresDao;
 import Controlador.Usuarios.RetencionCDao;
 import Modelo.Compras;
 import Modelo.Facturas;
-import Modelo.FormasPagoC;
+import Modelo.FormasPagoCV;
 import Modelo.FormasPagoV;
 import Modelo.Marcas;
 import Modelo.Modelos;
@@ -64,7 +64,7 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
      */
     Integer clicJtable = 0;
     public static boolean buscaCompradesderegistrarRetencion = false;
-    ArrayList<FormasPagoC> listaFormasDePago = new ArrayList<FormasPagoC>();
+    ArrayList<FormasPagoCV> listaFormasDePago = new ArrayList<FormasPagoCV>();
     Compras compra1 = new Compras();
     ProgressBar msg = new ProgressBar(3000, "");
     DefaultTableModel modelo = null;
@@ -77,10 +77,10 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
 
         initComponents();
         this.setSize(1024, 720);
-        FormasPagoC fp = new FormasPagoC();
-        FormasPagoCDao objFdPDao = new FormasPagoCDao();
+        FormasPagoCV fp = new FormasPagoCV();
+        FormasPagoCVDao objFdPDao = new FormasPagoCVDao();
         listaFormasDePago = objFdPDao.listar();
-        for (FormasPagoC f : listaFormasDePago) {
+        for (FormasPagoCV f : listaFormasDePago) {
             jcb_formaPago.addItem(f.getFormaPago());
         }
         String[] titulos
@@ -155,6 +155,7 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
         setClosable(true);
         setMaximizable(true);
         setResizable(true);
+        setTitle("Buscar Compras");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }

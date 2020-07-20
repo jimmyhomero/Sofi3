@@ -18,12 +18,12 @@ import Modelo.sri_sustentocomprobante;
 import Modelo.sri_tipocomprobante;
 import Vista.Principal;
 import Vlidaciones.ProgressBar;
-import ec.unomas.elements.ArchivoUtil;
-import ec.unomas.retencion.InfoAdicional;
-import ec.unomas.retencion.Impuesto;
-import ec.unomas.retencion.Retencion;
-import ec.unomas.service.Comprobante;
-import ec.unomas.service.Config;
+import ecx.unomas.elements.ArchivoUtil;
+import ecx.unomas.retencion.InfoAdicional;
+import ecx.unomas.retencion.Impuesto;
+import ecx.unomas.retencion.Retencion;
+import ecx.unomas.service.Comprobante;
+import ecx.unomas.service.Config;
 import login.login;
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +48,7 @@ import javax.swing.table.DefaultTableModel;
  * @author USUARIO
  */
 public class RetencionCDao extends Coneccion {
-
+private String retstring="";
     private String tabla = "retencion";
     ProgressBar msg = new ProgressBar(3000, "");
     private DefaultListModel modeloListadetalle = new DefaultListModel();
@@ -150,8 +150,18 @@ public class RetencionCDao extends Coneccion {
         return listapoercentajeRet;
     }
 
-    public void creaxmlRetencionElectronica(Integer codigoRet) {
- String periodo = "02/2018";
+    private String periodo(String claveAcceso) {
+        String mes = "";
+        String anio = "";
+        mes = claveAcceso.substring(2, 4);
+        anio = claveAcceso.substring(4, 8);
+        System.out.println("periodo: " + mes + "/" + anio);
+        return mes + "/" + anio;
+    }
+
+    public String creaxmlRetencionElectronica(Integer codigoRet) {
+        
+        String periodo = "02/2018";
 //        try {
 //            long ddo = getFechaNowTImestampServer().getTime();
 //        java.sql.Date fecha = new java.sql.Date(ddo);
@@ -160,7 +170,7 @@ public class RetencionCDao extends Coneccion {
 //        } catch (Exception e) {
 //            System.out.println("Controlador.Usuarios.RetencionCDao.creaxmlRetencionElectronica()cvb: "+e);
 //        }
-        
+
         Retencion_ ret = new Retencion_();
         Compras com = new Compras();
         ComprasDao comDao = new ComprasDao();
@@ -172,7 +182,7 @@ public class RetencionCDao extends Coneccion {
             System.out.println("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()sssd" + e);
         }
         try {
-            com=comDao.buscarConID(ret.getCompras_codigo());
+            com = comDao.buscarConID(ret.getCompras_codigo());
 
             Retencion f = new Retencion();
 
@@ -184,6 +194,7 @@ public class RetencionCDao extends Coneccion {
             f.setRUC(login.rucEmpresa);
 
             f.setClaveAcceso(ret.getAutorizacion());
+          periodo=periodo(ret.getAutorizacion());
             f.setCodDoc(Variables.FE_RETENCION);
             f.setEstab(ret.getSec1());
             f.setPtoEmi(ret.getSec2());
@@ -192,7 +203,10 @@ public class RetencionCDao extends Coneccion {
 
             f.setFechaEmision(HoraFecha.fecha_ddmmaaa_conSlash(ret.getFecha().toString()));
             f.setDirEstablecimiento(login.direccionEmpresa);
-            f.setContribuyenteEspecial(login.contribuyenteEspecialNUmero);
+            if (login.contribuyenteEspecialNUmero != "") {
+                f.setContribuyenteEspecial(login.contribuyenteEspecialNUmero);
+            }
+
             f.setObligadoContabilidad(login.ObligadoSiNOEmpresa);
 
             pro = proDao.buscarConID(ret.getProveedor_codigo());
@@ -205,6 +219,7 @@ public class RetencionCDao extends Coneccion {
             // f.setGuiaRemision("001-001-00000002");
             f.setRazonSocialSujetoRetenido(pro.getNombre());
             f.setIdentificacionSujetoRetenido(pro.getCedula());
+
             f.setPeriodoFiscal(periodo);
 
             DetalleRetencionDao drDao = new DetalleRetencionDao();
@@ -219,10 +234,10 @@ public class RetencionCDao extends Coneccion {
                 ///fac-notadebito-notacredito
                 imp.setCodDocSustento(com.getSustentoID());
                 //num fact-nota-debito
-                String secuencia= ret.getCompra_seceuncia().replace("-", "");
+                String secuencia = ret.getCompra_seceuncia().replace("-", "");
                 imp.setNumDocSustento(secuencia);
                 imp.setCodigoRetencion(d.getId());
-              String   fech = HoraFecha.fecha_aaMMdd_to_ddMMaa(com.getFecha().toString().replace("-", "/"));
+                String fech = HoraFecha.fecha_aaMMdd_to_ddMMaa(com.getFecha().toString().replace("-", "/"));
                 imp.setFechaEmisionDocSustento(fech);
                 imp.setPorcentajeRetener(Integer.parseInt(String.valueOf(d.getPorcentaje())));
                 imp.setValorRetenido(d.getRetenido());
@@ -230,40 +245,35 @@ public class RetencionCDao extends Coneccion {
                 i++;
 
             }
-            InfoAdicional infadd = new InfoAdicional();
-            InfoAdicional infadd1 = new InfoAdicional();
+            
             InfoAdicional infadd2 = new InfoAdicional();
-            InfoAdicional infadd3 = new InfoAdicional();
+            infadd2.setNombre("PAGO");
+            infadd2.setValor(pro.getPagoPredeterminado());                      
             InfoAdicional mail = new InfoAdicional();
             mail.setNombre("E-MAIL");
-            mail.setValor(pro.getMail());
-            infadd2.setNombre("PAGO");
-            infadd2.setValor(pro.getPagoPredeterminado());
-            f.setInfAdicional(mail);
-            f.setInfAdicional(infadd3);
-            f.setInfAdicional(infadd2);
-            f.setInfAdicional(infadd1);
-            f.setInfAdicional(infadd);
-            String s = f.getXML();
-
-            ArchivoUtil.stringToFile(Config.GENERADOS_DIR + ret.getAutorizacion() + ".xml", s);
-            System.out.println("RUTA DE GENERADOS: "+Config.GENERADOS_DIR + ret.getAutorizacion() + ".xml");
-            File xml_file = new File(Config.GENERADOS_DIR + ret.getAutorizacion() + ".xml");
-            byte[] archivoBytes = null;
-            try {
-
-                archivoBytes = ArchivoUtil.convertirArchivoAByteArray(xml_file);
-            } catch (IOException ex) {
-                Logger.getLogger(FacturasDao.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            String clave = ret.getAutorizacion();
-            Comprobante a = new Comprobante();
+            mail.setValor(pro.getMail());            
+            f.setInfAdicional(mail);            
+            f.setInfAdicional(infadd2);            
+            retstring = f.getXML();
+//////            ArchivoUtil.stringToFile(Config.GENERADOS_DIR + ret.getAutorizacion() + ".xml", s);
+//////            System.out.println("RUTA DE GENERADOS: " + Config.GENERADOS_DIR + ret.getAutorizacion() + ".xml");
+//////            File xml_file = new File(Config.GENERADOS_DIR + ret.getAutorizacion() + ".xml");
+//////            byte[] archivoBytes = null;
+//////            try {
+//////
+//////                archivoBytes = ArchivoUtil.convertirArchivoAByteArray(xml_file);
+//////            } catch (IOException ex) {
+//////                Logger.getLogger(FacturasDao.class.getName()).log(Level.SEVERE, null, ex);
+//////            }
+//////            String clave = ret.getAutorizacion();
+//////            Comprobante a = new Comprobante();
         } catch (Exception e) {
             System.err.println("erroro : " + e);
         }
         //a.sendDoc(claveAcceso,"homer_loading@hotmail.com"," Jimmy carri");
 
         //      a.download(claveAcceso, ext);
+        return retstring;
     }
 
     public DefaultListModel Buscar_productos(String value, String bodega) {

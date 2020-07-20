@@ -9,7 +9,7 @@ import Controlador.Usuarios.PlanDao;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.table.DefaultTableModel;
-import static login.login.__factory;
+//import static login.login.__factory;
 import static login.login.__unidadPersistencia;
 import persistencia.controllers.PlanJpaController;
 
@@ -39,13 +39,13 @@ public class PLANC extends javax.swing.JInternalFrame {
         };
         jTable1.setModel(modelo);
         
-      //  PlanDao p =new PlanDao();
-     //   p.getListarPlam();
-     //   jTable1.setModel(p.getListarPlam());
-   //  EntityManagerFactory factory = Persistence.createEntityManagerFactory(__unidadPersistencia, System.getProperties());   
-        PlanJpaController s = new PlanJpaController(__factory);
-         jTable1.setModel(s.getplanCuentas());
-       // factory.close();
+        PlanDao p =new PlanDao();
+        //p.getListarPlan();
+        jTable1.setModel(p.getListarPlan());
+   //     EntityManagerFactory factory = Persistence.createEntityManagerFactory(__unidadPersistencia, System.getProperties());   
+//        PlanJpaController s = new PlanJpaController(__factory);
+    //    jTable1.setModel(s.getplanCuentas());
+    //    factory.close();
     }
 
     /**
@@ -62,6 +62,8 @@ public class PLANC extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
 
         setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
         setResizable(true);
         setTitle("Plan de Cuentas");
 
@@ -77,6 +79,7 @@ public class PLANC extends javax.swing.JInternalFrame {
 
             }
         ));
+        jTable1.setRowHeight(20);
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -112,8 +115,8 @@ public class PLANC extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();

@@ -57,8 +57,8 @@ import com.mxrck.autocompleter.TextAutoCompleter;
 import com.ws.electro.cliente.Response;
 import com.ws.electro.cliente.WSElectro_Service;
 import com.ws.localhost.WSElectro;
-import ec.unomas.factura.Factura;
-import ec.unomas.factura.TotalImpuesto;
+import ecx.unomas.factura.Factura;
+import ecx.unomas.factura.TotalImpuesto;
 import login.login;
 import impresoras.ServicioDeImpresion;
 import java.awt.Frame;
@@ -1842,7 +1842,9 @@ public class Crear_Facturas extends javax.swing.JInternalFrame {
                         //////////localhost
                         com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
                         com.ws.localhost.Response resp = new com.ws.localhost.Response();
+                        System.out.println("FacturaElectronicaGenrada"+fa);
                         resp = wslocal.getWSElectroPort().receiptXMLIn(fa, "admin", "admin", "homer_loading@hotmail.com;homer.loading@gmail.com");
+                        
                         ///////////
                         //compueconomia     WSElectro_Service s = new WSElectro_Service();
                         //compueconomia  Response r = new Response();
@@ -2043,7 +2045,7 @@ public class Crear_Facturas extends javax.swing.JInternalFrame {
         Crear_Clientes obj_crearC = new Crear_Clientes();
         Principal.desktopPane.add(obj_crearC);
         obj_crearC.setVisible(true);
-        Crear_Clientes.txt_cedula.setText(txt_cedula.getText());
+        Crear_Clientes.txt_cedulax.setText(txt_cedula.getText());
         try {
             obj_crearC.setSelected(true);
 
@@ -2212,7 +2214,7 @@ public class Crear_Facturas extends javax.swing.JInternalFrame {
         } else {
             System.out.println("Vista.Usuarios.Crear_Facturas.txt_nombresKeyPressed()xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
             ClientesDao cd = new ClientesDao();
-            listaClientes = cd.BuscarClietneslikokokok(ruc);
+            listaClientes = cd.BuscarClietneslikokokok(ruc,0);
             clienteAutoCompleter.removeAllItems();
             for (Clientes p : listaClientes) {                
                 clienteAutoCompleter.addItem(p);
@@ -2240,7 +2242,7 @@ public class Crear_Facturas extends javax.swing.JInternalFrame {
             Clientes obj = new Clientes();
             ClientesDao objDao = new ClientesDao();
 
-            obj = objDao.buscarConCedulaLike(cedula);
+            obj = objDao.buscarConCedulaLike(cedula,0);
             if (obj.getNombre() != null) {
                 txt_nombres.setText(obj.getNombre());
                 txt_celular.setText(obj.getCelular());

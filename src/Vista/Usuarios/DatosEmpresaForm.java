@@ -126,7 +126,7 @@ public class DatosEmpresaForm extends javax.swing.JInternalFrame {
         txt_licencia = new javax.swing.JTextField();
 
         setClosable(true);
-        setTitle("Nuevo Cliente");
+        setTitle("Datos Empresa ");
         setToolTipText("");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {

@@ -11,16 +11,16 @@ package Modelo;
  */
 public class Plan {
     Integer id;
-    String CODIGO_CUENTA;
-    Integer VISIBLE;
-    String DESCRIPCION;
-    String PERTENECE;
-    Integer TIPO;
-    String OBSERVACIONES;
-    String ORDEN;
-    String ACTUALIZAR;
-    String SALDO;    
-    Integer CENTRO;
+    String codigo_cuenta;
+    Integer visble;
+    String descricion;
+    String pertenece;
+    Integer tipo;
+    String observaciones;
+    String orden;
+    String actualizar;
+    String saldo;    
+    Integer centro;
 
     public Integer getId() {
         return id;
@@ -30,84 +30,84 @@ public class Plan {
         this.id = id;
     }
 
-    public String getCODIGO_CUENTA() {
-        return CODIGO_CUENTA;
+    public String getCodigo_cuenta() {
+        return codigo_cuenta;
     }
 
-    public void setCODIGO_CUENTA(String CODIGO_CUENTA) {
-        this.CODIGO_CUENTA = CODIGO_CUENTA;
+    public void setCodigo_cuenta(String codigo_cuenta) {
+        this.codigo_cuenta = codigo_cuenta;
     }
 
-    public Integer getVISIBLE() {
-        return VISIBLE;
+    public Integer getVisble() {
+        return visble;
     }
 
-    public void setVISIBLE(Integer VISIBLE) {
-        this.VISIBLE = VISIBLE;
+    public void setVisble(Integer visble) {
+        this.visble = visble;
     }
 
-    public String getDESCRIPCION() {
-        return DESCRIPCION;
+    public String getDescricion() {
+        return descricion;
     }
 
-    public void setDESCRIPCION(String DESCRIPCION) {
-        this.DESCRIPCION = DESCRIPCION;
+    public void setDescricion(String descricion) {
+        this.descricion = descricion;
     }
 
-    public String getPERTENECE() {
-        return PERTENECE;
+    public String getPertenece() {
+        return pertenece;
     }
 
-    public void setPERTENECE(String PERTENECE) {
-        this.PERTENECE = PERTENECE;
+    public void setPertenece(String pertenece) {
+        this.pertenece = pertenece;
     }
 
-    public Integer getTIPO() {
-        return TIPO;
+    public Integer getTipo() {
+        return tipo;
     }
 
-    public void setTIPO(Integer TIPO) {
-        this.TIPO = TIPO;
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
     }
 
-    public String getOBSERVACIONES() {
-        return OBSERVACIONES;
+    public String getObservaciones() {
+        return observaciones;
     }
 
-    public void setOBSERVACIONES(String OBSERVACIONES) {
-        this.OBSERVACIONES = OBSERVACIONES;
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
     }
 
-    public String getORDEN() {
-        return ORDEN;
+    public String getOrden() {
+        return orden;
     }
 
-    public void setORDEN(String ORDEN) {
-        this.ORDEN = ORDEN;
+    public void setOrden(String orden) {
+        this.orden = orden;
     }
 
-    public String getACTUALIZAR() {
-        return ACTUALIZAR;
+    public String getActualizar() {
+        return actualizar;
     }
 
-    public void setACTUALIZAR(String ACTUALIZAR) {
-        this.ACTUALIZAR = ACTUALIZAR;
+    public void setActualizar(String actualizar) {
+        this.actualizar = actualizar;
     }
 
-    public String getSALDO() {
-        return SALDO;
+    public String getSaldo() {
+        return saldo;
     }
 
-    public void setSALDO(String SALDO) {
-        this.SALDO = SALDO;
+    public void setSaldo(String saldo) {
+        this.saldo = saldo;
     }
 
-    public Integer getCENTRO() {
-        return CENTRO;
+    public Integer getCentro() {
+        return centro;
     }
 
-    public void setCENTRO(Integer CENTRO) {
-        this.CENTRO = CENTRO;
+    public void setCentro(Integer centro) {
+        this.centro = centro;
     }
 
 }

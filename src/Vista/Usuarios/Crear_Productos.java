@@ -7,6 +7,7 @@ package Vista.Usuarios;
 
 import Vista.Productos.Buscar_Productos;
 import ClasesAuxiliares.CodigodeBarras;
+import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
 import ClasesAuxiliares.http.getUrlFromGoogle;
 import Controlador.Usuarios.MarcasDao;
 import Controlador.Usuarios.ModelosDao;
@@ -16,7 +17,6 @@ import Modelo.Modelos;
 import Modelo.Productos;
 import Modelo.Usuarios;
 import Vista.Principal;
-import static Vista.Usuarios.Crear_Clientes.jcb_tipo;
 import Vlidaciones.ProgressBar;
 import Vlidaciones.VaciarTexto;
 import Vlidaciones.ValidaEmail;
@@ -50,6 +50,7 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import static Vista.Usuarios.Crear_Clientes.jcb_FormaPagoPredeterminada;
 
 /**
  *
@@ -92,6 +93,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
     public Crear_Productos() {
 
         initComponents();
+        OperacionesForms.inicializarJtextFieldMyusculas(txt_producto);
         txt_costo.selectAll();
         txt_garantia.setEnabled(false);
         this.setSize(850, 613);
@@ -278,7 +280,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
         lbl_p2 = new javax.swing.JLabel();
 
         setClosable(true);
-        setTitle("Nuevo Usuario");
+        setTitle("Crear Productos");
         setToolTipText("");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {

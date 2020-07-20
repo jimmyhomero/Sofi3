@@ -6,7 +6,6 @@
 package Modelo;
 
 import Vista.Principal;
-import Vista.Usuarios.Crear_Facturas;
 import java.awt.Image;
 import java.math.BigInteger;
 import javax.swing.Icon;

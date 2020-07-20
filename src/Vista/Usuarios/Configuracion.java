@@ -95,6 +95,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
     Config_Equipos objConfigEquiposventa = new Config_Equipos();
     Integer codigoNewEquipo = null;
     DefaultListModel model2 = new DefaultListModel();
+    private String val;
 
     //////////////
     //public static List<Map<String,String>>   = new ArrayList<Map<String,String>>();
@@ -121,10 +122,20 @@ public class Configuracion extends javax.swing.JInternalFrame {
             jcb_BodegaPredeterminadCOmpra.addItem(b.getBodegaID() + "-" + b.getBodega());
             jcb_BodegaPredeterminadventas.addItem(b.getBodegaID() + "-" + b.getBodega());
         }
+        
+     txt_NumEq.setText(login.nombreDelEquipo + " : " + login.CodigoDelEquipo);
+        listConfigdeEquipo = confEquipoDao.listarByID(login.CodigoDelEquipo);
+        ///lleno combo forma de pago       
 
+        FormasPagoVDao fpDao = new FormasPagoVDao();
+        for (FormasPagoV f : fpDao.listar()) {
+            jcb_formadePagoPredeterminada.addItem(f.getFormaPago());
+        }
+   
         SetConfig();
         SetConfigDeUsuario();
         // new loadconfig();
+        
         SetConfigEquipo();
 
 /////////////////////tab6///////////////
@@ -173,7 +184,96 @@ public class Configuracion extends javax.swing.JInternalFrame {
         }
 ////////////////////////fin tab 6
         llenarJTree();
+        //configPorEquipook();
     }
+
+    
+     private void SetConfigEquipo() {
+        //// fin formas dpago
+        
+
+        for (Config_Equipos c : listConfigdeEquipo) {
+
+            System.out.println("AAAAAAAAAAAAAAAAAAA: "+c.getNombre()+" = "+c.getValor1());
+            switch (c.getNombre()) {
+                case  "IMPRESORA TICKETS":
+                    txt_tickets.setText(c.getNombre());
+                    jcb_imptickets.setSelectedItem(c.getValor1());
+                    Principal.impresoraTicket=c.getValor1();
+
+                    break;
+                case "IMPRESORA FACTURAS":
+                    txt_facturas.setText(c.getNombre());
+                    jcb_impfacturas.setSelectedItem(c.getValor1());
+                    Principal.impresoraFactura=c.getValor1();
+                    break;
+                case "FORMA DE PAGO PREDETERMINADA":
+                    txt_formadepagoPredeterminada.setText(c.getNombre());
+                    jcb_formadePagoPredeterminada.setSelectedItem(c.getValor1());
+                    Principal.formadepagopredeterminada=c.getValor1();
+                    break;
+                case "BODEGA PREDETERMINADA EN COMPRA":
+                    txt_bodegaPredeterminadaEnCompras.setText(c.getNombre());
+                    jcb_BodegaPredeterminadCOmpra.setSelectedItem(c.getValor1());
+                    Principal.bodegaPredeterminadaenCOmpra=c.getValor1();
+                    break;
+
+                case "BODEGA PREDETERMINADA EN VENTA":
+
+                    txt_bodegaPredeterminadaEnVENTAS.setText(c.getNombre());
+                    jcb_BodegaPredeterminadventas.setSelectedItem(c.getValor1());
+                    Principal.bodegaPredeterminadaenVenta=c.getValor1();
+                    break;
+                case "FACTURA TIRILLAS O CON FORMATO":
+
+                    TXT_FACTURASDEROOLO.setText(c.getNombre());
+                    if (c.getValor1().equalsIgnoreCase("ROLLO")) {
+                        CHECFACROLLO.setSelected(true);                       
+                    } else if (c.getValor1().equalsIgnoreCase("GRANDE")) {
+                        CHECFACGRANDE.setSelected(true);
+                        
+                    }
+                    Principal.facturatiriiasoGrande = c.getValor1();
+                    break;
+                case "TICKET TIRILLAS O CON FORMATO":
+
+                    TXT_TICKETSDEROOLO.setText(c.getNombre());
+                    if (c.getValor1().equalsIgnoreCase("ROLLO")) {
+                        CHECTICROLLO.setSelected(true);                    
+
+                    } else if (c.getValor1().equalsIgnoreCase("GRANDE")) {
+                        CHECTICGRANDE.setSelected(true);
+                        
+                    }
+                    Principal.tickettiriiasoGrande = c.getValor1();
+                    break;
+                case "ACTIVAR CONTROL EFECTIVO":
+
+                    TXT_CONTROL_EFECTIVO_CAJA_SI_NO.setText(c.getNombre());
+                    if (c.getValor1().equalsIgnoreCase("SI")) {
+                        CHECK_CONTROL_EFECTIVO.setSelected(true);
+                    } else if (c.getValor1().equalsIgnoreCase("NO")) {
+                        CHECK_CONTROL_EFECTIVO.setSelected(false);
+                    }
+                    Principal.controlCambioEfectivoSINO = c.getValor1();
+                    break;
+
+                case "PROFORMA TIRILLAS O CON FORMATO":
+
+                    TXT_PROFORMASDEROOLO2.setText(c.getNombre());
+                    if (c.getValor1().equalsIgnoreCase("ROLLO")) {
+                        CHECPROFROLLO.setSelected(true);
+                    } else if (c.getValor1().equalsIgnoreCase("GRANDE")) {
+                        CHECPROFGRANDE.setSelected(true);
+                    }
+                    Principal.proformatiriiasoFacturaGrande = c.getValor1();
+                    break;                
+            }
+            System.out.println("BBBBBBBBB: "+c.getNombre()+" = "+c.getValor1());
+
+        }
+    }
+   
 
     public void llenarJTree() {
         DefaultMutableTreeNode raiz = new DefaultMutableTreeNode(jlnombrereal.getText());
@@ -301,90 +401,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
         }
     }
 
-    private void SetConfigEquipo() {
-        txt_NumEq.setText(login.nombreDelEquipo + " : " + login.CodigoDelEquipo);
-        listConfigdeEquipo = confEquipoDao.listarByID(login.CodigoDelEquipo);
-        ///lleno combo forma de pago       
-
-        FormasPagoVDao fpDao = new FormasPagoVDao();
-        for (FormasPagoV f : fpDao.listar()) {
-            jcb_formadePagoPredeterminada.addItem(f.getFormaPago());
-        }
-        //// fin formas dpago
-
-        for (Config_Equipos c : listConfigdeEquipo) {
-
-            switch (c.getNombre()) {
-
-                case "IMPRESORA TICKETS":
-                    txt_tickets.setText(c.getNombre());
-                    jcb_imptickets.setSelectedItem(c.getValor1());
-
-                    break;
-                case "IMPRESORA FACTURAS":
-                    txt_facturas.setText(c.getNombre());
-                    jcb_impfacturas.setSelectedItem(c.getValor1());
-                    break;
-                case "FORMA DE PAGO PREDETERMINADA":
-                    txt_formadepagoPredeterminada.setText(c.getNombre());
-                    jcb_formadePagoPredeterminada.setSelectedItem(c.getValor1());
-                    break;
-                case "BODEGA PREDETERMINADA EN COMPRA":
-                    txt_bodegaPredeterminadaEnCompras.setText(c.getNombre());
-                    jcb_BodegaPredeterminadCOmpra.setSelectedItem(c.getValor1());
-                    break;
-
-                case "BODEGA PREDETERMINADA EN VENTA":
-
-                    txt_bodegaPredeterminadaEnVENTAS.setText(c.getNombre());
-                    jcb_BodegaPredeterminadventas.setSelectedItem(c.getValor1());
-                    break;
-                case "FACTURA TIRILLAS O CON FORMATO":
-
-                    TXT_FACTURASDEROOLO.setText(c.getNombre());
-                    if (c.getValor1().equalsIgnoreCase("ROLLO")) {
-                        CHECFACROLLO.setSelected(true);
-                    } else if (c.getValor1().equalsIgnoreCase("GRANDE")) {
-                        CHECFACGRANDE.setSelected(true);
-                    }
-                    Principal.facturatiriiasoGrande = c.getValor1();
-                    break;
-                case "TICKET TIRILLAS O CON FORMATO":
-
-                    TXT_TICKETSDEROOLO.setText(c.getNombre());
-                    if (c.getValor1().equalsIgnoreCase("ROLLO")) {
-                        CHECTICROLLO.setSelected(true);
-                    } else if (c.getValor1().equalsIgnoreCase("GRANDE")) {
-                        CHECTICGRANDE.setSelected(true);
-                    }
-                    Principal.tickettiriiasoGrande = c.getValor1();
-                    break;
-                case "ACTIVAR CONTROL EFECTIVO":
-
-                    TXT_CONTROL_EFECTIVO_CAJA_SI_NO.setText(c.getNombre());
-                    if (c.getValor1().equalsIgnoreCase("SI")) {
-                        CHECK_CONTROL_EFECTIVO.setSelected(true);
-                    } else if (c.getValor1().equalsIgnoreCase("NO")) {
-                        CHECK_CONTROL_EFECTIVO.setSelected(false);
-                    }
-                    Principal.controlCambioEfectivoSINO = c.getValor1();
-                    break;
-
-                case "PROFORMA TIRILLAS O CON FORMATO":
-
-                    TXT_PROFORMASDEROOLO2.setText(c.getNombre());
-                    if (c.getValor1().equalsIgnoreCase("ROLLO")) {
-                        CHECPROFROLLO.setSelected(true);
-                    } else if (c.getValor1().equalsIgnoreCase("GRANDE")) {
-                        CHECPROFGRANDE.setSelected(true);
-                    }
-                    Principal.proformatiriiasoFacturaGrande = c.getValor1();
-                    break;                
-            }
-
-        }
-    }
-
+   
     private void SetConfigDeUsuario() {
         listConfigdeUsuarios = confUsuarioDao.listar();
 
@@ -519,6 +536,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
         buttonGroup1x.add(check_producciona);
 
         setClosable(true);
+        setTitle("Configuracion");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -2022,27 +2040,29 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 configEqtoUpdate.setValor1(jList2.getSelectedValue());
                 Config_EquiposDao configEqDaoupdate2 = new Config_EquiposDao();
                 configEqDaoupdate2.ActualizarValor1deConfiguracion(configEqtoUpdate);
+                
                 jLabel5.setText(jList1.getSelectedValue() + " --> " + (jList2.getSelectedValue()));
+                
             }
+            //SetConfigEquipo();
+            configPorEquipook();
             jList2.setSelectionBackground(Color.ORANGE);
 
         }
         jList2.setSelectionBackground(Color.ORANGE);
     }//GEN-LAST:event_jList2MouseClicked
 
-    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
-        // TODO add your handling code here:
+    public void configPorEquipook(){
+     val=jList1.getSelectedValue();
+        
         Integer index = -1;
         Integer i = 0;
-        jLabel5.setText(jList1.getSelectedValue());
-
         for (Config2 config2 : listConfig2) {
             if (config2.getNombre().equalsIgnoreCase(jList1.getSelectedValue())) {
                 System.out.println("Nombre Coonfig2 sleeccionado: " + jList1.getSelectedValue());
                 codigoConfig2 = config2.getCodigo();
                 System.out.println("Codigo Coonfig2 sleeccionado: " + codigoConfig2);
             }
-
         }
 
         //Integer index = -1;
@@ -2059,7 +2079,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     model2.add(i, listaimpresora);
                     if (csofi.getValor1().equalsIgnoreCase(listaimpresora)) {
                         index = i;
-                        jLabel5.setText(csofi.getNombre() + " --> " + (csofi.getValor1()));
+                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.impresoraTicket = csofi.getValor1();
                     }
                     i++;
@@ -2076,7 +2096,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     model2.add(i, listaimpresora);
                     if (csofi.getValor1().equalsIgnoreCase(listaimpresora)) {
                         index = i;
-                        jLabel5.setText(csofi.getNombre() + " --> " + (csofi.getValor1()));
+                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.impresoraFactura = csofi.getValor1();
                     }
                     i++;
@@ -2092,7 +2112,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     model2.add(i, f.getFormaPago());
                     if (csofi.getValor1().equalsIgnoreCase(f.getFormaPago())) {
                         index = i;
-                        jLabel5.setText(csofi.getNombre() + " --> " + (csofi.getValor1()));
+                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.formadepagopredeterminada = csofi.getValor1();
                     }
 
@@ -2110,7 +2130,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     model2.add(i, b.getBodegaID() + "-" + b.getBodega());
                     if (csofi.getValor1().equalsIgnoreCase(b.getBodegaID() + "-" + b.getBodega())) {
                         index = i;
-                        jLabel5.setText(csofi.getNombre() + " --> " + (csofi.getValor1()));
+                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.bodegaPredeterminadaenCOmpraNOmbre = csofi.getValor1();
                         Principal.bodegaPredeterminadaenCOmpra = b.getBodegaID() + "-" + b.getBodega();
                     }
@@ -2128,7 +2148,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     model2.add(i, b.getBodegaID() + "-" + b.getBodega());
                     if (csofi.getValor1().equalsIgnoreCase(b.getBodegaID() + "-" + b.getBodega())) {
                         index = i;
-                        jLabel5.setText(csofi.getNombre() + " --> " + (csofi.getValor1()));
+                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.bodegaPredeterminadaenVentaNombre = csofi.getValor1();
                         Principal.bodegaPredeterminadaenVenta = b.getBodegaID() + "-" + b.getBodega();
                     }
@@ -2146,7 +2166,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 for (Object object : model2.toArray()) {
                     if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
                         index = i;
-                        jLabel5.setText(csofi.getNombre() + " --> " + (csofi.getValor1()));
+                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.facturatiriiasoGrande = csofi.getValor1();
                     }
                     i++;
@@ -2160,7 +2180,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 for (Object object : model2.toArray()) {
                     if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
                         index = i;
-                        jLabel5.setText(csofi.getNombre() + " --> " + (csofi.getValor1()));
+                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.tickettiriiasoGrande = csofi.getValor1();
                     }
                     i++;
@@ -2175,7 +2195,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 for (Object object : model2.toArray()) {
                     if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
                         index = i;
-                        jLabel5.setText(csofi.getNombre() + " --> " + (csofi.getValor1()));
+                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.proformatiriiasoFacturaGrande = csofi.getValor1();
                     }
                     i++;
@@ -2189,7 +2209,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 for (Object object : model2.toArray()) {
                     if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
                         index = i;
-                        jLabel5.setText(csofi.getNombre() + " --> " + (csofi.getValor1()));
+                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
                         loadconfig.controlElefectivoSiNO = csofi.getValor1();
                     }
                     i++;
@@ -2209,7 +2229,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 for (Object object : model2.toArray()) {
                     if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
                         index = i;
-                        jLabel5.setText(csofi.getNombre() + " --> " + (csofi.getValor1()));
+                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.VerImagenEnFacturacion = csofi.getValor1();
 
                     }
@@ -2224,7 +2244,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 for (Object object : model2.toArray()) {
                     if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
                         index = i;
-                        jLabel5.setText(csofi.getNombre() + " --> " + (csofi.getValor1()));
+                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.ItemRepetidoEnFacturacionSumarCantidad = csofi.getValor1();
 
                     }
@@ -2235,6 +2255,13 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 break;
 
         }
+    }
+    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
+        // TODO add your handling code here:
+        //jLabel5.setText(val);
+        configPorEquipook();
+        jLabel5.setText(val);
+        
     }//GEN-LAST:event_jList1ValueChanged
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged

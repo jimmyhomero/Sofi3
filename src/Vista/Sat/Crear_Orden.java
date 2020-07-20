@@ -154,6 +154,7 @@ public class Crear_Orden extends javax.swing.JInternalFrame {
         jLabel12 = new javax.swing.JLabel();
 
         setClosable(true);
+        setTitle("Crear Orden de Ingreso ");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Nuevo Aparato"));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

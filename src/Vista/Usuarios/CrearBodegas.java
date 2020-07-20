@@ -53,6 +53,7 @@ public class CrearBodegas extends javax.swing.JInternalFrame {
         jTable2 = new javax.swing.JTable();
 
         setClosable(true);
+        setTitle("Crear Bodegas");
         setName("Boegas"); // NOI18N
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(

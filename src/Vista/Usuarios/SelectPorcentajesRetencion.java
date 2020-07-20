@@ -9,7 +9,7 @@ import Controlador.Usuarios.RetencionCDao;
 import Modelo.Sri_porcentajes_retencion;
 import Modelo.sri_tipocomprobante;
 import Vista.Principal;
-import static Vista.Usuarios.Crear_Compras.isOpenfromCrearFacturaSelectAir;
+import static Vista.Usuarios.Modal_Crear_compras.isOpenfromCrearFacturaSelectAir;
 import static Vista.Usuarios.Crear_RetencionC.isOpenfromCrearRetencion;
 import java.util.ArrayList;
 import javax.swing.JTable;
@@ -217,7 +217,7 @@ public class SelectPorcentajesRetencion extends javax.swing.JDialog {
 
             if (isOpenfromCrearFacturaSelectAir) {
 
-                Crear_Compras.jTable1.setValueAt(id, Crear_Compras.filacliked, Crear_Compras.columnacliked);
+                Modal_Crear_compras.jTable1.setValueAt(id, Crear_Compras.filacliked, Crear_Compras.columnacliked);
                 this.dispose();
             }
         }

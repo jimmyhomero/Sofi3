@@ -28,6 +28,8 @@ public class getUrlFromGoogle {
     public static final String GOOGLE_SEARCH_URL = "https://www.google.com/search";
 
     public static void main(String[] args) throws IOException, ParseException {
+        
+        getUrlFromGoogle.getImagesFromGoogle("casa");
     //    getImagesFromGoogle();
         //Taking search term input from console
 //		Scanner scanner = new Scanner(System.in);
@@ -57,7 +59,24 @@ public class getUrlFromGoogle {
 //                        System.out.println("Text::" + linkText + ", URL::" + linkHref);
 //		}
     }
+public static String getimages(String url,String busqueda) {
 
+        String s1 = "[\"https://";
+        String s2 = ".jpg";
+        Integer x1 = url.indexOf(s1);
+        Integer x2 = url.indexOf(s2);
+        if (x1 == -1 || x2 == -1) {
+            return "xxx";
+        } else {
+               String imgs=url.substring(x1 , x2+s2.length());
+            
+            return imgs;
+        }
+        
+        
+
+    }
+    
     public static List<String> getImagesFromGoogle(String busqueda) {
         String userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36";
 
@@ -69,8 +88,12 @@ public class getUrlFromGoogle {
 
         try {
             Document doc = Jsoup.connect(url).userAgent(userAgent).referrer("https://www.google.com/").get();
+          // System.err.println("dddd: "+doc.toString());
+            String page =doc.toString();
+            getimages(page,busqueda);
+            
             Elements elements = doc.select("div.rg_meta");
-
+            
             JSONObject jsonObject;
             for (Element element : elements) {
                 if (element.childNodeSize() > 0) {

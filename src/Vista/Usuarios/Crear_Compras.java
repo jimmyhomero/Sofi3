@@ -6,6 +6,7 @@
 package Vista.Usuarios;
 
 import ClasesAuxiliares.FeCodigoNUmerico;
+import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
 import ClasesAuxiliares.NullValidator;
 import ClasesAuxiliares.Variables;
 import Controlador.Coneccion;
@@ -62,8 +63,8 @@ import Vlidaciones.ValidaCedula;
 import Vlidaciones.ValidaNUmeros;
 import com.mxrck.autocompleter.AutoCompleterCallback;
 import com.mxrck.autocompleter.TextAutoCompleter;
-import ec.unomas.factura.Factura;
-import ec.unomas.factura.TotalImpuesto;
+import ecx.unomas.factura.Factura;
+import ecx.unomas.factura.TotalImpuesto;
 import login.login;
 import impresoras.ServicioDeImpresion;
 import java.awt.Frame;
@@ -106,6 +107,7 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
     /**
      * Creates new form Crear_Facturas
      */
+    
     TextAutoCompleter proveedorAutoCompleter;
     TextAutoCompleter productosAutoCompleter;
     public static boolean isOpenfromCrearFacturaSelectAir = false;
@@ -123,12 +125,15 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
     public static Double cantidadEnviadadesdeDialog;
     public static String diasCrediotoconProveedor;
     public static Integer CrediotoconProveedorSiNo;
+    public static Integer aumentarIvaSiNO=-1;
     public static int filacliked = -1;
     public static int columnacliked = -1;
     Integer ultimoIndexSeleccionadojcBTipoCOmporbante = 0;
     Integer ultimoIndexSeleccionadojcbSustento = 0;
     ProgressBar a = new ProgressBar(3000, "Mensaje Inicial");
     Double utilidad;
+    Double descuentogeneral;
+    Double descuentoItem;
 
     DefaultTableModel modelo = null;
     TableColumnModel columnModel;
@@ -149,7 +154,7 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
     ArrayList<sri_tipocomprobante> listatipoComprobantes = new ArrayList<sri_tipocomprobante>();
     ArrayList<sri_sustentocomprobante> listasustentoComprobantes = new ArrayList<sri_sustentocomprobante>();
     ArrayList<FormasPagoV> listaFormasDePago = new ArrayList<FormasPagoV>();
-    List<Proveedores> listaProveedores = new ArrayList<Proveedores>();
+    List<Clientes> listaProveedores = new ArrayList<Clientes>();
     FormasPagoV objFormasdePago = new FormasPagoV();
     //   ArrayList<DetalleFactura> listaDetFac = new ArrayList<DetalleFactura>();
     Integer codigoUsuarioVendedorSeleccionadoJCB;
@@ -173,6 +178,7 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
         txt_subtotalIvaValorCero.setText("0.00");
         txt_buscar_producto.setText("");
         txt_utilidad.setText("0.00");
+        
         ComprasDao cDao = new ComprasDao();
         listatipoComprobantes = cDao.getlistaTipoComprobate();
         for (sri_tipocomprobante tcom : listatipoComprobantes) {
@@ -479,19 +485,44 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
     }
 
     private void operacionFacturauPDATEandAddRowrs() {
+        
         try {
             utilidad = 0.0;
+            descuentogeneral=Double.valueOf(txt_descuentoGenral.getText().replace(",", "."));
             total = 0.0;
             subtotal = 0.0;
             subtotaliva0 = 0.0;
             subtotaliva12 = 0.0;
+            Double ivadecimal = (iva / 100) + 1;
             int row = jTable1.getModel().getRowCount();
             int col = jTable1.getModel().getColumnCount();
-            //      System.out.println("Add_event:  row: " + row + "  col:  " + col);
+                  System.out.println("Add_event:  row: " + row + "  col:  " + col);
+            
             for (int i = 0; i < row; i++) {
+               //  modelo.setValueAt(String.valueOf(precio), i, 7);
                 System.out.println("INGRESA AL pRIMER for");
                 Double cantidad = Double.valueOf(modelo.getValueAt(i, 4).toString().replace(",", "."));
+                 Double precioold = Double.valueOf(modelo.getValueAt(i, 7).toString().replace(",", "."));
                 Double precio = Double.valueOf(modelo.getValueAt(i, 7).toString().replace(",", "."));
+             
+                System.out.println("rows: "+row +" xx: "+precio);
+                //////////descuento general
+                if(descuentogeneral>0 && descuentogeneral<=100){
+                  //  precio=precio-(precio*descuentogeneral)/100;
+                    precio=precioold-(precioold*descuentogeneral)/100;
+                }
+                
+                //////////fin descuento general
+                
+                if(aumentarIvaSiNO==1){
+                precio=precioold*ivadecimal;
+                }
+                if(aumentarIvaSiNO==0){
+                precio=precioold/ivadecimal;
+             //   modelo.setValueAt(String.valueOf(precio), i, 7);
+                }
+  //               modelo.setValueAt(String.valueOf(precio), i, 7);
+                
                 Double descuento = Double.valueOf(modelo.getValueAt(i, 5).toString().replace(",", "."));
 
                 Double costo = Double.valueOf(modelo.getValueAt(i, 0).toString().replace(",", "."));
@@ -501,29 +532,26 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
                 if (descuento > 0 && descuento <= 100) {
                     Ptotal = Ptotal - ((Ptotal * descuento) / 100);
                     //utilidad
-                } else {
-
                 }
-
+//                modelo.setValueAt(precio, i, 7);
                 modelo.setValueAt(String.valueOf(String.format("%.3f", Ptotal)).replace(",", "."), i, 8);
+                
 
-                total = total + Double.valueOf(modelo.getValueAt(i, 8).toString().replace(",", "."));
-                txt_total_val.setText(String.valueOf(String.format("%.2f", total)).replace(",", "."));
-                txt_total_.setText(String.valueOf(String.format("%.2f", total)).replace(",", "."));
-
+                subtotal = subtotal + Ptotal; // precio*cantidad;
+              
+                
+                total = (subtotal) * ivadecimal;
                 utilidad = utilidad + (Double.valueOf(modelo.getValueAt(i, 8).toString().replace(",", ".")) - costoxFila);
 //                     utilidad = utilidad + Ptotal2 - costoxFila;
                 //  System.out.println("total_segundoFor: " + Double.valueOf(modelo.getValueAt(i, 8).toString().replace(",", ".")));
                 txt_utilidad.setText(String.valueOf(String.format("%.2f", utilidad)).replace(",", "."));
-                //System.out.println("Utilidad__: " + utilidad);
-                //System.out.println("Total__: " + total);
-
-                Double ivadecimal = (iva / 100) + 1;
-                subtotal = (total) / ivadecimal;
+                  txt_total_val.setText(String.valueOf(String.format("%.2f", total)).replace(",", "."));
+                txt_total_.setText(String.valueOf(String.format("%.2f", total)).replace(",", "."));
                 txt_subtotal.setText(String.valueOf(String.format("%.2f", subtotal)).replace(",", "."));
                 txt_subtotalIvaValor.setText(String.valueOf(String.format("%.2f", subtotal)).replace(",", "."));
                 txt_iva_valor.setText(String.valueOf(String.format("%.2f", (total - subtotal))).replace(",", "."));
 
+    //            modelo.setValueAt(String.valueOf(precio), i, 7);
             }
 
         } catch (Exception e) {
@@ -562,7 +590,6 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
         txt_usuarioCodigo = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        txt_cedula = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txt_nombres = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -572,6 +599,7 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         btn_nuevo = new javax.swing.JButton();
+        txt_cedula = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         txt_sec1 = new javax.swing.JTextField();
@@ -620,6 +648,8 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
         txt_total_ = new javax.swing.JLabel();
         txt_subtotalIvaValor = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         txt_utilidad.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
 
@@ -633,6 +663,7 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Nueva Compra");
+        setName(""); // NOI18N
         addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 formFocusGained(evt);
@@ -661,40 +692,12 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel4.setText("Cedula/RUC (*)");
+        jLabel4.setText("Nombres/RUC");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 100, -1));
 
-        txt_cedula.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txt_cedula.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txt_cedulaFocusGained(evt);
-            }
-        });
-        txt_cedula.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                txt_cedulaInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
-        txt_cedula.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                txt_cedulaPropertyChange(evt);
-            }
-        });
-        txt_cedula.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txt_cedulaKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_cedulaKeyTyped(evt);
-            }
-        });
-        jPanel2.add(txt_cedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 190, -1));
-
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel5.setText("Nombres/Razon S.");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
+        jLabel5.setText("RUC/Cedula");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, -1, -1));
 
         txt_nombres.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         txt_nombres.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -703,11 +706,14 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
             }
         });
         txt_nombres.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_nombresKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_nombresKeyReleased(evt);
             }
         });
-        jPanel2.add(txt_nombres, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 260, -1));
+        jPanel2.add(txt_nombres, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 190, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jLabel6.setText("Direccion");
@@ -745,6 +751,37 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btn_nuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 30, 70, -1));
 
+        txt_cedula.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        txt_cedula.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_cedulaFocusGained(evt);
+            }
+        });
+        txt_cedula.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                txt_cedulaInputMethodTextChanged(evt);
+            }
+        });
+        txt_cedula.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txt_cedulaPropertyChange(evt);
+            }
+        });
+        txt_cedula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_cedulaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_cedulaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_cedulaKeyTyped(evt);
+            }
+        });
+        jPanel2.add(txt_cedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 260, -1));
+
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 400, 192));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
@@ -755,17 +792,52 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
 
         txt_sec1.setText("001");
         txt_sec1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_sec1FocusGained(evt);
+            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txt_sec1FocusLost(evt);
             }
         });
+        txt_sec1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_sec1KeyReleased(evt);
+            }
+        });
         jPanel3.add(txt_sec1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 40, -1));
+
+        txt_secNUmFac.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_secNUmFacFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_secNUmFacFocusLost(evt);
+            }
+        });
+        txt_secNUmFac.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_secNUmFacKeyReleased(evt);
+            }
+        });
         jPanel3.add(txt_secNUmFac, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 90, -1));
 
         jLabel11.setText("Hora:");
         jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 40, 20));
 
         txt_sec2.setText("001");
+        txt_sec2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_sec2FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_sec2FocusLost(evt);
+            }
+        });
+        txt_sec2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_sec2KeyReleased(evt);
+            }
+        });
         jPanel3.add(txt_sec2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 40, -1));
         jPanel3.add(txt_hora, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 120, 20));
 
@@ -780,6 +852,15 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
         txt_total_val.setText("0.00");
         txt_total_val.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
         jPanel3.add(txt_total_val, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 90, 420, 90));
+
+        txt_numAutorizacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_numAutorizacionKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_numAutorizacionKeyTyped(evt);
+            }
+        });
         jPanel3.add(txt_numAutorizacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 480, -1));
 
         jcb_tipoComprobante.addItemListener(new java.awt.event.ItemListener() {
@@ -819,10 +900,10 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
             }
         });
         jTable1.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 jTable1InputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -941,6 +1022,8 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        foto.setName(""); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -978,6 +1061,22 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
         jLabel13.setText("%Dcto");
 
         txt_descuentoGenral.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txt_descuentoGenral.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_descuentoGenralFocusGained(evt);
+            }
+        });
+        txt_descuentoGenral.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_descuentoGenralKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_descuentoGenralKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_descuentoGenralKeyTyped(evt);
+            }
+        });
 
         lbl_subTotalIva.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lbl_subTotalIva.setText("Subtotal iva:");
@@ -1018,8 +1117,8 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
                         .addComponent(lbl_Iva, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(txt_subtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(txt_descuentoGenral, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txt_descuentoGenral, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
                         .addComponent(txt_subtotalIvaValor, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1046,36 +1145,62 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txt_subtotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txt_descuentoGenral, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txt_subtotalIvaValor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_subtotalIvaValorCero, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(txt_subtotalIvaValorCero, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txt_descuentoGenral)
+                                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txt_subtotal, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+                                        .addComponent(txt_subtotalIvaValor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addContainerGap())
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_total_, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_iva_valor, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(21, Short.MAX_VALUE))))
+                        .addContainerGap(22, Short.MAX_VALUE))))
         );
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 520, 900, 70));
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
+        jButton4.setBackground(new java.awt.Color(102, 255, 102));
+        jButton4.setText("+ IVA");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setBackground(new java.awt.Color(255, 102, 102));
+        jButton5.setText("- IVA");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 706, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap(629, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 65, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton5)
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 590, 710, 70));
@@ -1087,18 +1212,9 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         //System.out.println("Vista.Usuarios.Crear_Facturas.txt_cedulaKeyTyped()  "+evt.getExtendedKeyCode());
         // if (txt_cedula.getText().length() < 13  ) {
-        ValidaNUmeros val = new ValidaNUmeros();
-        val.keyTyped(evt);
+//        ValidaNUmeros val = new ValidaNUmeros();
+  //      val.keyTyped(evt);
 
-//        } else {
-//            if(evt.getKeyCode()==KeyEvent.VK_BACK_SPACE ){            
-//            }else{
-//                System.out.println("Vista.Usuarios.Crear_Compras.txt_cedulaKeyTyped(): "+evt.getKeyChar());
-//                System.out.println("Vista.Usuarios.Crear_Compras.txt_cedulaKeyTyped(): "+evt.getKeyCode());
-//                evt.consume();
-//            }
-//            
-        //  }
 
     }//GEN-LAST:event_txt_cedulaKeyTyped
 
@@ -1157,7 +1273,7 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_list2KeyPressed
 
-    
+
     private void list2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_list2MouseClicked
         // TODO add your handling code here:
         if (evt.getClickCount() == 2 && !list2.getSelectedValue().equals("")) {
@@ -1385,14 +1501,14 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
                                 String costoUnitario = jTable1.getValueAt(i, 7).toString().replace(",", ".");
                                 JOptionPane.showMessageDialog(null, "val: " + costoUnitario);
                                 Double costounitario = Double.parseDouble(costoUnitario);
-                                
-                                Double pvp = (costounitario + (porvcentajeDeUtilidad  * costounitario)/100);                                
+
+                                Double pvp = (costounitario + (porvcentajeDeUtilidad * costounitario) / 100);
                                 pr.setCodigo(codigoProducto);
                                 pr.setCosto(String.valueOf(String.format("%.4f", costounitario)).replace(",", "."));
                                 pr.setPvp(String.valueOf(String.format("%.4f", pvp)).replace(",", "."));
-                               
-                            String valunitadoString=(String.valueOf(String.format("%.4f", valorUnitarioSinIVA)).replace(",", "."));
-                            Double vau=Double.parseDouble(valunitadoString);
+
+                                String valunitadoString = (String.valueOf(String.format("%.4f", valorUnitarioSinIVA)).replace(",", "."));
+                                Double vau = Double.parseDouble(valunitadoString);
                                 pr.setBase(vau);
                                 dfDao.guardar(df);
                                 kDao.guardar(k);
@@ -1589,32 +1705,33 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_cedulaPropertyChange
 
     private void txt_cedulaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cedulaKeyReleased
-        if (txt_cedula.getText().length() == 10 && txt_cedula.getText() != "9999999999" || txt_cedula.getText().length() == 13 && txt_cedula.getText() != "9999999999999") {
-            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                if (ValidaCedula.validaRUC(txt_cedula.getText())) {
-
-                    if (addDatosClienteonFactura(txt_cedula.getText()) == null) {
-                        Crear_Proveedores obj_crearC = new Crear_Proveedores();
-                        Principal.desktopPane.add(obj_crearC);
-                        obj_crearC.setVisible(true);
-                        Crear_Proveedores.txt_cedula.setText(txt_cedula.getText());
-                        try {
-                            obj_crearC.setSelected(true);
-
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Crear_Compras.class
-                                    .getName()).log(Level.SEVERE, null, ex);
-                        }
-
-                        // btn_nuevo.setVisible(true);
-                    }
-                } else {
-
-                    //    JOptionPane.showMessageDialog(null, "Cedula o RUC mal Formada.");
-                }
-
-            }
-        }
+//        if (txt_cedula.getText().length() == 10 && txt_cedula.getText() != "9999999999" || txt_cedula.getText().length() == 13 && txt_cedula.getText() != "9999999999999") {
+//            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+//                if (ValidaCedula.validaRUC(txt_cedula.getText())) {
+//
+//                    if (addDatosClienteonFactura(txt_cedula.getText()) == null) {
+//                        Crear_Clientes obj_crearC = new Crear_Clientes();
+//                        Principal.desktopPane.add(obj_crearC);
+//                        obj_crearC.setVisible(true);
+//                        Crear_Clientes.txt_cedulax.setText(txt_cedula.getText());
+//                        //Crear_Proveedores.txt_cedula.setText(txt_cedula.getText());
+//                        try {
+//                            obj_crearC.setSelected(true);
+//
+//                        } catch (PropertyVetoException ex) {
+//                            Logger.getLogger(Crear_Compras.class
+//                                    .getName()).log(Level.SEVERE, null, ex);
+//                        }
+//
+//                        // btn_nuevo.setVisible(true);
+//                    }
+//                } else {
+//
+//                    //    JOptionPane.showMessageDialog(null, "Cedula o RUC mal Formada.");
+//                }
+//
+//            }
+//        }
 
 
     }//GEN-LAST:event_txt_cedulaKeyReleased
@@ -1642,6 +1759,7 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
 
     private void txt_sec1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_sec1FocusLost
         // TODO add your handling code here:
+    txt_sec1.setText(OperacionesForms.validaNumeroFactura3(txt_sec1.getText()));
     }//GEN-LAST:event_txt_sec1FocusLost
 
     private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
@@ -1771,28 +1889,180 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
 
     private void txt_nombresKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombresKeyReleased
         // TODO add your handling code here:
-
-        if (evt.getKeyCode() == 10) {
-//            if (!txtBuscar2.getText().equalsIgnoreCase("")) {
-//                txtBuscar2.setText("");
-//                addDialogoCantidad();
-//                addDialogoPrecio();
+//
+//        if (evt.getKeyCode() == 10) {
+//
+//        } else {
+//
+//            ProveedoresDao pDao = new ProveedoresDao();
+//            proveedorAutoCompleter.removeAllItems();
+//            for (Proveedores p : pDao.listarlike(txt_nombres.getText())) {  //.listarlike(txtBuscar2.getText())) {
+//                System.out.println("Prod: " + p.getNombre());
+//                proveedorAutoCompleter.addItem(p);
 //            }
-        } else {
-
-            ProveedoresDao pDao = new ProveedoresDao();
-            proveedorAutoCompleter.removeAllItems();
-            for (Proveedores p : pDao.listarlike(txt_nombres.getText())) {  //.listarlike(txtBuscar2.getText())) {
-                System.out.println("Prod: " + p.getNombre());
-                proveedorAutoCompleter.addItem(p);
-            }
-        }
+//        }
     }//GEN-LAST:event_txt_nombresKeyReleased
 
     private void txt_nombresFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_nombresFocusGained
         // TODO add your handling code here:
-        txt_nombres.selectAll();
+        //txt_nombres.selectAll();
     }//GEN-LAST:event_txt_nombresFocusGained
+
+    private void txt_sec1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_sec1KeyReleased
+        // TODO add your handling code here:
+        //if (!ValidaNUmeros.isOnlyNumbers(txt_sec1.getText())||  !(txt_sec1.getText().length() <= 3)) {
+        txt_sec1.setText(OperacionesForms.ValidaNumeroFacturaCompraKeyRelesed3(txt_sec1.getText()));    
+        if(txt_sec1.getText().equals("000")){
+            txt_sec1.selectAll();            
+        }
+
+    }//GEN-LAST:event_txt_sec1KeyReleased
+
+    private void txt_sec1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_sec1FocusGained
+
+        txt_sec1.selectAll();
+    }//GEN-LAST:event_txt_sec1FocusGained
+
+    private void txt_sec2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_sec2FocusGained
+        // TODO add your handling code here:
+        txt_sec2.selectAll();
+    }//GEN-LAST:event_txt_sec2FocusGained
+
+    private void txt_sec2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_sec2FocusLost
+        // TODO add your handling code here:
+         txt_sec2.setText(OperacionesForms.validaNumeroFactura3(txt_sec2.getText()));
+    }//GEN-LAST:event_txt_sec2FocusLost
+
+    private void txt_sec2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_sec2KeyReleased
+        // TODO add your handling code here:
+        txt_sec2.setText(OperacionesForms.ValidaNumeroFacturaCompraKeyRelesed3(txt_sec2.getText()));    
+        if(txt_sec2.getText().equals("001")){
+            txt_sec2.selectAll();            
+        }
+        
+        
+
+    }//GEN-LAST:event_txt_sec2KeyReleased
+
+    private void txt_secNUmFacFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_secNUmFacFocusGained
+        // TODO add your handling code here:
+        txt_secNUmFac.selectAll();
+    }//GEN-LAST:event_txt_secNUmFacFocusGained
+
+    private void txt_secNUmFacFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_secNUmFacFocusLost
+        // TODO add your handling code here:
+        
+        txt_secNUmFac.setText(OperacionesForms.validaNumeroFactura9(txt_secNUmFac.getText()));
+    }//GEN-LAST:event_txt_secNUmFacFocusLost
+
+    private void txt_secNUmFacKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_secNUmFacKeyReleased
+    txt_secNUmFac.setText(OperacionesForms.ValidaNumeroFacturaCompraKeyRelesed9(txt_secNUmFac.getText()));
+    if(txt_secNUmFac.getText().equals("000000001")){
+            txt_secNUmFac.selectAll();            
+        }
+    
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_secNUmFacKeyReleased
+
+    private void txt_numAutorizacionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numAutorizacionKeyReleased
+        // TODO add your handling code here:
+        //txt_numAutorizacion.setText(OperacionesForms.ValidaNumeroFacturaCompraNumeroAutorizacion(txt_numAutorizacion.getText()));
+        ValidaNUmeros.keyTyped(evt);
+    }//GEN-LAST:event_txt_numAutorizacionKeyReleased
+
+    private void txt_numAutorizacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numAutorizacionKeyTyped
+        // TODO add your handling code here:
+        ValidaNUmeros.keyTyped(evt);
+    }//GEN-LAST:event_txt_numAutorizacionKeyTyped
+
+    private void txt_descuentoGenralKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_descuentoGenralKeyTyped
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_txt_descuentoGenralKeyTyped
+
+    private void txt_descuentoGenralKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_descuentoGenralKeyPressed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txt_descuentoGenralKeyPressed
+
+    private void txt_descuentoGenralKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_descuentoGenralKeyReleased
+        // TODO add your handling code here:
+        if(!ValidaNUmeros.isOnlyDouble(txt_descuentoGenral.getText())){
+        txt_descuentoGenral.setText("0.00");
+        }else{
+        operacionFacturauPDATEandAddRowrs();
+        }
+    }//GEN-LAST:event_txt_descuentoGenralKeyReleased
+
+    private void txt_descuentoGenralFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_descuentoGenralFocusGained
+        // TODO add your handling code here:
+        txt_descuentoGenral.selectAll();
+    }//GEN-LAST:event_txt_descuentoGenralFocusGained
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+       aumentarIvaSiNO=1;
+       operacionFacturauPDATEandAddRowrs();
+       aumentarIvaSiNO=-1;
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        aumentarIvaSiNO=0;
+       operacionFacturauPDATEandAddRowrs();
+       aumentarIvaSiNO=-1;
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void txt_cedulaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cedulaKeyPressed
+
+    }//GEN-LAST:event_txt_cedulaKeyPressed
+
+    private void txt_nombresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombresKeyPressed
+        // TODO add your handling code here:
+        
+                // TODO add your handling code here:
+        
+        //************************************
+        System.out.println("Vista.Usuarios.Crear_Facturas.txt_nombresKeyPressed()xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        String ruc = "";
+
+        if (ValidaNUmeros.isOnlyNumbers(txt_nombres.getText()) && KeyEvent.VK_ENTER == evt.getKeyCode()) {
+            if ((txt_nombres.getText().length() == 10 || txt_nombres.getText().length() == 13)) {
+
+                ruc = txt_nombres.getText();
+                //  JOptionPane.showMessageDialog(null, ruc);
+                System.out.println("Vista.Usuarios.Crear_Facturas.txt_nombresKeyPressed()llllllllllllllllllllllllll");
+                if (addDatosClienteonFactura(txt_nombres.getText()) == null) {
+                    //  JOptionPane.showMessageDialog(null, ruc);
+                    
+                    Crear_Clientes obj_crearC = new Crear_Clientes();
+                    obj_crearC.buscarProvvedoroCLiente=1;
+                    Principal.desktopPane.add(obj_crearC);
+
+                    try {
+                        obj_crearC.setSelected(true);
+
+                    } catch (PropertyVetoException ex) {
+                        Logger.getLogger(Crear_Facturas.class
+                                .getName()).log(Level.SEVERE, null, ex);
+                    }
+                    Crear_Clientes.txt_cedulax.setText(ruc);
+                    obj_crearC.setVisible(true);
+                }
+                
+            }
+        } else {
+            System.out.println("Vista.Usuarios.Crear_Facturas.txt_nombresKeyPressed()xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+            ClientesDao cd = new ClientesDao();
+            listaProveedores = cd.BuscarClietneslikokokok(ruc, 1);
+            proveedorAutoCompleter.removeAllItems();
+            for (Clientes p : listaProveedores) {
+                proveedorAutoCompleter.addItem(p);
+            }
+        }
+
+    }//GEN-LAST:event_txt_nombresKeyPressed
 
     private Integer addDatosClienteonFactura(String cedula) {
         //System.out.println("Vista.Usuarios.Crear_Facturas.txt_cedulaKeyTyped() Entrooo:  " + evt.getKeyCode());
@@ -1804,7 +2074,7 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
             obj = objDao.buscarConCedulaLike(cedula);
 
             txt_nombres.setText(obj.getNombre());
-            txt_celular.setText(obj.getCelular());
+           // txt_celular.setText(obj.getdiasCrediotoconProveedorCelular());
             txt_dir.setText(obj.getDireccion());
             txt_clienteCodigo.setText(obj.getCodigo().toString());
             txt_clienteCodigo.setVisible(false);
@@ -1828,6 +2098,8 @@ public class Crear_Compras extends javax.swing.JInternalFrame {
     public static javax.swing.JButton jButton1;
     public static javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

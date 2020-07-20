@@ -116,7 +116,7 @@ public class BodegasDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.listar()" + ex);
+            System.out.println("Controlador.CUsuarios.listar()xccd" + ex);
         } finally {
             this.cerrar();
         }

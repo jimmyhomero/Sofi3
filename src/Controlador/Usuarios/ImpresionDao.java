@@ -12,7 +12,6 @@ import Modelo.Facturas;
 import Modelo.Tickets;
 import Modelo.Usuarios;
 import Vista.Principal;
-import Vista.Usuarios.Crear_Facturas;
 import static Vista.Usuarios.Crear_Facturas.tipoDocumento;
 import static Vista.Usuarios.Crear_Facturas.txt_cedula;
 import static Vista.Usuarios.Crear_Facturas.txt_celular;
@@ -151,8 +150,8 @@ public void impresionzZebra(Doc doc) {
         try {
             this.conectar();
             PreparedStatement st;
-
-            st = this.getCnx().prepareCall("SELECT u.Nombres AS usuario, c.Cedula AS ruc, c.Nombres AS cliente ,c.Direccion,c.Telefono,c.Celular, t.*,dt.* FROM usuarios u  INNER JOIN clientes c INNER JOIN tickets t INNER JOIN detalleticket dt ON( t.Codigo=dt.ticket_Codigo ) WHERE (t.secuencia=" + secuenca + " AND t.Usuarios_Codigo=u.codigo ) AND t.Clientes_codigo=c.codigo");
+//SELECT u.Nombres AS usuario, c.Cedula AS ruc, c.Nombres AS cliente ,c.Direccion,c.Telefono,c.Celular, t.*,dt.* FROM usuarios u  INNER JOIN clientes c INNER JOIN facturaS t INNER JOIN detallefactura dt ON( t.Codigo=dt.Factura_Codigo ) WHERE (t.secuencia="001-001-000000009" AND t.Usuarios_Codigo=u.codigo AND t.tipo_documento="FACTURA" ) AND t.Clientes_codigo=c.codigo
+            st = this.getCnx().prepareCall("SELECT u.Nombres AS usuario, c.Cedula AS ruc, c.Nombres AS cliente ,c.Direccion,c.Telefono,c.Celular, t.*,dt.* FROM usuarios u  INNER JOIN clientes c INNER JOIN facturaS t INNER JOIN detallefactura dt ON( t.Codigo=dt.Factura_Codigo ) WHERE (t.secuencia="+secuenca+" AND t.Usuarios_Codigo=u.codigo AND t.tipo_documento=\"FACTURA\" ) AND t.Clientes_codigo=c.codigo");
             rs = st.executeQuery();
             for (int i = 0; i < Integer.parseInt(Principal.numerovecseimpresionFactura); i++) {
                 int a = 1;

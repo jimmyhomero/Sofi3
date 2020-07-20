@@ -110,6 +110,7 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setClosable(true);
+        setTitle("Importar Inventario");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -447,7 +448,7 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         selector = new JFileChooser();
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Xls y xlsx", "xlsx", "xls");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("xls y xlsx", "xlsx", "xls");
         selector.setFileFilter(filtro);
         int op = selector.showOpenDialog(this);
         if (op == JFileChooser.APPROVE_OPTION) {

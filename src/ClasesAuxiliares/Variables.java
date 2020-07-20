@@ -23,6 +23,10 @@ import javax.swing.JOptionPane;
  */
 public class Variables {
 
+    /*VARIABLES PARA EL SISTEMA*/
+    public static String BODEGA_PREDETERMINDA_VENTA= "";
+    
+    
     /**
      * VARIABLES FACTURACION ELECTRONICA
      */
@@ -73,6 +77,7 @@ public static String FE_ESTADO3 = "";
     public static String CAJA_EGRESO_MANUAL = " EGRESO MANUAL DE CAJA ";
     public static String CAJA_EGRESO_NC = " EGRESO POR NOTA DE CREDITO ";
 
+    
     //public static  String =etiqueta_caja
     
 //    public static String DIR_REPORTE_DETALLE_CAJA = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\Cajas1.jasper";
@@ -168,8 +173,8 @@ public static String FE_ESTADO3 = "";
         try {
             date1 = sdf.parse("2022-12-28"); //date1 es el 23 de febrero de 1995
             if (fecha.after(date1)) {
-                JOptionPane.showMessageDialog(null, "Ha vencido el periodo de prueba contactarse al: 0992669329 -02 2765821 ");
-                exit(0);
+            // JOptionPane.showMessageDialog(null, "Ha vencido el periodo de prueba contactarse al: 0992669329 -02 2765821 ");
+              //  exit(0);
             } else {
              //   JOptionPane.showMessageDialog(null, "Se esta usando la aplicacion en modo prueba..!!! (contactarse al: 0992669329 -02 2765821)");
             }

@@ -5,7 +5,9 @@
  */
 package Vista;
 
+import ClasesAuxiliares.BackupBaseDatos.BackupMysql;
 import ClasesAuxiliares.MaquinaDao;
+import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
 import ClasesAuxiliares.NewSql.updataesBDD;
 import ClasesAuxiliares.Update;
 import ClasesAuxiliares.Variables;
@@ -25,11 +27,13 @@ import Modelo.Config_Equipos;
 import Modelo.Config_Usuarios;
 import Modelo.Equipos;
 import Modelo.Tipo_Usuario;
+import Vista.Backup.Crear_Backup;
 import Vista.Usuarios.BuscarFacturas;
 import Vista.Usuarios.Buscar_Clientes;
 import Vista.Productos.Buscar_Productos;
 import Vista.Sat.Crear_Aparato;
 import Vista.Sat.Crear_Orden;
+import Vista.Usuarios.BotonSuperior;
 import Vista.Usuarios.BuscarCompras;
 import Vista.Usuarios.Buscar_Proveedores;
 import Vista.Usuarios.Buscar_Tipos;
@@ -41,17 +45,22 @@ import Vista.Usuarios.Configuracion;
 import Vista.Usuarios.CrearBodegas;
 import Vista.Usuarios.Crear_Clientes;
 import Vista.Usuarios.Crear_Compras;
-import Vista.Usuarios.Crear_Facturas;
 import Vista.Usuarios.Crear_Productos;
 import Vista.Usuarios.Crear_Proveedores;
 import Vista.Usuarios.Crear_RetencionC;
 import Vista.Usuarios.Crear_Tipo_Usuarios;
 import Vista.Usuarios.CuadrarCaja;
 import Vista.Usuarios.DatosEmpresaForm;
+import Vista.Usuarios.DesgargarDocumentosElectronicosEMITIDOSSRI;
+import Vista.Usuarios.DesgargarDocumentosElectronicosSRI;
 import Vista.caja.EgresoCaja;
 import Vista.Usuarios.ImprtarInventario;
 import Vista.Usuarios.Modal;
+import Vista.Usuarios.Modal_BucarUsuarios;
 import Vista.Usuarios.Modal_CrearFacturas;
+import Vista.Usuarios.Modal_CrearNotaCredito;
+import Vista.Usuarios.Modal_Crear_Pvps;
+import Vista.Usuarios.Modal_Crear_compras;
 import Vista.Usuarios.Modal_buscarCilentes;
 import Vista.Usuarios.Modal_buscarProveedores;
 import Vista.Usuarios.NuevaFormaPago;
@@ -59,7 +68,7 @@ import Vista.Usuarios.PLANC;
 import Vista.caja.IngresoCaja;
 import Vista.Usuarios.prueba1;
 import Vista.dasboard.dash;
-import ec.unomas.service.Config;
+import ecx.unomas.service.Config;
 import login.login;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
@@ -89,6 +98,8 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Main
      */
+    public static Integer controlareduccionPrincilapParamenusuperior = 0;
+     public static Integer NumerodeBotonesAbiertos = 0;
     int numVentana = 0;/// si es cero, significa que no se ha encontrado un frmulario de tipo que ya ecista 
     public static boolean IsOpenFormNuevoUsuario = false;
     ConfigSofia conf = new ConfigSofia();
@@ -99,7 +110,13 @@ public class Principal extends javax.swing.JFrame {
     ArrayList<Config_Equipos> listConfigdeEquipo = new ArrayList<Config_Equipos>();
     ArrayList<Config_Usuarios> listConfigdeUsuarios = new ArrayList<Config_Usuarios>();
     public static ArrayList<Integer> posisionButonToolbar = new ArrayList<Integer>();
+    public static boolean isllamadoDesdeProveedorOCliente=false; ///false cliente, true proveedor;
 
+    //JInternalFrame obj = new JInternalFrame();
+    public static Integer X;
+    public static Integer Y;
+    public static Integer X2;
+    public static Integer Y2;
     public static String iva;
     public static String periodo;
     public static String moneda;
@@ -134,12 +151,15 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
 
         initComponents();
+
+//        jc j = new jc();
+        //      j.setVisible(true);
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
         int height = gd.getDisplayMode().getHeight();
 
         Variables.trial();
-        Variables v = new Variables();
+        //  Variables v = new Variables();
 
         // System.out.println("Vista.Principal.<init>() usuario: " + login.nombresUsuario);
         this.setTitle("   SOFI SOFTWARE    " + login.nombreEmpresa + "    Usuario :  " + login.nombresUsuario + "    Equipo :  " + login.nombreDelEquipo);
@@ -260,6 +280,7 @@ public class Principal extends javax.swing.JFrame {
                     break;
                 case "BODEGA PREDETERMINADA EN VENTA":
                     this.bodegaPredeterminadaenVenta = c.getValor1();
+                    Variables.BODEGA_PREDETERMINDA_VENTA = c.getValor1();
                     break;
                 case "FACTURA TIRILLAS O CON FORMATO":
 
@@ -281,7 +302,7 @@ public class Principal extends javax.swing.JFrame {
                     this.VerImagenEnFacturacion = c.getValor1();
                     break;
                 case "ITEM REPETIDO SUMAR CANTIDAD EN FACTURACION":
-                    System.err.println("ITEM REPETIDO SUMAR CANTIDAD EN FACTURACION ::::: "+c.getValor1());
+                    System.err.println("ITEM REPETIDO SUMAR CANTIDAD EN FACTURACION ::::: " + c.getValor1());
                     this.ItemRepetidoEnFacturacionSumarCantidad = c.getValor1();
                     break;
 
@@ -300,8 +321,16 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFrame1 = new javax.swing.JFrame();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu5 = new javax.swing.JMenu();
+        jMenu6 = new javax.swing.JMenu();
+        jFrame2 = new javax.swing.JFrame();
+        jMenuItem9 = new javax.swing.JMenuItem();
         desktopPane = new javax.swing.JDesktopPane();
-        jLayeredPane1 = new javax.swing.JLayeredPane();
         jProgressBar2 = new javax.swing.JProgressBar();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
@@ -318,10 +347,13 @@ public class Principal extends javax.swing.JFrame {
         contentMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
         helpMenu1 = new javax.swing.JMenu();
         NuevoProducto = new javax.swing.JMenuItem();
         aboutMenuItem1 = new javax.swing.JMenuItem();
         aboutMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
         helpMenu2 = new javax.swing.JMenu();
         contentMenuItem2 = new javax.swing.JMenuItem();
         aboutMenuItem2 = new javax.swing.JMenuItem();
@@ -350,39 +382,86 @@ public class Principal extends javax.swing.JFrame {
         aboutMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
+        jMenuItem14 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
 
+        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
+        jFrame1.getContentPane().setLayout(jFrame1Layout);
+        jFrame1Layout.setHorizontalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jFrame1Layout.setVerticalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        jMenu3.setText("File");
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setText("Edit");
+        jMenuBar1.add(jMenu4);
+
+        jMenu5.setText("File");
+        jMenuBar2.add(jMenu5);
+
+        jMenu6.setText("Edit");
+        jMenuBar2.add(jMenu6);
+
+        javax.swing.GroupLayout jFrame2Layout = new javax.swing.GroupLayout(jFrame2.getContentPane());
+        jFrame2.getContentPane().setLayout(jFrame2Layout);
+        jFrame2Layout.setHorizontalGroup(
+            jFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jFrame2Layout.setVerticalGroup(
+            jFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        jMenuItem9.setText("jMenuItem9");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(1);
         setName("Formulario"); // NOI18N
+        addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
+            public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
+            }
+            public void ancestorResized(java.awt.event.HierarchyEvent evt) {
+                dddd(evt);
+            }
+        });
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
+        });
 
         desktopPane.setBackground(new java.awt.Color(240, 240, 240));
         desktopPane.setForeground(new java.awt.Color(102, 102, 255));
         desktopPane.setName("ertetetet"); // NOI18N
 
-        jLayeredPane1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jProgressBar2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
-        jProgressBar2.setFont(new java.awt.Font("Perpetua Titling MT", 1, 18)); // NOI18N
-        jLayeredPane1.add(jProgressBar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 830, 990, 40));
-
-        desktopPane.setLayer(jLayeredPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktopPane.setLayer(jProgressBar2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout desktopPaneLayout = new javax.swing.GroupLayout(desktopPane);
         desktopPane.setLayout(desktopPaneLayout);
         desktopPaneLayout.setHorizontalGroup(
             desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1473, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jProgressBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 1128, Short.MAX_VALUE)
         );
         desktopPaneLayout.setVerticalGroup(
             desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(desktopPaneLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 968, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, desktopPaneLayout.createSequentialGroup()
+                .addGap(0, 641, Short.MAX_VALUE)
+                .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         fileMenu.setMnemonic('f');
@@ -507,6 +586,14 @@ public class Principal extends javax.swing.JFrame {
         });
         helpMenu.add(jMenuItem7);
 
+        jMenuItem13.setText("Nota Credito");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        helpMenu.add(jMenuItem13);
+
         menuBar.add(helpMenu);
 
         helpMenu1.setMnemonic('h');
@@ -539,6 +626,17 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         helpMenu1.add(aboutMenuItem9);
+
+        jMenuItem10.setText("Nuevo PVP");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        helpMenu1.add(jMenuItem10);
+
+        jMenuItem11.setText("Lista PVPs");
+        helpMenu1.add(jMenuItem11);
 
         menuBar.add(helpMenu1);
 
@@ -751,6 +849,30 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem3.setText("Nuevo Aparato");
         helpMenu8.add(jMenuItem3);
 
+        jMenuItem8.setText("Backup BseDatos");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        helpMenu8.add(jMenuItem8);
+
+        jMenuItem12.setText("Doc Recbidos SRI");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
+        helpMenu8.add(jMenuItem12);
+
+        jMenuItem14.setText("Doc Emitidos SRI");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
+        helpMenu8.add(jMenuItem14);
+
         menuBar.add(helpMenu8);
 
         jMenu1.setText("Sat");
@@ -801,13 +923,17 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(desktopPane)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(desktopPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 87, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(desktopPane)
+                .addContainerGap())
         );
 
         pack();
@@ -819,894 +945,203 @@ public class Principal extends javax.swing.JFrame {
 
     private void cutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMenuItemActionPerformed
         // TODO add your handling code here:
-        //ventanainterna vactiva = (ventanainterna) panelInterno.getSelectedFrame();
-
-//////        JInternalFrame v[] = desktopPane.getAllFrames();
-//////        if (v.length >= 1) {
-//////
-//////            for (int i = 0; i < v.length; i++) {
-//////                if (v[i] instanceof Crear_Usuarios) {
-//////
-//////                    if (numVentana == 0) {
-//////                        numVentana = 100;
-//////                        try {
-//////                            v[i].setSelected(true);
-//////                        } catch (PropertyVetoException ex) {
-//////                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//////                        }
-//////                    } else {
-//////                        v[i].dispose();
-//////                    }
-//////                } else {
-//////                    if (numVentana == 0) {
-//////                        numVentana = 100;
-//////                        Crear_Usuarios obj = new Crear_Usuarios();
-//////                        desktopPane.add(obj);
-//////                        obj.setVisible(true);
-//////
-//////                        JButton a = new JButton("Crear_Usuarios");
-//////                        toolbar.add(a);
-//////                        toolbar.addSeparator();
-//////                        Integer index = toolbar.getComponentIndex(a);
-//////                        posisionButonToolbar.add(index);
-//////                        obj.indexPositiotoolBar = index;
-//////                        ActionListener unAction = new UnActionListener();
-//////                        a.addActionListener(unAction);
-//////                    }
-//////                }
-//////
-//////            }
-//////
-//////            numVentana = 0;
-//////
-//////        } else {
-        //Crear_Usuarios obj = new Crear_Usuarios();
         Crear_Usuarios obj = new Crear_Usuarios();
-        desktopPane.add(obj);
-        obj.setVisible(true);
-////            JButton a = new JButton("Crear_Usuarios");
-////            toolbar.add(a);
-////            toolbar.addSeparator();
-////            Integer index = toolbar.getComponentIndex(a);
-////            posisionButonToolbar.add(index);
-////            obj.indexPositiotoolBar = index;
-////            ActionListener unAction = new UnActionListener();
-////            a.addActionListener(unAction);
-        /////  }
-
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
     }//GEN-LAST:event_cutMenuItemActionPerformed
 
 
     private void copyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMenuItemActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
-
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Buscar_usuarios) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Buscar_usuarios obj = new Buscar_usuarios();
-                        desktopPane.add(obj);
-                        obj.setVisible(true);
-                        JButton a = new JButton("Buscar_Usuarios");
-
-                        //         ActionListener unAction = new UnActionListener();
-                        //       a.addActionListener(unAction);
-                    }
-                }
-
-            }
-
-            numVentana = 0;
-
-        } else {
-            Buscar_usuarios obj = new Buscar_usuarios();
-            desktopPane.add(obj);
-            obj.setVisible(true);
-            JButton a = new JButton("Buscar_Usuarios");
-
-            //    ActionListener unAction = new UnActionListener();
-            //    a.addActionListener(unAction);
-        }
-
+        //Buscar_usuarios obj = new Buscar_usuarios();
+        Modal_BucarUsuarios obj = new Modal_BucarUsuarios();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
     }//GEN-LAST:event_copyMenuItemActionPerformed
 
     private void pasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteMenuItemActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
-
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Crear_Tipo_Usuarios) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Crear_Tipo_Usuarios obj = new Crear_Tipo_Usuarios();
-                        desktopPane.add(obj);
-                        obj.setVisible(true);
-                        JButton a = new JButton("TIpo_Usuarios");
-
-                    }
-                }
-
-            }
-
-            numVentana = 0;
-
-        } else {
-            Crear_Tipo_Usuarios obj = new Crear_Tipo_Usuarios();
-            desktopPane.add(obj);
-            obj.setVisible(true);
-            JButton a = new JButton("Tipo_Usuarios");
-
-        }
-
+        Crear_Tipo_Usuarios obj = new Crear_Tipo_Usuarios();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
 
     }//GEN-LAST:event_pasteMenuItemActionPerformed
 
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
         // TODO add your handling code here
 
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
-
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Buscar_Tipos) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Buscar_Tipos obj = new Buscar_Tipos();
-                        desktopPane.add(obj);
-                        obj.setVisible(true);
-                        JButton a = new JButton("Buscar Tipos");
-
-                    }
-                }
-
-            }
-
-            numVentana = 0;
-
-        } else {
-            Buscar_Tipos obj = new Buscar_Tipos();
-            desktopPane.add(obj);
-            obj.setVisible(true);
-            JButton a = new JButton("Buscar Tipos");
-        }
-
+        Buscar_Tipos obj = new Buscar_Tipos();
+        
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
     private void menNUevoCLienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menNUevoCLienteActionPerformed
         // TODO add your handling code here:
 
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+        Crear_Clientes obj = new Crear_Clientes();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Crear_Clientes) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Crear_Clientes obj = new Crear_Clientes();
-                        desktopPane.add(obj);
-                        obj.setVisible(true);
-                        JButton a = new JButton("Nueov Cliente");
-                    }
-                }
-
-            }
-
-            numVentana = 0;
-
-        } else {
-            try {
-                Crear_Clientes obj = new Crear_Clientes();
-                desktopPane.add(obj);
-                obj.setVisible(true);
-                obj.setSelected(true);
-                JButton a = new JButton("Nuevo Cliente");
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }//GEN-LAST:event_menNUevoCLienteActionPerformed
 
     private void aboutMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItem3ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
-
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Modal_buscarCilentes) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Modal_buscarCilentes obj = new Modal_buscarCilentes();
-                        desktopPane.add(obj);
-                        obj.setVisible(true);
-                        try {
-                            obj.setMaximum(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                            JOptionPane.showMessageDialog(null, ex);
-                        }
-                    }
-                }
-
-            }
-
-            numVentana = 0;
-
-        } else {
-            Modal_buscarCilentes obj = new Modal_buscarCilentes();
-            desktopPane.add(obj);
-            obj.setVisible(true);
-            JButton a = new JButton("Buscar_Clientes");
-            try {
-                obj.setMaximum(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-
-
+        Modal_buscarCilentes obj = new Modal_buscarCilentes();
+        obj.setTitle("Buscar CLientes");
+        Principal.isllamadoDesdeProveedorOCliente= false;
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
     }//GEN-LAST:event_aboutMenuItem3ActionPerformed
 
     private void NuevoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NuevoProductoActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
-
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Crear_Productos) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Crear_Productos obj = new Crear_Productos();
-                        desktopPane.add(obj);
-                        obj.setVisible(true);
-                        JButton a = new JButton("Crear Productos");
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            Crear_Productos obj = new Crear_Productos();
-            desktopPane.add(obj);
-            obj.setVisible(true);
-            JButton a = new JButton("Crear Productos");
-        }
-
+        Crear_Productos obj = new Crear_Productos();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
 
     }//GEN-LAST:event_NuevoProductoActionPerformed
 
     private void aboutMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItem1ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+        Buscar_Productos obj = new Buscar_Productos();
+        
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Buscar_Productos) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Buscar_Productos obj = new Buscar_Productos();
-                        desktopPane.add(obj);
-                        obj.setVisible(true);
-                        JButton a = new JButton("Buscar_Productos");
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            Buscar_Productos obj = new Buscar_Productos();
-            desktopPane.add(obj);
-            obj.setVisible(true);
-            JButton a = new JButton("Buscar_Productos");
-        }
 
     }//GEN-LAST:event_aboutMenuItem1ActionPerformed
 
     private void contentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItemActionPerformed
 
-        try {
-            //        Crear_Facturas obj = new Crear_Facturas();
+        //        Crear_Facturas obj = new Crear_Facturas();
 //        desktopPane.add(obj);
 //        obj.setVisible(true);
 //        JButton a = new JButton("Facturacion");
-            Modal_CrearFacturas obj = new Modal_CrearFacturas();
-            desktopPane.add(obj);
-            obj.setVisible(true);
-            obj.setMaximum(true);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Modal_CrearFacturas obj = new Modal_CrearFacturas();
+        obj.setTitle(OperacionesForms._TITLE_FORM_FACTURA);
+        this.tananoVentanas(obj);
+        desktopPane.add(obj);
+        obj.setVisible(true);
     }//GEN-LAST:event_contentMenuItemActionPerformed
 
+    public static void tananoVentanas(JInternalFrame obj) {
+
+        Integer desplazamientohaciaabajo = 10;
+        Principal.X = Principal.desktopPane.getBounds().x;
+        Principal.Y = Principal.desktopPane.getBounds().y;
+        Principal.X2 = Principal.desktopPane.getBounds().width; ///anchura
+        Principal.Y2 = Principal.desktopPane.getBounds().height; ///altura
+        Principal.desktopPane.setBounds(X, Y, X2, Y2);
+    //    Principal.jDesktopPane1.setBounds(X, Y, X2, 75);
+        obj.setSize(new Dimension(Principal.X2, Principal.Y2 - (Principal.jProgressBar2.getSize().height)));
+
+//        if (controlareduccionPrincilapParamenusuperior < 2) {
+//
+//            if (controlareduccionPrincilapParamenusuperior == 1) {
+//                ///////////pongo tamano y ubicacion a botonsuperiro
+//                NumerodeBotonesAbiertos++;
+//                BotonSuperior b = new BotonSuperior();
+//                b.setSize(new Dimension(200, 31));
+//                b.setTitle(obj.getTitle() + NumerodeBotonesAbiertos);
+//                b.setEnabled(false);
+//                Principal.desktopPane.add(b);
+//                b.setVisible(true);
+//                
+//            }
+//            System.out.println("Vista.Principal.tananoVentanas()xxxxxxxxxxxxxxxxxxxasasas{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}");
+//            obj.setBounds(X - 5, Y + 15, X2, Y2);
+//            obj.setSize(new Dimension(Principal.X2, Principal.Y2 - (Principal.jProgressBar2.getSize().height + 20)));
+//            controlareduccionPrincilapParamenusuperior = controlareduccionPrincilapParamenusuperior + 1;
+//
+//        }
+
+    }
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Configuracion) {
+        Configuracion obj = new Configuracion();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Configuracion obj = new Configuracion();
-                        desktopPane.add(obj);
-                        obj.setVisible(true);
-                        JButton a = new JButton("Configuracion");
-
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            Configuracion obj = new Configuracion();
-            desktopPane.add(obj);
-            obj.setVisible(true);
-            JButton a = new JButton("Configuracion");
-        }
 
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void DatosEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DatosEmpresaActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
-
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof DatosEmpresaForm) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        DatosEmpresaForm obj = new DatosEmpresaForm();
-                        desktopPane.add(obj);
-                        obj.setVisible(true);
-                        JButton a = new JButton("Cofiguracion");
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            DatosEmpresaForm obj = new DatosEmpresaForm();
-            desktopPane.add(obj);
-            obj.setVisible(true);
-            JButton a = new JButton("Cofiguracion");
-        }
+        DatosEmpresaForm obj = new DatosEmpresaForm();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
     }//GEN-LAST:event_DatosEmpresaActionPerformed
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof BuscarFacturas) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        BuscarFacturas obj = new BuscarFacturas();
-                        desktopPane.add(obj);
-                        JButton a = new JButton("BuscarFacturas");
-
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            BuscarFacturas obj = new BuscarFacturas();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-            JButton a = new JButton("BuscarFacturas");
-        }
+        BuscarFacturas obj = new BuscarFacturas();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
 
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     private void contentMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItem8ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+        ImprtarInventario obj = new ImprtarInventario();// = new ImprtarInventario();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof ImprtarInventario) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        ImprtarInventario obj = new ImprtarInventario();
-                        desktopPane.add(obj);
-                        JButton a = new JButton("ImprtarInventario");
-
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            ImprtarInventario obj = new ImprtarInventario();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-            JButton a = new JButton("ImprtarInventario");
-        }
-//        ImprtarInventario obj = new ImprtarInventario();
-//        obj.setVisible(true);
     }//GEN-LAST:event_contentMenuItem8ActionPerformed
 
     private void aboutMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItem9ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+        CrearBodegas obj = new CrearBodegas();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof CrearBodegas) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        CrearBodegas obj = new CrearBodegas();
-                        desktopPane.add(obj);
-                        JButton a = new JButton("CrearBodegas");
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            CrearBodegas obj = new CrearBodegas();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-            JButton a = new JButton("CrearBodegas");
-        }
     }//GEN-LAST:event_aboutMenuItem9ActionPerformed
 
     private void contentMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItem6ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+        IngresoCaja obj = new IngresoCaja();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof IngresoCaja) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        IngresoCaja obj = new IngresoCaja();
-                        desktopPane.add(obj);
-                        JButton a = new JButton("IngresoCaja");
-
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            IngresoCaja obj = new IngresoCaja();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-            JButton a = new JButton("IngresoCaja");
-        }
 
     }//GEN-LAST:event_contentMenuItem6ActionPerformed
 
     private void aboutMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItem8ActionPerformed
         // TODO add your handling code here:
-        Buscar_electronicas obj = new Buscar_electronicas();
-        desktopPane.add(obj);
-        obj.setVisible(true);
 
+        Buscar_electronicas obj = new Buscar_electronicas();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
     }//GEN-LAST:event_aboutMenuItem8ActionPerformed
 
     private void aboutMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItem6ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof EgresoCaja) {
+        EgresoCaja obj = new EgresoCaja();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
 
-                        numVentana = 100;
-                        EgresoCaja obj = new EgresoCaja();
-                        desktopPane.add(obj);
-                        JButton a = new JButton("EgresoCaja");
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            EgresoCaja obj = new EgresoCaja();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-            JButton a = new JButton("EgresoCaja");
-        }
     }//GEN-LAST:event_aboutMenuItem6ActionPerformed
 
     private void contentMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItem2ActionPerformed
-        // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+//        // TODO add your handling code here:
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Crear_Proveedores) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Crear_Proveedores obj = new Crear_Proveedores();
-                        desktopPane.add(obj);
-
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            Crear_Proveedores obj = new Crear_Proveedores();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-
-        }
+        Crear_Clientes obj = new Crear_Clientes();
+        obj.setTitle("Nuevo Proveedor");
+        ///false valor por defeccto, para cleintes
+        obj.isllamadoDesdeNuevoProveedor = true;
+        
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
     }//GEN-LAST:event_contentMenuItem2ActionPerformed
 
     private void aboutMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItem2ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
-
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Modal_buscarProveedores) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Modal_buscarProveedores obj = new Modal_buscarProveedores();
-                        desktopPane.add(obj);
-                        obj.setVisible(true);
-                        try {
-                            obj.setMaximum(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                            JOptionPane.showMessageDialog(null, ex);
-                        }
-                    }
-                }
-
-            }
-
-            numVentana = 0;
-
-        } else {
-            Modal_buscarProveedores obj = new Modal_buscarProveedores();
-            desktopPane.add(obj);
-            obj.setVisible(true);
-            JButton a = new JButton("Buscar_Clientes");
-            try {
-                obj.setMaximum(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
+        //Modal_buscarProveedores obj = new Modal_buscarProveedores();
+        Modal_buscarCilentes obj = new Modal_buscarCilentes();
+        obj.setTitle("Buscar Proveedores");
+         Principal.isllamadoDesdeProveedorOCliente= true;
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
 
     }//GEN-LAST:event_aboutMenuItem2ActionPerformed
 
     private void contentMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItem9ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+        PLANC obj = new PLANC();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof PLANC) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        PLANC obj = new PLANC();
-                        desktopPane.add(obj);
-
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            PLANC obj = new PLANC();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-
-        }
     }//GEN-LAST:event_contentMenuItem9ActionPerformed
 
     private void aboutMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItem10ActionPerformed
@@ -1715,149 +1150,25 @@ public class Principal extends javax.swing.JFrame {
 
     private void contentMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItem7ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+       // Crear_Compras obj = new Crear_Compras();
+       Modal_Crear_compras obj = new Modal_Crear_compras();
+         OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Crear_Compras) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Crear_Compras obj = new Crear_Compras();
-                        desktopPane.add(obj);
-
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            Crear_Compras obj = new Crear_Compras();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-
-        }
     }//GEN-LAST:event_contentMenuItem7ActionPerformed
 
     private void aboutMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItem7ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Crear_RetencionC) {
+        Crear_RetencionC obj = new Crear_RetencionC();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
 
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Crear_RetencionC obj = new Crear_RetencionC();
-                        desktopPane.add(obj);
-
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            Crear_RetencionC obj = new Crear_RetencionC();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-
-        }
     }//GEN-LAST:event_aboutMenuItem7ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+        BuscarCompras obj = new BuscarCompras();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof BuscarCompras) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        BuscarCompras obj = new BuscarCompras();
-                        desktopPane.add(obj);
-
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            BuscarCompras obj = new BuscarCompras();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-
-        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -1871,151 +1182,24 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+        Crear_Orden obj = new Crear_Orden();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Crear_Orden) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Crear_Orden obj = new Crear_Orden();
-
-                        desktopPane.add(obj);
-
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            Crear_Orden obj = new Crear_Orden();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-
-        }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+        Crear_Aparato obj = new Crear_Aparato();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Crear_Aparato) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Crear_Aparato obj = new Crear_Aparato();
-
-                        desktopPane.add(obj);
-
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            Crear_Aparato obj = new Crear_Aparato();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-
-        }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void aboutMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItem11ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+        CuadrarCaja obj = new CuadrarCaja();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof CuadrarCaja) {
 
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        CuadrarCaja obj = new CuadrarCaja();
-                        desktopPane.add(obj);
-                        JButton a = new JButton("CuadrarCaja");
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            CuadrarCaja obj = new CuadrarCaja();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-            JButton a = new JButton("EgresoCaja");
-        }
     }//GEN-LAST:event_aboutMenuItem11ActionPerformed
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
@@ -2025,94 +1209,20 @@ public class Principal extends javax.swing.JFrame {
 
     private void contentMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItem4ActionPerformed
         // TODO add your handling code here:
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+        Buscar_cxc obj = new Buscar_cxc();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Buscar_cxc) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        Buscar_cxc obj = new Buscar_cxc();
-                        desktopPane.add(obj);
-                        JButton a = new JButton("BuscarCxC");
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            Buscar_cxc obj = new Buscar_cxc();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-            JButton a = new JButton("BuscarCxC");
-        }
     }//GEN-LAST:event_contentMenuItem4ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         String[] sentencias
                 = {
-                    "CREATE TABLE IF NOT EXISTS `precios`( `codigo` INT NOT NULL AUTO_INCREMENT , `nombre` VARCHAR(500) , `valor` DOUBLE DEFAULT '0.0' , PRIMARY KEY (`codigo`));",
-                    "CREATE TABLE IF NOT EXISTS `bancos` (`codigo` INT NOT NULL AUTO_INCREMENT,`nombre` VARCHAR(500) NULL,`sucursal` VARCHAR(500) NULL,`cuenta` VARCHAR(50) NULL,`debe`  DOUBLE DEFAULT '0.0' ,`haber`  DOUBLE DEFAULT '0.0',`saldo` double NULL, PRIMARY KEY (`codigo`)) ENGINE = InnoDB",
-                    "CREATE TABLE IF NOT EXISTS `cheques` (`codigo` INT(11) NOT NULL AUTO_INCREMENT, `codigo_banco` INT(11) NULL DEFAULT NULL, `fecha_emision` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
-                    + "  `fecha_cobro` DATE NULL DEFAULT NULL,\n"
-                    + "  `valor` DOUBLE NULL DEFAULT NULL,\n"
-                    + "  `paguese_a` VARCHAR(500) NULL DEFAULT NULL,\n"
-                    + "  `titular_chequera` VARCHAR(500) NULL DEFAULT NULL,\n"
-                    + "  `numero` INT(11) NULL DEFAULT NULL,\n"
-                    + "  `referencia` VARCHAR(500) NULL DEFAULT NULL,\n"
-                    + "  `codigo_cliente` INT(11) NULL DEFAULT NULL,\n"
-                    + "  `codigo_proveedor` INT(11) NULL DEFAULT NULL,\n"
-                    + "  PRIMARY KEY (`codigo`),\n"
-                    + "  INDEX `fk_cheques_bancos1_idx` (`codigo_banco` ASC),\n"
-                    + "  CONSTRAINT `fk_cheques_bancos1`\n"
-                    + "    FOREIGN KEY (`codigo_banco`)\n"
-                    + "    REFERENCES `bancos` (`codigo`)\n"
-                    + "    ON DELETE NO ACTION\n"
-                    + "    ON UPDATE NO ACTION)\n"
-                    + "ENGINE = InnoDB\n"
-                    + "DEFAULT CHARACTER SET = latin1",
-                    "ALTER TABLE `cxc` ADD COLUMN `estado` VARCHAR(50) DEFAULT 'PENDIENTE' NOT NULL AFTER `Clientes_Codigo`, ADD COLUMN `visible` BINARY DEFAULT '1' NOT NULL AFTER `estado`;",
-                    " CREATE TABLE IF NOT EXISTS `a`.`pagos` (\n"
-                    + "  `codigo` INT NOT NULL AUTO_INCREMENT,\n"
-                    + "  `fecha` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
-                    + "  `descripcion` VARCHAR(845) NULL,\n"
-                    + "  `total` DOUBLE NULL,\n"
-                    + "  `nota` VARCHAR(545) NULL,\n"
-                    + "  `visible` INT NULL DEFAULT 1,\n"
-                    + "  `tipo` VARCHAR(45) NULL,\n"
-                    + "  `cxc_codigo` INT(11) NOT NULL,\n"
-                    + "  PRIMARY KEY (`codigo`),\n"
-                    + "  INDEX `fk_pagosa_cxc1_idx` (`cxc_codigo` ASC),\n"
-                    + "  CONSTRAINT `fk_pagosa_cxc1`\n"
-                    + "    FOREIGN KEY (`cxc_codigo`)\n"
-                    + "    REFERENCES `a`.`cxc` (`codigo`)\n"
-                    + "    ON DELETE NO ACTION\n"
-                    + "    ON UPDATE NO ACTION)\n"
-                    + "ENGINE = InnoDB"
+                    "CREATE TABLE `config_asientos` (\n"
+                    + "`codigo` INT(11) NOT NULL AUTO_INCREMENT,  \n"
+                    + "`config` VARCHAR(200) DEFAULT NULL,        \n"
+                    + "`valor` VARCHAR(500) DEFAULT NULL,         \n"
+                    + "PRIMARY KEY (`codigo`)                     \n"
+                    + ") ENGINE=INNODB DEFAULT CHARSET=latin1       "
                 };
         for (int i = 0; i < sentencias.length; i++) {
             String sql = sentencias[i];
@@ -2126,102 +1236,75 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+//        NuevaFormaPago obj = new NuevaFormaPago();
+//        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Buscar_cxc) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        NuevaFormaPago obj = new NuevaFormaPago();
-                        desktopPane.add(obj);
-                        JButton a = new JButton("Forma de Pago");
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            NuevaFormaPago obj = new NuevaFormaPago();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-            JButton a = new JButton("Formade pago");
-        }
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void aboutMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItem4ActionPerformed
         // TODO add your handling code here:
 
-        JInternalFrame v[] = desktopPane.getAllFrames();
-        if (v.length >= 1) {
+        NuevaFormaPago obj = new NuevaFormaPago();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
 
-            for (int i = 0; i < v.length; i++) {
-                if (v[i] instanceof Buscar_cxc) {
-
-                    if (numVentana == 0) {
-                        numVentana = 100;
-                        try {
-                            v[i].setSelected(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        v[i].dispose();
-                    }
-                } else {
-                    if (numVentana == 0) {
-
-                        numVentana = 100;
-                        NuevaFormaPago obj = new NuevaFormaPago();
-                        desktopPane.add(obj);
-                        JButton a = new JButton("Forma de Pago");
-                        try {
-                            obj.setMaximum(false);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        obj.setVisible(true);
-                    }
-                }
-
-            }
-            numVentana = 0;
-        } else {
-            NuevaFormaPago obj = new NuevaFormaPago();
-            desktopPane.add(obj);
-            try {
-                obj.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            obj.setVisible(true);
-            JButton a = new JButton("Formade pago");
-        }
     }//GEN-LAST:event_aboutMenuItem4ActionPerformed
+
+    private void dddd(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_dddd
+        // TODO add your handling code here:
+        //this.tananoVentanas(obj);
+    }//GEN-LAST:event_dddd
+
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        // TODO add your handling code here:
+//        this.tananoVentanas(obj);
+////        Integer desplazamientohaciaabajo = 10;
+////        Integer xx = this.getBounds().x;
+////        Integer yy = this.getBounds().y;
+////        Integer xx2 = this.getBounds().width; ///anchura
+////        Integer yy2 = this.getBounds().height; ///altura
+////        System.out.println("Vista.Principal.formComponentResized()fffffffffffffff");
+////// obj.setSize(new Dimension(xx2, yy2 - 10);
+////       
+////        if (controlareduccionPrincilapParamenusuperior == 0) {
+////            this.setSize(new Dimension(xx2, yy2 - 10));
+////            controlareduccionPrincilapParamenusuperior = 1;
+////        }
+
+        //this.setMaximizedBounds(X);
+
+    }//GEN-LAST:event_formComponentResized
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+        Crear_Backup obj = new Crear_Backup();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
+
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        // TODO add your handling code here:
+        Modal_Crear_Pvps obj = new Modal_Crear_Pvps();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        // TODO add your handling code here:
+                DesgargarDocumentosElectronicosSRI obj = new DesgargarDocumentosElectronicosSRI();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        // TODO add your handling code here:
+Modal_CrearNotaCredito obj = new Modal_CrearNotaCredito();
+obj.setTitle(OperacionesForms._TITLE_FORM_NOTA_CREDITO);
+OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);        
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        // TODO add your handling code here:
+                  DesgargarDocumentosElectronicosEMITIDOSSRI obj = new DesgargarDocumentosElectronicosEMITIDOSSRI();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2312,16 +1395,30 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu helpMenu7;
     private javax.swing.JMenu helpMenu8;
     private javax.swing.JMenu helpMenu9;
-    private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JFrame jFrame1;
+    private javax.swing.JFrame jFrame2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     public static javax.swing.JProgressBar jProgressBar2;
     private javax.swing.JMenuItem menNUevoCLiente;
     public static javax.swing.JMenuBar menuBar;

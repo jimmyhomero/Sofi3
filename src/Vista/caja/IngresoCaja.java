@@ -59,6 +59,7 @@ public class IngresoCaja extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setMaximizable(true);
+        setTitle("Ingreso Caja");
         setMaximumSize(new java.awt.Dimension(2147, 214770));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 

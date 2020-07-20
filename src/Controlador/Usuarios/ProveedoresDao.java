@@ -466,7 +466,7 @@ public class ProveedoresDao extends Coneccion {
         return modelo;
     }
 
-    public DefaultTableModel Buscar_table_only_Activos(String sql) {
+    public DefaultTableModel Buscar_table_only_Activos() {
         DefaultTableModel modelo = null;
 
         String[] titulos
@@ -487,7 +487,7 @@ public class ProveedoresDao extends Coneccion {
         try {
             this.conectar();
             PreparedStatement st;
-
+            String sql = "select * from Proveedores  order BY Nombres";
             st = this.getCnx().prepareCall(sql);
             System.out.println("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
             rs = st.executeQuery();

@@ -17,7 +17,6 @@ import Modelo.Tipo_Usuario;
 import Modelo.Usuarios;
 import Vista.Principal;
 import static Vista.Usuarios.Crear_Clientes.buscarOCrearNuevoCLiente;
-import static Vista.Usuarios.Crear_Clientes.jcb_tipo;
 import Vlidaciones.ProgressBar;
 import Vlidaciones.VaciarTexto;
 import Vlidaciones.ValidaCedula;
@@ -39,6 +38,7 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.json.JSONObject;
+import static Vista.Usuarios.Crear_Clientes.jcb_FormaPagoPredeterminada;
 
 /**
  *

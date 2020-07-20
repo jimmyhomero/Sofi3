@@ -394,6 +394,7 @@ System.out.println("Controlador.CUsuarios.guardar()" + e);
                   per.setUsuario(rs.getString("usuario"));
                   per.setPassword(rs.getString("password"));
                   per.setEstado(rs.getString("estado"));                  
+                  per.setTipo_Usuario_codigo(rs.getInt("tipo_usuario_codigo"));                  
                   lista.add(per);
               //    us=per;
               }                 

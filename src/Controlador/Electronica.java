@@ -5,9 +5,9 @@
  */
 package Controlador;
 
-import ec.unomas.elements.ArchivoUtil;
-import ec.unomas.service.Comprobante;
-import ec.unomas.service.Config;
+import ecx.unomas.elements.ArchivoUtil;
+import ecx.unomas.service.Comprobante;
+import ecx.unomas.service.Config;
 import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;

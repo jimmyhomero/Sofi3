@@ -8,6 +8,7 @@ package Controlador.Usuarios;
 
 import ClasesAuxiliares.FeCodigoNUmerico;
 import ClasesAuxiliares.Variables;
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Coneccion;
 import Modelo.CajasDetalle;
 import Modelo.Clientes;
@@ -18,14 +19,14 @@ import Vlidaciones.ProgressBar;
 import com.ws.electro.cliente.Response;
 import com.ws.electro.cliente.Respuesta;
 import com.ws.electro.cliente.WSElectro_Service;
-import ec.unomas.elements.ArchivoUtil;
-import ec.unomas.factura.Detalle;
-import ec.unomas.factura.Factura;
-import ec.unomas.factura.Impuesto;
-import ec.unomas.factura.InfoAdicional;
-import ec.unomas.factura.TotalImpuesto;
-import ec.unomas.service.Comprobante;
-import ec.unomas.service.Config;
+import ecx.unomas.elements.ArchivoUtil;
+import ecx.unomas.factura.Detalle;
+import ecx.unomas.factura.Factura;
+import ecx.unomas.factura.Impuesto;
+import ecx.unomas.factura.InfoAdicional;
+import ecx.unomas.factura.TotalImpuesto;
+import ecx.unomas.service.Comprobante;
+import ecx.unomas.service.Config;
 import login.login;
 import java.io.File;
 import java.io.IOException;
@@ -111,12 +112,18 @@ public class FacturasDao extends Coneccion {
             String a = HoraFecha.fecha_ddmmaaa_conslash_facElectronica(fecha);
             f.setFechaEmision(a);
             f.setDirEstablecimiento(login.direccionEmpresa);
-            f.setContribuyenteEspecial(login.contribuyenteEspecialNUmero);
+            if (login.contribuyenteEspecialNUmero.equalsIgnoreCase("00")) {
+                ///000 significa que no es contribuyente especial
+                f.setContribuyenteEspecial(login.contribuyenteEspecialNUmero);
+            } else {
+
+            }
+
             f.setObligadoContabilidad(login.ObligadoSiNOEmpresa);
             ClientesDao clienteDao = new ClientesDao();
             Clientes cliente = new Clientes();
 
-            cliente = clienteDao.buscarConID(fac.getClientes_codigo());
+            cliente = clienteDao.buscarConID(fac.getClientes_codigo(), 0);
 
             if (cliente.getCedula().length() == 10) {
                 f.setTipoIdentificacionComprador(Variables.FE_TIPO_IDENTIFICACION_CEDULA);
@@ -127,7 +134,11 @@ public class FacturasDao extends Coneccion {
             f.setRazonSocialComprador(cliente.getNombre());
             f.setIdentificacionComprador(cliente.getCedula());
             f.setDireccionComprador(cliente.getDireccion());
-            f.setTotalSinImpuestos(Double.parseDouble(fac.getSubtotaI_con_iva()));
+            Double tot1=Double.parseDouble(fac.getSubtotaI_con_iva()) ;
+            Double tot2 =Double.parseDouble(fac.getSubtotal_sin_iva());
+            Double total=tot1+tot2;
+            String stirngtot=String.format("%.2f", total).replace(",", ".");
+            f.setTotalSinImpuestos(Double.parseDouble(stirngtot));
             f.setTotalDescuento(Double.parseDouble(fac.getDescuento()));
 
 //// totatal con impuesto ya esta en xml     
@@ -143,11 +154,12 @@ public class FacturasDao extends Coneccion {
             totimpiva0.setBaseImponible(Double.parseDouble(fac.getSubtotal_sin_iva()));
             totimpiva0.setCodigo(2);
             totimpiva0.setCodigoPorcentaje(0);
-            totimpiva0.setValor(Double.parseDouble("0"));
+            totimpiva0.setValor(Double.parseDouble("0.0"));
             f.setTotalImpuestos(totimpiva0);
 
 /////////////
             f.setImporteTotal(Double.parseDouble(fac.getTotal()));
+            System.out.println("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()ccccxcxc:" + fac.getTotal());
             //DetalleFactura df = new DetalleFactura();
             List<DetalleFactura> lista = new ArrayList<DetalleFactura>();
             DetalleFacturaDao dfDao = new DetalleFacturaDao();
@@ -166,13 +178,24 @@ public class FacturasDao extends Coneccion {
                 //if(df.getIva().ev)
                 Impuesto i = new Impuesto();
                 Vector<Impuesto> ivec = new Vector<Impuesto>();
+                if (df.getTineIva().equalsIgnoreCase("si")) {
+                    i.setCodigo(2);
+                    i.setCodigoPorcentaje(2);
+                    i.setTarifa(Double.parseDouble(Principal.iva));
+                    //Double bi = Double.parseDouble(df.getValorTotal()) - Double.parseDouble(df.getIva());
+                    i.setBaseImponible(Double.parseDouble(df.getValorTotal()));
+                    i.setValor(Double.parseDouble(df.getIva()));
 
-                i.setCodigo(2);
-                i.setCodigoPorcentaje(2);
-                i.setTarifa(Double.parseDouble(Principal.iva));
-                //Double bi = Double.parseDouble(df.getValorTotal()) - Double.parseDouble(df.getIva());
-                i.setBaseImponible(Double.parseDouble(df.getValorTotal()));
-                i.setValor(Double.parseDouble(df.getIva()));
+                }
+                if (df.getTineIva().equalsIgnoreCase("no")) {
+                    i.setCodigo(2);
+                    i.setCodigoPorcentaje(0);
+                    i.setTarifa(0.0);
+                    //Double bi = Double.parseDouble(df.getValorTotal()) - Double.parseDouble(df.getIva());
+                    i.setBaseImponible(Double.parseDouble(df.getValorTotal()));
+                    i.setValor(0.0);
+
+                }
                 ivec.add(i);
                 d.setImpuesto(ivec);
 
@@ -246,7 +269,7 @@ public class FacturasDao extends Coneccion {
         return facxx;
     }
 
-    public String xmltoStringFormat(String xml) throws TransformerConfigurationException, ParserConfigurationException, SAXException, IOException, TransformerException {
+    public static String xmltoStringFormat(String xml) throws TransformerConfigurationException, ParserConfigurationException, SAXException, IOException, TransformerException {
         String r = "";
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer t = tf.newTransformer();
@@ -317,7 +340,7 @@ public class FacturasDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            System.out.println("Controlador.CUsuarios.BuscarCogtyrtynCedula()sss" + ex);
         } finally {
             this.cerrar();
         }
@@ -359,13 +382,59 @@ public class FacturasDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            System.out.println("Controlador.CUsuarioqweqs.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
         }
         return numfactura;
     }
+public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
+        ArrayList<String> numfactura = new ArrayList<String>();
 
+        ResultSet rs1;
+        String maxnumeroOrden1 = "001";
+        String maxnumeroOrden2 = "001";
+        String maxnumeroOrden3 = "1";
+        try {
+            this.conectar();
+            PreparedStatement st1;
+            //SELECT establecimiento , ptoEmision, MAX(secfactura) FROM facturas WHERE   equipos_Codigo=20
+            //SELECT establecimiento , ptoEmision, secfactura FROM facturas WHERE  codigo  = ( SELECT MAX(Codigo)  FROM facturas  ) AND equipos_Codigo=
+            st1 = this.getCnx().prepareCall("SELECT establecimiento , ptoEmision, MAX(secfactura) as secfactura FROM facturas WHERE tipo_documento='NC' and equipos_Codigo=" + idEcquipo);
+            rs1 = st1.executeQuery();
+
+            //this.lista= new ArrayList();
+            if(rs1.first()){
+            while (rs1.next()) {
+                if (rs1.getString("establecimiento").equals("") || rs1.getString("ptoEmision").equals("")) {
+                    numfactura.add("001");
+                    numfactura.add("001");
+                    numfactura.add("1");
+
+                } else {
+                    maxnumeroOrden1 = rs1.getString("establecimiento");
+                    maxnumeroOrden2 = rs1.getString("ptoEmision");
+                    maxnumeroOrden3 = rs1.getString("secfactura");
+                    numfactura.add(maxnumeroOrden1);
+                    numfactura.add(maxnumeroOrden2);
+                    numfactura.add(maxnumeroOrden3);
+                }
+                Deb.consola("secuancia notascredito: "+maxnumeroOrden1+"-"+maxnumeroOrden2+"-"+maxnumeroOrden1+" :----dsdfsfsdf");
+            }
+            }else{
+                    numfactura.add(maxnumeroOrden1);
+                    numfactura.add(maxnumeroOrden2);
+                    numfactura.add(maxnumeroOrden3);
+            }
+            
+           
+        } catch (Exception ex) {
+            System.out.println("Controlador.CUsuariertwos.BuscarConCedula()sss" + ex);
+        } finally {
+            this.cerrar();
+        }
+        return numfactura;
+    }
     public String getNextumeroDeFacturaByEstablecimientoyPuntoEmision(String sec1, String sec2, Integer idEcquipo) {
 
         ResultSet rs;
@@ -390,7 +459,7 @@ public class FacturasDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            System.out.println("Controlador.CUsuariotyrtys.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
         }
@@ -422,7 +491,7 @@ public class FacturasDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            System.out.println("Controlador.CUsuarios.ertetBuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
         }
@@ -449,7 +518,7 @@ public class FacturasDao extends Coneccion {
 
             //this.lista= new ArrayList();
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            System.out.println("Contrdfsfolador.CUsuarios.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
         }
@@ -470,7 +539,7 @@ public class FacturasDao extends Coneccion {
             //this.lista= new ArrayList();
             return true;
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            System.out.println("Controlador.CUsuarios.BuscarConCsdfsdfedula()sss" + ex);
             return false;
 
         } finally {

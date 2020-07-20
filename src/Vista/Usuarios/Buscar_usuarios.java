@@ -97,6 +97,8 @@ public class Buscar_usuarios extends javax.swing.JInternalFrame {
         btn_excel = new javax.swing.JButton();
 
         setClosable(true);
+        setResizable(true);
+        setTitle("Buscar Usuarios");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }

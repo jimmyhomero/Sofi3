@@ -5,6 +5,7 @@
  */
 package Vista.Usuarios;
 
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Usuarios.ClientesDao;
 import Modelo.Clientes;
 import Vista.Principal;
@@ -22,14 +23,15 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-
 /**
  *
  * @author USUARIO
  */
 public class Modal_buscarCilentes extends javax.swing.JInternalFrame {
-
-public static Integer indexPositiotoolBar;
+    
+    public static boolean isllamadoDesdeNuevoProveedor = false;
+    private Integer buscarProvvedoroCLiente = 0; //cer cliente - 1 proveedor
+    public static Integer indexPositiotoolBar;
     Integer clicJtable = 0;
     Clientes usuario1 = new Clientes();
     //String sql_allss = "select * from usuarios";
@@ -37,11 +39,17 @@ public static Integer indexPositiotoolBar;
     
     public Modal_buscarCilentes() {
         initComponents();
-            ClientesDao obj = new ClientesDao();
+        Deb.consola("Se imprime desde init components ");
+        if (Principal.isllamadoDesdeProveedorOCliente) {
+            buscarProvvedoroCLiente = 1;
+        } else {
+            buscarProvvedoroCLiente = 0;
+        }
+        ClientesDao obj = new ClientesDao();
         //String sql = "select * from usuarios where estado = 'Activo'";
-        jTable1.setModel(obj.Buscar_table_only_Activos(sql_all));
+        jTable1.setModel(obj.Buscar_table_only_Activos(buscarProvvedoroCLiente));
         this.ocultarFIlasJtable();
-
+        
     }
 
     /**
@@ -73,6 +81,7 @@ public static Integer indexPositiotoolBar;
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        setTitle("Buscar Clientes");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -304,7 +313,7 @@ public static Integer indexPositiotoolBar;
     }// </editor-fold>//GEN-END:initComponents
 
     private void ocultarFIlasJtable() {
-
+        
         jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
         jTable1.getColumnModel().getColumn(0).setMinWidth(0);
         jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -316,7 +325,7 @@ public static Integer indexPositiotoolBar;
     private void txt_cedulaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cedulaKeyReleased
         // TODO add your handling code here:
         ClientesDao obj = new ClientesDao();
-        jTable1.setModel(obj.Buscar_table("Cedula", txt_cedula.getText()));
+        jTable1.setModel(obj.Buscar_table("Cedula", txt_cedula.getText(), buscarProvvedoroCLiente));
         this.ocultarFIlasJtable();///
     }//GEN-LAST:event_txt_cedulaKeyReleased
 
@@ -329,7 +338,7 @@ public static Integer indexPositiotoolBar;
     private void txt_nombresKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombresKeyReleased
         // TODO add your handling code here:
         ClientesDao obj = new ClientesDao();
-        jTable1.setModel(obj.Buscar_table("Nombres", txt_nombres.getText()));
+        jTable1.setModel(obj.Buscar_table("Nombres", txt_nombres.getText(), buscarProvvedoroCLiente));
         this.ocultarFIlasJtable();
         ///
     }//GEN-LAST:event_txt_nombresKeyReleased
@@ -337,7 +346,7 @@ public static Integer indexPositiotoolBar;
     private void txt_usuariosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuariosKeyReleased
         // TODO add your handling code here:
         ClientesDao obj = new ClientesDao();
-        jTable1.setModel(obj.Buscar_table("Usuario", txt_usuarios.getText()));
+        jTable1.setModel(obj.Buscar_table("Usuario", txt_usuarios.getText(), buscarProvvedoroCLiente));
         this.ocultarFIlasJtable();
         ///
     }//GEN-LAST:event_txt_usuariosKeyReleased
@@ -356,13 +365,13 @@ public static Integer indexPositiotoolBar;
         //obtengo el codigo del usuario
         String Valor = table.getValueAt(row, 0).toString();
         //mando a buscar la informacion del usuaruio con el codigo obtenido dle evento click
-        usuario = objDao.buscarConID(Integer.parseInt(Valor));
+        usuario = objDao.buscarConID(Integer.parseInt(Valor), 0);
         usuario1 = usuario;
         //lleno el fomulario
         obj_crea.txt_codigo.setText(String.valueOf(usuario.getCodigo()));
-        System.out.println("CODIGOOO:  "+obj_crea.txt_codigo.getText());
+        System.out.println("CODIGOOO:  " + obj_crea.txt_codigo.getText());
         // JOptionPane.showMessageDialog(null, "codigo: "+usuario.getCodigo());
-        obj_crea.txt_cedula.setText(usuario.getCedula());
+        obj_crea.txt_cedulax.setText(usuario.getCedula());
         obj_crea.txt_nombres.setText(usuario.getNombre());
         obj_crea.txt_celular.setText(usuario.getCelular());
         obj_crea.txt_dir.setText(usuario.getDireccion());
@@ -370,9 +379,9 @@ public static Integer indexPositiotoolBar;
         obj_crea.txt_provincia.setText(usuario.getProvincia());
         obj_crea.txt_telefono.setText(usuario.getTelefono());
         obj_crea.txt_ciudad.setText(usuario.getCiudad());
-
+        
         if (evt.getClickCount() == 2) {
-
+            
             obj_crea.jButton1.setName("Actualizar");
             obj_crea.jButton1.setText("Actualizar");
             Principal.desktopPane.add(obj_crea);

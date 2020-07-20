@@ -13,6 +13,7 @@ import Vlidaciones.ProgressBar;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -24,27 +25,32 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Tipo_UsuariosDao extends Coneccion {
     
-    ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
+  //  ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
     String tabla = "tipos_Usuarios";
     private ArrayList<Tipo_Usuario> lista = new ArrayList<Tipo_Usuario>();
 
-    public void guardar(Tipo_Usuario tarea) {
+    public Integer guardar(Tipo_Usuario tarea) {
+        Integer codigo=0;
         try {
             this.conectar();
-            PreparedStatement consulta;
-            
-            consulta = this.con.prepareStatement("INSERT INTO " + this.tabla + " (tipo, descripcion) VALUES(?,?)");
+            PreparedStatement consulta;            
+            consulta = this.con.prepareStatement("INSERT INTO " + this.tabla + " (tipo, descripcion) VALUES(?,?)",Statement.RETURN_GENERATED_KEYS);
             consulta.setString(1, tarea.getTipo().toUpperCase());
             consulta.setString(2, tarea.getDescripcion().toUpperCase());
-            //msg.setProgressBar_mensajae(consulta.toString());
-
-            consulta.executeUpdate();
+         consulta.execute();
+              ResultSet rs = consulta.getGeneratedKeys();
+               System.out.println("Controlador.CUsuarios.guardar()xxxx:  " + consulta);
+            if (rs.next()) {
+                codigo = rs.getInt(1);
+                System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.guardar(): "+ codigo);                
+            }
         } catch (SQLException ex) {
-            msg.setProgressBar_mensajae("Error..!! " + ex);
+            System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.guardar(): "+ex);     
             
         } finally {
             this.cerrar();
         }
+        return codigo;
     }
  
     public DefaultTableModel Buscar_table(String columna, String value) {
@@ -81,7 +87,8 @@ public class Tipo_UsuariosDao extends Coneccion {
                 }
 
         } catch (Exception ex) {
-            msg.setProgressBar_mensajae(ex.toString());
+            System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +ex);
+            //msg.setProgressBar_mensajae(ex.toString());
         } finally {
             this.cerrar();
         }
@@ -124,7 +131,8 @@ public class Tipo_UsuariosDao extends Coneccion {
             
         } catch (Exception ex) {
             
-            msg.setProgressBar_mensajae("Error..!! " + ex);
+            //msg.setProgressBar_mensajae("Error..!! " + ex);
+            System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +ex);
             
         } finally {
             this.cerrar();
@@ -150,7 +158,8 @@ public class Tipo_UsuariosDao extends Coneccion {
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
         } catch (SQLException e) {
             System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.modificar()"+e.toString());
-            msg.setProgressBar_mensajae(e.toString());
+            //msg.setProgressBar_mensajae(e.toString());
+            
         } finally {
             this.cerrar();
         }
@@ -175,8 +184,8 @@ public class Tipo_UsuariosDao extends Coneccion {
             }
             
         } catch (Exception ex) {
-            msg.setMensaje(ex.toString());
-            //System.out.println("Controlador.CUsuarios.listar()" + ex);
+            //msg.setMensaje(ex.toString());
+            System.out.println("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -202,7 +211,8 @@ public class Tipo_UsuariosDao extends Coneccion {
             }
             
         } catch (Exception ex) {
-            msg.setProgressBar_mensajae(ex.toString());            
+            //msg.setProgressBar_mensajae(ex.toString());            
+            System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +ex);
         } finally {
             this.cerrar();
         }
@@ -218,7 +228,8 @@ public class Tipo_UsuariosDao extends Coneccion {
             st = this.getCnx().prepareCall(sql  );
             rs = st.executeQuery();
         } catch (Exception ex) {
-          msg.setProgressBar_mensajae(ex.toString());
+            System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +ex);
+          //msg.setProgressBar_mensajae(ex.toString());
         } finally {
           //  this.cerrar();
         }
@@ -234,7 +245,8 @@ public class Tipo_UsuariosDao extends Coneccion {
             st.setInt(1,persona.getCodigo());
             st.executeUpdate();
         } catch (SQLException e) {
-      msg.setProgressBar_mensajae("Error..!! "+ e);            
+      //msg.setProgressBar_mensajae("Error..!! "+ e);            
+      System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +e);
         } finally {
             this.cerrar();
         }

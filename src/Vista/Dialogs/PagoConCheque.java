@@ -12,7 +12,8 @@ import Modelo.Clientes;
 import Vista.Principal;
 import Vista.Usuarios.Buscar_Clientes;
 import Vista.Usuarios.Crear_Clientes;
-import Vista.Usuarios.Crear_Facturas;
+import Vista.Usuarios.Modal_CrearFacturas;
+
 import Vista.Usuarios.PagoEfectivo;
 import Vlidaciones.ValidaNUmeros;
 import java.awt.Frame;
@@ -344,7 +345,7 @@ public class PagoConCheque extends javax.swing.JDialog {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Crear_Facturas.RegistrodeChequeExitoso = false;
+        Modal_CrearFacturas.RegistrodeChequeExitoso = false;
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -352,7 +353,7 @@ public class PagoConCheque extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (formaPago.equalsIgnoreCase("CHEQUE")) {
             if (Double.parseDouble(txtCantidad.getText()) >= 0.0) {
-                Crear_Facturas.RegistrodeChequeExitoso = true;
+                Modal_CrearFacturas.RegistrodeChequeExitoso = true;
             }
         }
     }//GEN-LAST:event_btnAceptarActionPerformed

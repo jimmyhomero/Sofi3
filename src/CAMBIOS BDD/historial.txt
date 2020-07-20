@@ -10,3 +10,17 @@ precios  CREATE TABLE `precios` (
 /*[23:31:23][  63 ms]*/ UPDATE `precios` SET `codigo`='1',`nombre`='PRECIO A',`valor`='5' WHERE `codigo`='1';
 /*[23:31:26][  78 ms]*/ UPDATE `precios` SET `codigo`='2',`nombre`='PRECIO B',`valor`='10' WHERE `codigo`='2';
 /*[23:31:29][  78 ms]*/ UPDATE `precios` SET `codigo`='3',`nombre`='PRECIO C',`valor`='20' WHERE `codigo`='3';
+
+/*#######################CAMBIOS JC #############################*/
+/*25-03-2020 cambios tabla clientes para ingreasr proveedores*/
+ALTER TABLE `clientes` ADD COLUMN `proveedor` INT(2) NULL AFTER `empresa`;
+
+/*25-03-2020 cambios tabla precios para crearnuevos precios de venta*/
+ALTER TABLE `precios` ADD COLUMN `codigo_tipo_usuario` INT NULL AFTER `codigo_centrocosto`, ADD COLUMN `eliminaDescuentos` INT DEFAULT '0' NULL AFTER `codigo_tipo_usuario`, ADD COLUMN `cantidadMinima` DOUBLE DEFAULT '0' NULL AFTER `eliminaDescuentos`, ADD COLUMN `utilidadRespectoAlcosto` DOUBLE DEFAULT '0' NULL AFTER `cantidadMinima`, ADD COLUMN `utilidadRespectoAlPvp` DOUBLE DEFAULT '0' NULL AFTER `utilidadRespectoAlcosto`, ADD COLUMN `actualizaalcostoOalpvp` INT NULL AFTER `utilidadRespectoAlPvp`, ADD COLUMN `requiereClavaAdministrador` INT DEFAULT '0' NULL AFTER `actualizaalcostoOalpvp`;
+ALTER TABLE `formaspagoc` ADD COLUMN `codigo_precio_a_usar` INT NOT NULL AFTER `es_cxc_cxp`;
+UPDATE `formaspagoc` SET `codigo`='1',`FormaPago`='EFECTIVO',`descripcion`=NULL,`tipo_pago`='0',`plan_codigo`=NULL,`sri_forma_pago_codigo`=NULL,`afecta_a_caja`=NULL,`numero_cuotas`=NULL,`porcentaje_entrada`=NULL,`perido_cobranza`=NULL,`es_cxc_cxp`=NULL,`codigo_precio_a_usar`='1' WHERE `codigo`='1';
+UPDATE `formaspagoc` SET `codigo`='2',`FormaPago`='CREDITO',`descripcion`=NULL,`tipo_pago`='0',`plan_codigo`=NULL,`sri_forma_pago_codigo`=NULL,`afecta_a_caja`=NULL,`numero_cuotas`=NULL,`porcentaje_entrada`=NULL,`perido_cobranza`=NULL,`es_cxc_cxp`=NULL,`codigo_precio_a_usar`='1' WHERE `codigo`='2';
+UPDATE `formaspagoc` SET `codigo`='3',`FormaPago`='TRANSFERENCIA',`descripcion`=NULL,`tipo_pago`='0',`plan_codigo`=NULL,`sri_forma_pago_codigo`=NULL,`afecta_a_caja`=NULL,`numero_cuotas`=NULL,`porcentaje_entrada`=NULL,`perido_cobranza`=NULL,`es_cxc_cxp`=NULL,`codigo_precio_a_usar`='1' WHERE `codigo`='3';
+UPDATE `formaspagoc` SET `codigo`='4',`FormaPago`='MIXTO',`descripcion`=NULL,`tipo_pago`='0',`plan_codigo`=NULL,`sri_forma_pago_codigo`=NULL,`afecta_a_caja`=NULL,`numero_cuotas`=NULL,`porcentaje_entrada`=NULL,`perido_cobranza`=NULL,`es_cxc_cxp`=NULL,`codigo_precio_a_usar`='1' WHERE `codigo`='4';
+ALTER TABLE `formaspagoc` ADD CONSTRAINT `FK_formaspagoc_precio_usar` FOREIGN KEY (`codigo_precio_a_usar`) REFERENCES `precios` (`codigo`);
+ALTER TABLE `facturas` ADD COLUMN `codigo_doc_afectado_nc` INT NULL AFTER `equipos_codigo`, ADD COLUMN `secuencia_doc_afectado_nc` VARCHAR(50) NULL AFTER `codigo_doc_afectado_nc`;

@@ -33,13 +33,13 @@ public class Modal_buscarProveedores extends javax.swing.JInternalFrame {
     Integer clicJtable = 0;
     Proveedores usuario1 = new Proveedores();
     //String sql_allss = "select * from usuarios";
-    String sql_all = "select * from Proveedores  order BY Nombres";
+    //String sql_all = "select * from Proveedores  order BY Nombres";
 
     public Modal_buscarProveedores() {
         initComponents();
          ProveedoresDao obj = new ProveedoresDao();
         //String sql = "select * from usuarios where estado = 'Activo'";
-        jTable1.setModel(obj.Buscar_table_only_Activos(sql_all));
+        jTable1.setModel(obj.Buscar_table_only_Activos());
         this.ocultarFIlasJtable();
 
 
@@ -80,6 +80,7 @@ public class Modal_buscarProveedores extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        setTitle("Buscar Proveedores");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -401,7 +402,7 @@ public class Modal_buscarProveedores extends javax.swing.JInternalFrame {
     private void txt_cedulaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cedulaKeyReleased
         // TODO add your handling code here:
         ClientesDao obj = new ClientesDao();
-        jTable1.setModel(obj.Buscar_table("Cedula", txt_cedula.getText()));
+        jTable1.setModel(obj.Buscar_table("Cedula", txt_cedula.getText(),1));
         this.ocultarFIlasJtable();///
     }//GEN-LAST:event_txt_cedulaKeyReleased
 
@@ -414,7 +415,7 @@ public class Modal_buscarProveedores extends javax.swing.JInternalFrame {
     private void txt_nombresKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombresKeyReleased
         // TODO add your handling code here:
         ClientesDao obj = new ClientesDao();
-        jTable1.setModel(obj.Buscar_table("Nombres", txt_nombres.getText()));
+        jTable1.setModel(obj.Buscar_table("Nombres", txt_nombres.getText(),1));
         this.ocultarFIlasJtable();
         ///
     }//GEN-LAST:event_txt_nombresKeyReleased
@@ -422,7 +423,7 @@ public class Modal_buscarProveedores extends javax.swing.JInternalFrame {
     private void txt_nomComercialKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nomComercialKeyReleased
         // TODO add your handling code here:
         ClientesDao obj = new ClientesDao();
-        jTable1.setModel(obj.Buscar_table("NombreComercial", txt_nomComercial.getText()));
+        jTable1.setModel(obj.Buscar_table("NombreComercial", txt_nomComercial.getText(),1));
         this.ocultarFIlasJtable();
         ///
     }//GEN-LAST:event_txt_nomComercialKeyReleased

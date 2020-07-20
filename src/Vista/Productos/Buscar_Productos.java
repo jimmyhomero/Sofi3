@@ -90,6 +90,7 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
         btn_excel = new javax.swing.JButton();
 
         setClosable(true);
+        setTitle("BUscar Productos");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }

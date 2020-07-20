@@ -10,7 +10,7 @@ import Modelo.Clientes;
 import Modelo.Usuarios;
 import Vista.Principal;
 import Vista.Usuarios.Crear_Clientes;
-import Vista.Usuarios.Crear_Facturas;
+
 import Vlidaciones.ProgressBar;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import java.awt.Font;
@@ -91,7 +91,7 @@ public class ClientesDao extends Coneccion {
             this.conectar();
             PreparedStatement consulta;
 
-            consulta = this.con.prepareStatement("INSERT INTO " + this.tabla + " (Cedula, nombres, telefono, celular, mail, direccion, Provincia, Ciudad,Nacionalidad,PagoPredeterminado,TipoCliente,VendedorPredeterminado,Observaciones,estadoCivil,huella,genero,Nacimiento) VALUES(?,?,?,?,?,?,?,?,?,?,?, ?, ?,?, ?, ?,?)");
+            consulta = this.con.prepareStatement("INSERT INTO " + this.tabla + " (Cedula, nombres, telefono, celular, mail, direccion, Provincia, Ciudad,Nacionalidad,PagoPredeterminado,TipoCliente,VendedorPredeterminado,Observaciones,estadoCivil,huella,genero,Nacimiento,proveedor) VALUES(?,?,?,?,?,?,?,?,?,?,?, ?, ?,?, ?, ?,?,?)");
             consulta.setString(1, tarea.getCedula());
             consulta.setString(2, tarea.getNombre());
             consulta.setString(3, tarea.getTelefono());
@@ -114,6 +114,7 @@ public class ClientesDao extends Coneccion {
             } else {
                 consulta.setString(17, "1000-01-01");
             }
+            consulta.setInt(18, tarea.getProveedor());
             System.out.println("Controlador.CUsuarios.guardar()" + consulta);
             consulta.executeUpdate();
         } catch (SQLException ex) {
@@ -167,7 +168,7 @@ public class ClientesDao extends Coneccion {
             String sql = st.toString();
             System.out.println("Controlador.Usuarios.CUsuarios.modificar()" + sql);
             st.executeUpdate();
-            Principal.jProgressBar2.setString("eeeeeeeeeeeee");
+//            Principal.jProgressBar2.setString("eeeeeeeeeeeee");
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
         } catch (SQLException e) {
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error" + e + sql, "Error al modificar Registro" + e.toString()));
@@ -178,12 +179,19 @@ public class ClientesDao extends Coneccion {
 
     }
 
-    public List<Clientes> listar() {
+    public List<Clientes> listarClientesOprovedores(Integer val) {
         ResultSet rs;
         try {
+             String sql = null;
             this.conectar();
             PreparedStatement st;
-            st = this.getCnx().prepareCall("select * from Clientes  order BY Nombres LIMIT 0, 50");
+            
+            if(val==1){
+                sql="select * from Clientes  order BY Nombres LIMIT 0, 50";
+            }else if(val==0){
+                sql="select * from Clientes where proveedor=1  order BY Nombres LIMIT 0, 50";
+            }
+            st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -221,16 +229,25 @@ public class ClientesDao extends Coneccion {
         return lista;
     }
 
-    public Clientes buscarConID(Integer id) {
+    public Clientes buscarConID(Integer id, Integer val) {
         ResultSet rs;
         Clientes u = new Clientes();
         try {
+            
             this.conectar();
             PreparedStatement st;
+            String sql=null;
+            if(val==1){
+                ///provedores
+                sql="select * from Clientes where codigo= " + id + " and proveedor=1 order BY Nombres LIMIT 0, 50";
+            }else if(val==0){
+                ///clientes
+                sql="select * from Clientes where codigo= " + id + " order BY Nombres LIMIT 0, 50";
+            }
 //            select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
 //            select usuarios.*, tipos_usuarios.codigo,tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo where usuarios.codigo = 1
 
-            st = this.getCnx().prepareCall("select * from Clientes where codigo= " + id + " order BY Nombres LIMIT 0, 50");
+            st = this.getCnx().prepareCall(sql);
             //select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
 
             rs = st.executeQuery();
@@ -255,6 +272,7 @@ public class ClientesDao extends Coneccion {
                 per.setHuella(rs.getString("huella"));
                 per.setGenereo(rs.getString("genero"));
                 per.setNacimiento(rs.getString("Nacimiento"));
+                per.setProveedor(rs.getInt("proveedor"));
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
                 //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
@@ -270,14 +288,22 @@ public class ClientesDao extends Coneccion {
         return u;
     }
 
-    public Clientes buscarConCedula(String cedula) {
+    public Clientes buscarConCedula(String cedula,Integer val) {
         ResultSet rs;
         Clientes u = new Clientes();
         try {
             this.conectar();
             PreparedStatement st;
-            st = this.getCnx().prepareCall("select * from Clientes "
-                    + "where cedula like '%" + cedula + "%' order BY Nombres LIMIT 0, 50");
+            String sql=null;
+            if(val==1){
+                ///provedores
+                sql="select * from Clientes "+ "where cedula like '%" + cedula + "%' and proveedor=1 order BY Nombres LIMIT 0, 50";
+            }else if(val==0){
+                ///clientes
+                sql="select * from Clientes "+ "where cedula like '%" + cedula + "%' order BY Nombres LIMIT 0, 50";
+            }
+            
+            st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -312,14 +338,22 @@ public class ClientesDao extends Coneccion {
         return u;
     }
 
-    public boolean buscarClienteRegistrado(String cedula) {
+    public boolean buscarClienteRegistrado(String cedula,Integer val) {
         ResultSet rs;
         Clientes u = new Clientes();
         try {
             this.conectar();
             PreparedStatement st;
-            st = this.getCnx().prepareCall("select * from Clientes "
-                    + "where cedula =" + cedula);
+            String sql=null;
+            if(val==1){
+                ///provedores
+                sql="select * from Clientes "+ "where proveedor=1 and cedula =" + cedula;
+            }else if(val==0){
+                ///clientes
+                sql="select * from Clientes "+ "where cedula =" + cedula;
+            }
+            
+            st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -335,17 +369,28 @@ public class ClientesDao extends Coneccion {
         return false;
     }
 
-    public Clientes buscarConCedulaLike(String cedula) {
+    public Clientes buscarConCedulaLike(String cedula,Integer val) {
         ResultSet rs;
         Clientes u = new Clientes();
+        u=null;
         try {
             this.conectar();
             PreparedStatement st;
-            st = this.getCnx().prepareCall("select * from Clientes "
-                    + "where cedula = " + cedula + " order BY Nombres LIMIT 0, 50");
+            
+            String sql=null;
+            if(val==1){
+                ///provedores
+                sql="select * from Clientes where cedula = " + cedula + " and proveedor=1 order BY Nombres LIMIT 0, 50";
+            }else if(val==0){
+                ///clientes
+                sql="select * from Clientes where cedula = " + cedula + " order BY Nombres LIMIT 0, 50";
+            }
+            System.out.println("Controlador.Usuarios.ClientesDao.buscarConCedulaLike()sda_ ;"+sql);
+            st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
 
             //this.lista= new ArrayList();
+           
             while (rs.next()) {
                 Clientes per = new Clientes();
                 per.setCodigo(rs.getInt("Codigo"));
@@ -366,28 +411,41 @@ public class ClientesDao extends Coneccion {
                 per.setHuella(rs.getString("huella"));
                 per.setGenereo(rs.getString("genero"));
                 per.setNacimiento(rs.getString("Nacimiento"));
+                per.setProveedor(rs.getInt("proveedor"));
                 u = per;
+                System.out.println("******************: ");
+                  System.out.println("Controlador.Usuarios.ClientesDao.buscarConCedulaLike()usuario: " + u.getNombre());
             }
-            System.out.println("Controlador.Usuarios.ClientesDao.buscarConCedulaLike()usuario: " + u.getNombre());
+            
+            
+          //
         } catch (Exception ex) {
             System.out.println("Controlador.CUsuarios.BuscarConCedula()" + ex);
         } finally {   
             this.cerrar();
 
         }
-
+        
         return u;
     }
 
-    public ArrayList<Clientes> BuscarClietneslikokokok(String nombre) {
+    public ArrayList<Clientes> BuscarClietneslikokokok(String nombre,Integer val) {
         ArrayList<Clientes> c = new ArrayList<>();
         ResultSet rs;
         Clientes u = new Clientes();
         try {
             this.conectar();
             PreparedStatement st;
-            st = this.getCnx().prepareCall("select * from Clientes "
-                    + "where NOMBRES like '%" + nombre + "%' order BY Nombres LIMIT 0, 50");
+            String sql=null;
+            if(val==1){
+                ///provedores
+                sql="select * from Clientes "+ "where NOMBRES like '%" + nombre + "%' and proveedor =1 order BY Nombres LIMIT 0, 50";
+            }else if(val==0){
+                ///clientes
+                sql="select * from Clientes "+ "where NOMBRES like '%" + nombre + "%' order BY Nombres LIMIT 0, 50";
+            }
+            
+            st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
             System.out.println("enta por cada txt movidasssxxxxxxxxxxxxxxsss");
             //this.lista= new ArrayList();
@@ -411,7 +469,7 @@ public class ClientesDao extends Coneccion {
                 per.setHuella(rs.getString("huella"));
                 per.setGenereo(rs.getString("genero"));
                 per.setNacimiento(rs.getString("Nacimiento"));
-
+                per.setProveedor(rs.getInt("proveedor"));
                 u = per;
                 c.add(per);
             }
@@ -428,14 +486,22 @@ public class ClientesDao extends Coneccion {
 
         return c;
     }
-public ArrayList<Clientes> buscarAllCLientes() {
+public ArrayList<Clientes> buscarAllCLientes(Integer val) {
         ArrayList<Clientes> c = new ArrayList<>();
         ResultSet rs;
         Clientes u = new Clientes();
         try {
             this.conectar();
             PreparedStatement st;
-            st = this.getCnx().prepareCall("select * from Clientes");
+            String sql=null;
+            if(val==1){
+                ///provedores
+                sql="select * from Clientes where proveedor =1 ";
+            }else if(val==0){
+                ///clientes
+                sql="select * from Clientes";
+            }
+            st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
             System.out.println("enta por cada txt movidassssss");
             //this.lista= new ArrayList();
@@ -459,7 +525,7 @@ public ArrayList<Clientes> buscarAllCLientes() {
                 per.setHuella(rs.getString("huella"));
                 per.setGenereo(rs.getString("genero"));
                 per.setNacimiento(rs.getString("Nacimiento"));
-
+                per.setProveedor(rs.getInt("proveedor"));
                 u = per;
                 c.add(per);
             }
@@ -491,7 +557,7 @@ public ArrayList<Clientes> buscarAllCLientes() {
 
     }
 
-    public DefaultTableModel Buscar_table(String columna, String value) {
+    public DefaultTableModel Buscar_table(String columna, String value, Integer val) {
         DefaultTableModel modelo = null;
         String[] titulos
                 = {"Codigo", "Cedula", "Nombres",
@@ -511,7 +577,15 @@ public ArrayList<Clientes> buscarAllCLientes() {
         try {
             this.conectar();
             PreparedStatement st;
-            st = this.getCnx().prepareCall("select * from Clientes where " + columna + "  like '%" + value + "%' order BY Nombres LIMIT 0, 50");
+            String sql=null;
+            if(val==1){
+                ///provedores
+                sql="select * from Clientes where " + columna + "  like '%" + value + "%' and proveedor =1 order BY Nombres LIMIT 0, 50";
+            }else if(val==0){
+                ///clientes
+                sql="select * from Clientes where " + columna + "  like '%" + value + "%' order BY Nombres LIMIT 0, 50";
+            }
+            st = this.getCnx().prepareCall(sql);
 
             //  st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
             System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
@@ -545,7 +619,7 @@ public ArrayList<Clientes> buscarAllCLientes() {
         return modelo;
     }
 
-    public DefaultTableModel Buscar_table_only_Activos(String sql) {
+    public DefaultTableModel Buscar_table_only_Activos(Integer val ) {
         DefaultTableModel modelo = null;
 
         String[] titulos
@@ -566,7 +640,14 @@ public ArrayList<Clientes> buscarAllCLientes() {
         try {
             this.conectar();
             PreparedStatement st;
-
+            String sql=null;
+            if(val==1){
+                ///provedores
+                sql="select * from clientes where proveedor=1 order by nombres";
+            }else if(val==0){
+                ///clientes
+                sql="select * from clientes order by nombres";
+            }
             st = this.getCnx().prepareCall(sql);
             System.out.println("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
             rs = st.executeQuery();

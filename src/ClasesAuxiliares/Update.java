@@ -57,8 +57,8 @@ public class Update {
             System.out.println(">> Nombre: " + name);
             System.out.println(">> tamaño: " + (conn.getContentLength()) + " bytes");
 
-            Principal.jProgressBar2.setMaximum(conn.getContentLength());
-            Principal.jProgressBar2.setStringPainted(true);
+//            Principal.jProgressBar2.setMaximum(conn.getContentLength());
+//            Principal.jProgressBar2.setStringPainted(true);
             InputStream in = conn.getInputStream();
             OutputStream out = new FileOutputStream(file);
             int b = 0;

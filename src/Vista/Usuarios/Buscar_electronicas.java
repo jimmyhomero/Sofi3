@@ -13,9 +13,9 @@ import Controlador.Usuarios.HoraFecha;
 import Vlidaciones.ProgressBar;
 import com.toedter.calendar.JDateChooser;
 import ec.gob.sri.comprobantes.ws.RespuestaSolicitud;
-import ec.unomas.elements.ArchivoUtil;
-import ec.unomas.service.Comprobante;
-import ec.unomas.service.Config;
+import ecx.unomas.elements.ArchivoUtil;
+import ecx.unomas.service.Comprobante;
+import ecx.unomas.service.Config;
 import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -93,6 +93,8 @@ public class Buscar_electronicas extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setMaximizable(true);
+        setResizable(true);
+        setTitle("Buscar Electronicas");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
