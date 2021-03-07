@@ -1,5 +1,6 @@
 package ecx.unomas.pdf;
 
+import Vista.Principal;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -31,7 +32,7 @@ public class NotaDebito {
 		if (servletOutputStream!=null)
 			writer = PdfWriter.getInstance(document, servletOutputStream);
 		else
-			writer = PdfWriter.getInstance(document, new FileOutputStream(Config.AUTORIZADOS_DIR+notaDebito.getClaveAcceso()+".pdf"));    
+			writer = PdfWriter.getInstance(document, new FileOutputStream(Config.AUTORIZADOS_DIR+notaDebito.getRazonSocialComprador()+"-"+notaDebito.getClaveAcceso()+".pdf"));    
 		document.open();
 		
 		// ALL RADIOUS
@@ -382,7 +383,7 @@ public class NotaDebito {
         totalesContent.addCell(td("ICE"));
         totalesContent.addCell(td_r(String.format("%.4f", notaDebito.getICE())));
         
-        totalesContent.addCell(td("IVA 12%"));
+        totalesContent.addCell(td("IVA "+Principal.iva +"%"));
         totalesContent.addCell(td_r(String.format("%.4f", notaDebito.getIVA())));
         
         totalesContent.addCell(td("VALOR TOTAL"));

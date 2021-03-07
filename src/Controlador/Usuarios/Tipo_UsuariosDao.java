@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -39,13 +40,13 @@ public class Tipo_UsuariosDao extends Coneccion {
             consulta.setString(2, tarea.getDescripcion().toUpperCase());
          consulta.execute();
               ResultSet rs = consulta.getGeneratedKeys();
-               System.out.println("Controlador.CUsuarios.guardar()xxxx:  " + consulta);
+               Deb.consola("Controlador.CUsuarios.guardar()xxxx:  " + consulta);
             if (rs.next()) {
                 codigo = rs.getInt(1);
-                System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.guardar(): "+ codigo);                
+                Deb.consola("Controlador.Usuarios.Tipo_UsuariosDao.guardar(): "+ codigo);                
             }
         } catch (SQLException ex) {
-            System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.guardar(): "+ex);     
+            Deb.consola("Controlador.Usuarios.Tipo_UsuariosDao.guardar(): "+ex);     
             
         } finally {
             this.cerrar();
@@ -74,7 +75,7 @@ public class Tipo_UsuariosDao extends Coneccion {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
-            //System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            //Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -87,7 +88,7 @@ public class Tipo_UsuariosDao extends Coneccion {
                 }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +ex);
+            Deb.consola("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +ex);
             //msg.setProgressBar_mensajae(ex.toString());
         } finally {
             this.cerrar();
@@ -117,7 +118,7 @@ public class Tipo_UsuariosDao extends Coneccion {
             PreparedStatement st;
             
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -132,7 +133,7 @@ public class Tipo_UsuariosDao extends Coneccion {
         } catch (Exception ex) {
             
             //msg.setProgressBar_mensajae("Error..!! " + ex);
-            System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +ex);
+            Deb.consola("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +ex);
             
         } finally {
             this.cerrar();
@@ -152,12 +153,12 @@ public class Tipo_UsuariosDao extends Coneccion {
             st.setString(2, persona.getDescripcion().toUpperCase());
             st.setInt(3, persona.getCodigo());
             String sql = st.toString();
-            System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.modificar()"+sql);
+            Deb.consola("Controlador.Usuarios.Tipo_UsuariosDao.modificar()"+sql);
             st.executeUpdate();
 
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
         } catch (SQLException e) {
-            System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.modificar()"+e.toString());
+            Deb.consola("Controlador.Usuarios.Tipo_UsuariosDao.modificar()"+e.toString());
             //msg.setProgressBar_mensajae(e.toString());
             
         } finally {
@@ -185,7 +186,7 @@ public class Tipo_UsuariosDao extends Coneccion {
             
         } catch (Exception ex) {
             //msg.setMensaje(ex.toString());
-            System.out.println("Controlador.CUsuarios.listar()" + ex);
+            Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -212,7 +213,7 @@ public class Tipo_UsuariosDao extends Coneccion {
             
         } catch (Exception ex) {
             //msg.setProgressBar_mensajae(ex.toString());            
-            System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +ex);
+            Deb.consola("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +ex);
         } finally {
             this.cerrar();
         }
@@ -228,7 +229,7 @@ public class Tipo_UsuariosDao extends Coneccion {
             st = this.getCnx().prepareCall(sql  );
             rs = st.executeQuery();
         } catch (Exception ex) {
-            System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +ex);
+            Deb.consola("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +ex);
           //msg.setProgressBar_mensajae(ex.toString());
         } finally {
           //  this.cerrar();
@@ -246,7 +247,7 @@ public class Tipo_UsuariosDao extends Coneccion {
             st.executeUpdate();
         } catch (SQLException e) {
       //msg.setProgressBar_mensajae("Error..!! "+ e);            
-      System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +e);
+      Deb.consola("Controlador.Usuarios.Tipo_UsuariosDao.Buscar_table()" +e);
         } finally {
             this.cerrar();
         }

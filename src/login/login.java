@@ -5,6 +5,7 @@
  */
 package login;
 
+import AA_MainPruebas.Download;
 import ClasesAuxiliares.DaoEmpresaImpl;
 import ClasesAuxiliares.Fowiz;
 import ClasesAuxiliares.MaquinaDao;
@@ -17,6 +18,7 @@ import Controlador.Usuarios.EquiposDao;
 import Controlador.Usuarios.UsuariosDao;
 import Modelo.DatosEmpresa;
 import Modelo.Equipos;
+import ClasesAuxiliares.debug.Deb;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,12 +35,15 @@ import Vista.Usuarios.NuevoEquipo;
 import Vista.Usuarios.SelectCaja;
 import Vista.alertas.MnesajesOption;
 import Vista.jc;
+import Vlidaciones.ProgressBar;
 import ec.gob.sri.comprobantes.ws.Mensaje;
 import ecx.unomas.service.Config;
 import java.awt.Frame;
 import java.io.File;
 //import static Vista.Usuarios.DatosEmpresaForm.txt_nombres;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -75,24 +80,32 @@ public class login extends javax.swing.JFrame {
     public static String __unidadPersistencia = "pu";
     Map<String, String> persistenceMap = new HashMap<String, String>();
 
-   // public static EntityManagerFactory __factory;
-   // public static Persistence p = new Persistence();
-
+    // public static EntityManagerFactory __factory;
+    // public static Persistence p = new Persistence();
     public login() throws ParseException {
 
         initComponents();
 
         Variables.trial();
+
         //envio sms
         Fowiz f = new Fowiz();
         //f.sms();
         ///////seleciona nombre real de equipos
+        ////IMPORTANTE INICIALIZAR VARIABLE IP SERVIDOR
         os = Ejemplo.getSistemaOerativo();
+        DaoEmpresaImpl DaoEmpx = new DaoEmpresaImpl();
+        DaoEmpx.getListEmpresa();
+        ////////////////
+        
+        
+        Variables a = new Variables();
         llenarListaEmpresas();
+
         setLocationRelativeTo(null);
         JRootPane rootPane = SwingUtilities.getRootPane(this.btn_login);
         rootPane.setDefaultButton(this.btn_login);
-
+        
     }
 
     private boolean validaEquipo() {
@@ -108,7 +121,7 @@ public class login extends javax.swing.JFrame {
                 System.err.println("CODIGO DLE EQUIPO: " + CodigoDelEquipo);
                 nombreDelEquipo = e.getNombreReal();
                 codigoCaja = e.getCajas_Codigo();
-                System.out.println("forms.login.<init>()aaaaaaaaaaaaaaaaaaaa nombre real : " + e.getNombreReal());
+                Deb.consola("forms.login.<init>()aaaaaaaaaaaaaaaaaaaa nombre real : " + e.getNombreReal());
                 e.setIp(maqDao.getIpEquipo());
                 equipoRegistrado = true;
                 objDao2.modificar(e);
@@ -163,7 +176,6 @@ public class login extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         txt_user = new javax.swing.JTextField();
@@ -214,16 +226,6 @@ public class login extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 0, 30, 60));
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText(" -");
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 0, 30, 60));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
@@ -305,25 +307,30 @@ public class login extends javax.swing.JFrame {
         });
         jPanel2.add(btn_login1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 110, 30));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 450, 250));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 440, 250));
 
         jPanel3.setBackground(java.awt.Color.orange);
+        jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel3MouseClicked(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Ingreso de Credenciales...");
         jPanel3.add(jLabel1);
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 450, 30));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 440, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
     private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
-        
+
 /////////////////inicializa la condiguracion de los direcctorios detectando si el equipos es linux o Windows
-Config.iniciarConfig();
+        Config.iniciarConfig();
 //   Persona per = new Persona();
         //JOptionPane.showMessageDialog(null,Config.GENERADOS_DIR );
         String u = txt_user.getText();
@@ -340,9 +347,8 @@ Config.iniciarConfig();
                     if (usr.getPassword().equals(p) && usr.getUsuario().equals(u)) {
                         nombresUsuario = usr.getNombre();
                         CodigoUsuario = usr.getCodigo();
-                        CodigoTipoUsuario=usr.getTipo_Usuario_codigo();
+                        CodigoTipoUsuario = usr.getTipo_Usuario_codigo();
                         usuario = usr.getUsuario();
-                        
                         if (estaregistrado) {
                             DatosEmpresa obj = new DatosEmpresa();
                             DatosEmpresaDao objDao = new DatosEmpresaDao();
@@ -356,18 +362,16 @@ Config.iniciarConfig();
                             persistenceMap.put("javax.persistence.jdbc.user", "root");
                             persistenceMap.put("javax.persistence.jdbc.password", "miguel66677710101418/2=golosos");
                             persistenceMap.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
-                            System.out.println("Base seleccionada Persistence "+ Coneccion.bdd);
+                            Deb.consola("Base seleccionada Persistence " + Coneccion.bdd);
 ///////                            __factory=Persistence.createEntityManagerFactory("pu", persistenceMap);
-                          
+
 //                            jc principal2 = new jc();
 //                            
 //                            principal2.setVisible(true);
-                            
                             Principal m = new Principal();
                             m.setVisible(true);
                             this.setVisible(false);
-                            // System.out.println("forms.login.btn_loginActionPerformed(////////////)" + rucEmpresa);
-
+                            
                         } else {
                             this.setVisible(false);
 
@@ -387,7 +391,7 @@ Config.iniciarConfig();
 //                            dialog.setVisible(true);
                             //   System.exit(0);
                         }
-                        //   System.out.println("forms.login.btn_loginActionPerformed():" this.);
+                        //   Deb.consola("forms.login.btn_loginActionPerformed():" this.);
                     } else {
                         txt_user.setText("");
                         txt_pass.setText("");
@@ -400,7 +404,7 @@ Config.iniciarConfig();
 
         } catch (Exception ex) {
             System.out.print(ex + "*-EN Login");
-            JOptionPane.showMessageDialog(null, ex);
+            JOptionPane.showMessageDialog(null, ex + "sdasdassdasvvvvv");
         }
     }//GEN-LAST:event_btn_loginActionPerformed
 
@@ -410,7 +414,7 @@ Config.iniciarConfig();
 
     private void cb_empresasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_empresasItemStateChanged
         // TODO add your handling code here:
-        System.out.println("forms.login.cb_empresasItemStateChanged()" + cb_empresas.getSelectedItem().toString());
+        Deb.consola("forms.login.cb_empresasItemStateChanged()" + cb_empresas.getSelectedItem().toString());
         // Coneccion a = new Coneccion();
         Coneccion.bdd = cb_empresas.getSelectedItem().toString();
 
@@ -422,7 +426,7 @@ Config.iniciarConfig();
 
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
         // TODO add your handling code here:
-//        System.out.println("forms.login.formFocusGained()coneccion faliiida : " +conexionFallida);
+//        Deb.consola("forms.login.formFocusGained()coneccion faliiida : " +conexionFallida);
 //        if(conexionFallida){
 //                    
 //            ConfigConn cn = new ConfigConn();
@@ -440,8 +444,8 @@ Config.iniciarConfig();
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        // TODO add your handling code here:
-        System.exit(0);
+        // TODO add your handling code here:        
+        System.exit(0);        
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
@@ -464,13 +468,16 @@ Config.iniciarConfig();
 
     private void btn_login1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_login1ActionPerformed
         // TODO add your handling code here:
-                System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_btn_login1ActionPerformed
 
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+    private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
         // TODO add your handling code here:
-
-    }//GEN-LAST:event_jLabel7MouseClicked
+        if(evt.getClickCount()==2){
+        ConfigurarServidor c = new ConfigurarServidor(this, false);
+        c.setVisible(true);
+        }
+    }//GEN-LAST:event_jPanel3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -482,16 +489,21 @@ Config.iniciarConfig();
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             // UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                Deb.consola("lookkkkkkkkk:  " + info.getName());
+            
+            }
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                Deb.consola("lookkkkkkkkk:  " + info.getName());
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
@@ -531,7 +543,6 @@ Config.iniciarConfig();
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

@@ -91,9 +91,9 @@ public class ConfigIp extends javax.swing.JDialog {
         // TODO add your handling code here:
        NewConfigfile.EscribieConfigIp(Coneccion.rutaConfig,txt_servidorName.getText());
    //     NewConfigfile.crearArchivo(ruta, txt_servidorName.getText());
-       // System.out.println("Vista.Usuarios.ConfigConn.jButton1ActionPerformed(): " + Ejemplo.getPrpertyValue("servidor"));
+       // Deb.consola("Vista.Usuarios.ConfigConn.jButton1ActionPerformed(): " + Ejemplo.getPrpertyValue("servidor"));
        // Ejemplo.setPrpertyValue("servidor", txt_servidorName.getText());
-        //System.out.println("Vista.Usuarios.ConfigConn.jButton1ActionPerformed(): " + Ejemplo.getPrpertyValue("ruta"));       
+        //Deb.consola("Vista.Usuarios.ConfigConn.jButton1ActionPerformed(): " + Ejemplo.getPrpertyValue("ruta"));       
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

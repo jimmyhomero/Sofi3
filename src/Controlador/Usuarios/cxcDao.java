@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -52,12 +53,12 @@ public class cxcDao extends Coneccion {
             consulta.setString(9, tarea.getDiasCredito());
             consulta.setString(10, tarea.getDiasAtrazo());
             consulta.setInt(11, tarea.getClientes_Codigo());
-            System.out.println("Controlador.Usuarios.PagosDao.guardar()consulta: " + consulta.toString());
+            Deb.consola("Controlador.Usuarios.PagosDao.guardar()consulta: " + consulta.toString());
             consulta.executeUpdate();
             ResultSet rs = consulta.getGeneratedKeys();
             if (rs.next()) {
                 CodigoThisInsert = rs.getInt(1);
-                //System.out.println("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
+                //Deb.consola("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
             }
 
         } catch (SQLException ex) {
@@ -91,7 +92,7 @@ public class cxcDao extends Coneccion {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
-            //System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            //Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -147,7 +148,7 @@ public class cxcDao extends Coneccion {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table()xxxxx" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()xxxxx" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             int i = 1;
@@ -203,7 +204,7 @@ public class cxcDao extends Coneccion {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table()xxxxx" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()xxxxx" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             int i = 1;
@@ -304,13 +305,48 @@ public class cxcDao extends Coneccion {
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
         } catch (SQLException e) {
             //msg.setProgressBar_mensajae(e.toString());
-            System.out.println("Controlador.Usuarios.cxcDao.modificar(): errir modificar: "+e.toString());
+            Deb.consola("Controlador.Usuarios.cxcDao.modificar(): errir modificar: "+e.toString());
         } finally {
             this.cerrar();
         }
 
     }
+public Cxc listarBuscarConCodigoFactura(Integer cod) {
+        ResultSet rs;
+        Cxc per2 = new Cxc();
+        try {
+            this.conectar();
+            PreparedStatement st;
+            st = this.getCnx().prepareCall("Select * from " + tabla + " where facturas_codigo = " + cod + "");
+            rs = st.executeQuery();
+            //this.lista= new ArrayList();
+            while (rs.next()) {
+                Cxc per = new Cxc();
+                per.setCodigo(rs.getInt("Codigo"));
+                per.setTipo(rs.getString("tipo"));
+                per.setDescripcion(rs.getString("Descripcion"));
+                per.setFechaVencimiento(rs.getDate("fechaVencimiento"));
+                per.setTotal(rs.getString("total"));
+                per.setAbono(rs.getString("abono"));
+                per.setSaldo(rs.getString("saldo"));
+                per.setFacturas_codigo(rs.getInt("facturas_codigo"));
+                per.setFormasPagoV_codigo(rs.getInt("formasPagoV_codigo"));
+                per.setVisible(rs.getInt("visible"));
+                per.setEstado(rs.getString("ESTADO"));
+                per.setDiasCredito(rs.getString("diasCredito"));
 
+                per2 = per;
+            }
+
+        } catch (Exception ex) {
+            msg.setMensaje(ex.toString());
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
+        } finally {
+            this.cerrar();
+        }
+
+        return per2;
+    }
     public Cxc listarBuscarConCodigo(Integer cod) {
         ResultSet rs;
         Cxc per2 = new Cxc();
@@ -340,7 +376,7 @@ public class cxcDao extends Coneccion {
 
         } catch (Exception ex) {
             msg.setMensaje(ex.toString());
-            //System.out.println("Controlador.CUsuarios.listar()" + ex);
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -375,7 +411,7 @@ per.setVisible(rs.getInt("visible"));
 
         } catch (Exception ex) {
             msg.setMensaje(ex.toString());
-            //System.out.println("Controlador.CUsuarios.listar()" + ex);
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }

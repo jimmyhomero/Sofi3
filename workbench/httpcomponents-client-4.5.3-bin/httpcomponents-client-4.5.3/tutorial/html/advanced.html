@@ -85,7 +85,7 @@ HttpGet httpget = new HttpGet("http://localhost:8080/");
 CloseableHttpResponse response = httpclient.execute(httpget, context);
 try {
     Principal principal = context.getUserToken(Principal.class);
-    System.out.println(principal);
+    Deb.consola(principal);
 } finally {
     response.close();
 }

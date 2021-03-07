@@ -54,13 +54,13 @@ public class ClientExecuteProxy {
             HttpGet request = new HttpGet("/");
             request.setConfig(config);
 
-            System.out.println("Executing request " + request.getRequestLine() + " to " + target + " via " + proxy);
+            Deb.consola("Executing request " + request.getRequestLine() + " to " + target + " via " + proxy);
 
             CloseableHttpResponse response = httpclient.execute(target, request);
             try {
-                System.out.println("----------------------------------------");
-                System.out.println(response.getStatusLine());
-                System.out.println(EntityUtils.toString(response.getEntity()));
+                Deb.consola("----------------------------------------");
+                Deb.consola(response.getStatusLine());
+                Deb.consola(EntityUtils.toString(response.getEntity()));
             } finally {
                 response.close();
             }

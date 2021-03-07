@@ -14,6 +14,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
+import ClasesAuxiliares.debug.Deb;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,7 +27,8 @@ public class PreciosProductos extends javax.swing.JDialog {
      * Creates new form PreciosProductos
      */
     TableColumnModel columnModel;
-    public static Integer codigoProducto;
+    public static Integer _codigoProductoSeleccionadoClickonJTable;
+    public static Double _precioProducto;
     
 
     public PreciosProductos(java.awt.Frame parent, boolean modal) {
@@ -35,8 +38,8 @@ public class PreciosProductos extends javax.swing.JDialog {
         PreciosDao pDao = new PreciosDao();
         Precios precio = new Precios();
 
-        codigoProducto = Modal_CrearFacturas.codigoProductoSeleccionadoClickonJTable;
-        jTable1.setModel(pDao.getAllPreciosParaFacturar(codigoProducto));
+      // JOptionPane.showMessageDialog(null, _codigoProductoSeleccionadoClickonJTable);
+        jTable1.setModel(pDao.getAllPreciosParaFacturar(_codigoProductoSeleccionadoClickonJTable));
         setModeloColumnas(jTable1);
         txt_precio.grabFocus();
         txt_precio.selectAll();
@@ -60,6 +63,7 @@ public class PreciosProductos extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         txt_precio = new javax.swing.JTextField();
+        txt_nombreProductox = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -104,7 +108,7 @@ public class PreciosProductos extends javax.swing.JDialog {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -146,7 +150,7 @@ public class PreciosProductos extends javax.swing.JDialog {
             .addComponent(txt_precio)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -155,9 +159,12 @@ public class PreciosProductos extends javax.swing.JDialog {
                 .addComponent(txt_precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
+
+        txt_nombreProductox.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txt_nombreProductox.setForeground(new java.awt.Color(255, 0, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -165,13 +172,17 @@ public class PreciosProductos extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(txt_nombreProductox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_nombreProductox, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         bindingGroup.bind();
@@ -182,16 +193,16 @@ public class PreciosProductos extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         Double val = Double.parseDouble(txt_precio.getText());
-        System.out.println("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + val);
-        Modal_CrearFacturas.PrecioSeleccionado = Double.parseDouble(String.format("%.4f", val).replace(",", "."));
+        Deb.consola("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + val);
+       _precioProducto = Double.parseDouble(String.format("%.4f", val).replace(",", "."));
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         Double val = Double.parseDouble(txt_precio.getText());
-        System.out.println("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + val);
-        Modal_CrearFacturas.PrecioSeleccionado = Double.parseDouble(String.format("%.4f", val).replace(",", "."));
+        Deb.consola("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + val);
+        _precioProducto = Double.parseDouble(String.format("%.4f", val).replace(",", "."));
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -200,8 +211,8 @@ public class PreciosProductos extends javax.swing.JDialog {
         if (ValidaNUmeros.isOnlyDouble(txt_precio.getText())) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 Double val = Double.parseDouble(txt_precio.getText());
-                System.out.println("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + val);
-                Modal_CrearFacturas.PrecioSeleccionado = Double.parseDouble(String.format("%.4f", val).replace(",", "."));
+                Deb.consola("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + val);
+                _precioProducto = Double.parseDouble(String.format("%.4f", val).replace(",", "."));
                 this.dispose();
             }
         } else {
@@ -214,20 +225,20 @@ public class PreciosProductos extends javax.swing.JDialog {
         // TODO add your handling code here:
         //  String s= (String.valueOf(String.format("%.4f", subtotal)).replace(",", "."));
         Double val = Double.parseDouble(txt_precio.getText());
-        System.out.println("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + val);
-        Modal_CrearFacturas.PrecioSeleccionado = Double.parseDouble(String.format("%.4f", val).replace(",", "."));
+        Deb.consola("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + val);
+        _precioProducto = Double.parseDouble(String.format("%.4f", val).replace(",", "."));
     }//GEN-LAST:event_txt_precioActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         
         if (evt.getButton() == MouseEvent.BUTTON3 || evt.getButton() == MouseEvent.BUTTON1) {
-            int colPrecio = 2;            
-            System.out.println("CLICK COUNT: " + evt.getClickCount());
-            System.out.println("SELECTED ROW : " + jTable1.getSelectedRow());
+            int colPrecio = 1;            
+            Deb.consola("CLICK COUNT: " + evt.getClickCount());
+            Deb.consola("SELECTED ROW : " + jTable1.getSelectedRow());
             int x = MouseInfo.getPointerInfo().getLocation().x;
             int y = MouseInfo.getPointerInfo().getLocation().y;
-            System.out.println("X  AND Y : " + x + " - " + y);
+            Deb.consola("X  AND Y : " + x + " - " + y);
             int Rowclik = jTable1.getSelectedRow();
             int columclik = jTable1.getSelectedColumn();
             if (evt.getClickCount() == 1 ) {
@@ -236,12 +247,12 @@ public class PreciosProductos extends javax.swing.JDialog {
                    txt_precio.setText(jTable1.getValueAt(Rowclik, colPrecio).toString().replace(",", "."));
                    txt_precio.grabFocus();
 //                codigoProductoSeleccionadoClickonJTable = Integer.parseInt(jTable1.getValueAt(Rowclik, colCodigoProducto).toString());
-//                   System.out.println("Vista.Usuarios.Crear_Facturas.jTable1MouseClicked()codigo prducto seleccionado L: "+codigoProductoSeleccionadoClickonJTable);
+//                   Deb.consola("Vista.Usuarios.Crear_Facturas.jTable1MouseClicked()codigo prducto seleccionado L: "+codigoProductoSeleccionadoClickonJTable);
 //                Frame frame = JOptionPane.getFrameForComponent(this);
 //                PreciosProductos pcdialog = new PreciosProductos(frame, true);
 //                pcdialog.codigoProducto = codigoProductoSeleccionadoClickonJTable;
 //                pcdialog.txt_precio.setText(jTable1.getValueAt(Rowclik, colValUnitario).toString());
-//                System.out.println("X  AND Y : " + x + " - " + y);
+//                Deb.consola("X  AND Y : " + x + " - " + y);
 //                pcdialog.setLocation(x, y);
 //                // pcdialog.setLocationRelativeTo(frame);
 //                pcdialog.setVisible(true);
@@ -267,7 +278,7 @@ public class PreciosProductos extends javax.swing.JDialog {
         if(KeyEvent.VK_ENTER==evt.getKeyCode()){
             
             int row= jTable1.getSelectedRow();
-           txt_precio.setText( jTable1.getValueAt(row, 2).toString().replace(",", "."));
+           txt_precio.setText( jTable1.getValueAt(row, 1).toString().replace(",", "."));
             txt_precio.grabFocus();
             txt_precio.selectAll();
         }
@@ -276,7 +287,9 @@ public class PreciosProductos extends javax.swing.JDialog {
     
     private void setModeloColumnas(JTable tb) {
         this.columnModel = tb.getColumnModel();
-        this.columnModel.getColumn(0).setPreferredWidth(3);
+       // this.columnModel.getColumn(0).setPreferredWidth(0);
+       // this.columnModel.getColumn(0).setWidth(0);
+        this.columnModel.getColumn(0).setPreferredWidth(10);
         this.columnModel.getColumn(1).setPreferredWidth(10);
         this.columnModel.getColumn(2).setPreferredWidth(10);
 
@@ -331,6 +344,7 @@ public class PreciosProductos extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    public static javax.swing.JLabel txt_nombreProductox;
     public static javax.swing.JTextField txt_precio;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables

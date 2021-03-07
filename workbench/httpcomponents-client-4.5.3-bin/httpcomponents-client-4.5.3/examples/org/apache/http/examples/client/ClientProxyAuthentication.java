@@ -64,13 +64,13 @@ public class ClientProxyAuthentication {
             HttpGet httpget = new HttpGet("/basic-auth/user/passwd");
             httpget.setConfig(config);
 
-            System.out.println("Executing request " + httpget.getRequestLine() + " to " + target + " via " + proxy);
+            Deb.consola("Executing request " + httpget.getRequestLine() + " to " + target + " via " + proxy);
 
             CloseableHttpResponse response = httpclient.execute(target, httpget);
             try {
-                System.out.println("----------------------------------------");
-                System.out.println(response.getStatusLine());
-                System.out.println(EntityUtils.toString(response.getEntity()));
+                Deb.consola("----------------------------------------");
+                Deb.consola(response.getStatusLine());
+                Deb.consola(EntityUtils.toString(response.getEntity()));
             } finally {
                 response.close();
             }

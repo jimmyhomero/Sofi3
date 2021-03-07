@@ -20,13 +20,3 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /dist/
-/EcritorioRemotoJava/ImageClient/build/
-/EcritorioRemotoJava/ImageClient/dist/
-/EcritorioRemotoJava/ImageClient/nbproject/private/
-/EcritorioRemotoJava/ImageServer/build/
-/EcritorioRemotoJava/ImageServer/dist/
-/EcritorioRemotoJava/ImageServer/nbproject/private/
-/jrdesktop-source-0.3.1.0/jrdesktop/nbproject/private/
-/libreriasdeJimmyCarrion/JTableJC/nbproject/private/
-/libreriasdeJimmyCarrion/datafast/nbproject/private/
-/libreriasdeJimmyCarrion/datafast/build/

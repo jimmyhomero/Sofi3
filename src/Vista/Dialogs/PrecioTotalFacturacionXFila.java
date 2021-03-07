@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -27,8 +28,8 @@ public class PrecioTotalFacturacionXFila extends javax.swing.JDialog {
     TableColumnModel columnModel;
     public static Integer codigoProducto;
     public static Double cantidadProducto;
-    public static Double pvpUnitario;
-    public static Double pvpTotal;
+    public static Double _pvpUnitario;
+    public static Double _pvpTotal;
 
     public PrecioTotalFacturacionXFila(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -104,7 +105,7 @@ public class PrecioTotalFacturacionXFila extends javax.swing.JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -144,13 +145,13 @@ public class PrecioTotalFacturacionXFila extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         bindingGroup.bind();
@@ -162,9 +163,9 @@ public class PrecioTotalFacturacionXFila extends javax.swing.JDialog {
         // TODO add your handling code here:
         Double valpvpTotalFila = Double.parseDouble(txt_precio.getText());
         Double valpvpUnitario =valpvpTotalFila/cantidadProducto; 
-        System.out.println("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + valpvpTotalFila);
-        Modal_CrearFacturas.PrecioUnitarioFila= Double.parseDouble(String.format("%.4f", valpvpUnitario).replace(",", "."));
-        Modal_CrearFacturas.PrecioTotalFila= Double.parseDouble(String.format("%.4f", valpvpTotalFila).replace(",", "."));
+        Deb.consola("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + valpvpTotalFila);
+        _pvpUnitario= Double.parseDouble(String.format("%.4f", valpvpUnitario).replace(",", "."));
+        _pvpTotal= Double.parseDouble(String.format("%.4f", valpvpTotalFila).replace(",", "."));
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -172,9 +173,9 @@ public class PrecioTotalFacturacionXFila extends javax.swing.JDialog {
         // TODO add your handling code here:
           Double valpvpTotalFila = Double.parseDouble(txt_precio.getText());
         Double valpvpUnitario =valpvpTotalFila/cantidadProducto; 
-        System.out.println("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + valpvpTotalFila);
-        Modal_CrearFacturas.PrecioUnitarioFila= Double.parseDouble(String.format("%.4f", valpvpUnitario).replace(",", "."));
-        Modal_CrearFacturas.PrecioTotalFila= Double.parseDouble(String.format("%.4f", valpvpTotalFila).replace(",", "."));
+        Deb.consola("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + valpvpTotalFila);
+        _pvpUnitario= Double.parseDouble(String.format("%.4f", valpvpUnitario).replace(",", "."));
+        _pvpTotal= Double.parseDouble(String.format("%.4f", valpvpTotalFila).replace(",", "."));
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -184,9 +185,9 @@ public class PrecioTotalFacturacionXFila extends javax.swing.JDialog {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                   Double valpvpTotalFila = Double.parseDouble(txt_precio.getText());
         Double valpvpUnitario =valpvpTotalFila/cantidadProducto; 
-        System.out.println("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + valpvpTotalFila);
-        Modal_CrearFacturas.PrecioUnitarioFila= Double.parseDouble(String.format("%.4f", valpvpUnitario).replace(",", "."));
-        Modal_CrearFacturas.PrecioTotalFila= Double.parseDouble(String.format("%.4f", valpvpTotalFila).replace(",", "."));
+        Deb.consola("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + valpvpTotalFila);
+        _pvpUnitario= Double.parseDouble(String.format("%.4f", valpvpUnitario).replace(",", "."));
+        _pvpTotal= Double.parseDouble(String.format("%.4f", valpvpTotalFila).replace(",", "."));
         this.dispose();
             }
         } else {
@@ -200,9 +201,9 @@ public class PrecioTotalFacturacionXFila extends javax.swing.JDialog {
         //  String s= (String.valueOf(String.format("%.4f", subtotal)).replace(",", "."));
           Double valpvpTotalFila = Double.parseDouble(txt_precio.getText());
         Double valpvpUnitario =valpvpTotalFila/cantidadProducto; 
-        System.out.println("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + valpvpTotalFila);
-        Modal_CrearFacturas.PrecioUnitarioFila= Double.parseDouble(String.format("%.4f", valpvpUnitario).replace(",", "."));
-        Modal_CrearFacturas.PrecioTotalFila= Double.parseDouble(String.format("%.4f", valpvpTotalFila).replace(",", "."));
+        Deb.consola("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + valpvpTotalFila);
+        _pvpUnitario= Double.parseDouble(String.format("%.4f", valpvpUnitario).replace(",", "."));
+        _pvpTotal= Double.parseDouble(String.format("%.4f", valpvpTotalFila).replace(",", "."));
         this.dispose();
     }//GEN-LAST:event_txt_precioActionPerformed
 

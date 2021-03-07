@@ -6,6 +6,8 @@
 package Vista.Usuarios;
 
 import ClasesAuxiliares.MaquinaDao;
+import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
+import ClasesAuxiliares.debug.Deb;
 import ClasesAuxiliares.Variables;
 import ClasesAuxiliares.loadconfig;
 import Controlador.Usuarios.BodegasDao;
@@ -15,6 +17,7 @@ import Controlador.Usuarios.ConfigDao;
 import Controlador.Usuarios.Config_EquiposDao;
 import Controlador.Usuarios.Config_UsuariosDao;
 import Controlador.Usuarios.EquiposDao;
+import Controlador.Usuarios.FormasPagoCVDao;
 import Controlador.Usuarios.FormasPagoVDao;
 import Modelo.Bodegas;
 import Modelo.Cajas;
@@ -23,8 +26,10 @@ import Modelo.ConfigSofia;
 import Modelo.Config_Equipos;
 import Modelo.Config_Usuarios;
 import Modelo.Equipos;
+import Modelo.FormasPagoCV;
 import Modelo.FormasPagoV;
 import Vista.Principal;
+import static Vista.Principal.EquipoServidordefacturacionELectronica;
 import Vista.alertas.alerta;
 import login.login;
 import static login.login.codigoCaja;
@@ -64,10 +69,10 @@ public class Configuracion extends javax.swing.JInternalFrame {
     ConfigSofia objconfig = new ConfigSofia();
     Config_Equipos objConfigEquipos = new Config_Equipos();
     Config_Usuarios objConfigUsuarios = new Config_Usuarios();
-    ConfigDao confDao = new ConfigDao();
+    private static ConfigDao confDao = new ConfigDao();
     Config_EquiposDao confEquipoDao = new Config_EquiposDao();
     Config_UsuariosDao confUsuarioDao = new Config_UsuariosDao();
-    ArrayList<ConfigSofia> listConfig = new ArrayList<ConfigSofia>();
+    private static ArrayList<ConfigSofia> listConfig = new ArrayList<ConfigSofia>();
     ArrayList<Bodegas> listBodegas = new ArrayList<Bodegas>();
     ArrayList<Config_Equipos> listConfigdeEquipo = new ArrayList<Config_Equipos>();
     ArrayList<Config_Usuarios> listConfigdeUsuarios = new ArrayList<Config_Usuarios>();
@@ -122,21 +127,23 @@ public class Configuracion extends javax.swing.JInternalFrame {
             jcb_BodegaPredeterminadCOmpra.addItem(b.getBodegaID() + "-" + b.getBodega());
             jcb_BodegaPredeterminadventas.addItem(b.getBodegaID() + "-" + b.getBodega());
         }
-        
-     txt_NumEq.setText(login.nombreDelEquipo + " : " + login.CodigoDelEquipo);
+
+        txt_NumEq.setText(login.nombreDelEquipo + " : " + login.CodigoDelEquipo);
         listConfigdeEquipo = confEquipoDao.listarByID(login.CodigoDelEquipo);
         ///lleno combo forma de pago       
 
-        FormasPagoVDao fpDao = new FormasPagoVDao();
-        for (FormasPagoV f : fpDao.listar()) {
-            jcb_formadePagoPredeterminada.addItem(f.getFormaPago());
+        FormasPagoCVDao fpDao = new FormasPagoCVDao();
+        for (FormasPagoCV f : fpDao.listar()) {
+            if (f.getEsCxcCxp().equalsIgnoreCase(OperacionesForms._FORMA_PAGO_CXC_TEXT)) {
+                jcb_formadePagoPredeterminada.addItem(f.getFormaPago());
+            }
+
         }
-   
+
         SetConfig();
         SetConfigDeUsuario();
-        // new loadconfig();
-        
         SetConfigEquipo();
+        // new loadconfig();
 
 /////////////////////tab6///////////////
 /////////////////////tab6///////////////
@@ -160,7 +167,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
             lista = cajaDao.listar();
             for (Cajas cajas : lista) {
                 jcb_cajaPredeterminada1.addItem(cajas.getCaja());
-                System.out.println("Cajassss: " + cajas.getCaja());
+                Deb.consola("Cajassss: " + cajas.getCaja());
             }
 
             BodegasDao bDaod = new BodegasDao();
@@ -182,56 +189,62 @@ public class Configuracion extends javax.swing.JInternalFrame {
             jList1.setEnabled(true);
             jList2.setEnabled(true);
         }
+        ///////
+
+        EquiposDao eDao = new EquiposDao();
+        for (Equipos equipos : eDao.listar()) {
+            jcb_Equipos.addItem(equipos.getNombreReal());
+        }
+
+        //////
 ////////////////////////fin tab 6
         llenarJTree();
         //configPorEquipook();
     }
 
-    
-     private void SetConfigEquipo() {
+    private void SetConfigEquipo() {
         //// fin formas dpago
-        
 
         for (Config_Equipos c : listConfigdeEquipo) {
 
-            System.out.println("AAAAAAAAAAAAAAAAAAA: "+c.getNombre()+" = "+c.getValor1());
+            Deb.consola("AAAAAAAAAAAAAAAAAAA: " + c.getNombre() + " = " + c.getValor1());
             switch (c.getNombre()) {
-                case  "IMPRESORA TICKETS":
+                case "IMPRESORA TICKETS":
                     txt_tickets.setText(c.getNombre());
                     jcb_imptickets.setSelectedItem(c.getValor1());
-                    Principal.impresoraTicket=c.getValor1();
+                    Principal.impresoraTicket = c.getValor1();
 
                     break;
                 case "IMPRESORA FACTURAS":
                     txt_facturas.setText(c.getNombre());
                     jcb_impfacturas.setSelectedItem(c.getValor1());
-                    Principal.impresoraFactura=c.getValor1();
+                    Principal.impresoraFactura = c.getValor1();
                     break;
                 case "FORMA DE PAGO PREDETERMINADA":
                     txt_formadepagoPredeterminada.setText(c.getNombre());
                     jcb_formadePagoPredeterminada.setSelectedItem(c.getValor1());
-                    Principal.formadepagopredeterminada=c.getValor1();
+                    Principal.formadepagopredeterminadaVenta = c.getValor1();
                     break;
                 case "BODEGA PREDETERMINADA EN COMPRA":
                     txt_bodegaPredeterminadaEnCompras.setText(c.getNombre());
                     jcb_BodegaPredeterminadCOmpra.setSelectedItem(c.getValor1());
-                    Principal.bodegaPredeterminadaenCOmpra=c.getValor1();
+                    Principal.bodegaPredeterminadaenCOmpra = c.getValor1();
                     break;
 
                 case "BODEGA PREDETERMINADA EN VENTA":
 
                     txt_bodegaPredeterminadaEnVENTAS.setText(c.getNombre());
                     jcb_BodegaPredeterminadventas.setSelectedItem(c.getValor1());
-                    Principal.bodegaPredeterminadaenVenta=c.getValor1();
+                    Principal.bodegaPredeterminadaenVenta = c.getValor1();
                     break;
                 case "FACTURA TIRILLAS O CON FORMATO":
 
                     TXT_FACTURASDEROOLO.setText(c.getNombre());
                     if (c.getValor1().equalsIgnoreCase("ROLLO")) {
-                        CHECFACROLLO.setSelected(true);                       
+                        CHECFACROLLO.setSelected(true);
                     } else if (c.getValor1().equalsIgnoreCase("GRANDE")) {
                         CHECFACGRANDE.setSelected(true);
-                        
+
                     }
                     Principal.facturatiriiasoGrande = c.getValor1();
                     break;
@@ -239,11 +252,11 @@ public class Configuracion extends javax.swing.JInternalFrame {
 
                     TXT_TICKETSDEROOLO.setText(c.getNombre());
                     if (c.getValor1().equalsIgnoreCase("ROLLO")) {
-                        CHECTICROLLO.setSelected(true);                    
+                        CHECTICROLLO.setSelected(true);
 
                     } else if (c.getValor1().equalsIgnoreCase("GRANDE")) {
                         CHECTICGRANDE.setSelected(true);
-                        
+
                     }
                     Principal.tickettiriiasoGrande = c.getValor1();
                     break;
@@ -267,13 +280,14 @@ public class Configuracion extends javax.swing.JInternalFrame {
                         CHECPROFGRANDE.setSelected(true);
                     }
                     Principal.proformatiriiasoFacturaGrande = c.getValor1();
-                    break;                
-            }
-            System.out.println("BBBBBBBBB: "+c.getNombre()+" = "+c.getValor1());
+                    break;
 
+            }
+
+            Deb.consola("BBBBBBBBB: " + c.getNombre() + " = " + c.getValor1());
         }
+
     }
-   
 
     public void llenarJTree() {
         DefaultMutableTreeNode raiz = new DefaultMutableTreeNode(jlnombrereal.getText());
@@ -329,7 +343,8 @@ public class Configuracion extends javax.swing.JInternalFrame {
         DefaultTreeModel model = new DefaultTreeModel(raiz);
     }
 
-    private void SetConfig() {
+    public static void SetConfig() {
+
         listConfig = confDao.listar();
 
         for (ConfigSofia c : listConfig) {
@@ -384,7 +399,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     }
 
                     break;
-                    case "EDITAR DETALLE ITEM FACTURACION":
+                case "EDITAR DETALLE ITEM FACTURACION":
                     txt_editarDetalle_item_en_Facturacion.setText(c.getNombre());
 
                     if (c.getValor1().equalsIgnoreCase("SI")) {
@@ -394,14 +409,36 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     }
 
                     break;
-                    
+                case "ANCHO TIKET":
+                    JOptionPane.showMessageDialog(null, "ancho tiket> : " + c.getValor1().toString());
+                    txt_anchoticket.setText(c.getNombre());
+                    // if (c.getValor1().equalsIgnoreCase("ROLLO")) {
+                    txt_tamanoanchoTiketvalor.setText(c.getValor1().toString());
+                    Principal.anchoimpresionticket = c.getValor1();
+                    //    }
+                    break;
+                case "SERVIDOR ELECTRONICAS":
+                    Principal.EquipoServidordefacturacionELectronica = c.getValor1();
+                    txt_EquipoServidorFacturacionElectronica.setText("SERVIDOR ELECTRONICAS");
+                    jcb_Equipos.setSelectedItem(c.getValor1());
+                    break;
 
+                case "MODO DESARROLLO":
+                    Principal.modoDesarrollo = Integer.parseInt(c.getValor1());
+                    if (c.getValor1().equals("1")) {
+                        chek_modoDesarrollo.setText(c.getNombre());
+                        chek_modoDesarrollo.setSelected(true);
+                    } else {
+                        chek_modoDesarrollo.setText(c.getNombre());
+                        chek_modoDesarrollo.setSelected(false);
+                    }
+
+                    break;
             }
 
         }
     }
 
-   
     private void SetConfigDeUsuario() {
         listConfigdeUsuarios = confUsuarioDao.listar();
 
@@ -410,13 +447,13 @@ public class Configuracion extends javax.swing.JInternalFrame {
             switch (c.getNombre()) {
 
                 case "I":
-                    System.out.println("Vista.Usuarios.Congifuracion.SetConfig()tickets : " + c.getValor1());
+                    Deb.consola("Vista.Usuarios.Congifuracion.SetConfig()tickets : " + c.getValor1());
                     txt_tickets.setText(c.getNombre());
                     jcb_imptickets.setSelectedItem(c.getValor1());
 
                     break;
                 case "IMPR":
-                    System.out.println("Vista.Usuarios.Congifuracion.SetConfig() facturas : " + c.getValor1());
+                    Deb.consola("Vista.Usuarios.Congifuracion.SetConfig() facturas : " + c.getValor1());
                     txt_facturas.setText(c.getNombre());
                     jcb_impfacturas.setSelectedItem(c.getValor1());
                     break;
@@ -468,6 +505,9 @@ public class Configuracion extends javax.swing.JInternalFrame {
         jPanel6 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        txt_anchoticket = new javax.swing.JLabel();
+        txt_tamanoanchoTiketvalor = new javax.swing.JTextField();
+        chek_modoDesarrollo = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         txt_iva = new javax.swing.JLabel();
@@ -486,6 +526,8 @@ public class Configuracion extends javax.swing.JInternalFrame {
         jcb_METODOVALORACIONINVENTARIO = new javax.swing.JComboBox<>();
         txt_editarDetalle_item_en_Facturacion = new javax.swing.JLabel();
         jcb_editarDetalle_item_en_Facturacion = new javax.swing.JComboBox<>();
+        txt_EquipoServidorFacturacionElectronica = new javax.swing.JLabel();
+        jcb_Equipos = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -753,6 +795,22 @@ public class Configuracion extends javax.swing.JInternalFrame {
             .addComponent(jTabbedPane2)
         );
 
+        txt_anchoticket.setText("ANCHO TICKET");
+
+        txt_tamanoanchoTiketvalor.setText("10");
+        txt_tamanoanchoTiketvalor.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_tamanoanchoTiketvalorFocusLost(evt);
+            }
+        });
+
+        chek_modoDesarrollo.setText("MODO DESARROLLO");
+        chek_modoDesarrollo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chek_modoDesarrolloItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -818,10 +876,18 @@ public class Configuracion extends javax.swing.JInternalFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(txt_formadepagoPredeterminada, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jcb_formadePagoPredeterminada, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(jcb_formadePagoPredeterminada, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(txt_anchoticket)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txt_tamanoanchoTiketvalor, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(chek_modoDesarrollo)))
                         .addGap(46, 46, 46)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(187, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -874,7 +940,13 @@ public class Configuracion extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(CHECK_CONTROL_EFECTIVO)
-                            .addComponent(TXT_CONTROL_EFECTIVO_CAJA_SI_NO)))
+                            .addComponent(TXT_CONTROL_EFECTIVO_CAJA_SI_NO))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txt_anchoticket)
+                            .addComponent(txt_tamanoanchoTiketvalor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chek_modoDesarrollo))
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1007,6 +1079,14 @@ public class Configuracion extends javax.swing.JInternalFrame {
             }
         });
 
+        txt_EquipoServidorFacturacionElectronica.setText("jLabel7");
+
+        jcb_Equipos.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcb_EquiposItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -1022,7 +1102,8 @@ public class Configuracion extends javax.swing.JInternalFrame {
                         .addComponent(txt_iva, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txt_documentopredeterminado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jl_METODOVALORACIONINVENTARIO, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_editarDetalle_item_en_Facturacion, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_editarDetalle_item_en_Facturacion, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_EquipoServidorFacturacionElectronica, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -1035,6 +1116,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                         .addGap(509, 509, 509))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jcb_Equipos, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jcb_editarDetalle_item_en_Facturacion, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jcb_PermitirFacturarSinStock, javax.swing.GroupLayout.Alignment.LEADING, 0, 218, Short.MAX_VALUE)
                             .addComponent(jcb_METODOVALORACIONINVENTARIO, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1075,7 +1157,11 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_editarDetalle_item_en_Facturacion)
                     .addComponent(jcb_editarDetalle_item_en_Facturacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(380, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_EquipoServidorFacturacionElectronica)
+                    .addComponent(jcb_Equipos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(344, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Configuracin Genereal", jPanel3);
@@ -1490,7 +1576,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
 
     private void jcb_impticketsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcb_impticketsMouseClicked
         // TODO add your handling code here:
-        //    System.out.println("Vista.Usuarios.Congifuracion.jcb_impticketsMouseReleased()clikeddd");
+        //    Deb.consola("Vista.Usuarios.Congifuracion.jcb_impticketsMouseReleased()clikeddd");
     }//GEN-LAST:event_jcb_impticketsMouseClicked
 
     private void jcb_impfacturasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcb_impfacturasItemStateChanged
@@ -1514,13 +1600,13 @@ public class Configuracion extends javax.swing.JInternalFrame {
     private void jcb_impticketsMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcb_impticketsMouseReleased
         // TODO add your handling code here:
         isClickedinJCB = true;
-        //  System.out.println("Vista.Usuarios.Congifuracion.jcb_impticketsMouseReleased()releseeeed ninto");
+        //  Deb.consola("Vista.Usuarios.Congifuracion.jcb_impticketsMouseReleased()releseeeed ninto");
     }//GEN-LAST:event_jcb_impticketsMouseReleased
 
     private void jcb_impfacturasMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcb_impfacturasMouseReleased
         // TODO add your handling code here:
         isClickedinJCB = true;
-        System.out.println("Vista.Usuarios.Congifuracion.jcb_impticketsMouseReleased()releseeeed ninto");
+        Deb.consola("Vista.Usuarios.Congifuracion.jcb_impticketsMouseReleased()releseeeed ninto");
     }//GEN-LAST:event_jcb_impfacturasMouseReleased
 
     private void txt_iva_KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_iva_KeyReleased
@@ -1593,7 +1679,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
             objConfigEquipos.setEquipos_codigo(login.CodigoDelEquipo);
             Config_EquiposDao objDao = new Config_EquiposDao();
             objDao.modificar(objConfigEquipos);
-            Principal.formadepagopredeterminada = jcb_formadePagoPredeterminada.getSelectedItem().toString();
+            Principal.formadepagopredeterminadaVenta = jcb_formadePagoPredeterminada.getSelectedItem().toString();
         }
 
     }//GEN-LAST:event_jcb_formadePagoPredeterminadaItemStateChanged
@@ -1681,10 +1767,10 @@ public class Configuracion extends javax.swing.JInternalFrame {
             EquiposDao eqDao = new EquiposDao();
             this.cajaClicked = jTable1.getValueAt(rowClicked, 3).toString();
             equipo = eqDao.Buscar_conID(Integer.parseInt(jTable1.getValueAt(rowClicked, 0).toString()));
-            System.out.println("Vista.Usuarios.Configuracion.jTable1MouseClicked()esqipo>: " + equipo);
+            Deb.consola("Vista.Usuarios.Configuracion.jTable1MouseClicked()esqipo>: " + equipo);
             Frame f = JOptionPane.getFrameForComponent(this);
             SelectCaja dialog = new SelectCaja(f, true);
-            System.out.println("Vista.Usuarios.Congifuracion.jTable1MouseClicked()");
+            Deb.consola("Vista.Usuarios.Congifuracion.jTable1MouseClicked()");
             dialog.setLocation(evt.getPoint().x, evt.getPoint().y + 230);
             dialog.setVisible(true);
         }
@@ -1942,7 +2028,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
 
     private void jcb_cajaPredeterminada1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcb_cajaPredeterminada1ItemStateChanged
         // TODO add your handling code here:
-        System.out.println("Vista.Usuarios.SelectCaja.jComboBox1ItemStateChanged()se ha seleccinadosss");
+        Deb.consola("Vista.Usuarios.SelectCaja.jComboBox1ItemStateChanged()se ha seleccinadosss");
         if (jcb_cajaPredeterminada1.getSelectedItem() != null) {
             for (Cajas cajas : lista) {
                 if (jcb_cajaPredeterminada1.getSelectedItem().toString().equals(cajas.getCaja())) {
@@ -2022,8 +2108,8 @@ public class Configuracion extends javax.swing.JInternalFrame {
             Config_Equipos configEqtoUpdate = new Config_Equipos();
             Config_EquiposDao configEqDaoupdate = new Config_EquiposDao();
             configEqtoUpdate = configEqDaoupdate.buscarConfiguracionesdeEquipos(codigoNewEquipo, codigoConfig2);
-            System.out.println("equipo en operacion: " + configEqtoUpdate.toString());
-            System.out.println("Codifoxxxx: " + configEqtoUpdate.getCodigo());
+            Deb.consola("equipo en operacion: " + configEqtoUpdate.toString());
+            Deb.consola("Codifoxxxx: " + configEqtoUpdate.getCodigo());
             if (configEqtoUpdate.getCodigo() == null) {
                 Config_Equipos configEq = new Config_Equipos();
                 Config_EquiposDao configEqDao = new Config_EquiposDao();
@@ -2040,9 +2126,9 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 configEqtoUpdate.setValor1(jList2.getSelectedValue());
                 Config_EquiposDao configEqDaoupdate2 = new Config_EquiposDao();
                 configEqDaoupdate2.ActualizarValor1deConfiguracion(configEqtoUpdate);
-                
+
                 jLabel5.setText(jList1.getSelectedValue() + " --> " + (jList2.getSelectedValue()));
-                
+
             }
             //SetConfigEquipo();
             configPorEquipook();
@@ -2052,20 +2138,19 @@ public class Configuracion extends javax.swing.JInternalFrame {
         jList2.setSelectionBackground(Color.ORANGE);
     }//GEN-LAST:event_jList2MouseClicked
 
-    public void configPorEquipook(){
-     val=jList1.getSelectedValue();
-        
+    public void configPorEquipook() {
+        val = jList1.getSelectedValue();
+
         Integer index = -1;
         Integer i = 0;
         for (Config2 config2 : listConfig2) {
             if (config2.getNombre().equalsIgnoreCase(jList1.getSelectedValue())) {
-                System.out.println("Nombre Coonfig2 sleeccionado: " + jList1.getSelectedValue());
+                Deb.consola("Nombre Coonfig2 sleeccionado: " + jList1.getSelectedValue());
                 codigoConfig2 = config2.getCodigo();
-                System.out.println("Codigo Coonfig2 sleeccionado: " + codigoConfig2);
+                Deb.consola("Codigo Coonfig2 sleeccionado: " + codigoConfig2);
             }
         }
-
-        //Integer index = -1;
+        
         Config_Equipos csofi = new Config_Equipos();
         Config_EquiposDao cdao = new Config_EquiposDao();
         csofi = cdao.buscarConfiguracionesdeEquipos(codigoNewEquipo, codigoConfig2);
@@ -2079,7 +2164,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     model2.add(i, listaimpresora);
                     if (csofi.getValor1().equalsIgnoreCase(listaimpresora)) {
                         index = i;
-                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
+                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.impresoraTicket = csofi.getValor1();
                     }
                     i++;
@@ -2096,7 +2181,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     model2.add(i, listaimpresora);
                     if (csofi.getValor1().equalsIgnoreCase(listaimpresora)) {
                         index = i;
-                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
+                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.impresoraFactura = csofi.getValor1();
                     }
                     i++;
@@ -2106,18 +2191,47 @@ public class Configuracion extends javax.swing.JInternalFrame {
 
                 //      jcb_configoptions.setPopupVisible(true);
                 break;
-            case "FORMA DE PAGO PREDETERMINADA":
-                FormasPagoVDao fpDao = new FormasPagoVDao();
-                for (FormasPagoV f : fpDao.listar()) {
-                    model2.add(i, f.getFormaPago());
-                    if (csofi.getValor1().equalsIgnoreCase(f.getFormaPago())) {
-                        index = i;
-                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
-                        Principal.formadepagopredeterminada = csofi.getValor1();
+            ////
+            case "FORMA DE PAGO PREDETERMINADA EN COMPRA":
+
+                //////////////
+                FormasPagoCVDao objFdPDao = new FormasPagoCVDao();
+                for (FormasPagoCV f : objFdPDao.listar()) {
+                    if (OperacionesForms._FORMA_PAGO_CXP_TEXT.equalsIgnoreCase(f.getEsCxcCxp())) {
+                        model2.add(i, f.getFormaPago());
+
+                        if (csofi.getValor1().equalsIgnoreCase(f.getFormaPago())) {
+                            index = i;
+                            val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                            Principal.formadepagopredeterminadaCompra = csofi.getValor1();
+                        }
+
+                        i++;
                     }
 
-                    i++;
                 }
+                jList2.setModel(model2);
+                jList2.setSelectedIndex(index);
+                break;
+            case "FORMA DE PAGO PREDETERMINADA EN VENTA":
+
+                //////////////
+                FormasPagoCVDao objFdPDao2 = new FormasPagoCVDao();
+                for (FormasPagoCV f : objFdPDao2.listar()) {
+
+                    if (OperacionesForms._FORMA_PAGO_CXC_TEXT.equalsIgnoreCase(f.getEsCxcCxp())) {
+                        model2.add(i, f.getFormaPago());
+                        if (csofi.getValor1().equalsIgnoreCase(f.getFormaPago())) {
+                            index = i;
+                            val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                            Principal.formadepagopredeterminadaVenta = csofi.getValor1();
+                        }
+
+                        i++;
+                    }
+
+                }
+
                 jList2.setModel(model2);
                 jList2.setSelectedIndex(index);
                 break;
@@ -2130,7 +2244,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     model2.add(i, b.getBodegaID() + "-" + b.getBodega());
                     if (csofi.getValor1().equalsIgnoreCase(b.getBodegaID() + "-" + b.getBodega())) {
                         index = i;
-                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
+                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.bodegaPredeterminadaenCOmpraNOmbre = csofi.getValor1();
                         Principal.bodegaPredeterminadaenCOmpra = b.getBodegaID() + "-" + b.getBodega();
                     }
@@ -2148,7 +2262,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     model2.add(i, b.getBodegaID() + "-" + b.getBodega());
                     if (csofi.getValor1().equalsIgnoreCase(b.getBodegaID() + "-" + b.getBodega())) {
                         index = i;
-                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
+                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.bodegaPredeterminadaenVentaNombre = csofi.getValor1();
                         Principal.bodegaPredeterminadaenVenta = b.getBodegaID() + "-" + b.getBodega();
                     }
@@ -2166,7 +2280,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 for (Object object : model2.toArray()) {
                     if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
                         index = i;
-                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
+                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.facturatiriiasoGrande = csofi.getValor1();
                     }
                     i++;
@@ -2180,7 +2294,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 for (Object object : model2.toArray()) {
                     if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
                         index = i;
-                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
+                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.tickettiriiasoGrande = csofi.getValor1();
                     }
                     i++;
@@ -2195,7 +2309,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 for (Object object : model2.toArray()) {
                     if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
                         index = i;
-                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
+                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.proformatiriiasoFacturaGrande = csofi.getValor1();
                     }
                     i++;
@@ -2209,7 +2323,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 for (Object object : model2.toArray()) {
                     if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
                         index = i;
-                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
+                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
                         loadconfig.controlElefectivoSiNO = csofi.getValor1();
                     }
                     i++;
@@ -2229,7 +2343,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 for (Object object : model2.toArray()) {
                     if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
                         index = i;
-                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
+                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.VerImagenEnFacturacion = csofi.getValor1();
 
                     }
@@ -2244,7 +2358,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 for (Object object : model2.toArray()) {
                     if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
                         index = i;
-                        val=csofi.getNombre() + " --> " + (csofi.getValor1());
+                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
                         Principal.ItemRepetidoEnFacturacionSumarCantidad = csofi.getValor1();
 
                     }
@@ -2261,12 +2375,12 @@ public class Configuracion extends javax.swing.JInternalFrame {
         //jLabel5.setText(val);
         configPorEquipook();
         jLabel5.setText(val);
-        
+
     }//GEN-LAST:event_jList1ValueChanged
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         // TODO add your handling code here:
-        System.out.println("Vista.Usuarios.Configuracion.jTabbedPane1StateChanged()" + jTabbedPane1.getSelectedIndex());
+        Deb.consola("Vista.Usuarios.Configuracion.jTabbedPane1StateChanged()" + jTabbedPane1.getSelectedIndex());
         if (esteesequipoNuevo != 1) {
             txtSec1.setEditable(false);
             txtSec2.setEditable(false);
@@ -2276,8 +2390,8 @@ public class Configuracion extends javax.swing.JInternalFrame {
             jcb_BodegaPredeterminadventas1.setEditable(false);
             jcb_cajaPredeterminada1.setEditable(false);
 
-            System.out.println("Vista.Usuarios.Configuracion.<init>()10: " + jPanel10.getBounds());
-            System.out.println("Vista.Usuarios.Configuracion.<init>12(),llll: " + jPanel12.getBounds());
+            Deb.consola("Vista.Usuarios.Configuracion.<init>()10: " + jPanel10.getBounds());
+            Deb.consola("Vista.Usuarios.Configuracion.<init>12(),llll: " + jPanel12.getBounds());
             jPanel10.setBounds(0, 0, 0, 0);
             jPanel12.setBounds(6, 0, 495, 499);
             jPanel10.repaint();
@@ -2300,6 +2414,43 @@ public class Configuracion extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jcb_editarDetalle_item_en_FacturacionItemStateChanged
 
+    private void txt_tamanoanchoTiketvalorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_tamanoanchoTiketvalorFocusLost
+        // TODO add your handling code here:
+        ConfigDao objconfgDao = new ConfigDao();
+        objconfig.setNombre(txt_anchoticket.getText());
+        objconfig.setValor1(txt_tamanoanchoTiketvalor.getText());
+        objconfgDao.modificar(objconfig);
+        Principal.anchoimpresionticket = txt_tamanoanchoTiketvalor.getText();
+    }//GEN-LAST:event_txt_tamanoanchoTiketvalorFocusLost
+
+    private void jcb_EquiposItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcb_EquiposItemStateChanged
+        // TODO add your handling code here:
+        if (jcb_Equipos.getItemCount() > 1) {
+            objconfig.setValor1(jcb_Equipos.getSelectedItem().toString());
+            objconfig.setNombre(txt_EquipoServidorFacturacionElectronica.getText());
+            ConfigDao objDao = new ConfigDao();
+            objDao.modificar(objconfig);
+            Principal.EquipoServidordefacturacionELectronica = jcb_Equipos.getSelectedItem().toString();
+        }
+    }//GEN-LAST:event_jcb_EquiposItemStateChanged
+
+    private void chek_modoDesarrolloItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chek_modoDesarrolloItemStateChanged
+        // TODO add your handling code here:
+        if (chek_modoDesarrollo.isSelected()) {
+            objconfig.setValor1("1");
+            ConfigDao objDao = new ConfigDao();
+            objconfig.setNombre(chek_modoDesarrollo.getText());
+            objDao.modificar(objconfig);
+            Principal.modoDesarrollo = 1;
+        } else {
+            objconfig.setValor1("0");
+            ConfigDao objDao = new ConfigDao();
+            objconfig.setNombre(chek_modoDesarrollo.getText());
+            objDao.modificar(objconfig);
+            Principal.modoDesarrollo = 0;
+        }
+    }//GEN-LAST:event_chek_modoDesarrolloItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JCheckBox CHECFACGRANDE;
@@ -2320,6 +2471,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
     public static javax.swing.JCheckBox check_activarfacElectronica;
     public static javax.swing.JCheckBox check_preubas;
     public static javax.swing.JCheckBox check_producciona;
+    private static javax.swing.JCheckBox chek_modoDesarrollo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -2355,11 +2507,12 @@ public class Configuracion extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> jcb_BodegaPredeterminadCOmpra1;
     public static javax.swing.JComboBox<String> jcb_BodegaPredeterminadventas;
     private javax.swing.JComboBox<String> jcb_BodegaPredeterminadventas1;
+    private static javax.swing.JComboBox<String> jcb_Equipos;
     public static javax.swing.JComboBox<String> jcb_METODOVALORACIONINVENTARIO;
     public static javax.swing.JComboBox<String> jcb_PermitirFacturarSinStock;
     private javax.swing.JComboBox<String> jcb_cajaPredeterminada1;
     public static javax.swing.JComboBox<String> jcb_documentopredeterminado;
-    private javax.swing.JComboBox<String> jcb_editarDetalle_item_en_Facturacion;
+    private static javax.swing.JComboBox<String> jcb_editarDetalle_item_en_Facturacion;
     public static javax.swing.JComboBox<String> jcb_formadePagoPredeterminada;
     public static javax.swing.JComboBox<String> jcb_impfacturas;
     public static javax.swing.JComboBox<String> jcb_imptickets;
@@ -2368,15 +2521,17 @@ public class Configuracion extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtSec1;
     private javax.swing.JTextField txtSec2;
     private javax.swing.JTextField txtSec3;
+    private static javax.swing.JLabel txt_EquipoServidorFacturacionElectronica;
     private javax.swing.JLabel txt_NumEq;
     public static javax.swing.JLabel txt_PERMITIRFACTURARSINSTOCK;
-    private javax.swing.JLabel txt_ambiente;
+    private static javax.swing.JLabel txt_ambiente;
+    private static javax.swing.JLabel txt_anchoticket;
     public static javax.swing.JLabel txt_bodegaPredeterminadaEnCompras;
     private javax.swing.JLabel txt_bodegaPredeterminadaEnCompras1;
     public static javax.swing.JLabel txt_bodegaPredeterminadaEnVENTAS;
     private javax.swing.JLabel txt_bodegaPredeterminadaEnVENTAS1;
     public static javax.swing.JLabel txt_documentopredeterminado;
-    private javax.swing.JLabel txt_editarDetalle_item_en_Facturacion;
+    private static javax.swing.JLabel txt_editarDetalle_item_en_Facturacion;
     public static javax.swing.JLabel txt_facturas;
     public static javax.swing.JLabel txt_formadepagoPredeterminada;
     public static javax.swing.JLabel txt_iva;
@@ -2384,6 +2539,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
     public static javax.swing.JLabel txt_moneda;
     public static javax.swing.JTextField txt_moneda_;
     private javax.swing.JTextField txt_nombreSoft;
+    private static javax.swing.JTextField txt_tamanoanchoTiketvalor;
     public static javax.swing.JLabel txt_tickets;
     public static javax.swing.JLabel txt_utilidad;
     public static javax.swing.JTextField txt_utilidad_;

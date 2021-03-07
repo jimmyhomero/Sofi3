@@ -9,6 +9,7 @@ package ClasesAuxiliares.encryptado;
  *
  * @author USUARIO
  */
+import ClasesAuxiliares.debug.Deb;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -21,7 +22,7 @@ public class sha {
 
     public static void main(String[] args) {
         String s = encrypt("llllllll", "1234569878910111");
-        System.out.println("Pass: " + s);
+        Deb.consola("Pass: " + s);
         decrypt("llllllll", s);
     }
 

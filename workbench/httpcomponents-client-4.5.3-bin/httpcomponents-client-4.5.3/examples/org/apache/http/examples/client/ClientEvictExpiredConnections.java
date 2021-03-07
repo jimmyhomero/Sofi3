@@ -62,26 +62,26 @@ public class ClientEvictExpiredConnections {
                 String requestURI = urisToGet[i];
                 HttpGet request = new HttpGet(requestURI);
 
-                System.out.println("Executing request " + requestURI);
+                Deb.consola("Executing request " + requestURI);
 
                 CloseableHttpResponse response = httpclient.execute(request);
                 try {
-                    System.out.println("----------------------------------------");
-                    System.out.println(response.getStatusLine());
-                    System.out.println(EntityUtils.toString(response.getEntity()));
+                    Deb.consola("----------------------------------------");
+                    Deb.consola(response.getStatusLine());
+                    Deb.consola(EntityUtils.toString(response.getEntity()));
                 } finally {
                     response.close();
                 }
             }
 
             PoolStats stats1 = cm.getTotalStats();
-            System.out.println("Connections kept alive: " + stats1.getAvailable());
+            Deb.consola("Connections kept alive: " + stats1.getAvailable());
 
             // Sleep 10 sec and let the connection evictor do its job
             Thread.sleep(10000);
 
             PoolStats stats2 = cm.getTotalStats();
-            System.out.println("Connections kept alive: " + stats2.getAvailable());
+            Deb.consola("Connections kept alive: " + stats2.getAvailable());
 
         } finally {
             httpclient.close();

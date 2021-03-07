@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -28,7 +29,7 @@ public class Electronica {
             conneccion.conectar();
             PreparedStatement st;
             st = conneccion.getCnx().prepareCall("SELECT calveAcceso, estado FROM facturas WHERE estado= 0");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -39,14 +40,14 @@ public class Electronica {
 
                     archivoBytes = ArchivoUtil.convertirArchivoAByteArray(xml_file);
                 } catch (IOException ex) {
-                    System.out.println("Error Al crear xml en: " + Electronica.class.getName() + "Error tipo: " + ex);
+                    Deb.consola("Error Al crear xml en: " + Electronica.class.getName() + "Error tipo: " + ex);
                     //Logger.getLogger(FacturasDao.class.getName()).log(Level.SEVERE, null, ex);                        
                 }
                 Comprobante c = new Comprobante();
                 c.upload(registros, archivoBytes);
-                System.out.println("FIRMADO : " + Config.FE_DOCUMENTO_FIRMADO);
-                System.out.println("AUTORIZADO : " + Config.FE_DOCUMENTO_AUTORIZADO);
-                System.out.println("ENVIADO : " + Config.FE_DOCUMENTO_ENVIADO);
+                Deb.consola("FIRMADO : " + Config.FE_DOCUMENTO_FIRMADO);
+                Deb.consola("AUTORIZADO : " + Config.FE_DOCUMENTO_AUTORIZADO);
+                Deb.consola("ENVIADO : " + Config.FE_DOCUMENTO_ENVIADO);
                 String sql="UPDATE facturas SET estado =1 WHERE calveAcceso ='" + registros+"'";
                 if (Config.FE_DOCUMENTO_FIRMADO) {
                     st = conneccion.getCnx().prepareCall(sql);
@@ -55,7 +56,7 @@ public class Electronica {
                     System.out.print("1111111111");
                     try {
                         //sleep 10 seconds
-                        System.out.println("Nuevo Barido...");
+                        Deb.consola("Nuevo Barido...");
                         Thread.sleep(1000);
 
                     } catch (InterruptedException e) {
@@ -69,7 +70,7 @@ public class Electronica {
                     System.out.print("2222222222222");
                     try {
                         //sleep 10 seconds
-                        System.out.println("Nuevo Barido...");
+                        Deb.consola("Nuevo Barido...");
                         Thread.sleep(1000);
                        
 
@@ -84,7 +85,7 @@ public class Electronica {
                     System.out.print("3333333333333");
                     try {
                         //sleep 10 seconds
-                        System.out.println("Nuevo Barido...");
+                        Deb.consola("Nuevo Barido...");
                         Thread.sleep(1000);
 
                     } catch (InterruptedException e) {
@@ -96,7 +97,7 @@ public class Electronica {
             /* VUELVO A LLAMR RECURSIVAMENTE LA BUSQUEDA*/
             try {
                 //sleep 10 seconds
-                System.out.println("Nuevo Barido...");
+                Deb.consola("Nuevo Barido...");
                 Thread.sleep(10000);
                 crear_firmar_enviar();
 
@@ -115,7 +116,7 @@ public class Electronica {
         File fichero = new File(Config.GENERADOS_DIR);
         String[] listaArchivos = fichero.list();
         for (int i = 0; i < listaArchivos.length; i++) {
-            System.out.println(listaArchivos[i]);
+            Deb.consola(listaArchivos[i]);
         }
     }
 
@@ -192,7 +193,7 @@ public DefaultTableModel BuscarDocumentosElectronicosFac(String value) {
             } else {
                 st = conneccion.getCnx().prepareCall("SELECT f.fecha,  c.cedula , f.calveAcceso, f.estado, f.DescripcionElectronica FROM facturas f INNER JOIN  CLIENTES c ON (f.Clientes_Codigo = c.codigo) WHERE f.calveAcceso  like '%" + value + "%'");
             }
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -224,7 +225,7 @@ public DefaultTableModel BuscarDocumentosElectronicosFac(String value) {
 //        String[] listaArchivos = fichero.list();
 //        for (int i = 0; i < listaArchivos.length; i++) {
 //            registros[0] = listaArchivos[i];
-//            System.out.println(listaArchivos[i]);
+//            Deb.consola(listaArchivos[i]);
 
         //}
         return modelo;
@@ -245,7 +246,7 @@ public DefaultTableModel listaAutorizadosdesdeCarpetaAutorizados() {
         String[] listaArchivos = fichero.list();
         for (int i = 0; i < listaArchivos.length; i++) {
             registros[0] = listaArchivos[i];
-            System.out.println(listaArchivos[i]);
+            Deb.consola(listaArchivos[i]);
             modelo.addRow(registros);
         }
         return modelo;

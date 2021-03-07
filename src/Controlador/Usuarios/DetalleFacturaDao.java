@@ -19,6 +19,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -40,7 +41,7 @@ public class DetalleFacturaDao extends Coneccion {
             this.conectar();
             PreparedStatement st;
             st = this.getCnx().prepareCall("select f.*, df.* from facturas f inner join detallefactura df on f.Codigo = df.Factura_Codigo where f.codigo = " + value);
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -93,7 +94,7 @@ public class DetalleFacturaDao extends Coneccion {
             this.conectar();
             PreparedStatement st;
             st = this.getCnx().prepareCall("select facturas.*, FacturaDetalle.* from Facturas inner join FacturaDetalle on facturas.Codigo=FacturasDetalle.Factura_Codigo where facturas." + columna + " like '%" + value + "%'");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -107,7 +108,7 @@ public class DetalleFacturaDao extends Coneccion {
                 registros[7] = rs.getString("pvp");
                 registros[8] = "0";
 
-                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
 
             }
 
@@ -144,11 +145,11 @@ public class DetalleFacturaDao extends Coneccion {
             consulta.setInt(13, tarea.getBodega());
 
             ////
-            System.out.println("Controlador.CUsuarios.guardar()" + consulta);
+            Deb.consola("Controlador.CUsuarios.guardar()" + consulta);
             consulta.executeUpdate();
         } catch (SQLException ex) {
             //msg.setProgressBar_mensajae(ex.toString());
-            System.out.println("Controlador.CUsuarios.guardar()" + ex);
+            Deb.consola("Controlador.CUsuarios.guardar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -172,11 +173,11 @@ public class DetalleFacturaDao extends Coneccion {
             consulta.setInt(7, tarea.getFactura_Codigo());
             consulta.setInt(8, tarea.getProductos_codigo());
             consulta.setString(9, tarea.getObservaciones());
-            System.out.println("Controlador.CUsuarios.guardar()" + consulta);
+            Deb.consola("Controlador.CUsuarios.guardar()" + consulta);
             //consulta.executeUpdate();
         } catch (SQLException ex) {
             //msg.setProgressBar_mensajae(ex.toString());
-            System.out.println("Controlador.CUsuarios.guardar()" + ex);
+            Deb.consola("Controlador.CUsuarios.guardar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -216,13 +217,13 @@ public class DetalleFacturaDao extends Coneccion {
 //            st.setString(13, "obsercvaciones");
 //            st.setInt(14, persona.getCodigo());
 //             String sql = st.toString();
-//            System.out.println("Controlador.Usuarios.CUsuarios.modificar()"+ sql);
+//            Deb.consola("Controlador.Usuarios.CUsuarios.modificar()"+ sql);
 //            st.executeUpdate();
 //            Principal.jProgressBar2.setString("eeeeeeeeeeeee");
 //            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
 //        } catch (SQLException e) {
 //            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error" + e + sql, "Error al modificar Registro" + e.toString()));
-//System.out.println("Controlador.CUsuarios.guardar()" + e);
+//Deb.consola("Controlador.CUsuarios.guardar()" + e);
 //        } finally {
 //            this.cerrar();
 //        }
@@ -255,12 +256,12 @@ public class DetalleFacturaDao extends Coneccion {
 //                per.setObservaciones(rs.getString("Observaciones"));
 //                //per.setObservaciones(rs.getString("PersonaObservaciones"));
 //                //per.setFechaN(rs.getDate("PersonaFN").toString());
-//                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+//                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
 //                this.lista.add(per);
 //            }
 //
 //        } catch (Exception ex) {
-//            System.out.println("Controlador.CUsuarios.listar()" + ex);
+//            Deb.consola("Controlador.CUsuarios.listar()" + ex);
 //        } finally {
 //            this.cerrar();
 //        }
@@ -290,7 +291,7 @@ public class DetalleFacturaDao extends Coneccion {
             PreparedStatement st;
             //st = this.getCnx().prepareCall("select f.*, df.* from facturas f inner join detallefactura df on f.Codigo = df.Factura_Codigo where f.codigo = "+value );
             st = this.getCnx().prepareCall("select * from DetalleFactura where Factura_codigo= " + id);
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             Integer cant = 1;
@@ -318,7 +319,7 @@ public class DetalleFacturaDao extends Coneccion {
         return modelo;
     }
 
-    public List<DetalleFactura> buscarConIDFact(Integer id) {
+    public List<DetalleFactura> buscarConIDFact(Integer FacturaID) {
         ResultSet rs;
         DetalleFactura u = new DetalleFactura();
         try {
@@ -327,7 +328,7 @@ public class DetalleFacturaDao extends Coneccion {
 //            select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
 //            select usuarios.*, tipos_usuarios.codigo,tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo where usuarios.codigo = 1
 
-            st = this.getCnx().prepareCall("select * from DetalleFactura where Factura_codigo= " + id);
+            st = this.getCnx().prepareCall("select * from DetalleFactura where Factura_codigo= " + FacturaID);
             //select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
 
             rs = st.executeQuery();
@@ -340,20 +341,27 @@ public class DetalleFacturaDao extends Coneccion {
                 }else{
                 per.setTineIva("si");
                 }
-                per.setIva(rs.getString("iva"));
+                per.setCantidad(rs.getString("cantidad"));                
                 per.setDetalle(rs.getString("detalle"));
-                per.setCantidad(rs.getString("cantidad"));
+                per.setIva(rs.getString("iva"));
                 per.setDescuento(rs.getString("Descuento"));
                 per.setValorUnitario(rs.getString("valorUnitario"));
                 per.setValorTotal(rs.getString("valorTotal"));
                 per.setFactura_Codigo(rs.getInt("Factura_Codigo"));
                 per.setProductos_codigo(rs.getInt("Productos_Codigo"));
+                per.setObservaciones(rs.getString("Observaciones"));
+                per.setBodega(rs.getInt("bodega"));
+                per.setPrecio(rs.getDouble("precio"));
+                per.setTipopvp(rs.getString("tipopvp"));
+                per.setCosto(rs.getDouble("Costo"));
+                per.setUtilidad(rs.getDouble("utilidad"));
+                per.setProductos_codigoAlterno(rs.getString("productos_codigoAlterno"));                                
                 u = per;
                 lista.add(u);
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -379,11 +387,12 @@ public class DetalleFacturaDao extends Coneccion {
                 per.setValorTotal(rs.getString("valorTotal"));
                 per.setFactura_Codigo(rs.getInt("Factura_Codigo"));
                 per.setProductos_codigo(rs.getInt("Productos_Codigo"));
+                per.setProductos_codigo(rs.getInt("productos_codigoAlterno"));
                 u = per;
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
         } finally {
             this.cerrar();
         }
@@ -429,7 +438,7 @@ public class DetalleFacturaDao extends Coneccion {
             st = this.getCnx().prepareCall("select facturas.*, FacturaDetalle.* from Facturas inner join FacturaDetalle on facturas.Codigo=FacturasDetalle.Factura_Codigo where facturas." + columna + " like '%" + value + "%'");
 
             //  st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -444,11 +453,11 @@ public class DetalleFacturaDao extends Coneccion {
                 registros[7] = rs.getString("ValorUnitario");
                 registros[8] = rs.getString("ValorTotal");
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
             }
 
         } catch (Exception ex) {
@@ -483,7 +492,7 @@ public class DetalleFacturaDao extends Coneccion {
             PreparedStatement st;
 //sql="select facturas.*, FacturaDetalle.* from Facturas inner join FacturaDetalle on facturas.Codigo=FacturasDetalle.Factura_Codigo where facturas.codigo" + columna+ " like '%" + value + "%'";
             st = this.getCnx().prepareCall(sql);
-            System.out.println("");
+            Deb.consola("");
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -498,7 +507,7 @@ public class DetalleFacturaDao extends Coneccion {
                 registros[7] = rs.getString("Provincia");
                 registros[8] = rs.getString("Ciudad");
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
 
             }
 

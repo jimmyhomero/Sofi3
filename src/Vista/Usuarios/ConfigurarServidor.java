@@ -13,6 +13,7 @@ import Controlador.ProbarConexion;
 import Vista.alertas.MnesajesOption;
 import java.io.IOException;
 import javax.swing.JOptionPane;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -196,8 +197,9 @@ public class ConfigurarServidor extends javax.swing.JDialog {
                 //String cmd = "java -jar \"C:\\Sofi\\Sofi3.jar\""; //Comando de apagado en linux
                 String cmd = Ejemplo.jarExec; //Comando de apagado en linux
                 Runtime.getRuntime().exec(cmd);
+                System.exit(0);
             } catch (IOException ioe) {
-                System.out.println(ioe);
+                Deb.consola(ioe);
             }
         } else {
             NewConfigfile.crearArchivo(Ejemplo.configFile, txt_ip.getText());
@@ -208,7 +210,7 @@ public class ConfigurarServidor extends javax.swing.JDialog {
             //JOptionPane.showMessageDialog(rootPane, "Error !!!");
         }
         dispose();
-
+      
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

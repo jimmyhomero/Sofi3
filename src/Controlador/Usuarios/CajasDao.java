@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -245,7 +246,7 @@ Cajas caja = new Cajas();
 
         } catch (Exception ex) {
             msg.setMensaje(ex.toString());
-            System.out.println("Controlador.CUsuarios.listar() listar cajassss " + ex);
+            Deb.consola("Controlador.CUsuarios.listar() listar cajassss " + ex);
         } finally {
             this.cerrar();
         }

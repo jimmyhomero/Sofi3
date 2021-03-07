@@ -105,21 +105,21 @@ public class ClientMultiThreadedExecution {
         @Override
         public void run() {
             try {
-                System.out.println(id + " - about to get something from " + httpget.getURI());
+                Deb.consola(id + " - about to get something from " + httpget.getURI());
                 CloseableHttpResponse response = httpClient.execute(httpget, context);
                 try {
-                    System.out.println(id + " - get executed");
+                    Deb.consola(id + " - get executed");
                     // get the response body as an array of bytes
                     HttpEntity entity = response.getEntity();
                     if (entity != null) {
                         byte[] bytes = EntityUtils.toByteArray(entity);
-                        System.out.println(id + " - " + bytes.length + " bytes read");
+                        Deb.consola(id + " - " + bytes.length + " bytes read");
                     }
                 } finally {
                     response.close();
                 }
             } catch (Exception e) {
-                System.out.println(id + " - error: " + e);
+                Deb.consola(id + " - error: " + e);
             }
         }
 

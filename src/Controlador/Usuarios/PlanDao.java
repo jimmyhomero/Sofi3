@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -37,11 +38,11 @@ public class PlanDao  extends Coneccion {
             consulta.setString(9, tarea.getSaldo());
             consulta.setInt(10, tarea.getCentro());
             
-            System.out.println("PlanDaoxinser" + consulta);
+            Deb.consola("PlanDaoxinser" + consulta);
             consulta.executeUpdate();
         } catch (SQLException ex) {
             
-            System.out.println("PlanDaoxinser.guardar()" + ex);
+            Deb.consola("PlanDaoxinser.guardar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -70,7 +71,7 @@ public class PlanDao  extends Coneccion {
             PreparedStatement st;
             
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {         
@@ -84,7 +85,7 @@ public class PlanDao  extends Coneccion {
                 registros[6] = rs.getString("saldo");
                 registros[9] = String.valueOf(rs.getInt("Codigo_cuenta"));                                                
                 modelo.addRow(registros);
-                //System.out.println("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);    
+                //Deb.consola("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);    
               
             }
             

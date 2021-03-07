@@ -69,7 +69,7 @@ public class ColorDao extends Coneccion {
 
         } catch (Exception ex) {
             msg.setMensaje(ex.toString());
-            //System.out.println("Controlador.CUsuarios.listar()" + ex);
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -95,7 +95,7 @@ public class ColorDao extends Coneccion {
 
         } catch (Exception ex) {
             msg.setMensaje(ex.toString());
-            //System.out.println("Controlador.CUsuarios.listar()" + ex);
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }

@@ -239,13 +239,13 @@ public class ClientConfiguration {
             context.setCookieStore(cookieStore);
             context.setCredentialsProvider(credentialsProvider);
 
-            System.out.println("executing request " + httpget.getURI());
+            Deb.consola("executing request " + httpget.getURI());
             CloseableHttpResponse response = httpclient.execute(httpget, context);
             try {
-                System.out.println("----------------------------------------");
-                System.out.println(response.getStatusLine());
-                System.out.println(EntityUtils.toString(response.getEntity()));
-                System.out.println("----------------------------------------");
+                Deb.consola("----------------------------------------");
+                Deb.consola(response.getStatusLine());
+                Deb.consola(EntityUtils.toString(response.getEntity()));
+                Deb.consola("----------------------------------------");
 
                 // Once the request has been executed the local context can
                 // be used to examine updated state and various objects affected

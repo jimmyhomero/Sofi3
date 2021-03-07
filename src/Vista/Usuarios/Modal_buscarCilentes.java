@@ -369,7 +369,7 @@ public class Modal_buscarCilentes extends javax.swing.JInternalFrame {
         usuario1 = usuario;
         //lleno el fomulario
         obj_crea.txt_codigo.setText(String.valueOf(usuario.getCodigo()));
-        System.out.println("CODIGOOO:  " + obj_crea.txt_codigo.getText());
+        Deb.consola("CODIGOOO:  " + obj_crea.txt_codigo.getText());
         // JOptionPane.showMessageDialog(null, "codigo: "+usuario.getCodigo());
         obj_crea.txt_cedulax.setText(usuario.getCedula());
         obj_crea.txt_nombres.setText(usuario.getNombre());

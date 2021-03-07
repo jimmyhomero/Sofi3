@@ -61,12 +61,12 @@ public class FluentAsync {
 
                 @Override
                 public void failed(final Exception ex) {
-                    System.out.println(ex.getMessage() + ": " + request);
+                    Deb.consola(ex.getMessage() + ": " + request);
                 }
 
                 @Override
                 public void completed(final Content content) {
-                    System.out.println("Request completed: " + request);
+                    Deb.consola("Request completed: " + request);
                 }
 
                 @Override
@@ -84,7 +84,7 @@ public class FluentAsync {
             } catch (ExecutionException ex) {
             }
         }
-        System.out.println("Done");
+        Deb.consola("Done");
         threadpool.shutdown();
     }
 

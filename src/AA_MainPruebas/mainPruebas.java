@@ -5,6 +5,7 @@
  */
 package AA_MainPruebas;
 
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Usuarios.ImpresionDao;
 import impresoras.ServicioDeImpresion;
 import java.util.logging.Level;
@@ -53,7 +54,7 @@ public class mainPruebas {
             job.print(doc, null);
         } catch (PrintException ex) {
             Logger.getLogger(ImpresionDao.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Controlador.Usuarios.ImpresionDao.impresionzZebra(): " + ex);
+            Deb.consola("Controlador.Usuarios.ImpresionDao.impresionzZebra(): " + ex);
         }
 
     }

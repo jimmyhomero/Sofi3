@@ -6,6 +6,7 @@
 package Vista;
 
 import Controlador.Coneccion;
+import ClasesAuxiliares.debug.Deb;
 import Modelo.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,7 +62,7 @@ public class menuDao extends Coneccion {
             }            
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.listar()" + ex);
+            Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -87,7 +88,7 @@ public class menuDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.listar()" + ex);
+            Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }

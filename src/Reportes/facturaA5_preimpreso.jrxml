@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="proforma" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SIGMA"/>
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="249"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="208"/>
+	<property name="ireport.y" value="613"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
@@ -130,12 +130,15 @@
      usuarios.`Usuario` AS usuarios_Usuario,
      usuarios.`password` AS usuarios_password,
      usuarios.`Estado` AS usuarios_Estado,
-     usuarios.`Tipo_Usuario_codigo` AS usuarios_Tipo_Usuario_codigo
+     usuarios.`Tipo_Usuario_codigo` AS usuarios_Tipo_Usuario_codigo,
+     facturas.`calveAcceso` AS facturas_calveAcceso
 FROM
      `facturas` facturas INNER JOIN `detallefactura` detallefactura ON facturas.`Codigo` = detallefactura.`Factura_Codigo`
      INNER JOIN `clientes` clientes ON facturas.`Clientes_codigo` = clientes.`codigo`
      INNER JOIN `usuarios` usuarios ON facturas.`Usuarios_Codigo` = usuarios.`codigo`,
-     `datosempresa` datosempresa where facturas.secuencia=$P{numeroFactura}]]>
+     `datosempresa` datosempresa
+WHERE
+     facturas.secuencia = $P{numeroFactura}]]>
 	</queryString>
 	<field name="facturas_Codigo" class="java.lang.Integer"/>
 	<field name="facturas_fecha" class="java.sql.Date"/>
@@ -203,13 +206,14 @@ FROM
 	<field name="usuarios_password" class="java.lang.String"/>
 	<field name="usuarios_Estado" class="java.lang.String"/>
 	<field name="usuarios_Tipo_Usuario_codigo" class="java.lang.Integer"/>
+	<field name="facturas_calveAcceso" class="java.lang.String"/>
 	<variable name="id_doc" class="java.lang.String"/>
 	<title>
 		<band height="166" splitType="Stretch">
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="293" y="106" width="81" height="13" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979"/>
+				<reportElement x="268" y="106" width="113" height="13" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturas_hora}]]></textFieldExpression>
 			</textField>
@@ -247,13 +251,13 @@ FROM
 		<band height="14"/>
 	</columnHeader>
 	<detail>
-		<band height="17">
+		<band height="20">
 			<textField>
 				<reportElement x="1" y="0" width="38" height="13" uuid="d5260d9c-31bd-4193-a1a6-cc17f426a59e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c73b3c8e-11b7-4556-b5dc-042d3ecf28f7"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{detallefactura_cantidad}]]></textFieldExpression>
 			</textField>
@@ -262,7 +266,7 @@ FROM
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="df6eff13-8581-423c-86bc-7b4dcc290954"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{detallefactura_detalle}]]></textFieldExpression>
 			</textField>
@@ -271,7 +275,7 @@ FROM
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4d866e85-d2d3-470a-b623-7ce3c4b92bed"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{detallefactura_valorUnitario}]]></textFieldExpression>
 			</textField>
@@ -280,7 +284,7 @@ FROM
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="01620f37-1360-42d3-8379-204648c965db"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{detallefactura_valorTotal}]]></textFieldExpression>
 			</textField>
@@ -289,28 +293,28 @@ FROM
 	<lastPageFooter>
 		<band height="123">
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="252" y="47" width="100" height="13" uuid="f4489736-459f-4601-8788-e487ff7be143"/>
+				<reportElement x="252" y="72" width="100" height="13" uuid="f4489736-459f-4601-8788-e487ff7be143"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["0.0"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{facturas_subtotaI_con_iva}+$F{facturas_subtotal_sin_iva}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="252" y="30" width="100" height="13" uuid="2fee932f-239f-4024-be29-82fb140cb546"/>
+				<reportElement x="252" y="58" width="100" height="13" uuid="2fee932f-239f-4024-be29-82fb140cb546"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturas_subtotal_sin_iva}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="252" y="100" width="100" height="13" uuid="968b7321-2721-45b0-8cbb-91b4ea488b6c"/>
+				<reportElement x="255" y="102" width="100" height="13" uuid="968b7321-2721-45b0-8cbb-91b4ea488b6c"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturas_total}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement key="" x="252" y="81" width="100" height="13" uuid="7f299034-4f92-4a4a-a589-162ca055b9d0"/>
+				<reportElement key="" x="253" y="87" width="100" height="13" uuid="7f299034-4f92-4a4a-a589-162ca055b9d0"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 					<paragraph lineSpacing="Single"/>
@@ -318,19 +322,16 @@ FROM
 				<textFieldExpression><![CDATA[$F{facturas_Iva_valor}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="252" y="15" width="100" height="13" uuid="253af55b-7432-4269-9449-47e1c0304116"/>
+				<reportElement x="252" y="43" width="100" height="13" uuid="253af55b-7432-4269-9449-47e1c0304116"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{facturas_subtotaI_con_iva}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="251" y="63" width="100" height="13" uuid="e6283af0-3dc9-4d20-bb53-a239aeb076fe"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{facturas_subtotaI_con_iva}]]></textFieldExpression>
-			</textField>
+			<staticText>
+				<reportElement x="92" y="95" width="100" height="20" uuid="ffcc6e55-51eb-4efc-b3b2-d892b1c0f874"/>
+				<text><![CDATA[COMPUEXITO]]></text>
+			</staticText>
 		</band>
 	</lastPageFooter>
 </jasperReport>

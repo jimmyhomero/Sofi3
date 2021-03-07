@@ -22,7 +22,8 @@ public class FormasPagoCV {
     private String peridoCobranza;
     private String esCxcCxp;
     private Integer sriFormaPagoCodigo;
-        private Integer codigo_tipoPrecio;
+    private Integer codigo_tipoPrecio;
+    private Integer dias_credito;
 
     public Integer getCodigo() {
         return codigo;
@@ -123,6 +124,14 @@ public class FormasPagoCV {
     @Override
     public String toString() {
         return "FormasPagoCV{" + "codigo=" + codigo + ", formaPago=" + formaPago + ", descripcion=" + descripcion + ", tipoPago=" + tipoPago + ", planCodigo=" + planCodigo + ", afectaACaja=" + afectaACaja + ", numeroCuotas=" + numeroCuotas + ", porcentajeEntrada=" + porcentajeEntrada + ", peridoCobranza=" + peridoCobranza + ", esCxcCxp=" + esCxcCxp + ", sriFormaPagoCodigo=" + sriFormaPagoCodigo + ", codigo_tipoPrecio=" + codigo_tipoPrecio + '}';
+    }
+
+    public Integer getDias_credito() {
+        return dias_credito;
+    }
+
+    public void setDias_credito(Integer dias_credito) {
+        this.dias_credito = dias_credito;
     }
     
 }

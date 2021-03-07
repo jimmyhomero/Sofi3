@@ -10,6 +10,7 @@ package impresoras;
  * @author USUARIO
  */
 import javax.print.PrintService;
+import ClasesAuxiliares.debug.Deb;
 import javax.print.PrintServiceLookup;
 import javax.print.attribute.Attribute;
 import javax.print.attribute.AttributeSet;
@@ -47,27 +48,27 @@ public class PrintExamples {
         // -- ver los atributos de las impresoras...
         for (PrintService printService : services) {
  
-            System.out.println(" ---- IMPRESORA: " + printService.getName());
+            Deb.consola(" ---- IMPRESORA: " + printService.getName());
  
             PrintServiceAttributeSet printServiceAttributeSet = printService.getAttributes();
  
-            System.out.println("--- atributos");
+            Deb.consola("--- atributos");
  
             // todos los atributos de la impresora
             Attribute[] a = printServiceAttributeSet.toArray();
             for (Attribute unAtribute : a) {
-                System.out.println("atributo: " + unAtribute.getName());
+                Deb.consola("atributo: " + unAtribute.getName());
             }
  
-            System.out.println("--- viendo valores especificos de los atributos ");
+            Deb.consola("--- viendo valores especificos de los atributos ");
  
             // valor especifico de un determinado atributo de la impresora
-            System.out.println("PrinterLocation: " + printServiceAttributeSet.get(PrinterLocation.class));
-            System.out.println("PrinterInfo: " + printServiceAttributeSet.get(PrinterInfo.class));
-            System.out.println("PrinterState: " + printServiceAttributeSet.get(PrinterState.class));
-            System.out.println("Destination: " + printServiceAttributeSet.get(Destination.class));
-            System.out.println("PrinterMakeAndModel: " + printServiceAttributeSet.get(PrinterMakeAndModel.class));
-            System.out.println("PrinterIsAcceptingJobs: " + printServiceAttributeSet.get(PrinterIsAcceptingJobs.class));
+            Deb.consola("PrinterLocation: " + printServiceAttributeSet.get(PrinterLocation.class));
+            Deb.consola("PrinterInfo: " + printServiceAttributeSet.get(PrinterInfo.class));
+            Deb.consola("PrinterState: " + printServiceAttributeSet.get(PrinterState.class));
+            Deb.consola("Destination: " + printServiceAttributeSet.get(Destination.class));
+            Deb.consola("PrinterMakeAndModel: " + printServiceAttributeSet.get(PrinterMakeAndModel.class));
+            Deb.consola("PrinterIsAcceptingJobs: " + printServiceAttributeSet.get(PrinterIsAcceptingJobs.class));
  
         }
  
@@ -77,7 +78,7 @@ public class PrintExamples {
  
         // tu impresora por default
         PrintService service = PrintServiceLookup.lookupDefaultPrintService();
-        System.out.println("Tu impresora por default es: " + service.getName());
+        Deb.consola("Tu impresora por default es: " + service.getName());
  
     }
  
@@ -93,10 +94,10 @@ public class PrintExamples {
  
         services = PrintServiceLookup.lookupPrintServices(null, aset);
         if(services.length == 0){
-        	System.out.println("No se encontro impresora con nombre " + printName);
+        	Deb.consola("No se encontro impresora con nombre " + printName);
         }
         for (PrintService printService : services) {
-        	System.out.println(printService.getName());
+        	Deb.consola(printService.getName());
 		}
     }
 }

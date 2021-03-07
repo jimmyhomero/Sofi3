@@ -11,6 +11,7 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import ClasesAuxiliares.debug.Deb;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
@@ -21,6 +22,7 @@ public class AutorizacionComprobantesWs {
     private AutorizacionComprobantesOfflineService service;
 
     public AutorizacionComprobantesWs(String wsdlLocation) throws MalformedURLException {
+        
         URL url = new URL(wsdlLocation);
         QName qname = new QName("http://ec.gob.sri.ws.autorizacion", "AutorizacionComprobantesOfflineService");
         service = new AutorizacionComprobantesOfflineService(url, qname);
@@ -35,7 +37,7 @@ public class AutorizacionComprobantesWs {
             if (respuesta != null) {
             	listaAutorizaciones = respuesta.getAutorizaciones().getAutorizacion();
             	if (listaAutorizaciones.isEmpty()) {
-                    System.out.println("No autorizado, lista vacia.");
+                    Deb.consola("No autorizado, lista vacia.");
                 } else {
                     for (Autorizacion autorizacion : listaAutorizaciones) {
                         String estado = autorizacion.getEstado();
@@ -53,7 +55,7 @@ public class AutorizacionComprobantesWs {
                             //Guadar comprobante no autorizado
                             List<Mensaje> mensajes = autorizacion.getMensajes().getMensaje();
                             if (mensajes.isEmpty()) {
-                                System.out.println("No autorizado, error interno.");
+                                Deb.consola("No autorizado, error interno.");
                             } else {
                                 autorizacion.setComprobante((new StringBuilder()).append("<![CDATA[").append(autorizacion.getComprobante()).append("]]>").toString());
                                 JAXBContext jc = JAXBContext.newInstance(Autorizacion.class);
@@ -69,7 +71,7 @@ public class AutorizacionComprobantesWs {
                     }
                 }
             } else if (respuesta == null || respuesta.getAutorizaciones().getAutorizacion().isEmpty()) {
-                System.out.println("No autorizado, error interno.");
+                Deb.consola("No autorizado, error interno.");
             }
         } catch (java.io.FileNotFoundException ex) {
             throw ex;
@@ -88,7 +90,8 @@ public class AutorizacionComprobantesWs {
             if (respuesta != null) {
                 listaAutorizaciones = respuesta.getAutorizaciones().getAutorizacion();
                 if (listaAutorizaciones.isEmpty()) {
-                    System.out.println("No autorizado, lista vacia.");
+                    Deb.consola("No autorizado, lista vacia.");
+                    return "ERROR CONECCION SRI";                                        
                 } else {
                     for (Autorizacion autorizacion : listaAutorizaciones) {
                         String estado = autorizacion.getEstado();
@@ -100,11 +103,11 @@ public class AutorizacionComprobantesWs {
                     }
                 }
             } else if (respuesta == null || respuesta.getAutorizaciones().getAutorizacion().isEmpty()) {
-                System.out.println("No autorizado, error interno.");
+                Deb.consola("No autorizado, error interno.");
             }
         } catch (Exception ex) {
 
-            System.out.println("ec.unomas.elements.AutorizacionComprobantesWs.getAComprobanteAutorizado(): " + ex);
+            Deb.consola("ec.unomas.elements.AutorizacionComprobantesWs.getAComprobanteAutorizado(): " + ex);
         }
         return aut;
     }

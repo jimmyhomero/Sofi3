@@ -102,7 +102,7 @@ public class PreciosDao extends Coneccion {
         String sql = "select * from Precios  order BY valor  ";
 
         String[] titulos
-                = {"Codigo", "Precio", "Valor"};
+                = { "Precio", "Valor","UTIL"};
         String[] registros = new String[3];
         modelo = new DefaultTableModel(null, titulos) {
             @Override
@@ -134,16 +134,18 @@ public class PreciosDao extends Coneccion {
             rs = st.executeQuery();
 
             //this.lista= new ArrayList();
-            registros[0] = "0";
-            registros[1] = "P.V.P";           
-            registros[2] = String.format("%.4f", pvp);
+            //registros[0] = "0";
+            registros[0] = "P.V.P";           
+            registros[1] = String.format("%.2f", pvp);
+            registros[2] = String.format("%.0f", pvp-costo);
             modelo.addRow(registros);
             while (rs.next()) {
-                registros[0] = String.valueOf(rs.getInt("Codigo"));
-                registros[1] = rs.getString("Nombre");
+                
+                registros[0] = rs.getString("Nombre");
                 Double porcentaje = rs.getDouble("Valor");
                 pvp = (costo + (costo * porcentaje) / 100);
-                registros[2] = String.format("%.4f", pvp);
+                registros[1] = String.format("%.2f", pvp);
+                registros[2] = String.format("%.2f", pvp-costo);
                 modelo.addRow(registros);
             }
 
@@ -258,7 +260,6 @@ public class PreciosDao extends Coneccion {
                 per.setUtilidadRespectoAlPvp(rs.getDouble("utilidadRespectoAlPvp"));
                 per.setActualizaPrecioRespectoalCOSTOalPVP(rs.getInt("actualizaalcostoOalpvp"));
                 per.setRequiereClavaAdministrador(rs.getInt("requiereClavaAdministrador"));
-
                 this.lista.add(per);
             }
 

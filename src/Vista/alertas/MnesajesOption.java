@@ -8,6 +8,7 @@ package Vista.alertas;
 import Vista.Usuarios.ConfigurarServidor;
 import java.awt.Frame;
 import javax.swing.JOptionPane;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -28,7 +29,7 @@ public class MnesajesOption extends javax.swing.JFrame {
     }
 
     public void tipoMensajeError(Integer tipo, String mens) {
-        System.out.println("Vista.alertas.MnesajesOption.<init>()sssssssssssssss: " + tipoMensaje);
+        Deb.consola("Vista.alertas.MnesajesOption.<init>()sssssssssssssss: " + tipoMensaje);
         if (tipo == 1) {
             ///mensaje de Error
 

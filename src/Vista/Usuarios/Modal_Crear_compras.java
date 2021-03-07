@@ -5,11 +5,16 @@
  */
 package Vista.Usuarios;
 
+import AA_MainPruebas.JtableconBotonesCompras;
 import java.awt.Dimension;
 import ClasesAuxiliares.FeCodigoNUmerico;
+import ClasesAuxiliares.Leertxt;
 import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
 import ClasesAuxiliares.NullValidator;
 import ClasesAuxiliares.Variables;
+import ClasesAuxiliares.debug.Deb;
+import ClasesAuxiliares.tablas.SetRenderJTableCXC;
+import Controlador.ComitsAll;
 import Controlador.Coneccion;
 import Controlador.Usuarios.CajasDetalleDao;
 import Controlador.Usuarios.ClientesDao;
@@ -20,6 +25,7 @@ import Controlador.Usuarios.DetalleProformaDao;
 import Controlador.Usuarios.DetalleTicketDao;
 import Controlador.Usuarios.EquiposDao;
 import Controlador.Usuarios.FacturasDao;
+import Controlador.Usuarios.FormasPagoCVDao;
 import Controlador.Usuarios.FormasPagoVDao;
 import Controlador.Usuarios.UsuariosDao;
 import Modelo.Clientes;
@@ -32,7 +38,6 @@ import Controlador.Usuarios.KardexDao;
 import Controlador.Usuarios.ProductosDao;
 import Controlador.Usuarios.cxcDao;
 import Controlador.Usuarios.ProformasDao;
-import Controlador.Usuarios.ProveedoresDao;
 import Controlador.Usuarios.SeriesFacturasDao;
 import Controlador.Usuarios.TicketsDao;
 import Controlador.Usuarios.cxpDao;
@@ -48,6 +53,7 @@ import Modelo.Kardex;
 import Modelo.Cxc;
 import Modelo.Cxp;
 import Modelo.DetalleCompra;
+import Modelo.FormasPagoCV;
 import Modelo.Productos;
 import Modelo.Proformas;
 import Modelo.Proveedores;
@@ -55,17 +61,22 @@ import Modelo.SeriesFacturas;
 import Modelo.Tickets;
 import Modelo.sri_sustentocomprobante;
 import Modelo.sri_tipocomprobante;
+import Vista.Dialogs.PrecioTotalComprasXFila;
+import Vista.Dialogs.PrecioTotalFacturacionXFila;
 import Vista.Dialogs.cantidadCompra;
 import Vista.Dialogs.precioCompra;
 import static Vista.Principal.desktopPane;
+import static Vista.Usuarios.Modal_CrearFacturas.jcbFormasPago;
 import Vlidaciones.ProgressBar;
 import Vlidaciones.VaciarTexto;
 import Vlidaciones.ValidaCedula;
 import Vlidaciones.ValidaNUmeros;
 import com.mxrck.autocompleter.AutoCompleterCallback;
 import com.mxrck.autocompleter.TextAutoCompleter;
+import ecx.unomas.factura.Detalle;
 import ecx.unomas.factura.Factura;
 import ecx.unomas.factura.TotalImpuesto;
+import ecx.unomas.service.Comprobante;
 import login.login;
 import impresoras.ServicioDeImpresion;
 import java.awt.Frame;
@@ -77,11 +88,13 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.paint.Color;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -98,13 +111,13 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.view.JasperViewer;
+import persistencia.modelos.Formaspagoc;
 
 /**
  *
  * @author USUARIO
  */
 public class Modal_Crear_compras extends javax.swing.JInternalFrame {
-
 
     TextAutoCompleter proveedorAutoCompleter;
     TextAutoCompleter productosAutoCompleter;
@@ -123,18 +136,21 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
     public static Double cantidadEnviadadesdeDialog;
     public static String diasCrediotoconProveedor;
     public static Integer CrediotoconProveedorSiNo;
-    public static Integer aumentarIvaSiNO=-1;
+    public static Integer aumentarIvaSiNO = -1;
     public static int filacliked = -1;
     public static int columnacliked = -1;
+    HashMap<String, String> formaPagomap = new HashMap<String, String>();
     Integer ultimoIndexSeleccionadojcBTipoCOmporbante = 0;
     Integer ultimoIndexSeleccionadojcbSustento = 0;
     ProgressBar a = new ProgressBar(3000, "Mensaje Inicial");
     Double utilidad;
     Double descuentogeneral;
     Double descuentoItem;
+    boolean afectakardex = false;  ///e proformas no
+    public static boolean afectacaja = false; /// en cuadno es credito no
 
-    DefaultTableModel modelo = null;
-    TableColumnModel columnModel;
+    private static DefaultTableModel modelo = null;
+
     Double total = 0.0;
     Double subtotal = 0.0;
     Double subtotaliva12 = 0.0;
@@ -149,16 +165,16 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
     // ProgressBar msg = new ProgressBar(3000, "Mensaje Inicial");
     public static String tipoDocumento = "";
     ArrayList<Usuarios> listaU = new ArrayList<Usuarios>();
-    ArrayList<sri_tipocomprobante> listatipoComprobantes = new ArrayList<sri_tipocomprobante>();
-    ArrayList<sri_sustentocomprobante> listasustentoComprobantes = new ArrayList<sri_sustentocomprobante>();
-    ArrayList<FormasPagoV> listaFormasDePago = new ArrayList<FormasPagoV>();
+    private static ArrayList<sri_tipocomprobante> listatipoComprobantes = new ArrayList<sri_tipocomprobante>();
+    private static ArrayList<sri_sustentocomprobante> listasustentoComprobantes = new ArrayList<sri_sustentocomprobante>();
+    ArrayList<FormasPagoCV> listaFormasDePago = new ArrayList<FormasPagoCV>();
     List<Clientes> listaProveedores = new ArrayList<Clientes>();
     FormasPagoV objFormasdePago = new FormasPagoV();
     //   ArrayList<DetalleFactura> listaDetFac = new ArrayList<DetalleFactura>();
     Integer codigoUsuarioVendedorSeleccionadoJCB;
 //String[] registros = new String[8];
 
-    private void datosPredeterminadosFacturas() {
+    private static void datosPredeterminadosFacturas() {
         txt_cedula.requestFocus();
         txt_cedula.setText("9999999999999");
         codigoClienteCompra = addDatosClienteonFactura(txt_cedula.getText());
@@ -174,9 +190,9 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         txt_descuentoGenral.setText("0.00");
         txt_subtotalIvaValor.setText("0.00");
         txt_subtotalIvaValorCero.setText("0.00");
-     
+
         txt_utilidad.setText("0.00");
-        
+
         ComprasDao cDao = new ComprasDao();
         listatipoComprobantes = cDao.getlistaTipoComprobate();
         for (sri_tipocomprobante tcom : listatipoComprobantes) {
@@ -193,15 +209,14 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         }
     }
 
-
     public Modal_Crear_compras() {
         initComponents();
-           proveedorAutoCompleter = new TextAutoCompleter(txt_nombres, new AutoCompleterCallback() {
+        proveedorAutoCompleter = new TextAutoCompleter(txt_nombres, new AutoCompleterCallback() {
 
             @Override
             public void callback(Object selectedItem) {
 
-                //   System.out.println(((Clientes) selectedItem).getNombre() + " hola"); // Imprime 25
+                //   Deb.consola(((Clientes) selectedItem).getNombre() + " hola"); // Imprime 25
                 //     Object itemSelected = clienteAutoCompleter.getItemSelected();
                 if (selectedItem instanceof Clientes) {
                     Clientes c = new Clientes();
@@ -212,9 +227,9 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                     txt_dir.setText(c.getDireccion());
                     codigoClienteCompra = c.getCodigo();
 
-                    //System.out.println(((Clientes) selectedItem).getNombre() + " casas"); // Imprime 25
+                    //Deb.consola(((Clientes) selectedItem).getNombre() + " casas"); // Imprime 25
                 } else {
-                    System.out.println("El item es de un tipo desconocido");
+                    Deb.consola("El item es de un tipo desconocido");
                 }
 
             }
@@ -226,7 +241,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
 //        listaProveedores = cd.listar();
 //        
 //        for (Proveedores p : listaProveedores) {
-//            // System.out.println("Vista.Usuarios.Crear_Facturas.<init>()asdasdasdasdasdasdasvccccccccccccccccc");
+//            // Deb.consola("Vista.Usuarios.Crear_Facturas.<init>()asdasdasdasdasdasdasvccccccccccccccccc");
 //            proveedorAutoCompleter.addItem(p);
 //        }
         //listaClientes = cd.buscarConNombresLike(txt_nombres.getText());
@@ -238,21 +253,9 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                 if (selectedItem instanceof Productos) {
                     Productos c = new Productos();
                     c = ((Productos) selectedItem);
-                    ComprasDao facDao = new ComprasDao();
-                    //FacturasDao facDao = new FacturasDao();
-                    modelo.addRow(facDao.Buscar_registros(c.getProducto(), Principal.bodegaPredeterminadaenCOmpra.substring(0, 1)));
-                    jTable1.setModel(modelo);
-                    if (c.getImagen() != null) {
-                        ImageIcon icon = new ImageIcon(c.getImagen());
-                        Icon icono = new ImageIcon(icon.getImage().getScaledInstance(251, 205, Image.SCALE_DEFAULT));
-                        foto.setText(null);
-                        foto.setIcon(icono);
-                    } else {
-                        foto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/producto.jpg")));
-                    }
-
+                    addProductosfromautomplete(c);
                 } else {
-                    System.out.println("El item es de un tipo desconocido");
+                    Deb.consola("El item es de un tipo desconocido");
                 }
 
             }
@@ -262,51 +265,76 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         productosAutoCompleter.setMode(0);
 //        ProductosDao pDao = new ProductosDao();
 //        for (Productos p : pDao.listar()) {
-//            System.out.println("Prod: " + p.getProducto());
+//            Deb.consola("Prod: " + p.getProducto());
 //            productosAutoCompleter.addItem(p);
 //        }
 
         ///llena secuencas facturas
         // llenarSecuenciaFacura();
-     //   btn_nuevo.setVisible(false);
+        //   btn_nuevo.setVisible(false);
         txt_iva_valor.setText(iva.toString());
-        //System.out.println("Iva: " + iva);
+        //Deb.consola("Iva: " + iva);
         datosPredeterminadosFacturas();
 
         jTable1.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
         String titulos[] = {"costo", "#", "Codigo", "ARTICULO", "CANTIDAD",
             "DESCUENTO", "BODEGA",
-            "P. UNIT", "P. TOTAL", "CANTIDAD"};;
-        if (Principal.obligaoSINO.equalsIgnoreCase("NO")) {
-            String[] titulosx
-                    = {"costo", "#", "Codigo", "ARTICULO", "CANTIDAD",
-                        "DESCUENTO", "BODEGA",
-                        "P. UNIT", "P. TOTAL", "CANTIDAD"};
-            titulos = titulosx;
-        } else {
-            String[] titulosx
-                    = {"costo", "#", "Codigo", "ARTICULO", "CANTIDAD",
-                        "DESCUENTO", "BODEGA",
-                        "P. UNIT", "P. TOTAL", "CANTIDAD", "AIR"};
-            titulos = titulosx;
-        }
+            "P. UNIT", "P. TOTAL", "CANTIDAD"};
+        String[] titulosxml = new String[]{"COSTO", "#", "CODIGO", "ARTICULO", "CANTIDAD",
+            "DESCUENTO", "BODEGA",
+            "P. UNIT", "P. TOTAL", "CANTIDAD", "AIR", "BUSCAR"};
 
-        modelo = new DefaultTableModel(null, titulos) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                // make read only fields except column 0,13,14
-                return column == 3 || column == 4 || column == 5 || column == 7 || column == 10;
-                //  return false;
-            }
+        Class[] tiposColumnas = new Class[]{
+            java.lang.String.class,
+            java.lang.String.class,
+            java.lang.String.class,
+            java.lang.String.class,
+            java.lang.String.class,
+            java.lang.String.class,
+            java.lang.String.class,
+            java.lang.String.class,
+            java.lang.String.class,
+            java.lang.String.class,
+            JButton.class // <- noten que aquí se especifica que la última columna es un botón
         };
 
+        if (Principal.obligaoSINO.equalsIgnoreCase("NO")) {
+            String[] titulosx
+                    = {"COSTO", "#", "CODIGO", "ARTICULO", "CANTIDAD",
+                        "DESCUENTO", "BODEGA",
+                        "P. UNIT", "P. TOTAL", "CANTIDAD"};
+
+            titulos = titulosx;
+
+        } else {
+            String[] titulosx
+                    = {"COSTO", "#", "CODIGO", "ARTICULO", "CANTIDAD",
+                        "DESCUENTO", "BODEGA",
+                        "P. UNIT", "P. TOTAL", "CANTIDAD", "AIR"};
+
+            titulos = titulosx;
+
+        }
+//
+//        modelo = new DefaultTableModel(null, titulos) {
+//            @Override
+//            public boolean isCellEditable(int row, int column) {
+//                // make read only fields except column 0,13,14
+//                return column == 3 || column == 4 || column == 5 || column == 7 || column == 10;
+//                //  return false;
+//            }
+//        };
+
+        jTable1.setModel(JtableconBotonesCompras.setTabla(jTable1));
+        modelo = JtableconBotonesCompras.modelo;
         jTable1.setModel(modelo);
-        setModeloColumnas(jTable1);
+        // setModeloColumnas(jTable1);
 
         HoraFecha ob = new HoraFecha();
 //        jdchoserNOW.setDate(ob.getFechaNowTImestampServer());
         HoraFecha ob2 = new HoraFecha();
-
+        jdfecha.setDateFormatString("yyyy-MM-dd");
         jdfecha.setDate(ob2.obtenerFecha());
 //        list2.setVisible(false);
 //        list1.setVisible(false);
@@ -314,7 +342,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         int row = jTable1.getModel().getRowCount();
         int col = jTable1.getModel().getColumnCount();
 
-     //   txt_buscar_producto.requestFocus();
+        //   txt_buscar_producto.requestFocus();
         //lleno cb Vendedores
         UsuariosDao objUDao = new UsuariosDao();
         listaU = objUDao.listarVendedores();
@@ -322,22 +350,45 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
             jComboBox1.addItem(usuarios.getNombre());
         }
 
-        System.out.println(
+        Deb.consola(
                 "Nombre de Usuario: " + login.nombresUsuario);
         jComboBox1.setSelectedItem(login.nombresUsuario);
         /// pongo docuento predererminado
 
 ////formas de pago
-        FormasPagoVDao objFdPDao = new FormasPagoVDao();
+//        FormasPagoVDao objFdPDao = new FormasPagoVDao();
+//        listaFormasDePago = objFdPDao.listar();
+//        for (FormasPagoV f : listaFormasDePago) {
+//            jcbFormasPago.addItem(f.getFormaPago());
+//        }
+        FormasPagoCVDao objFdPDao = new FormasPagoCVDao();
         listaFormasDePago = objFdPDao.listar();
-        for (FormasPagoV f : listaFormasDePago) {
-            jcbFormasPago.addItem(f.getFormaPago());
+        for (FormasPagoCV f : listaFormasDePago) {
+            formaPagomap.put(f.getTipoPago(), f.getFormaPago());
+            if (f.getEsCxcCxp().equalsIgnoreCase(OperacionesForms._FORMA_PAGO_CXP_TEXT)) {
+                jcbFormasPago.addItem(f.getFormaPago());
+            }
         }
-
-        jcbFormasPago.setSelectedItem(Principal.formadepagopredeterminada);
+        jcbFormasPago.setSelectedItem(Principal.formadepagopredeterminadaCompra);
         //codigFormaPagoSeleccionada=
+    }
 
-////
+    public void addProductosfromautomplete(Productos c) {
+        ComprasDao facDao = new ComprasDao();
+        //  modelo= ;
+        //FacturasDao facDao = new FacturasDao();
+        modelo.addRow(facDao.Buscar_registros(c.getProducto(), Principal.bodegaPredeterminadaenCOmpra.substring(0, 1)));
+
+        //jTable1.setModel(JtableconBotonesCompras.setTabla(jTable1));
+        jTable1.setModel(modelo);
+        if (c.getImagen() != null) {
+            ImageIcon icon = new ImageIcon(c.getImagen());
+            Icon icono = new ImageIcon(icon.getImage().getScaledInstance(251, 205, Image.SCALE_DEFAULT));
+            foto.setText(null);
+            foto.setIcon(icono);
+        } else {
+            foto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/producto.jpg")));
+        }
     }
 
     /**
@@ -380,6 +431,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jcb_sustentoComprobante = new javax.swing.JComboBox<>();
+        jButton7 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -389,7 +441,6 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         jPanel8 = new javax.swing.JPanel();
         foto = new javax.swing.JLabel();
         jcbFormasPago = new javax.swing.JComboBox<>();
-        jcbPVPs = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
@@ -405,11 +456,11 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         lbl_subTotalIva2 = new javax.swing.JLabel();
         txt_total_ = new javax.swing.JLabel();
         txt_subtotalIvaValor = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
 
         txt_utilidad.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -424,6 +475,25 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        setTitle("CrearComprasx");
+        setName(""); // NOI18N
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosed(evt);
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -618,6 +688,9 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         txt_total_val.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
 
         txt_numAutorizacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_numAutorizacionKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_numAutorizacionKeyReleased(evt);
             }
@@ -642,67 +715,90 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton7.setText("SRI");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel7Layout.createSequentialGroup()
-                            .addGap(14, 14, 14)
-                            .addComponent(jLabel1)
-                            .addGap(11, 11, 11)
-                            .addComponent(jdfecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel7Layout.createSequentialGroup()
-                            .addGap(4, 4, 4)
-                            .addComponent(txt_sec1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txt_sec2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txt_secNUmFac, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_hora, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt_hora, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(jcb_tipoComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(106, 106, 106)
+                        .addComponent(txt_total_val, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(jcb_tipoComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jcb_sustentoComprobante, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txt_numAutorizacion)
-                    .addComponent(txt_total_val, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(jLabel1)
+                                .addGap(11, 11, 11)
+                                .addComponent(jdfecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(txt_sec1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt_sec2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txt_secNUmFac, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txt_numAutorizacion)
+                                .addGap(4, 4, 4))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jcb_sustentoComprobante, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(2, 2, 2)))
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(1, 1, 1)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txt_sec1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txt_sec2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txt_secNUmFac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7))
-                    .addComponent(txt_numAutorizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jdfecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jcb_sustentoComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel15)))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txt_sec1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txt_sec2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txt_secNUmFac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel7)
+                                .addComponent(txt_numAutorizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGap(7, 7, 7)
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jdfecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel15)
+                                    .addComponent(jcb_sustentoComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
@@ -735,7 +831,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31))
+                .addGap(45, 45, 45))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -770,6 +866,11 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setText("BUSCAR PRODUCTOS");
 
+        txtBuscar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscar2ActionPerformed(evt);
+            }
+        });
         txtBuscar2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtBuscar2KeyPressed(evt);
@@ -811,14 +912,6 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         jcbFormasPago.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jcbFormasPagoItemStateChanged(evt);
-            }
-        });
-
-        jcbPVPs.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-        jcbPVPs.setMaximumSize(new java.awt.Dimension(2767, 3767));
-        jcbPVPs.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcbPVPsActionPerformed(evt);
             }
         });
 
@@ -958,9 +1051,6 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
-        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel14.setText("PVPs:");
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("Pago:");
 
@@ -1002,6 +1092,15 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        jButton6.setBackground(new java.awt.Color(255, 204, 51));
+        jButton6.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        jButton6.setText("RIDE (PDF)");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -1013,18 +1112,17 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(38, 38, 38)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jcbFormasPago, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jcbPVPs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
@@ -1052,7 +1150,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                             .addComponent(jButton3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(77, 77, 77)
@@ -1062,14 +1160,11 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jcbFormasPago, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jcbPVPs, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(47, 47, 47)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1130,14 +1225,16 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         Frame frame = JOptionPane.getFrameForComponent(this);
         cantidadCompra pcdialog = new cantidadCompra(frame, true);
         int fila = jTable1.getRowCount();
-        pcdialog.txt_producto.setText(modelo.getValueAt(fila - 1, 3).toString());
-        pcdialog.txt_cantidad.setText(modelo.getValueAt(fila - 1, 4).toString().replace(",", "."));
-        pcdialog.txt_cantidad.selectAll();
-        pcdialog.setLocationRelativeTo(this);
-        pcdialog.setVisible(true);
-        jTable1.setValueAt(cantidadEnviadadesdeDialog, fila - 1, 4);
-        //Double precio = Double.valueOf(modelo.getValueAt(fila, 8).toString().replace(",", "."));
+        if (jTable1.getRowCount() > 0) {
+            pcdialog.txt_producto.setText(modelo.getValueAt(fila - 1, 3).toString());
+            pcdialog.txt_cantidad.setText(modelo.getValueAt(fila - 1, 4).toString().replace(",", "."));
+            pcdialog.txt_cantidad.selectAll();
+            pcdialog.setLocationRelativeTo(this);
+            pcdialog.setVisible(true);
+            jTable1.setValueAt(cantidadEnviadadesdeDialog, fila - 1, 4);
+        }
 
+        //Double precio = Double.valueOf(modelo.getValueAt(fila, 8).toString().replace(",", "."));
     }
 
     private void addDialogoPrecio() {
@@ -1156,7 +1253,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         jTable1.setValueAt(costoEnviadodesdeDialog, fila - 1, 7);
     }
 
-    private void llenarSecuenciaFacura() {
+    private static void llenarSecuenciaFacura() {
         int x = MouseInfo.getPointerInfo().getLocation().x;
         int y = MouseInfo.getPointerInfo().getLocation().y;
 //        DecimalFormat formateador = new DecimalFormat("000000000");
@@ -1180,9 +1277,24 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                 boolean esNUmero = false;
 
                 if (e.getType() == TableModelEvent.UPDATE) {
-
                     int col = e.getColumn();
+
                     int fila = e.getFirstRow();
+                    //JOptionPane.showMessageDialog(null, "columana: "+col+" evento: "+e.getType());
+                    // JOptionPane.showMessageDialog(null, "row: "+col);
+//                   if(col == 8){
+//                       
+//                       if(ValidaNUmeros.isOnlyDouble(jTable1.getValueAt(fila, 8).toString()) && ValidaNUmeros.isOnlyDouble(jTable1.getValueAt(fila, 4).toString())){
+//                           Double total=Double.parseDouble(jTable1.getValueAt(fila, 8).toString());
+//                           Double can=Double.parseDouble(jTable1.getValueAt(fila, 4).toString());
+//                           Double pu=0.0;
+//                           pu=total/can;
+//                           jTable1.setValueAt(String.format("%.3f", pu).replace(",", "."), fila, 7);
+//                            JOptionPane.showMessageDialog(null,String.valueOf(jTable1.getValueAt(fila, 7).toString()) );
+//                        }
+//                       
+//                   }
+
                     if (col == 3 || col == 4 || col == 5 || col == 7 || col == 10) {
 
                         if (!ValidaNUmeros.isOnlyDouble(jTable1.getValueAt(fila, 4).toString())) {
@@ -1219,15 +1331,15 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                             }
                         }
 
-                        operacionFacturauPDATEandAddRowrs();
-                        jTable1.setValueAt(fila, fila, 1);
-
 //                        
 //                        for (int i = 0; i < jTable1.getModel().getRowCount(); i++) {
-//                            //  System.out.println("Vista.Usuarios.Crear_Facturas.addOrDeleteRowTable(): " + jTable1.getRowCount());
+//                            //  Deb.consola("Vista.Usuarios.Crear_Facturas.addOrDeleteRowTable(): " + jTable1.getRowCount());
 //                            jTable1.setValueAt("dd", i, 1);
 //                        }
+                        operacionFacturauPDATEandAddRowrs();
+                        // jTable1.setValueAt(fila, fila, 1);
                     }
+
                 }
                 if (e.getType() == TableModelEvent.INSERT) {
 
@@ -1239,6 +1351,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                 }
 
             }
+
         });
 /// pongo numero de item en columna1 en cada evento depus de que  se hya realizado cuaaquier accion sea update
         //delete or add row
@@ -1268,10 +1381,10 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
     }
 
     private void operacionFacturauPDATEandAddRowrs() {
-        
+        Double tarifaIva = 0.0;
         try {
             utilidad = 0.0;
-            descuentogeneral=Double.valueOf(txt_descuentoGenral.getText().replace(",", "."));
+            descuentogeneral = Double.valueOf(txt_descuentoGenral.getText().replace(",", "."));
             total = 0.0;
             subtotal = 0.0;
             subtotaliva0 = 0.0;
@@ -1279,33 +1392,54 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
             Double ivadecimal = (iva / 100) + 1;
             int row = jTable1.getModel().getRowCount();
             int col = jTable1.getModel().getColumnCount();
-                  System.out.println("Add_event:  row: " + row + "  col:  " + col);
-            
+            Deb.consola("Add_event:  row: " + row + "  col:  " + col);
+
             for (int i = 0; i < row; i++) {
-               //  modelo.setValueAt(String.valueOf(precio), i, 7);
-                System.out.println("INGRESA AL pRIMER for");
+                //  modelo.setValueAt(String.valueOf(precio), i, 7);
+                Deb.consola("INGRESA AL pRIMER for");
                 Double cantidad = Double.valueOf(modelo.getValueAt(i, 4).toString().replace(",", "."));
-                 Double precioold = Double.valueOf(modelo.getValueAt(i, 7).toString().replace(",", "."));
+                Double precioold = Double.valueOf(modelo.getValueAt(i, 7).toString().replace(",", "."));
                 Double precio = Double.valueOf(modelo.getValueAt(i, 7).toString().replace(",", "."));
-             
-                System.out.println("rows: "+row +" xx: "+precio);
+                Double totalUnita = Double.valueOf(modelo.getValueAt(i, 8).toString().replace(",", "."));
+                totalUnita = precio * cantidad;
+                //modelo.setValueAt(String.valueOf(String.format("%.3f", totalUnita)).replace(",", "."), i, 8);              
+                Deb.consola("rows: " + row + " PRECIO: " + precio);
+                Deb.consola("rows: " + row + " TOTALUNITA: " + totalUnita);
+                Deb.consola("rows: " + row + " UNIDAD: " + cantidad);
+//                
+                precio = totalUnita / cantidad;
+                //     modelo.setValueAt(String.valueOf(String.format("%.3f", precio)).replace(",", "."), i, 7);
                 //////////descuento general
-                if(descuentogeneral>0 && descuentogeneral<=100){
-                  //  precio=precio-(precio*descuentogeneral)/100;
-                    precio=precioold-(precioold*descuentogeneral)/100;
+                if (descuentogeneral > 0 && descuentogeneral <= 100) {
+                    //  precio=precio-(precio*descuentogeneral)/100;
+                    precio = precioold - (precioold * descuentogeneral) / 100;
                 }
-                
+
                 //////////fin descuento general
-                
-                if(aumentarIvaSiNO==1){
-                precio=precioold*ivadecimal;
+                tarifaIva = Double.parseDouble(modelo.getValueAt(i, 1).toString().replace(",", "."));
+                if (aumentarIvaSiNO == 1) {
+
+                    if (tarifaIva == 0.0) {
+
+                        precio = precioold;
+
+                    } else {
+                        precio = precioold * ivadecimal;
+                    }
+
                 }
-                if(aumentarIvaSiNO==0){
-                precio=precioold/ivadecimal;
-             //   modelo.setValueAt(String.valueOf(precio), i, 7);
+                if (aumentarIvaSiNO == 0.0) {
+                    if (tarifaIva == 0.0) {
+                        precio = precioold;
+
+                    } else {
+                        precio = precioold / ivadecimal;
+                    }
+
+                    //   modelo.setValueAt(String.valueOf(precio), i, 7);
                 }
-  //               modelo.setValueAt(String.valueOf(precio), i, 7);
-                
+                //               modelo.setValueAt(String.valueOf(precio), i, 7);
+
                 Double descuento = Double.valueOf(modelo.getValueAt(i, 5).toString().replace(",", "."));
 
                 Double costo = Double.valueOf(modelo.getValueAt(i, 0).toString().replace(",", "."));
@@ -1318,23 +1452,31 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                 }
 //                modelo.setValueAt(precio, i, 7);
                 modelo.setValueAt(String.valueOf(String.format("%.3f", Ptotal)).replace(",", "."), i, 8);
-                
+                if (tarifaIva == 0) {
+                    subtotaliva0 = subtotaliva0 + Ptotal; // precio*cantidad;
+                } else {
 
-                subtotal = subtotal + Ptotal; // precio*cantidad;
-              
-                
-                total = (subtotal) * ivadecimal;
+                    subtotaliva12 = subtotaliva12 + Ptotal; // precio*cantidad;
+
+                }
+
+                //subtotaliva12 = subtotaliva12 * ivadecimal;// + subtotaliva0;
+                subtotal = subtotaliva0 + subtotaliva12;
+
+                total = subtotaliva12 * ivadecimal + subtotaliva0;
                 utilidad = utilidad + (Double.valueOf(modelo.getValueAt(i, 8).toString().replace(",", ".")) - costoxFila);
 //                     utilidad = utilidad + Ptotal2 - costoxFila;
-                //  System.out.println("total_segundoFor: " + Double.valueOf(modelo.getValueAt(i, 8).toString().replace(",", ".")));
+                //  Deb.consola("total_segundoFor: " + Double.valueOf(modelo.getValueAt(i, 8).toString().replace(",", ".")));
+
                 txt_utilidad.setText(String.valueOf(String.format("%.2f", utilidad)).replace(",", "."));
-                  txt_total_val.setText(String.valueOf(String.format("%.2f", total)).replace(",", "."));
+                txt_subtotalIvaValorCero.setText(String.valueOf(String.format("%.2f", subtotaliva0)).replace(",", "."));
+                txt_total_val.setText(String.valueOf(String.format("%.2f", total)).replace(",", "."));
                 txt_total_.setText(String.valueOf(String.format("%.2f", total)).replace(",", "."));
                 txt_subtotal.setText(String.valueOf(String.format("%.2f", subtotal)).replace(",", "."));
-                txt_subtotalIvaValor.setText(String.valueOf(String.format("%.2f", subtotal)).replace(",", "."));
-                txt_iva_valor.setText(String.valueOf(String.format("%.2f", (total - subtotal))).replace(",", "."));
+                txt_subtotalIvaValor.setText(String.valueOf(String.format("%.2f", subtotaliva12)).replace(",", "."));
+                txt_iva_valor.setText(String.valueOf(String.format("%.2f", (subtotaliva12 * ivadecimal - subtotaliva12))).replace(",", "."));
 
-    //            modelo.setValueAt(String.valueOf(precio), i, 7);
+                //            modelo.setValueAt(String.valueOf(precio), i, 7);
             }
 
         } catch (Exception e) {
@@ -1342,44 +1484,28 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         }
     }
 
-    private void setModeloColumnas(JTable tb) {
-        this.columnModel = tb.getColumnModel();
-        this.columnModel.getColumn(0).setPreferredWidth(3);
-        this.columnModel.getColumn(1).setPreferredWidth(3);
-        this.columnModel.getColumn(2).setPreferredWidth(5);
-        this.columnModel.getColumn(3).setPreferredWidth(300);
-        this.columnModel.getColumn(4).setPreferredWidth(10);
-        this.columnModel.getColumn(5).setPreferredWidth(10);
-        this.columnModel.getColumn(6).setPreferredWidth(10);
-        this.columnModel.getColumn(7).setPreferredWidth(10);
-        this.columnModel.getColumn(8).setPreferredWidth(10);
-        this.columnModel.getColumn(9).setPreferredWidth(10);
-        if (Principal.obligaoSINO.equalsIgnoreCase("si")) {
-            this.columnModel.getColumn(10).setPreferredWidth(10);
-        }
-
-    }
-    private void limpiarIntefazVentas() {
+    private static void limpiarIntefazVentas() {
         while (modelo.getRowCount() > 0) {
             modelo.removeRow(0);
         }
         jTable1.setModel(modelo);
-        VaciarTexto vt = new VaciarTexto();
-        vt.limpiar_texto(jPanel2);
+        //VaciarTexto vt = new VaciarTexto();
+        VaciarTexto.limpiar_texto(jPanel2);
         txt_total_val.setText("0.00");
         llenarSecuenciaFacura();
         datosPredeterminadosFacturas();
-     //   list1.setVisible(false);
-      //  list2.setVisible(false);
+        //   list1.setVisible(false);
+        //  list2.setVisible(false);
     }
-     private Integer addDatosClienteonFactura(String cedula) {
-        //System.out.println("Vista.Usuarios.Crear_Facturas.txt_cedulaKeyTyped() Entrooo:  " + evt.getKeyCode());
+
+    private static Integer addDatosClienteonFactura(String cedula) {
+        //Deb.consola("Vista.Usuarios.Crear_Facturas.txt_cedulaKeyTyped() Entrooo:  " + evt.getKeyCode());
         Integer codigoCliente = null;
         try {
 
-            Proveedores obj = new Proveedores();
-            ProveedoresDao objDao = new ProveedoresDao();
-            obj = objDao.buscarConCedulaLike(cedula);
+            Clientes obj = new Clientes();
+            ClientesDao objDao = new ClientesDao();
+            obj = objDao.buscarConCedula(cedula, 1);
 
             txt_nombres.setText(obj.getNombre());
             txt_celular.setText(obj.getCelular());
@@ -1387,12 +1513,12 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
             txt_clienteCodigo.setText(obj.getCodigo().toString());
             txt_clienteCodigo.setVisible(false);
             codigoCliente = obj.getCodigo();
-            if (obj.getCredito() == 1) {
-                diasCrediotoconProveedor = obj.getTiempoCredito();
-            } else {
-                diasCrediotoconProveedor = "0";
-            }
-
+//            if (obj.getCredito() == 1) {
+//                diasCrediotoconProveedor = obj.getTiempoCredito();
+//            } else {
+//                diasCrediotoconProveedor = "0";
+//            }
+            diasCrediotoconProveedor = "0";
             codigoClienteCompra = codigoCliente;
 
         } catch (Exception e) {
@@ -1404,9 +1530,8 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
         // TODO add your handling code here:
-
         //************************************
-        System.out.println("Vista.Usuarios.Crear_Facturas.txt_nombresKeyPressed()xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        Deb.consola("Vista.Usuarios.Crear_Facturas.txt_nombresKeyPressed()xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         String ruc = "";
 
         if (ValidaNUmeros.isOnlyNumbers(txt_nombres.getText()) && KeyEvent.VK_ENTER == evt.getKeyCode()) {
@@ -1414,20 +1539,20 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
 
                 ruc = txt_nombres.getText();
                 //  JOptionPane.showMessageDialog(null, ruc);
-                System.out.println("Vista.Usuarios.Crear_Facturas.txt_nombresKeyPressed()llllllllllllllllllllllllll");
+                Deb.consola("Vista.Usuarios.Crear_Facturas.txt_nombresKeyPressed()llllllllllllllllllllllllll");
                 if (addDatosClienteonFactura(txt_nombres.getText()) == null) {
                     //  JOptionPane.showMessageDialog(null, ruc);
 
                     Crear_Clientes obj_crearC = new Crear_Clientes();
-                    obj_crearC.buscarProvvedoroCLiente=1;
+                    obj_crearC.buscarProvvedoroCLiente = 1;
                     Principal.desktopPane.add(obj_crearC);
 
                     try {
                         obj_crearC.setSelected(true);
 
                     } catch (PropertyVetoException ex) {
-                        Logger.getLogger(Crear_Facturas.class
-                            .getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(Modal_CrearFacturas.class
+                                .getName()).log(Level.SEVERE, null, ex);
                     }
                     Crear_Clientes.txt_cedulax.setText(ruc);
                     obj_crearC.setVisible(true);
@@ -1435,7 +1560,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
 
             }
         } else {
-            System.out.println("Vista.Usuarios.Crear_Facturas.txt_nombresKeyPressed()xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+            Deb.consola("Vista.Usuarios.Crear_Facturas.txt_nombresKeyPressed()xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
             ClientesDao cd = new ClientesDao();
             listaProveedores = cd.BuscarClietneslikokokok(ruc, 0);
             proveedorAutoCompleter.removeAllItems();
@@ -1449,16 +1574,16 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         //
         //        if (evt.getKeyCode() == 10) {
-            //
-            //        } else {
-            //
-            //            ProveedoresDao pDao = new ProveedoresDao();
-            //            proveedorAutoCompleter.removeAllItems();
-            //            for (Proveedores p : pDao.listarlike(txt_nombres.getText())) {  //.listarlike(txtBuscar2.getText())) {
-                //                System.out.println("Prod: " + p.getNombre());
-                //                proveedorAutoCompleter.addItem(p);
-                //            }
-            //        }
+        //
+        //        } else {
+        //
+        //            ProveedoresDao pDao = new ProveedoresDao();
+        //            proveedorAutoCompleter.removeAllItems();
+        //            for (Proveedores p : pDao.listarlike(txt_nombres.getText())) {  //.listarlike(txtBuscar2.getText())) {
+        //                Deb.consola("Prod: " + p.getNombre());
+        //                proveedorAutoCompleter.addItem(p);
+        //            }
+        //        }
     }//GEN-LAST:event_txt_nombresKeyReleased
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
@@ -1471,7 +1596,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
             }
 
         }
-        System.out.println("Vista.Usuarios.Crear_Facturas.jComboBox1ItemStateChanged(): " + evt.getItem());
+        Deb.consola("Vista.Usuarios.Crear_Facturas.jComboBox1ItemStateChanged(): " + evt.getItem());
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     private void txt_cedulaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_cedulaFocusGained
@@ -1492,41 +1617,41 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
 
     private void txt_cedulaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cedulaKeyReleased
         //        if (txt_cedula.getText().length() == 10 && txt_cedula.getText() != "9999999999" || txt_cedula.getText().length() == 13 && txt_cedula.getText() != "9999999999999") {
-            //            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                //                if (ValidaCedula.validaRUC(txt_cedula.getText())) {
-                    //
-                    //                    if (addDatosClienteonFactura(txt_cedula.getText()) == null) {
-                        //                        Crear_Clientes obj_crearC = new Crear_Clientes();
-                        //                        Principal.desktopPane.add(obj_crearC);
-                        //                        obj_crearC.setVisible(true);
-                        //                        Crear_Clientes.txt_cedulax.setText(txt_cedula.getText());
-                        //                        //Crear_Proveedores.txt_cedula.setText(txt_cedula.getText());
-                        //                        try {
-                            //                            obj_crearC.setSelected(true);
-                            //
-                            //                        } catch (PropertyVetoException ex) {
-                            //                            Logger.getLogger(Crear_Compras.class
-                                //                                    .getName()).log(Level.SEVERE, null, ex);
-                            //                        }
-                        //
-                        //                        // btn_nuevo.setVisible(true);
-                        //                    }
-                    //                } else {
-                    //
-                    //                    //    JOptionPane.showMessageDialog(null, "Cedula o RUC mal Formada.");
-                    //                }
-                //
-                //            }
-            //        }
+        //            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        //                if (ValidaCedula.validaRUC(txt_cedula.getText())) {
+        //
+        //                    if (addDatosClienteonFactura(txt_cedula.getText()) == null) {
+        //                        Crear_Clientes obj_crearC = new Crear_Clientes();
+        //                        Principal.desktopPane.add(obj_crearC);
+        //                        obj_crearC.setVisible(true);
+        //                        Crear_Clientes.txt_cedulax.setText(txt_cedula.getText());
+        //                        //Crear_Proveedores.txt_cedula.setText(txt_cedula.getText());
+        //                        try {
+        //                            obj_crearC.setSelected(true);
+        //
+        //                        } catch (PropertyVetoException ex) {
+        //                            Logger.getLogger(Crear_Compras.class
+        //                                    .getName()).log(Level.SEVERE, null, ex);
+        //                        }
+        //
+        //                        // btn_nuevo.setVisible(true);
+        //                    }
+        //                } else {
+        //
+        //                    //    JOptionPane.showMessageDialog(null, "Cedula o RUC mal Formada.");
+        //                }
+        //
+        //            }
+        //        }
 
     }//GEN-LAST:event_txt_cedulaKeyReleased
 
     private void txt_cedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cedulaKeyTyped
         // TODO add your handling code here:
-        //System.out.println("Vista.Usuarios.Crear_Facturas.txt_cedulaKeyTyped()  "+evt.getExtendedKeyCode());
+        //Deb.consola("Vista.Usuarios.Crear_Facturas.txt_cedulaKeyTyped()  "+evt.getExtendedKeyCode());
         // if (txt_cedula.getText().length() < 13  ) {
-            //        ValidaNUmeros val = new ValidaNUmeros();
-            //      val.keyTyped(evt);
+        //        ValidaNUmeros val = new ValidaNUmeros();
+        //      val.keyTyped(evt);
 
     }//GEN-LAST:event_txt_cedulaKeyTyped
 
@@ -1543,10 +1668,10 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
     private void txt_sec1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_sec1KeyReleased
         // TODO add your handling code here:
         //if (!ValidaNUmeros.isOnlyNumbers(txt_sec1.getText())||  !(txt_sec1.getText().length() <= 3)) {
-            txt_sec1.setText(OperacionesForms.ValidaNumeroFacturaCompraKeyRelesed3(txt_sec1.getText()));
-            if(txt_sec1.getText().equals("000")){
-                txt_sec1.selectAll();
-            }
+        txt_sec1.setText(OperacionesForms.ValidaNumeroFacturaCompraKeyRelesed3(txt_sec1.getText()));
+        if (txt_sec1.getText().equals("000")) {
+            txt_sec1.selectAll();
+        }
     }//GEN-LAST:event_txt_sec1KeyReleased
 
     private void txt_secNUmFacFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_secNUmFacFocusGained
@@ -1561,7 +1686,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
 
     private void txt_secNUmFacKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_secNUmFacKeyReleased
         txt_secNUmFac.setText(OperacionesForms.ValidaNumeroFacturaCompraKeyRelesed9(txt_secNUmFac.getText()));
-        if(txt_secNUmFac.getText().equals("000000001")){
+        if (txt_secNUmFac.getText().equals("000000001")) {
             txt_secNUmFac.selectAll();
         }
 
@@ -1581,7 +1706,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
     private void txt_sec2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_sec2KeyReleased
         // TODO add your handling code here:
         txt_sec2.setText(OperacionesForms.ValidaNumeroFacturaCompraKeyRelesed3(txt_sec2.getText()));
-        if(txt_sec2.getText().equals("001")){
+        if (txt_sec2.getText().equals("001")) {
             txt_sec2.selectAll();
         }
 
@@ -1626,56 +1751,85 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-
+        int Rowclik = jTable1.getSelectedRow();
+        int columclik = jTable1.getSelectedColumn();
+        int colpvpTotalrow = 8;
+        int colcantidad = 4;
         int x = MouseInfo.getPointerInfo().getLocation().x;
         int y = MouseInfo.getPointerInfo().getLocation().y;
-        System.out.println("X  AND Y : " + x + " - " + y);
+        Deb.consola("X  AND Y : " + x + " - " + y);
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            System.out.println("BOTON 1");
+            Deb.consola("BOTON 1");
             // operacionFacturauPDATEandAddRowrs();
         }
         if (evt.getButton() == MouseEvent.BUTTON2) {
-            System.out.println("BOTON 2");
+            Deb.consola("BOTON 2");
         }
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            System.out.println("BOTON 3");
+            Deb.consola("BOTON 3");
         }
-        try {
+        if (evt.getButton() == MouseEvent.BUTTON3 || evt.getButton() == MouseEvent.BUTTON1) {
+            try {
 
-            if (evt.getClickCount() == 3) {
-                if (jTable1.getSelectedRow() != -1) {
-                    // remove selected row from the model
-                    if (jTable1.getRowCount() > 0) {
-                        ///eliminamos la fila seleccionada y actualizamos el total de la factura
-                        int row = jTable1.getSelectedRow();
-                        Double costo = Double.valueOf(modelo.getValueAt(row, 0).toString().replace(",", "."));
-                        Double cantidad = Double.valueOf(modelo.getValueAt(row, 4).toString().replace(",", "."));
-                        Double Ptotal = Double.valueOf(modelo.getValueAt(row, 8).toString().replace(",", "."));
-                        Double costoxFila = costo * cantidad;
-                        Double totaltemp = Double.valueOf(txt_total_val.getText().toString().replace(",", "."));
-                        Double Utilidadtemp = Double.valueOf(txt_utilidad.getText().toString().replace(",", "."));
+                if (evt.getClickCount() == 3) {
+                    if (jTable1.getSelectedRow() != -1) {
+                        // remove selected row from the model
+                        if (jTable1.getRowCount() > 0) {
+                            ///eliminamos la fila seleccionada y actualizamos el total de la factura
+                            int row = jTable1.getSelectedRow();
+                            Deb.consola("88888888: " + SetRenderJTableCXC.get_jtable_cell_component(jTable1, row, 2).getBackground().toString());
+                            Double costo = Double.valueOf(modelo.getValueAt(row, 0).toString().replace(",", "."));
+                            Double cantidad = Double.valueOf(modelo.getValueAt(row, 4).toString().replace(",", "."));
+                            Double Ptotal = Double.valueOf(modelo.getValueAt(row, 8).toString().replace(",", "."));
+                            Double costoxFila = costo * cantidad;
+                            Double totaltemp = Double.valueOf(txt_total_val.getText().toString().replace(",", "."));
+                            Double Utilidadtemp = Double.valueOf(txt_utilidad.getText().toString().replace(",", "."));
 
-                        total = totaltemp - Double.valueOf(jTable1.getValueAt(row, 8).toString().replace(",", "."));
-                        utilidad = Utilidadtemp - (Ptotal - costoxFila);
-                        //Double.valueOf(modelo.getValueAt(row, 7).toString().replace(",", "."));
-                        //txt_pvp.setText(String.valueOf(String.format("%.4f", pvp1)));
-                        txt_total_val.setText(String.valueOf(String.format("%.2f", total)).replace(",", "."));
-                        txt_total_.setText(String.valueOf(String.format("%.2f", total)).replace(",", "."));
-                        txt_utilidad.setText(String.valueOf(String.format("%.2f", utilidad)).replace(",", "."));
-                        Double ivadecimal = (this.iva / 100) + 1;
-                        subtotal = total / ivadecimal;
-                        txt_subtotal.setText(String.valueOf(String.format("%.2f", subtotal)).replace(",", "."));
-                        txt_subtotalIvaValor.setText(String.valueOf(String.format("%.2f", subtotal)).replace(",", "."));
-                        //txt_iva_valor.setText(total-subtotal);
-                        txt_iva_valor.setText(String.valueOf(String.format("%.2f", (total - subtotal))).replace(",", "."));
-                        modelo.removeRow(row);
+                            total = totaltemp - Double.valueOf(jTable1.getValueAt(row, 8).toString().replace(",", "."));
+                            utilidad = Utilidadtemp - (Ptotal - costoxFila);
+                            //Double.valueOf(modelo.getValueAt(row, 7).toString().replace(",", "."));
+                            //txt_pvp.setText(String.valueOf(String.format("%.4f", pvp1)));
+                            txt_total_val.setText(String.valueOf(String.format("%.2f", total)).replace(",", "."));
+                            txt_total_.setText(String.valueOf(String.format("%.2f", total)).replace(",", "."));
+                            txt_utilidad.setText(String.valueOf(String.format("%.2f", utilidad)).replace(",", "."));
+                            Double ivadecimal = (this.iva / 100) + 1;
+                            subtotal = total / ivadecimal;
+                            txt_subtotal.setText(String.valueOf(String.format("%.2f", subtotal)).replace(",", "."));
+                            txt_subtotalIvaValor.setText(String.valueOf(String.format("%.2f", subtotal)).replace(",", "."));
+                            //txt_iva_valor.setText(total-subtotal);
+                            txt_iva_valor.setText(String.valueOf(String.format("%.2f", (total - subtotal))).replace(",", "."));
+                            modelo.removeRow(row);
+
+                        }
 
                     }
-
                 }
+                if (evt.getClickCount() == 1 && columclik == colpvpTotalrow) {
+                    //if (jTable1.getSelectedRow() != -1) {
+                    String tot = jTable1.getValueAt(Rowclik, colpvpTotalrow).toString();
+                    //  Deb.consola("Vista.Usuarios.Crear_Facturas.jTable1MouseClicked()codigo prducto seleccionado L: " + codigoProductoSeleccionadoClickonJTable);
+                    Frame frame = JOptionPane.getFrameForComponent(this);
+                    PrecioTotalComprasXFila pcdialog = new PrecioTotalComprasXFila(frame, true);
+                    //  pcdialog.codigoProducto = codigoProductoSeleccionadoClickonJTable;
+                    pcdialog.cantidadProducto = Double.parseDouble(jTable1.getValueAt(Rowclik, colcantidad).toString());
+                    pcdialog._pvpTotal = Double.parseDouble(jTable1.getValueAt(Rowclik, colpvpTotalrow).toString());
+                    pcdialog._pvpUnitario = Double.parseDouble(jTable1.getValueAt(Rowclik, 7).toString());
+                    pcdialog.txt_precio.setText(jTable1.getValueAt(Rowclik, colpvpTotalrow).toString());
+
+                    pcdialog.txt_producto.setText(jTable1.getValueAt(Rowclik, 5).toString());
+                    Deb.consola("X  AND Y : " + x + " - " + y);
+                    pcdialog.setLocation(x, y);
+                    // pcdialog.setLocationRelativeTo(frame);
+                    pcdialog.txt_precio.selectAll();
+                    pcdialog.setVisible(true);
+                    jTable1.setValueAt(pcdialog._pvpUnitario, Rowclik, 7);
+                    jTable1.setValueAt(pcdialog.txt_precio.getText(), Rowclik, colpvpTotalrow);
+                    //}
+                }
+
+            } catch (Exception e) {
+                msg.setMensaje(e.toString());
             }
-        } catch (Exception e) {
-            msg.setMensaje(e.toString());
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -1685,24 +1839,23 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
 
     private void jTable1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyTyped
         // TODO add your handling code here:
-        System.out.println("Vista.Usuarios.Crear_Facturas.jTable1KeyTyped()   enteeerrrr" + evt.getKeyCode());
+        Deb.consola("Vista.Usuarios.Crear_Facturas.jTable1KeyTyped()   enteeerrrr" + evt.getKeyCode());
         if (evt.getKeyCode() == 10) {
-            System.out.println("Vista.Usuarios.Crear_Facturas.jTable1KeyTyped()   enteeerrrr");
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jTable1KeyTyped()   enteeerrrr");
             // list1.requestFocus();
-         //   list2.requestFocus();
+            //   list2.requestFocus();
         }
     }//GEN-LAST:event_jTable1KeyTyped
 
     private void txtBuscar2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscar2KeyPressed
-        //        System.out.println("cadena: " + txtBuscar2.getText() + " - Presed:  " + evt.getKeyChar());
+        //        Deb.consola("cadena: " + txtBuscar2.getText() + " - Presed:  " + evt.getKeyChar());
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscar2KeyPressed
 
     private void txtBuscar2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscar2KeyReleased
         // TODO add your handling code here:
 
-        //System.out.println("relesed :  "+txtBuscar2.getText());
-        
+        //Deb.consola("relesed :  "+txtBuscar2.getText());
         if (evt.getKeyCode() == 10) {
             if (!txtBuscar2.getText().equalsIgnoreCase("")) {
                 txtBuscar2.setText("");
@@ -1714,8 +1867,8 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
             ProductosDao pDao = new ProductosDao();
             productosAutoCompleter.removeAllItems();
             for (Productos p : pDao.listarlike(txtBuscar2.getText())) {
-                System.out.println("Prod: " + p.getProducto());
-                System.out.println("prod: " + p.getProducto());
+                //   Deb.consola("Prod: " + p.getProducto());
+                //  Deb.consola("prod: " + p.getProducto());
                 productosAutoCompleter.addItem(p);
             }
 
@@ -1723,7 +1876,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtBuscar2KeyReleased
 
     private void txtBuscar2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscar2KeyTyped
-        //      System.out.println("cadena: " + txtBuscar2.getText() + " - KeyTyped:  " + evt.getKeyChar());
+        //      Deb.consola("cadena: " + txtBuscar2.getText() + " - KeyTyped:  " + evt.getKeyChar());
 
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscar2KeyTyped
@@ -1745,7 +1898,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
 
                         } catch (PropertyVetoException ex) {
                             Logger.getLogger(Principal.class
-                                .getName()).log(Level.SEVERE, null, ex);
+                                    .getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
                         v[i].dispose();
@@ -1773,18 +1926,28 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
 
     private void jcbFormasPagoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbFormasPagoItemStateChanged
         // TODO add your handling code here:
-        FormasPagoV f = new FormasPagoV();
-        FormasPagoVDao fDao = new FormasPagoVDao();
-        f = fDao.buscarConFormaPago(evt.getItem().toString());
-        this.codigFormaPagoSeleccionada = f.getCodigo();
-    }//GEN-LAST:event_jcbFormasPagoItemStateChanged
+        FormasPagoCV f = new FormasPagoCV();
+        FormasPagoCVDao objFdPDao = new FormasPagoCVDao();
+        f = objFdPDao.buscarConFormaPagobynombre(evt.getItem().toString());
+        this.formaPagoSeelccionada = f.getCodigo().toString();
 
-    private void jcbPVPsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbPVPsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jcbPVPsActionPerformed
+    }//GEN-LAST:event_jcbFormasPagoItemStateChanged
+    private void llenarcompraDesdeXML() {
+        Factura facx = new Factura();
+        facx = OperacionesForms.factura;
+        txt_cedula.setText(facx.getRUC());
+        //tx
+    }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //boolean afectaacaja = false;
+        ArrayList<Kardex> listakardesk = new ArrayList<>();
+        ArrayList<DetalleCompra> listadetallecompras = new ArrayList<>();
+        ArrayList<Productos> listaProductos = new ArrayList<>();
+        Cxp cxp = new Cxp();
 
+// long d = java.sql.Date fecha = new java.sql.Date(d);
+//            JOptionPane.showMessageDialog(null, "fechaxxasasd: "+fecha);
         Compras u = new Compras();
 
         /*creo el codigoAcceso*/
@@ -1796,264 +1959,338 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         }
 
         claveAcceso = txt_numAutorizacion.getText();
-        if (!txt_cedula.getText().isEmpty() && !txt_nombres.getText().isEmpty() && codigoClienteCompra != null && !txt_sec1.getText().isEmpty() && !txt_sec2.getText().isEmpty() && !txt_secNUmFac.getText().isEmpty()) {
-            //  JOptionPane.showMessageDialog(null, "codigo: " + codigoClienteFactura);
-            
-            if (jTable1.getRowCount() != 0) {
-                u.setEstablecimiento(txt_sec1.getText());
-                u.setPtoEmision(txt_sec2.getText());
-                u.setSecfactura(txt_secNUmFac.getText());
-                u.setProveedores_codigo(Integer.valueOf(txt_clienteCodigo.getText()));
-                u.setUsuarios_Codigo(Integer.valueOf(txt_usuarioCodigo.getText()));
-                u.setDescuento(txt_descuentoGenral.getText());
-                u.setEquipo(login.nombreDelEquipo);
-                u.setFecha(jdfecha.getDate());
-                u.setIva(iva.toString());
-                secuenciaFac = txt_sec1.getText() + "-" + txt_sec2.getText() + "-" + txt_secNUmFac.getText();
-                u.setSecuencia(secuenciaFac);
-                u.setSubtotaI_con_iva(txt_subtotalIvaValor.getText());
-                u.setSubtotal_sin_iva(txt_subtotalIvaValorCero.getText());
+        if (codigoClienteCompra != null) {
+            if (!txt_cedula.getText().isEmpty() && !txt_nombres.getText().isEmpty() && !txt_sec1.getText().isEmpty() && !txt_sec2.getText().isEmpty() && !txt_secNUmFac.getText().isEmpty()) {
+                //  JOptionPane.showMessageDialog(null, "codigo: " + codigoClienteFactura);
 
-                u.setTotal(txt_total_val.getText());
-                u.setUtilidad(this.utilidad.toString());
-                u.setUsuarios_Codigo(this.codigoUsuarioVendedorSeleccionadoJCB);
-                String fechaInicio = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdfecha.getDate().toString());
-                u.setIva_valor(txt_iva_valor.getText());
-                u.setFechain(fechaInicio);
-                u.setCalveAcceso(claveAcceso);
+                if (jTable1.getRowCount() != 0) {
+                    u.setEstablecimiento(txt_sec1.getText());
+                    u.setPtoEmision(txt_sec2.getText());
+                    u.setSecfactura(txt_secNUmFac.getText());
+                    u.setProveedores_codigo(codigoClienteCompra);
+                    u.setUsuarios_Codigo(Integer.valueOf(txt_usuarioCodigo.getText()));
+                    u.setDescuento(txt_descuentoGenral.getText());
+                    u.setEquipo(login.nombreDelEquipo);
+                    u.setFecha(jdfecha.getDate());
+                    u.setIva(iva.toString());
+                    secuenciaFac = txt_sec1.getText() + "-" + txt_sec2.getText() + "-" + txt_secNUmFac.getText();
+                    u.setSecuencia(secuenciaFac);
+                    u.setSubtotaI_con_iva(txt_subtotalIvaValor.getText());
+                    u.setSubtotal_sin_iva(txt_subtotalIvaValorCero.getText());
 
-                for (sri_tipocomprobante t : listatipoComprobantes) {
-                    if (jcb_tipoComprobante.getSelectedItem().toString().contains(t.getTipocomprobante())) {
-                        IdTipoComprabanteSeleccionado = t.getId();
-                        tipoDocumento = t.getTipocomprobante();
-                    }
-                }
-
-                for (sri_sustentocomprobante t : listasustentoComprobantes) {
-                    if (jcb_sustentoComprobante.getSelectedItem().toString().contains(t.getSustento())) {
-                        IdsustentoComprabanteSeleccionado = t.getId();
-
-                    }
-                }
-                u.setTipo_documentoID(IdTipoComprabanteSeleccionado);
-                u.setTipo_documento(jcb_tipoComprobante.getSelectedItem().toString());
-                u.setSustento(jcb_sustentoComprobante.getSelectedItem().toString());
-                u.setSustentoID(IdsustentoComprabanteSeleccionado);
-
-                Cxp pagos = new Cxp();
-                cxpDao pagosDao = new cxpDao();
-                ComprasDao objFacDao = new ComprasDao();
-                //                CajasDetalleDao cdDao = new CajasDetalleDao();
-                Double Ptotal = 0.0;
-
-                int col = jTable1.getColumnCount();
-                int row = jTable1.getRowCount();
-                SeriesFacturas objSF = new SeriesFacturas();
-                SeriesFacturasDao objDaoSF = new SeriesFacturasDao();
-                String rutaInforme = "";
-                Map parametros = new HashMap();
-                switch (jcbFormasPago.getSelectedItem().toString()) {
-
-                    case "EFECTIVO":
-                    formaPagoSeelccionada = jcbFormasPago.getSelectedItem().toString();
-                    u.setFormaPago(formaPagoSeelccionada);
+                    u.setTotal(txt_total_val.getText());
+                    u.setUtilidad(this.utilidad.toString());
+                    u.setUsuarios_Codigo(this.codigoUsuarioVendedorSeleccionadoJCB);
+                    String fechaInicio = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdfecha.getDate().toString());
+                    u.setIva_valor(txt_iva_valor.getText());
+                    u.setFechain(fechaInicio);
                     u.setCalveAcceso(claveAcceso);
-                    u.setEfectivo(0.0);
-                    u.setCambio(0.0);
-                    codigoCompra = objFacDao.guardar(u);
-                    if (RegistrodeEfectivoyCambioExitoso) {
 
-                        /* EFECTIVO*/
+                    for (sri_tipocomprobante t : listatipoComprobantes) {
+                        if (jcb_tipoComprobante.getSelectedItem().toString().contains(t.getTipocomprobante())) {
+                            IdTipoComprabanteSeleccionado = t.getId();
+                            tipoDocumento = t.getTipocomprobante();
+                        }
+                    }
 
-                        /* REGISTO PAGO EN EFECTIVO Y VUELTO*/
-                        System.out.println("Vista.Usuarios.Crear_Facturas.facfafac()");
-                        DetalleCompra df = new DetalleCompra();
-
-                        for (int i = 0; i < row; i++) {
-                            Productos pr = new Productos();
-                            ProductosDao productoDao = new ProductosDao();
-                            ProductosDao prodconsultaDao = new ProductosDao();
-                            Kardex k = new Kardex();
-                            KardexDao kDao = new KardexDao();
-                            DetalleComprasDao dfDao = new DetalleComprasDao();
-                            Double iva12 = 0.0;
-                            Double BaseImponible = 0.0;
-                            df.setCantidad(jTable1.getValueAt(i, 4).toString());
-                            df.setDetalle(jTable1.getValueAt(i, 3).toString());
-                            Ptotal = Double.valueOf(jTable1.getValueAt(i, 8).toString().replace(",", "."));
-                            BaseImponible = Ptotal / ((this.iva / 100) + 1);
-                            iva12 = Ptotal - BaseImponible;
-                            //                 JOptionPane.showMessageDialog(rootPane, String.valueOf(String.format("%.4f", iva)).replace(",", "."));
-                            df.setIva(String.valueOf(String.format("%.4f", iva12)).replace(",", "."));
-                            Double ivaDecimal = ((this.iva / 100) + 1);
-                            Double valorUnitarioSinIVA = Double.valueOf(jTable1.getValueAt(i, 7).toString().replace(",", "."));
-                            valorUnitarioSinIVA = (valorUnitarioSinIVA / ivaDecimal);
-                            Double valorTotalSinIVA = Double.valueOf(jTable1.getValueAt(i, 8).toString().replace(",", "."));
-                            valorTotalSinIVA = valorTotalSinIVA / ivaDecimal;
-                            df.setDescuento(jTable1.getValueAt(i, 5).toString());
-                            df.setValorUnitario(String.valueOf(String.format("%.4f", valorUnitarioSinIVA)).replace(",", "."));
-                            df.setValorTotal(String.valueOf(String.format("%.4f", valorTotalSinIVA)).replace(",", "."));
-
-                            //   JOptionPane.showMessageDialog(rootPane,"VU: "+valorUnitarioSinIVA);
-                            // JOptionPane.showMessageDialog(rootPane,"VT: "+valorTotalSinIVA);
-                            df.setCompra_Codigo(codigoCompra);
-                            df.setProductos_codigo(Integer.valueOf(jTable1.getValueAt(i, 2).toString()));
-                            k.setBodega(jTable1.getValueAt(i, 6).toString());
-                            k.setFecha(jdfecha.getDate());
-                            k.setDetalle("INGRESO -- " + tipoDocumento + " " + secuenciaFac);
-                            k.setOutcantidad("0");
-                            k.setIncantidad(jTable1.getValueAt(i, 4).toString());
-                            k.setIncosto(jTable1.getValueAt(i, 0).toString());
-                            k.setInpvp(jTable1.getValueAt(i, 7).toString());
-                            //  k.setSaldocantidad(secuenciaFac);
-                            Integer codigoProducto = Integer.parseInt(jTable1.getValueAt(i, 2).toString());
-                            k.setProductos_Codigo(codigoProducto);
-                            ////lleno informacion para actualizar el costo del producto
-                            pr = prodconsultaDao.buscarConID(codigoProducto);
-                            Double porvcentajeDeUtilidad = Double.parseDouble(pr.getUtilidad());
-                            String costoUnitario = jTable1.getValueAt(i, 7).toString().replace(",", ".");
-                            JOptionPane.showMessageDialog(null, "val: " + costoUnitario);
-                            Double costounitario = Double.parseDouble(costoUnitario);
-
-                            Double pvp = (costounitario + (porvcentajeDeUtilidad * costounitario) / 100);
-                            pr.setCodigo(codigoProducto);
-                            pr.setCosto(String.valueOf(String.format("%.4f", costounitario)).replace(",", "."));
-                            pr.setPvp(String.valueOf(String.format("%.4f", pvp)).replace(",", "."));
-
-                            String valunitadoString = (String.valueOf(String.format("%.4f", valorUnitarioSinIVA)).replace(",", "."));
-                            Double vau = Double.parseDouble(valunitadoString);
-                            pr.setBase(vau);
-                            dfDao.guardar(df);
-                            kDao.guardar(k);
-                            productoDao.modificarPreciosAlRegistrarCompra(pr);
+                    for (sri_sustentocomprobante t : listasustentoComprobantes) {
+                        if (jcb_sustentoComprobante.getSelectedItem().toString().contains(t.getSustento())) {
+                            IdsustentoComprabanteSeleccionado = t.getId();
 
                         }
-                        limpiarIntefazVentas();
-                        ///IMPRESION DEL DOCUMENTO
-                        //                                rutaInforme = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\FACTURA.jasper";
-                        //                                parametros.put("numeroFactura", secuenciaFac);
-                        //                                for (int i = 0; i < Integer.parseInt(Principal.numerovecseimpresionFactura); i++) {
-                            //                                    ImpresionDao imp = new ImpresionDao();
-                            //                                    imp.impresionDontShowReport(parametros, rutaInforme);
-                            //                                }
-                        //* enviamoa a crear i firmar factura electronica*/
-                        //  objFacDao.creaxmlFacturaElectronica(codigoFactura);
-                        //                            FacturasDao fad = new FacturasDao();
-                        //                            fad.creaxmlFacturaElectronica(codigoFactura);
-                        /* fincreacion facura electronica*/
-
                     }
-                    break;
+                    u.setTipo_documentoID(IdTipoComprabanteSeleccionado);
+                    u.setTipo_documento(jcb_tipoComprobante.getSelectedItem().toString());
+                    u.setSustento(jcb_sustentoComprobante.getSelectedItem().toString());
+                    u.setSustentoID(IdsustentoComprabanteSeleccionado);
 
-                    case "CREDITO":
+                    Cxp pagos = new Cxp();
+                    cxpDao pagosDao = new cxpDao();
+                    ComprasDao objFacDao = new ComprasDao();
+                    //                CajasDetalleDao cdDao = new CajasDetalleDao();
+                    Double Ptotal = 0.0;
 
-                    if (codigoClienteCompra != null && !txt_cedula.getText().contains("9999999999")) {
+                    int col = jTable1.getColumnCount();
+                    int row = jTable1.getRowCount();
+                    SeriesFacturas objSF = new SeriesFacturas();
+                    SeriesFacturasDao objDaoSF = new SeriesFacturasDao();
+                    String rutaInforme = "";
+                    Map parametros = new HashMap();
+                    /*
+                    ANTES DE GUARDAR LA COMPRA REVISAMOS TIPO DE FORMA DE PAGO.
+                    **/
+                    FormasPagoCVDao objFdPDao = new FormasPagoCVDao();
+                    listaFormasDePago = objFdPDao.listar();
+                    formaPagomap.clear();
+                    String tipoFormaPago = "";
+                    for (FormasPagoCV f : listaFormasDePago) {
+                        formaPagomap.put(f.getTipoPago(), f.getFormaPago());
+                        if (jcbFormasPago.getSelectedItem().toString().equalsIgnoreCase(f.getFormaPago())) {
+                            tipoFormaPago = f.getTipoPago();
+                            // f.getEsCxcCxp().equalsIgnoreCase(OperacionesForms._FORMA_PAGO_CXP_TEXT;
+                        }
+                    }
 
-                        formaPagoSeelccionada = jcbFormasPago.getSelectedItem().toString();
+                    switch (tipoFormaPago) {
 
-                        u.setFormaPago(formaPagoSeelccionada);
-                        u.setCalveAcceso(claveAcceso);
-                        u.setEfectivo(0.00);
-                        u.setCambio(0.00);
-                        Frame frame = JOptionPane.getFrameForComponent(this);
-                        PagoCreditoCompras pcdialog = new PagoCreditoCompras(frame, true);
-                        pcdialog.txt_total.setText(txt_total_val.getText());
-                        formaPagoSeelccionada = jcbFormasPago.getSelectedItem().toString();
-                        pcdialog.txt_saldo.setText(txt_total_val.getText());
-                        u.setFormaPago(formaPagoSeelccionada);
-                        u.setEfectivo(0.00);
-                        u.setCambio(0.00);
-                        pcdialog.comp = u;
-                        pcdialog.setVisible(true);
+                        case "EFECTIVO":
+                            formaPagoSeelccionada = jcbFormasPago.getSelectedItem().toString();
+                            u.setFormaPago(formaPagoSeelccionada);
+                            u.setCalveAcceso(claveAcceso);
+                            u.setEfectivo(0.0);
+                            u.setCambio(0.0);
+                            /////////// DETALLE DE CAJA
+                            cd.setCajas_Codigo(login.codigoCaja);
+                            cd.setDetalle(Variables.CAJA_EGRESO_COMPRA_EFECTIVO + tipoDocumento + " - " + jcbFormasPago.getSelectedItem().toString() + " # " + secuenciaFac + " EN EQUIPO: " + login.nombreDelEquipo + " USUARIO: " + login.nombresUsuario);
+                            cd.setDescripcion("---");
+                            cd.setDocumento(tipoDocumento);
+                            cd.setFecha(jdfecha.getDate());
+                            cd.setTipo(Variables.CAJA_TIPO_INGRESO);
+                            cd.setValor(Double.parseDouble(txt_total_val.getText()));
+                            cd.setCodigoDocuemnto(codigoCompra);
+                            // codigoCompra = objFacDao.guardar(u);
+                            afectacaja = true;
+                            afectakardex = true;
+                            if (RegistrodeEfectivoyCambioExitoso) {
 
-                        if (RegistrodeCreditoExitoso) {
-                            DetalleCompra df = new DetalleCompra();
-                            for (int i = 0; i < row; i++) {
-                                Kardex k = new Kardex();
-                                KardexDao kDao = new KardexDao();
-                                DetalleComprasDao dfDao = new DetalleComprasDao();
-                                Double iva12 = 0.0;
-                                Double BaseImponible = 0.0;
-                                df.setCantidad(jTable1.getValueAt(i, 4).toString());
-                                df.setDetalle(jTable1.getValueAt(i, 3).toString());
-                                Ptotal = Double.valueOf(jTable1.getValueAt(i, 8).toString().replace(",", "."));
-                                BaseImponible = Ptotal / ((this.iva / 100) + 1);
-                                iva12 = Ptotal - BaseImponible;
-                                df.setIva(String.valueOf(String.format("%.4f", iva12)).replace(",", "."));
-                                Double ivaDecimal = ((this.iva / 100) + 1);
-                                Double valorUnitarioSinIVA = Double.valueOf(jTable1.getValueAt(i, 7).toString().replace(",", "."));
-                                valorUnitarioSinIVA = (valorUnitarioSinIVA / ivaDecimal);
-                                Double valorTotalSinIVA = Double.valueOf(jTable1.getValueAt(i, 8).toString().replace(",", "."));
-                                valorTotalSinIVA = valorTotalSinIVA / ivaDecimal;
-                                df.setDescuento(jTable1.getValueAt(i, 5).toString());
-                                df.setValorUnitario(String.valueOf(String.format("%.4f", valorUnitarioSinIVA)).replace(",", "."));
-                                df.setValorTotal(String.valueOf(String.format("%.4f", valorTotalSinIVA)).replace(",", "."));
+                                /* EFECTIVO*/
 
-                                df.setCompra_Codigo(codigoCompra);
-                                df.setProductos_codigo(Integer.valueOf(jTable1.getValueAt(i, 2).toString()));
-                                dfDao.guardar(df);
-                                k.setBodega(jTable1.getValueAt(i, 6).toString());
-                                k.setFecha(jdfecha.getDate());
-                                k.setDetalle("INGRESO -- " + tipoDocumento + " " + secuenciaFac);
-                                k.setOutcantidad("0");
-                                k.setIncantidad(jTable1.getValueAt(i, 4).toString());
-                                k.setIncosto(jTable1.getValueAt(i, 0).toString());
-                                k.setInpvp(jTable1.getValueAt(i, 7).toString());
-                                //  k.setSaldocantidad(secuenciaFac);
-                                k.setProductos_Codigo(Integer.parseInt(jTable1.getValueAt(i, 2).toString()));
-                                kDao.guardar(k);
+ /* REGISTO PAGO EN EFECTIVO Y VUELTO*/
+                                Deb.consola("Vista.Usuarios.Crear_Facturas.facfafac()");
+
+                                for (int i = 0; i < row; i++) {
+                                    Productos pr = new Productos();
+                                    ProductosDao prDao = new ProductosDao();
+                                    pr = prDao.buscarPorCodigoAlterno(jTable1.getValueAt(i, 2).toString());
+                                    DetalleCompra df = new DetalleCompra();
+                                    ProductosDao productoDao = new ProductosDao();
+                                    Kardex k = new Kardex();
+                                    KardexDao kDao = new KardexDao();
+                                    DetalleComprasDao dfDao = new DetalleComprasDao();
+                                    Double iva12 = 0.0;
+                                    Double BaseImponible = 0.0;
+                                    df.setCantidad(jTable1.getValueAt(i, 4).toString());
+                                    df.setDetalle(jTable1.getValueAt(i, 3).toString());
+                                    Ptotal = Double.valueOf(jTable1.getValueAt(i, 8).toString().replace(",", "."));
+                                    BaseImponible = Ptotal / ((this.iva / 100) + 1);
+                                    iva12 = Ptotal - BaseImponible;
+                                    df.setIva(String.valueOf(String.format("%.4f", iva12)).replace(",", "."));
+                                    Double ivaDecimal = ((this.iva / 100) + 1);
+                                    Double valorUnitarioSinIVA = Double.valueOf(jTable1.getValueAt(i, 7).toString().replace(",", "."));
+                                    Double valorTotalSinIVA = Double.valueOf(jTable1.getValueAt(i, 8).toString().replace(",", "."));
+                                    String costoUnitario = jTable1.getValueAt(i, 7).toString().replace(",", ".");
+                                    Double costounitario = Double.parseDouble(costoUnitario);
+                                    // JOptionPane.showMessageDialog(null, "val: " + costoUnitario);
+
+                                    Double ValorBase = 0.0;
+                                    if (pr.getImpuesto().contains(Principal.iva)) {
+                                        valorUnitarioSinIVA = valorUnitarioSinIVA * ivaDecimal;
+                                        valorTotalSinIVA = valorTotalSinIVA * ivaDecimal;
+                                        costounitario = costounitario * ivaDecimal;
+                                        ValorBase = valorUnitarioSinIVA / ivaDecimal;
+                                    } else {
+
+                                    }
+                                    String valunitadoString = (String.valueOf(String.format("%.4f", ValorBase)).replace(",", "."));
+                                    Double vau = Double.parseDouble(valunitadoString);
+                                    // valorUnitarioSinIVA = (valorUnitarioSinIVA / ivaDecimal);
+
+                                    df.setDescuento(jTable1.getValueAt(i, 5).toString());
+                                    df.setValorUnitario(String.valueOf(String.format("%.4f", valorUnitarioSinIVA)).replace(",", "."));
+                                    df.setValorTotal(String.valueOf(String.format("%.4f", valorTotalSinIVA)).replace(",", "."));
+                                    Productos pro = new Productos();
+                                    ProductosDao proDao = new ProductosDao();
+                                    pro = proDao.buscarPorCodigoAlterno(jTable1.getValueAt(i, 2).toString().trim());
+                                    Integer codigoProducto = pro.getCodigo();
+                                    df.setCompra_Codigo(codigoCompra);
+                                    df.setProductos_codigo(codigoProducto);
+                                    k.setBodega(jTable1.getValueAt(i, 6).toString());
+                                    k.setFecha(jdfecha.getDate());
+                                    k.setDetalle("INGRESO -- REGISTRO " + tipoDocumento + " DE COMPRA " + secuenciaFac);
+                                    k.setOutcantidad("0");
+                                    k.setIncantidad(jTable1.getValueAt(i, 4).toString());
+                                    k.setIncosto(jTable1.getValueAt(i, 0).toString());
+                                    k.setInpvp(jTable1.getValueAt(i, 7).toString());
+                                    //  k.setSaldocantidad(secuenciaFac);                                    
+                                    k.setProductos_Codigo(codigoProducto);
+                                    ////lleno informacion para actualizar el costo del producto
+                                    // pr = prodconsultaDao.buscarConID(codigoProducto);
+                                    Double porvcentajeDeUtilidad = Double.parseDouble(pro.getUtilidad());
+                                    Double pvp = (costounitario + (porvcentajeDeUtilidad * costounitario) / 100);
+                                    pro.setCodigo(codigoProducto);
+                                    pro.setCosto(String.valueOf(String.format("%.4f", costounitario)).replace(",", "."));
+                                    pro.setPvp(String.valueOf(String.format("%.4f", pvp)).replace(",", "."));
+
+                                    pro.setBase(vau);
+                                    listadetallecompras.add(df);
+                                    listakardesk.add(k);
+                                    listaProductos.add(pro);
+
+                                }
+
+                                ///IMPRESION DEL DOCUMENTO
+                                //                                rutaInforme = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\FACTURA.jasper";
+                                //                                parametros.put("numeroFactura", secuenciaFac);
+                                //                                for (int i = 0; i < Integer.parseInt(Principal.numerovecseimpresionFactura); i++) {
+                                //                                    ImpresionDao imp = new ImpresionDao();
+                                //                                    imp.impresionDontShowReport(parametros, rutaInforme);
+                                //                                }
+                                //* enviamoa a crear i firmar factura electronica*/
+                                //  objFacDao.creaxmlFacturaElectronica(codigoFactura);
+                                //                            FacturasDao fad = new FacturasDao();
+                                //                            fad.creaxmlFacturaElectronica(codigoFactura);
+                                /* fincreacion facura electronica*/
+                                ComitsAll c = new ComitsAll();
+                                Integer cod = c.compraEfectivo(u, cd, listadetallecompras, listakardesk, afectacaja, afectakardex, listaProductos);
+                                if (cod > 0) {
+                                    limpiarIntefazVentas();
+                                } else {
+                                    ProgressBar.mostrarMensajeAzul("ERROR AL REGISTRA COMPRA EN EFECTIVO");
+                                }
 
                             }
-                            //                                    ///GUARDO LAS SERIES D ELA FACTURA
-                            //
-                            //                                    objSF.setSec1(txt_sec1.getText());
-                            //                                    objSF.setSec2(txt_sec2.getText());
-                            //                                    objSF.setFac3(txt_secNUmFac.getText());
-                            //                                    objSF.setEquipos_Codigo(login.CodigoDelEquipo);
-                            //                                    objDaoSF.guardar(objSF);
-                            limpiarIntefazVentas();
-                            ////
-                            ////                                    ///IMPRESION DEL DOCUMENTO
-                            ////                                    rutaInforme = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\FACTURA.jasper";
-                            ////
-                            ////                                    //    001-001-0000022
-                            ////                                    //parametros.put("numeroFactura", secuenciaFac);
-                            ////                                    parametros.put("numeroFactura", secuenciaFac);
-                            //                                    for (int i = 0; i < Integer.parseInt(Principal.numerovecseimpresionFactura); i++) {
-                                //
-                                //                                        ImpresionDao imp = new ImpresionDao();
-                                //                                        imp.impresionDontShowReport(parametros, rutaInforme);
-                                //                                    }
-                            //                                    FacturasDao fad = new FacturasDao();
-                            //                                    fad.creaxmlFacturaElectronica(codigoFactura);
-                        }
+                            break;
 
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente para registrar el Credito", "Aviso Importante", 0, frameIcon);
+                        case "CREDITO":
+
+                            if (codigoClienteCompra != null && !txt_cedula.getText().contains("9999999999")) {
+
+                                formaPagoSeelccionada = jcbFormasPago.getSelectedItem().toString();
+
+                                u.setFormaPago(formaPagoSeelccionada);
+                                u.setCalveAcceso(claveAcceso);
+                                u.setEfectivo(0.00);
+                                u.setCambio(0.00);
+                                Frame frame = JOptionPane.getFrameForComponent(this);
+                                PagoCreditoCompras pcdialog = new PagoCreditoCompras(frame, true);
+                                pcdialog.txt_total.setText(txt_total_val.getText());
+                                formaPagoSeelccionada = jcbFormasPago.getSelectedItem().toString();
+                                pcdialog.txt_saldo.setText(txt_total_val.getText());
+                                u.setFormaPago(formaPagoSeelccionada);
+                                u.setEfectivo(0.00);
+                                u.setCambio(0.00);
+                                cxp = pcdialog.cxpx;
+                                //pcdialog.comp = u;
+
+                                pcdialog.setVisible(true);
+
+                                if (RegistrodeCreditoExitoso) {
+
+                                    for (int i = 0; i < row; i++) {
+                                        DetalleCompra df = new DetalleCompra();
+                                        Kardex k = new Kardex();
+                                        KardexDao kDao = new KardexDao();
+                                        DetalleComprasDao dfDao = new DetalleComprasDao();
+                                        Double iva12 = 0.0;
+                                        Double BaseImponible = 0.0;
+                                        df.setCantidad(jTable1.getValueAt(i, 4).toString());
+                                        df.setDetalle(jTable1.getValueAt(i, 3).toString());
+                                        Ptotal = Double.valueOf(jTable1.getValueAt(i, 8).toString().replace(",", "."));
+                                        BaseImponible = Ptotal / ((this.iva / 100) + 1);
+                                        iva12 = Ptotal - BaseImponible;
+                                        df.setIva(String.valueOf(String.format("%.4f", iva12)).replace(",", "."));
+                                        Double ivaDecimal = ((this.iva / 100) + 1);
+                                        Double valorUnitarioSinIVA = Double.valueOf(jTable1.getValueAt(i, 7).toString().replace(",", "."));
+                                        valorUnitarioSinIVA = (valorUnitarioSinIVA / ivaDecimal);
+                                        Double valorTotalSinIVA = Double.valueOf(jTable1.getValueAt(i, 8).toString().replace(",", "."));
+                                        valorTotalSinIVA = valorTotalSinIVA / ivaDecimal;
+                                        df.setDescuento(jTable1.getValueAt(i, 5).toString());
+                                        df.setValorUnitario(String.valueOf(String.format("%.4f", valorUnitarioSinIVA)).replace(",", "."));
+                                        df.setValorTotal(String.valueOf(String.format("%.4f", valorTotalSinIVA)).replace(",", "."));
+
+                                        df.setCompra_Codigo(codigoCompra);
+                                        Productos pro = new Productos();
+                                        ProductosDao proDao = new ProductosDao();
+                                        pro = proDao.buscarPorCodigoAlterno(jTable1.getValueAt(i, 2).toString().trim());
+                                        Integer codigoProducto = pro.getCodigo();
+
+                                        df.setProductos_codigo(codigoProducto);
+
+                                        k.setBodega(jTable1.getValueAt(i, 6).toString());
+                                        k.setFecha(jdfecha.getDate());
+                                        k.setDetalle("INGRESO -- " + tipoDocumento + " " + secuenciaFac);
+                                        k.setOutcantidad("0");
+                                        k.setIncantidad(jTable1.getValueAt(i, 4).toString());
+                                        k.setIncosto(jTable1.getValueAt(i, 0).toString());
+                                        k.setInpvp(jTable1.getValueAt(i, 7).toString());
+                                        //  k.setSaldocantidad(secuenciaFac);
+                                        k.setProductos_Codigo(codigoProducto);
+                                        listadetallecompras.add(df);
+                                        listakardesk.add(k);
+                                        listaProductos.add(pro);
+
+                                    }
+                                    //                                    ///GUARDO LAS SERIES D ELA FACTURA
+                                    //
+                                    //                                    objSF.setSec1(txt_sec1.getText());
+                                    //                                    objSF.setSec2(txt_sec2.getText());
+                                    //                                    objSF.setFac3(txt_secNUmFac.getText());
+                                    //                                    objSF.setEquipos_Codigo(login.CodigoDelEquipo);
+                                    //                                    objDaoSF.guardar(objSF);
+
+                                    ////
+                                    ////                                    ///IMPRESION DEL DOCUMENTO
+                                    ////                                    rutaInforme = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\FACTURA.jasper";
+                                    ////
+                                    ////                                    //    001-001-0000022
+                                    ////                                    //parametros.put("numeroFactura", secuenciaFac);
+                                    ////                                    parametros.put("numeroFactura", secuenciaFac);
+                                    //                                    for (int i = 0; i < Integer.parseInt(Principal.numerovecseimpresionFactura); i++) {
+                                    //
+                                    //                                        ImpresionDao imp = new ImpresionDao();
+                                    //                                        imp.impresionDontShowReport(parametros, rutaInforme);
+                                    //                                    }
+                                    //                                    FacturasDao fad = new FacturasDao();
+                                    //                                    fad.creaxmlFacturaElectronica(codigoFactura);
+                                    afectacaja = false;
+                                    afectakardex = true;
+                                    ComitsAll c = new ComitsAll();
+                                    Integer cod = c.compraCreditoconcxp(u, cd, listadetallecompras, listakardesk, afectacaja, afectakardex, listaProductos, cxp);
+                                    if (cod > 0) {
+                                        limpiarIntefazVentas();
+                                    } else {
+                                        ProgressBar.mostrarMensajeAzul("ERROR AL REGISTRA COMPRA  CREDITO");
+                                    }
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente para registrar el Credito", "Aviso Importante", 0, frameIcon);
+                            }
+                            break;
+                        case "CHEQUE":
+
+                            break;
+                        case "MIXTO":
+
+                            break;
+                        case "TRANSFERENCIA":
+
+                            break;
+
                     }
-                    break;
-                    case "CHEQUE":
 
-                    break;
-                    case "MIXTO":
-
-                    break;
-                    case "TRANSFERENCIA":
-
-                    break;
+/////////FACTURA ELECTRONICA////////////
+                    ////////FACTURA ELECTRONICA//////////////
+                    ////////////////////
+                    ///vavi tabla detalle
+                } else {
+                    a.setProgressBar_mensajae("No existen Articulos a facturar");
                 }
-                /////////FACTURA ELECTRONICA////////////
 
-                ////////FACTURA ELECTRONICA//////////////
-                ////////////////////
-                ///vavi tabla detalle
             } else {
-                a.setProgressBar_mensajae("No existen Articulos a facturar");
+
+                a.setProgressBar_mensajae("Debes LLenar los campos Obligatorios");
             }
-
         } else {
+//        Crear_Proveedores p = new Crear_Proveedores();
+            Crear_Clientes obj = new Crear_Clientes();
+            obj.setTitle("Nuevo Proveedor");
+            ///false valor por defeccto, para cleintes
+            obj.isllamadoDesdeNuevoProveedor = true;
 
-            a.setProgressBar_mensajae("Debes LLenar los campos Obligatorios");
+            OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
+            Crear_Clientes.txt_nombres.setText(txt_nombres.getText());
+            Crear_Clientes.txt_cedulax.setText(txt_cedula.getText());
+            Crear_Clientes.txt_dir.setText(txt_dir.getText());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -2063,7 +2300,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         if (jButton1.getText().equals("Actualizar")) {
             //jcb_estado.setSelectedItem("");
         }
-        System.out.println("Vista.Usuarios.Crear_Usuarios.jButton1Prop,,,,,,,,ertyChange()" + evt.getNewValue());
+        Deb.consola("Vista.Usuarios.Crear_Usuarios.jButton1Prop,,,,,,,,ertyChange()" + evt.getNewValue());
     }//GEN-LAST:event_jButton1PropertyChange
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -2083,9 +2320,9 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
 
     private void txt_descuentoGenralKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_descuentoGenralKeyReleased
         // TODO add your handling code here:
-        if(!ValidaNUmeros.isOnlyDouble(txt_descuentoGenral.getText())){
+        if (!ValidaNUmeros.isOnlyDouble(txt_descuentoGenral.getText())) {
             txt_descuentoGenral.setText("0.00");
-        }else{
+        } else {
             operacionFacturauPDATEandAddRowrs();
         }
     }//GEN-LAST:event_txt_descuentoGenralKeyReleased
@@ -2096,18 +2333,210 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_descuentoGenralKeyTyped
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        aumentarIvaSiNO=1;
+        aumentarIvaSiNO = 1;
         operacionFacturauPDATEandAddRowrs();
-        aumentarIvaSiNO=-1;
+        aumentarIvaSiNO = -1;
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        aumentarIvaSiNO=0;
+        aumentarIvaSiNO = 0;
         operacionFacturauPDATEandAddRowrs();
-        aumentarIvaSiNO=-1;
+        aumentarIvaSiNO = -1;
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    public static void llenarCompraviaclaveAcceso() {
+        if (txt_numAutorizacion.getText().length() == 49) {
+            if (ValidaNUmeros.isOnlyNumbers(txt_numAutorizacion.getText()) && (txt_numAutorizacion.getText().length() == 49)) {
+                limpiarIntefazVentas();
+                ComprasDao cDao = new ComprasDao();
+                if (cDao.buscarbyCLaveAcceso(txt_numAutorizacion.getText()) != null) {
+                    ProgressBar.mostrarMensajeAzul("Clave de Acceso ya esta registrada");
+                } else {
+                    OperacionesForms.solocrearFacturaNOgenerrarPDF = false;
+                    String rpta = Leertxt.descargarXMLformSRItoFileXMLandPFDenUnSoloPasoEMITIDOSlista(txt_numAutorizacion.getText());
+                    if (!rpta.equalsIgnoreCase("error")) {
+                        Factura f = new Factura();
+                        f = Leertxt.facturaElectronica;
+                        // Leertxt.registrarcompradesdesriconCLavedeAcceso(f);
+                        txt_cedula.setText(f.getRUC());
+                        //  pROVE
+                        txt_dir.setText(f.getDirMatriz());
+                        txt_nombres.setText(f.getRazonSocial());
+                        txt_sec1.setText(f.getEstab());
+                        txt_sec2.setText(f.getPtoEmi());
+                        txt_secNUmFac.setText(f.getSecuencia());
+                        jdfecha.setDateFormatString(f.getFechaEmision());
+                        ////codigo prveedro
+                        Clientes c = new Clientes();
+                        ClientesDao cliDao = new ClientesDao();
+                        c = cliDao.buscarConCedula(f.getRUC(), 1);
+                        ///compras
+                        ComprasDao facDao = new ComprasDao();
+                        //FacturasDao facDao = new FacturasDao();
+                        for (Detalle d : f.getDetalles()) {
+                            modelo.addRow(facDao.Buscar_registrosfacxml_prodInternos(d, Principal.bodegaPredeterminadaenCOmpra.substring(0, 1), codigoClienteCompra));
+
+                        }
+                        jTable1.setModel(modelo);
+                        ////
+                        /// valida si exite registrador el proveedor
+                        txt_cedula.grabFocus();
+                        //     Clientes c = new Clientes();
+                        //     ClientesDao cliDao = new ClientesDao();
+                        //    if (!cliDao.buscarClienteRegistrado(txt_cedula.getText(), 1)) {
+////                            ClientesDao cliDao2 = new ClientesDao();
+////                            c.setCedula(f.getRUC());
+////                            c.setNombre(f.getRazonSocial());
+////                            c.setObservaciones(f.getNombreComercial());
+////                            c.setDireccion(f.getDirEstablecimiento());
+////                            c.setProveedor(1);
+////                            // c.setMail(f.getInfoAdicionalEmail());
+////
+////                            codigoClienteCompra = cliDao2.guardar(c);
+////
+////                            if (codigoClienteCompra != 0) {
+////                                txt_clienteCodigo.setText(codigoClienteCompra.toString());
+////                            } else {
+////                                ProgressBar.mostrarMensajeAzul("Errror al crear Nuevo Proveedor, por favor crear manualmente y volver a cargar la compra");
+////                            }
+                        //      txt_cedula.setBackground(Color.red);
+                        //     txt_nombres.setText(f.getRUC());
+                        //    }
+//                    txtBuscar2.grabFocus();
+
+                        ////////////////
+////                    if (c.getImagen() != null) {
+////                        ImageIcon icon = new ImageIcon(c.getImagen());
+////                        Icon icono = new ImageIcon(icon.getImage().getScaledInstance(251, 205, Image.SCALE_DEFAULT));
+////                        foto.setText(null);
+////                        foto.setIcon(icono);
+////                    } else {
+////                        foto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/producto.jpg")));
+////                    }
+                        ///
+                    } else {
+                        ProgressBar.mostrarMensajeAzul("SRI NO DEVOLVIO NADA..");
+                        txt_numAutorizacion.selectAll();
+                    }
+
+                }
+            } else {
+                ProgressBar.mostrarMensajeAzul("clave de acceso mal fomada");
+                txt_numAutorizacion.selectAll();
+            }
+
+        }
+    }
+
+    public static void llenarCompraviaclaveAccesoVerificaExistenciadePRoveedor() {
+        if (txt_numAutorizacion.getText().length() == 49) {
+            if (ValidaNUmeros.isOnlyNumbers(txt_numAutorizacion.getText()) && (txt_numAutorizacion.getText().length() == 49)) {
+                limpiarIntefazVentas();
+                ComprasDao cDao = new ComprasDao();
+                if (cDao.buscarbyCLaveAcceso(txt_numAutorizacion.getText()) == null) {
+                    // ProgressBar.mostrarMensajeAzul("Clave de Acceso ya esta registrada");
+                    ///txt_numAutorizacion.setBackground(java.awt.Color.yellow);
+                    //jButton1.setEnabled(false);
+                    //} else {
+                    OperacionesForms.solocrearFacturaNOgenerrarPDF = false;
+                    String rpta = Leertxt.descargarXMLformSRItoFileXMLandPFDenUnSoloPasoEMITIDOSlista(txt_numAutorizacion.getText());
+                    if (!rpta.equalsIgnoreCase("error")) {
+                        Factura f = new Factura();
+                        f = Leertxt.facturaElectronica;
+                        ClientesDao cliDao = new ClientesDao();
+                        Clientes c = new Clientes();
+                        if (c.getCedula() != null) {
+
+                            // Leertxt.registrarcompradesdesriconCLavedeAcceso(f);
+                            c = cliDao.buscarConCedula(f.getRUC(), 1);
+                            txt_cedula.setText(c.getCedula());
+                            codigoClienteCompra = c.getCodigo();
+                            //  pROVE
+                            txt_dir.setText(c.getDireccion());
+                            txt_nombres.setText(c.getNombre());
+                            txt_sec1.setText(f.getEstab());
+                            txt_sec2.setText(f.getPtoEmi());
+                            txt_secNUmFac.setText(f.getSecuencia());
+                            jdfecha.setDateFormatString(f.getFechaEmision());
+
+                            ///compras
+                            ComprasDao facDao = new ComprasDao();
+                            //FacturasDao facDao = new FacturasDao();
+                            for (Detalle d : f.getDetalles()) {
+                                modelo.addRow(facDao.Buscar_registrosfacxml_prodInternos(d, Principal.bodegaPredeterminadaenCOmpra.substring(0, 1), c.getCodigo()));
+
+                            }
+                            jTable1.setModel(modelo);
+                            ////
+                            /// valida si exite registrador el proveedor
+                            //    txt_nombres.grabFocus();
+                        } else {
+                            txt_nombres.setText(f.getRUC());
+                        }
+
+                        txt_nombres.grabFocus();
+                    } else {
+                        ProgressBar.mostrarMensajeAzul("SRI NO DEVOLVIO NADA..");
+                        txt_numAutorizacion.selectAll();
+                    }
+
+                } else {
+                    ProgressBar.mostrarMensajeAzul("CLave registrada");
+                }
+            } else {
+                ProgressBar.mostrarMensajeAzul("clave de acceso mal fomada");
+                txt_numAutorizacion.selectAll();
+            }
+
+        }
+    }
+
+
+    private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_formInternalFrameClosed
+
+    private void txtBuscar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscar2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscar2ActionPerformed
+
+    private void txt_numAutorizacionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_numAutorizacionKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
+
+        }
+    }//GEN-LAST:event_txt_numAutorizacionKeyPressed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        if (txt_numAutorizacion.getText().length() == 49) {
+            OperacionesForms.solocrearFacturaNOgenerrarPDF = true;
+
+            Leertxt.descargarXMLformSRItoFileXMLandPFDenUnSoloPasoclickjtable(txt_numAutorizacion.getText());
+
+            String file = OperacionesForms.rutadocPDFgeneradook;//Config.AUTORIZADOS_DIR +claveAcceso + ".pdf";
+            JOptionPane.showMessageDialog(null, file);
+            //definiendo la ruta en la propiedad file
+            try {
+                Deb.consola("ruta file pdf:  " + file);
+                Runtime.getRuntime().exec("cmd /c start " + file);
+            } catch (Exception e) {
+                ProgressBar.mostrarMensajeRojo("Error al abrir el PDF :" + e.toString());
+            }
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        Frame frame = JOptionPane.getFrameForComponent(this);
+        JDclaveAccesoCOmprasSRI pcdialog = new JDclaveAccesoCOmprasSRI(frame, true);
+        pcdialog.setLocationRelativeTo(frame);
+        pcdialog.setVisible(true);
+
+    }//GEN-LAST:event_jButton7ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -2117,13 +2546,14 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -2135,7 +2565,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel2;
+    private static javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
@@ -2145,33 +2575,32 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable jTable1;
     public static javax.swing.JComboBox<String> jcbFormasPago;
-    private javax.swing.JComboBox<String> jcbPVPs;
-    private javax.swing.JComboBox<String> jcb_sustentoComprobante;
-    private javax.swing.JComboBox<String> jcb_tipoComprobante;
-    private com.toedter.calendar.JDateChooser jdfecha;
-    private javax.swing.JLabel lbl_Iva;
-    private javax.swing.JLabel lbl_subTotalIva;
-    private javax.swing.JLabel lbl_subTotalIva1;
-    private javax.swing.JLabel lbl_subTotalIva2;
+    private static javax.swing.JComboBox<String> jcb_sustentoComprobante;
+    private static javax.swing.JComboBox<String> jcb_tipoComprobante;
+    private static com.toedter.calendar.JDateChooser jdfecha;
+    private static javax.swing.JLabel lbl_Iva;
+    private static javax.swing.JLabel lbl_subTotalIva;
+    private static javax.swing.JLabel lbl_subTotalIva1;
+    private static javax.swing.JLabel lbl_subTotalIva2;
     private javax.swing.JTextField txtBuscar2;
     public static javax.swing.JTextField txt_cedula;
     public static javax.swing.JTextField txt_celular;
-    private javax.swing.JLabel txt_clienteCodigo;
-    private javax.swing.JTextField txt_descuentoGenral;
+    private static javax.swing.JLabel txt_clienteCodigo;
+    private static javax.swing.JTextField txt_descuentoGenral;
     public static javax.swing.JTextField txt_dir;
     public static javax.swing.JLabel txt_hora;
-    private javax.swing.JLabel txt_iva_valor;
+    private static javax.swing.JLabel txt_iva_valor;
     public static javax.swing.JTextField txt_nombres;
-    private javax.swing.JTextField txt_numAutorizacion;
+    public static javax.swing.JTextField txt_numAutorizacion;
     public static javax.swing.JTextField txt_sec1;
     public static javax.swing.JTextField txt_sec2;
     public static javax.swing.JTextField txt_secNUmFac;
-    private javax.swing.JLabel txt_subtotal;
-    private javax.swing.JLabel txt_subtotalIvaValor;
-    private javax.swing.JLabel txt_subtotalIvaValorCero;
-    private javax.swing.JLabel txt_total_;
-    private javax.swing.JLabel txt_total_val;
-    private javax.swing.JLabel txt_usuarioCodigo;
-    private javax.swing.JLabel txt_utilidad;
+    private static javax.swing.JLabel txt_subtotal;
+    private static javax.swing.JLabel txt_subtotalIvaValor;
+    private static javax.swing.JLabel txt_subtotalIvaValorCero;
+    private static javax.swing.JLabel txt_total_;
+    private static javax.swing.JLabel txt_total_val;
+    private static javax.swing.JLabel txt_usuarioCodigo;
+    private static javax.swing.JLabel txt_utilidad;
     // End of variables declaration//GEN-END:variables
 }

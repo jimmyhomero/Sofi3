@@ -57,16 +57,16 @@ public class ClientFormLogin {
             try {
                 HttpEntity entity = response1.getEntity();
 
-                System.out.println("Login form get: " + response1.getStatusLine());
+                Deb.consola("Login form get: " + response1.getStatusLine());
                 EntityUtils.consume(entity);
 
-                System.out.println("Initial set of cookies:");
+                Deb.consola("Initial set of cookies:");
                 List<Cookie> cookies = cookieStore.getCookies();
                 if (cookies.isEmpty()) {
-                    System.out.println("None");
+                    Deb.consola("None");
                 } else {
                     for (int i = 0; i < cookies.size(); i++) {
-                        System.out.println("- " + cookies.get(i).toString());
+                        Deb.consola("- " + cookies.get(i).toString());
                     }
                 }
             } finally {
@@ -82,16 +82,16 @@ public class ClientFormLogin {
             try {
                 HttpEntity entity = response2.getEntity();
 
-                System.out.println("Login form get: " + response2.getStatusLine());
+                Deb.consola("Login form get: " + response2.getStatusLine());
                 EntityUtils.consume(entity);
 
-                System.out.println("Post logon cookies:");
+                Deb.consola("Post logon cookies:");
                 List<Cookie> cookies = cookieStore.getCookies();
                 if (cookies.isEmpty()) {
-                    System.out.println("None");
+                    Deb.consola("None");
                 } else {
                     for (int i = 0; i < cookies.size(); i++) {
-                        System.out.println("- " + cookies.get(i).toString());
+                        Deb.consola("- " + cookies.get(i).toString());
                     }
                 }
             } finally {

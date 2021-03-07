@@ -6,6 +6,7 @@
 package Vista.Usuarios;
 
 import ClasesAuxiliares.MaquinaDao;
+import ClasesAuxiliares.debug.Deb;
 import ClasesAuxiliares.NewConfigfile;
 import Controlador.Coneccion;
 import Controlador.Ejemplo;
@@ -64,7 +65,7 @@ public class NuevoEquipobk extends javax.swing.JDialog {
         lista = cajaDao.listar();
         for (Cajas cajas : lista) {
             jComboBox1.addItem(cajas.getCaja());
-            System.out.println("Cajassss: " + cajas.getCaja());
+            Deb.consola("Cajassss: " + cajas.getCaja());
         }
         BodegasDao bDao = new BodegasDao();
         listBodegas = bDao.listar();
@@ -397,7 +398,7 @@ public class NuevoEquipobk extends javax.swing.JDialog {
                         String cmd = Ejemplo.jarExec; //Comando de apagado en linux
                         Runtime.getRuntime().exec(cmd);
                     } catch (IOException ioe) {
-                        System.out.println(ioe);
+                        Deb.consola(ioe);
                     }
                     dispose();
                 } else {
@@ -451,7 +452,7 @@ public class NuevoEquipobk extends javax.swing.JDialog {
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         // TODO add your handling code here:
-        System.out.println("Vista.Usuarios.SelectCaja.jComboBox1ItemStateChanged()se ha seleccinadosss");
+        Deb.consola("Vista.Usuarios.SelectCaja.jComboBox1ItemStateChanged()se ha seleccinadosss");
         if (jComboBox1.getSelectedItem() != null) {
             for (Cajas cajas : lista) {
                 if (jComboBox1.getSelectedItem().toString().equals(cajas.getCaja())) {

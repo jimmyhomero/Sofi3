@@ -5,8 +5,10 @@
  */
 package Vista.Usuarios;
 
+import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
 import ClasesAuxiliares.Variables;
 import Controlador.Ejemplo;
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Usuarios.ClientesDao;
 import Controlador.Usuarios.DetalleFacturaDao;
 import Controlador.Usuarios.FacturasDao;
@@ -15,14 +17,16 @@ import Controlador.Usuarios.ImpresionDao;
 import Controlador.Usuarios.MarcasDao;
 import Controlador.Usuarios.ModelosDao;
 import Controlador.Usuarios.ProductosDao;
+import Controlador.Usuarios.cxcDao;
 import Modelo.Clientes;
+import Modelo.Cxc;
 import Modelo.DetalleFactura;
 import Modelo.Facturas;
 import Modelo.Marcas;
 import Modelo.Modelos;
 import Vista.Principal;
 import static Vista.Principal.desktopPane;
-import static Vista.Usuarios.Crear_Facturas.secuenciaFac;
+import static Vista.Usuarios.Modal_CrearFacturas.secuenciaFac;
 import Vlidaciones.ProgressBar;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -46,8 +50,6 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
     /**
      * Creates new form FBUsuarios
      */
-   
-    
     Integer clicJtable = -1;
     Integer rowSeleccionadaJTable = -1;
     Facturas facturas1 = new Facturas();
@@ -60,16 +62,16 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
     // String sql_all = "select usuarios.*,tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo order BY usuarios.Nombres LIMIT 0, 50";
     //CUsuarios obj = new CUsuarios();
     public BuscarFacturas() {
-        
+
         initComponents();
 //this.setSize(1024, 720);
         this.setSize(1098, 695);
-        
+
         String[] titulos
                 = {"Codigo", "Fecha", "Numero de Factura", "Total",
                     "Vendedor", "Terminal",
                     "Cliente", "Ruc", "Estado"};
-        
+
         modelo = new DefaultTableModel(null, titulos) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -96,7 +98,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
 //        llenarjtable();
 //this.setMaximum(true);
     }
-    
+
     public void llenarjtable() {
         jTable1.setModel(modelo);
         jTable1.setRowHeight(25);
@@ -105,11 +107,11 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
         FacturasDao obj = new FacturasDao();
         String fechaInicio = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserdesde.getDate().toString());
         String fechaFIn = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserhasta.getDate().toString());
-        
+
         jTable1.setModel(obj.listarFacturasTbModel(fechaInicio, fechaFIn, tipo_doc_seleccionado));
         this.ocultarFIlasJtable();
     }
-    
+
     private void setFechayHoraActualJDChooser() {
         HoraFecha ob = new HoraFecha();
         ob.getHoraActualmyMachine();
@@ -117,7 +119,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
         Date fin = ob.fechaActual_23_59_59();
         jdchoserdesde.setDate(inicio);
         jdchoserhasta.setDate(fin);
-        
+
     }
 
     /**
@@ -155,7 +157,6 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel7 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         btn_Eliminar = new javax.swing.JButton();
         btn_mostrarAll1 = new javax.swing.JButton();
@@ -191,7 +192,6 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
         });
-        getContentPane().setLayout(null);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -382,12 +382,8 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
 
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(901, 10, 130, -1));
 
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(10, 10, 1040, 125);
-
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Listar Productos"));
         jPanel2.setAutoscrolls(true);
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -404,7 +400,6 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
 
             }
         ));
-        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         jTable1.setColumnSelectionAllowed(true);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -414,12 +409,16 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 31, 1050, 360));
-
-        getContentPane().add(jPanel2);
-        jPanel2.setBounds(0, 145, 1070, 410);
-        getContentPane().add(jLabel7);
-        jLabel7.setBounds(449, 824, 90, 24);
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+        );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -489,7 +488,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
-                .addContainerGap(192, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -506,8 +505,34 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel6);
-        jPanel6.setBounds(10, 570, 1060, 70);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(2, 2, 2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -516,7 +541,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_txt_xclienteKeyPressed
-    
+
     private void ocultarFIlasJtable() {
         jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
         jTable1.getColumnModel().getColumn(0).setMinWidth(0);
@@ -557,7 +582,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
         this.ocultarFIlasJtable();
         ///
     }//GEN-LAST:event_txt_xMontoKeyReleased
-    
+
     private Integer llenarjcbSelectedItemMarca(String name) {
         Integer codigo_Mrca = null;
         //Productos onj = new Productos();
@@ -572,14 +597,14 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
                 //Crear_Usuarios.jcb_tipo.setSelectedItem(0);
                 Crear_Productos.setItemSelectMarcas = ob;
 
-                //    System.out.println("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
+                //    Deb.consola("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
             }
-            
+
         }
-        
+
         return codigo_Mrca;
     }
-    
+
     private Integer llenarjcbSelectedItemModelo(String name) {
         Integer codigo_Modelo = null;
         //Productos onj = new Productos();
@@ -594,11 +619,11 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
                 //Crear_Usuarios.jcb_tipo.setSelectedItem(0);
                 Crear_Productos.setItemSelectModelo = ob;
 
-                //  System.out.println("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + mode.getTipo());
+                //  Deb.consola("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + mode.getTipo());
             }
-            
+
         }
-        
+
         return codigo_Modelo;
     }
 
@@ -611,61 +636,80 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
         rowSeleccionadaJTable = row;
 //////////////        int col = jTable1.getSelectedColumn();
 //////////////        modelo = (DefaultTableModel) jTable1.getModel();
-//////////////        System.out.println("row: " + row);
-//////////////        System.out.println("col: " + col);
+//////////////        Deb.consola("row: " + row);
+//////////////        Deb.consola("col: " + col);
         Integer codigoSeleccionado = Integer.parseInt(modelo.getValueAt(row, 0).toString());
-//////////////        System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()codiggo>:" + modelo.getValueAt(row, 0));
-//////////////        // System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()codigo seleccionado: "+cofigoFactSeleccionado);
+//////////////        Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()codiggo>:" + modelo.getValueAt(row, 0));
+//////////////        // Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()codigo seleccionado: "+cofigoFactSeleccionado);
 
-        FacturasDao facDao = new FacturasDao();
-        facturas1 = facDao.buscarConID(codigoSeleccionado);
-        
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            System.out.println("BOTON 1");
-            System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
+            Deb.consola("BOTON 1");
+            Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
             // operacionFacturauPDATEandAddRowrs();
         }
         if (evt.getButton() == MouseEvent.BUTTON2) {
-            System.out.println("BOTON 2");
+            Deb.consola("BOTON 2");
         }
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            System.out.println("BOTON 3");
+            Deb.consola("BOTON 3");
         }
+
         try {
-            System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
+            Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
             if (jTable1.getSelectedRow() != -1) {
                 // remove selected row from the model
                 if (jTable1.getRowCount() > 0) {
                     if (evt.getClickCount() == 2) {
-                        ProgressBar.mostrarMensajeAzul(String.valueOf(Modal_CrearNotaCredito.seleccionafacturadesdeNotaCredito));
+                        FacturasDao facDao = new FacturasDao();
+                        facturas1 = facDao.buscarConIDFacurasParagenerarNC(codigoSeleccionado);
+
+                        String secuenciax = facturas1.getEstablecimiento() + "-" + facturas1.getPtoEmision() + "-" + facturas1.getSecfactura();
+                        //    ProgressBar.mostrarMensajeAzul(String.valueOf(Modal_CrearNC.seleccionafacturadesdeNotaCredito));
                         /*Si se busca la factura desde crearNota de credito hace la nota, caso contrario solo muestra detalle factura en jasperview*/
-                        if (Modal_CrearNotaCredito.seleccionafacturadesdeNotaCredito) {
-                            Modal_CrearNotaCredito.txt_numeroFacaafectarNotaCredito.setText(facturas1.getEstablecimiento()+"-"+facturas1.getPtoEmision()+"-"+facturas1.getSecfactura());
-                            Modal_CrearNotaCredito.idFacturaSeleccionadaDesdeListadeFacturasParaNotaCredito=facturas1.getCodigo();
-                            Modal_CrearNotaCredito.seleccionafacturadesdeNotaCredito = false;  
-                            this.dispose();
+                        if (Modal_CrearNC.seleccionafacturadesdeNotaCredito) {
+                            Clientes cli = new Clientes();
+                            ClientesDao clidao = new ClientesDao();
+                            cli = clidao.buscarConID(facturas1.getClientes_codigo());
+                            if (!cli.getCedula().contains(OperacionesForms._CONSUMIDOR_FINAL_RUC)) {
+                                if (!facturas1.isAnulada()) {
+
+                                    Modal_CrearNC.txt_numeroFacaafectarNotaCredito.setText(secuenciax);
+                                    Modal_CrearNC.idFacturaSeleccionadaDesdeListadeFacturasParaNotaCredito = facturas1.getCodigo();
+                                    Modal_CrearNC.ValorAfectadoNotaCreditoFacturaSeleccionadaDesdeListadeFacturasParaNotaCredito = facturas1.getValorAfectadoxNCenFactura();
+                                    Modal_CrearNC.ValorTotalFacturaSeleccionadaDesdeListadeFacturasParaNotaCredito = facturas1.getTotal();
+                                    Modal_CrearNC.llenacamposNC();
+                                    Modal_CrearNC.seleccionafacturadesdeNotaCredito = false;
+                                    this.dispose();
+                                } else {
+                                    ProgressBar.mostrarMensajeAzul("LA FACTURA ESTA ANULADA");
+                                }
+                            } else {
+                                
+                                ProgressBar.mostrarMensajeAzul("NO SE PERMITE REALIZAR NOTAS DE CREDITO A CONSUMIDOR FINAL");
+                            }
+
                         } else {
                             String rutaInforme = Ejemplo.factura2;
                             Map parametros = new HashMap();
                             parametros.put("numeroFactura", modelo.getValueAt(row, 2).toString());
-                            System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
+                            Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
                             ImpresionDao imp = new ImpresionDao();
                             imp.getShowReport(parametros, rutaInforme);
                         }
-                        
+
                     }
                     if (evt.getClickCount() == 1) {
                         secfacturareimpprimr = modelo.getValueAt(row, 2).toString();
-                        
+
                     }
-                    
+
                 }
             }
-            
+
         } catch (Exception e) {
             msg.setMensaje(e.toString());
         }
-        
+
         if (evt.getClickCount() == 2) {
 //llenasmos JCBOX marcas        
             Marcas obj = new Marcas();
@@ -698,7 +742,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
         Date date1 = new Date();
         Date date2 = new Date();
         String fechaInicio = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserdesde.getDate().toString());
-        
+
         String fechaFIn = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserhasta.getDate().toString());
 
         //String rutaInforme = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\report1.jasper";
@@ -710,7 +754,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
         utilDate2 = jdchoserhasta.getDate();
         java.sql.Timestamp a = new java.sql.Timestamp(utilDate1.getTime());
         java.sql.Timestamp b = new java.sql.Timestamp(utilDate2.getTime());
-        
+
         parametros.put("s1", a);
         parametros.put("s2", b);
         //JOptionPane.showConfirmDialog(rootPane, a +"--"+b);
@@ -794,7 +838,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
     private void btn_MostrarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_MostrarTodoActionPerformed
         // TODO add your handling code here:
         ProductosDao objDao = new ProductosDao();
-        
+
         jTable1.setModel(objDao.Buscar_table_only_Activos());
         this.ocultarFIlasJtable();
         ///
@@ -816,14 +860,14 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
                         String fechaFIn = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserhasta.getDate().toString());
                         jTable1.setModel(obj.listarFacturasTbModel(fechaInicio, fechaFIn, tipo_doc_seleccionado));
                         this.ocultarFIlasJtable();
-                        
+
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(Buscar_usuarios.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
             } else {
-                
+
             }
         }
     }//GEN-LAST:event_btn_EliminarActionPerformed
@@ -851,7 +895,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
     private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
         // TODO add your handling code here:
         if (jdchoserdesde.getDate().before(jdchoserhasta.getDate())) {
-            
+
             FacturasDao obj = new FacturasDao();
             String fechaInicio = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserdesde.getDate().toString());
             String fechaFIn = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserhasta.getDate().toString());
@@ -887,12 +931,12 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
             Clientes cli = new Clientes();
             fac = fdao.buscarConID(codigoFac);
             cli = cdao.buscarConID(fac.getClientes_codigo(), 0);
-            
+
             String[] titulos
                     = {"costo", "#", "Codigo", "ARTICULO", "CANTIDAD",
                         "DESCUENTO", "BODEGA",
                         "P. UNIT", "P. TOTAL", "CANTIDAD"};
-            
+
             modelonow = new DefaultTableModel(null, titulos) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
@@ -903,7 +947,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
             };
 
             // Crear_Facturas.jTable1.setModel(modelo);
-            Crear_Facturas cf = new Crear_Facturas();
+            Modal_CrearFacturas cf = new Modal_CrearFacturas();
             cf.txt_cedula.setText(cli.getCedula());
             if (cli.getCelular().equalsIgnoreCase("")) {
                 cf.txt_celular.setText(cli.getTelefono());
@@ -924,8 +968,8 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
             cf.txt_descuentoGenral.setText(fac.getDescuento());
             cf.txt_usuarioCodigo.setText(fac.getUsuarios_Codigo().toString());
             cf.txt_utilidad.setText(fac.getUtilidad());
-            cf.utilidad = Double.parseDouble(fac.getUtilidad());            
-            
+            cf.utilidad = Double.parseDouble(fac.getUtilidad());
+
             if (fac.getTipo_documento().equalsIgnoreCase("FACTURA")) {
             }
             cf.check_Fac.setSelected(true);
@@ -937,16 +981,16 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
             }
 ////////////
             DetalleFacturaDao detFacdao = new DetalleFacturaDao();
-            
-            cf.setModeloColumnas(cf.jTable1);
+
+            cf.setModeloColumnas(jTable1, 1);
             ///     modelonow = detFacdao.getDetalleFacutraByIdFactura(codigoFac);
-            
+
             cf.jTable1.setModel(modelonow);
             //   cf.modelo=(DefaultTableModel) cf.jTable1.getModel();
             // cf.jTable1.setModel(modelonow);
             desktopPane.add(cf);
             cf.setVisible(true);
-            System.out.println("CLiente: " + fac.getUsuarios_Codigo());
+            Deb.consola("CLiente: " + fac.getUsuarios_Codigo());
         }
 
     }//GEN-LAST:event_btn_copiarFacturaActionPerformed
@@ -959,8 +1003,8 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
         } else {
             HashMap parametros = new HashMap();
             String template = Variables.DIR_REPORTE_FACTURA;
-            
-            System.out.println("Ruta Archivo: " + template);
+
+            Deb.consola("Ruta Archivo: " + template);
             parametros.put("numeroFactura", secfacturareimpprimr);
             ImpresionDao imp = new ImpresionDao();
             //imp.getShowReport(parametros, rutaInforme);
@@ -968,7 +1012,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
             imp.impresionDontShowReport(parametros, template);
             // imp.impresionDontShowReport(parametros, rutaInforme);
         }
-        
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -1007,7 +1051,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
             if (fdao.UpdateAnuladoComprobantedeVenta(codigoFac)) {
                 codigoFac = null;
                 if (jdchoserdesde.getDate().before(jdchoserhasta.getDate())) {
-                    
+
                     FacturasDao obj = new FacturasDao();
                     String fechaInicio = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserdesde.getDate().toString());
                     String fechaFIn = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserhasta.getDate().toString());
@@ -1016,7 +1060,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
                 } else {
                     msg.setProgressBar(3000, "Ranngo Errado!! Fecha de Inicio es Mayor a la del Final...");
                 }
-                
+
             } else {
                 JOptionPane.showMessageDialog(null, "Error al intenta anular " + tipo_doc_seleccionado);
             }
@@ -1046,7 +1090,6 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

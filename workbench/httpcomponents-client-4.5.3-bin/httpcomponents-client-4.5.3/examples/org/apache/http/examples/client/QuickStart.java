@@ -55,7 +55,7 @@ public class QuickStart {
             // connection cannot be safely re-used and will be shut down and discarded
             // by the connection manager.
             try {
-                System.out.println(response1.getStatusLine());
+                Deb.consola(response1.getStatusLine());
                 HttpEntity entity1 = response1.getEntity();
                 // do something useful with the response body
                 // and ensure it is fully consumed
@@ -72,7 +72,7 @@ public class QuickStart {
             CloseableHttpResponse response2 = httpclient.execute(httpPost);
 
             try {
-                System.out.println(response2.getStatusLine());
+                Deb.consola(response2.getStatusLine());
                 HttpEntity entity2 = response2.getEntity();
                 // do something useful with the response body
                 // and ensure it is fully consumed

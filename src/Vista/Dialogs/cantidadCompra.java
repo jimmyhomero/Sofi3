@@ -5,10 +5,10 @@
  */
 package Vista.Dialogs;
 
-import Vista.Usuarios.Crear_Compras;
 import Vista.Usuarios.Modal_Crear_compras;
 import Vlidaciones.ValidaNUmeros;
 import java.awt.event.KeyEvent;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -101,7 +101,7 @@ public class cantidadCompra extends javax.swing.JDialog {
                 if (ValidaNUmeros.isOnlyDouble(txt_cantidad.getText())) {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 Double val = Double.parseDouble(txt_cantidad.getText());
-                System.out.println("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + val);
+                Deb.consola("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + val);
                 Modal_Crear_compras.cantidadEnviadadesdeDialog = Double.parseDouble(String.format("%.4f", val).replace(",", "."));
                 this.dispose();
             }

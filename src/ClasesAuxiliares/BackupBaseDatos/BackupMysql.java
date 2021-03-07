@@ -5,6 +5,7 @@
  */
 package ClasesAuxiliares.BackupBaseDatos;
 
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Coneccion;
 import Controlador.Usuarios.HoraFecha;
 import Vista.Backup.Crear_Backup;
@@ -43,7 +44,7 @@ public static void respaldar(String ruta,String gestorBd) {
             /* La linea de comando completa que ejecutara el programa*/
             //String command = "C:\\xampp\\mysql\\bin\\mysqldump --host " + dbServer + " -u " + dbUser + " -p" + dbPass + " " + dbName + " -r " + sqlFile;
             String command = gestorBd+" --host " + dbServer + " -u " + dbUser + " -p" + dbPass + " " + dbName + " -r " + sqlFile;
-            System.out.println("ClasesAuxiliares.BackupBaseDatos.BackupMysql.respaldar(): "+command);
+            Deb.consola("ClasesAuxiliares.BackupBaseDatos.BackupMysql.respaldar(): "+command);
             /*Se crea un proceso que ejecuta el comando dado*/
             Process bck = Runtime.getRuntime().exec(command);
             
@@ -62,18 +63,18 @@ public static void respaldar(String ruta,String gestorBd) {
             BufferedReader brCleanUp = new BufferedReader(new InputStreamReader(stdout));
             
             while ((line = brCleanUp.readLine()) != null) {
-                System.out.println(line);
+                Deb.consola(line);
                 Crear_Backup.jtex1.append(line);
             }                       
             brCleanUp.close();
             
             if (resultado == 0) {
-                System.out.println("Respaldo exitoso");
+                Deb.consola("Respaldo exitoso");
             } else {
-                System.out.println("Error al respaldar");
+                Deb.consola("Error al respaldar");
             }
         } catch (IOException | InterruptedException ex) {
-            System.out.println("Exception: " + ex.getMessage());
+            Deb.consola("Exception: " + ex.getMessage());
         }
     }
  

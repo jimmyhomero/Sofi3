@@ -14,6 +14,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -45,13 +46,13 @@ public class CrearPermisosRol2 extends javax.swing.JInternalFrame {
         
         cbt.addCheckChangeEventListener(new JCheckBoxTree.CheckChangeEventListener() {
             public void checkStateChanged(JCheckBoxTree.CheckChangeEvent event) {
-                System.out.println("event");
+                Deb.consola("event");
                 TreePath[] paths = cbt.getCheckedPaths();
                 for (TreePath tp : paths) {
                     for (Object pathPart : tp.getPath()) {
                         System.out.print(pathPart + ",");
                     }                   
-                    System.out.println();
+                    Deb.consola();
                 }
             }           
         });       

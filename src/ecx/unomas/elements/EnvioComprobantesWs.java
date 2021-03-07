@@ -8,6 +8,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.xml.namespace.QName;
+import ClasesAuxiliares.debug.Deb;
 
 public class EnvioComprobantesWs {
 
@@ -26,19 +27,19 @@ public class EnvioComprobantesWs {
             byte[] archivoBytes = ArchivoUtil.convertirArchivoAByteArray(xmlFile);
             if (archivoBytes != null) {
                 response = port.validarComprobante(archivoBytes);
-                System.out.println("Msaje del SRI : "+response.getEstado());
+                Deb.consola("Msaje del SRI : "+response.getEstado());
                // Comprobante a = new Comprobante();
                 for(Comprobante a : response.getComprobantes().getComprobante()){
-                  System.out.println("Clave de Acceso: "+a.getClaveAcceso());
-                System.out.println("Mensajes SRi: "+a.getMensajes().getMensaje().get(0).getMensaje());
-                System.out.println("Mensajes SRi: "+a.getMensajes().getMensaje().get(0).getIdentificador());
-                System.out.println("Mensajes SRi: "+a.getMensajes().getMensaje().get(0).getTipo());
-                System.out.println("Mensajes SRi: "+a.getMensajes().getMensaje().get(0).getInformacionAdicional());
-                //System.out.println("Mensajes msg1: "+a.getMensajes().getMensaje().get(1));
-                //System.out.println("Mensajes msg 2: "+a.getMensajes().getMensaje().get(3));
+                  Deb.consola("Clave de Acceso: "+a.getClaveAcceso());
+                Deb.consola("Mensajes SRi: "+a.getMensajes().getMensaje().get(0).getMensaje());
+                Deb.consola("Mensajes SRi: "+a.getMensajes().getMensaje().get(0).getIdentificador());
+                Deb.consola("Mensajes SRi: "+a.getMensajes().getMensaje().get(0).getTipo());
+                Deb.consola("Mensajes SRi: "+a.getMensajes().getMensaje().get(0).getInformacionAdicional());
+                //Deb.consola("Mensajes msg1: "+a.getMensajes().getMensaje().get(1));
+                //Deb.consola("Mensajes msg 2: "+a.getMensajes().getMensaje().get(3));
                     
-                System.out.println("Msaje del SRI : "+response.getComprobantes().getComprobante().toString());
-                System.out.println("Msaje del SRI : "+response.getEstado());
+                Deb.consola("Msaje del SRI : "+response.getComprobantes().getComprobante().toString());
+                Deb.consola("Msaje del SRI : "+response.getEstado());
                 }
               
               

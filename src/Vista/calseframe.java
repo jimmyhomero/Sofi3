@@ -7,11 +7,11 @@ package Vista;
 
 import Controlador.Usuarios.Permisos_UsuariosDao;
 import Controlador.Usuarios.Tipo_UsuariosDao;
+import ClasesAuxiliares.debug.Deb;
 import Modelo.Menu;
 import Modelo.Permisos_Usuarios;
 import Modelo.Tipo_Usuario;
 import Vista.Usuarios.Modal_CrearFacturas;
-import Vista.Usuarios.Modal_CrearFacturas2;
 import static Vista.jc.X;
 import static Vista.jc.X2;
 import static Vista.jc.Y;
@@ -43,13 +43,13 @@ public class calseframe extends javax.swing.JInternalFrame {
         ////////////
         jTree1.addCheckChangeEventListener(new JCheckBoxTree.CheckChangeEventListener() {
             public void checkStateChanged(JCheckBoxTree.CheckChangeEvent event) {
-                System.out.println("event");
+                Deb.consola("event");
                 TreePath[] paths = jTree1.getCheckedPaths();
                 for (TreePath tp : paths) {
                     for (Object pathPart : tp.getPath()) {
                         System.out.print(pathPart + ",");
                     }
-                    System.out.println();
+                    Deb.consola();
                 }
             }
         });
@@ -66,7 +66,7 @@ public class calseframe extends javax.swing.JInternalFrame {
 
         for (TreePath checkedPath : jTree1.getCheckedPaths()) {
 
-            System.out.println("Vista.calseframe.sss():  " + checkedPath.getPath());
+            Deb.consola("Vista.calseframe.sss():  " + checkedPath.getPath());
         }
     }
 
@@ -188,14 +188,14 @@ public class calseframe extends javax.swing.JInternalFrame {
         jc.X2 =jc.desktopPane.getBounds().width;
         jc.Y2 =jc.desktopPane.getBounds().height;
         
-        System.out.println("ANTES: "+this.getBounds().toString());
-         System.out.println("DIMENSION: " + jc.X + "-" + jc.Y + "-" + jc.X2 + "-" + jc.Y2);
+        Deb.consola("ANTES: "+this.getBounds().toString());
+         Deb.consola("DIMENSION: " + jc.X + "-" + jc.Y + "-" + jc.X2 + "-" + jc.Y2);
      //   this.setSize(new Dimension(jc.X2, jc.Y2));
-        System.out.println("DESPUES: "+this.getBounds().toString());
-        System.out.println("atamaÑ "+jc.desktopPane.getBounds().toString());
+        Deb.consola("DESPUES: "+this.getBounds().toString());
+        Deb.consola("atamaÑ "+jc.desktopPane.getBounds().toString());
         //Principal p = new Principal();
         
-        Modal_CrearFacturas2 cx = new Modal_CrearFacturas2();
+        Modal_CrearFacturas cx = new Modal_CrearFacturas();
         jc.desktopPane.add(cx);
         
         cx.setSize(new Dimension(jc.X2, jc.Y2));
@@ -222,10 +222,10 @@ public class calseframe extends javax.swing.JInternalFrame {
                 nombreMenu = (String) tp.getLastPathComponent().toString();
                 //  for (Object pathPart : tp.getPath()) {
                 for (Menu men : listaMenus) {
-                    //System.out.println("AAAAAAAAAAA : " + nombreMenu);
+                    //Deb.consola("AAAAAAAAAAA : " + nombreMenu);
                     if (men.getNombre().equalsIgnoreCase(nombreMenu)) {
                         if (men.getPadre() == 0) {
-                            System.out.println("AAAAAAAAAAA : " + nombreMenu);
+                            Deb.consola("AAAAAAAAAAA : " + nombreMenu);
                             permisosUsuario.setNombre(nombreMenu);
                             permisosUsuario.setOrden(0);
                             permisosUsuario.setPadre(0);
@@ -251,7 +251,7 @@ public class calseframe extends javax.swing.JInternalFrame {
                                 }
 
                             }
-                            System.out.println("Vista.calseframe.GuardarActionPerformed(): " + nombreMenu);
+                            Deb.consola("Vista.calseframe.GuardarActionPerformed(): " + nombreMenu);
                         }
                     }
                 }

@@ -42,7 +42,7 @@ public class ClientWinAuth {
     public final static void main(String[] args) throws Exception {
 
         if (!WinHttpClients.isWinAuthAvailable()) {
-            System.out.println("Integrated Win auth is not supported!!!");
+            Deb.consola("Integrated Win auth is not supported!!!");
         }
 
         CloseableHttpClient httpclient = WinHttpClients.createDefault();
@@ -52,11 +52,11 @@ public class ClientWinAuth {
         try {
             HttpGet httpget = new HttpGet("http://winhost/");
 
-            System.out.println("Executing request " + httpget.getRequestLine());
+            Deb.consola("Executing request " + httpget.getRequestLine());
             CloseableHttpResponse response = httpclient.execute(httpget);
             try {
-                System.out.println("----------------------------------------");
-                System.out.println(response.getStatusLine());
+                Deb.consola("----------------------------------------");
+                Deb.consola(response.getStatusLine());
                 EntityUtils.consume(response.getEntity());
             } finally {
                 response.close();

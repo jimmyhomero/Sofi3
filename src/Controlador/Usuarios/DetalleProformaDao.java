@@ -19,6 +19,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -41,7 +42,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             this.conectar();
             PreparedStatement st;
             st = this.getCnx().prepareCall("select f.*, df.* from proformas f inner join detalleproforma df on f.Codigo = df.Proforma_Codigo where f.codigo = "+value );
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -94,7 +95,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             this.conectar();
             PreparedStatement st;
             st = this.getCnx().prepareCall("select proformas.*, ProformaDetalle.* from Proformas inner join ProformaDetalle on proformas.Codigo=ProformasDetalle.Proforma_Codigo where proformas." + columna+ " like '%" + value + "%'");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -108,7 +109,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
                 registros[7] = rs.getString("pvp");
                 registros[8] = "0";
 
-                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
 
             }
 
@@ -138,11 +139,11 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             consulta.setInt(7, tarea.getFactura_Codigo());
             consulta.setInt(8, tarea.getProductos_codigo());
             consulta.setString(9, tarea.getObservaciones());
-            System.out.println("Controlador.CUsuarios.guardar()" + consulta);
+            Deb.consola("Controlador.CUsuarios.guardar()" + consulta);
             consulta.executeUpdate();
         } catch (SQLException ex) {
             //msg.setProgressBar_mensajae(ex.toString());
-            System.out.println("Controlador.CUsuarios.guardar()" + ex);
+            Deb.consola("Controlador.CUsuarios.guardar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -183,13 +184,13 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
 //            st.setString(13, "obsercvaciones");
 //            st.setInt(14, persona.getCodigo());
 //             String sql = st.toString();
-//            System.out.println("Controlador.Usuarios.CUsuarios.modificar()"+ sql);
+//            Deb.consola("Controlador.Usuarios.CUsuarios.modificar()"+ sql);
 //            st.executeUpdate();
 //            Principal.jProgressBar2.setString("eeeeeeeeeeeee");
 //            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
 //        } catch (SQLException e) {
 //            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error" + e + sql, "Error al modificar Registro" + e.toString()));
-//System.out.println("Controlador.CUsuarios.guardar()" + e);
+//Deb.consola("Controlador.CUsuarios.guardar()" + e);
 //        } finally {
 //            this.cerrar();
 //        }
@@ -222,12 +223,12 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
 //                per.setObservaciones(rs.getString("Observaciones"));
 //                //per.setObservaciones(rs.getString("PersonaObservaciones"));
 //                //per.setFechaN(rs.getDate("PersonaFN").toString());
-//                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+//                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
 //                this.lista.add(per);
 //            }
 //
 //        } catch (Exception ex) {
-//            System.out.println("Controlador.CUsuarios.listar()" + ex);
+//            Deb.consola("Controlador.CUsuarios.listar()" + ex);
 //        } finally {
 //            this.cerrar();
 //        }
@@ -262,7 +263,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -293,7 +294,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
         } finally {
             this.cerrar();
         }
@@ -340,7 +341,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             st = this.getCnx().prepareCall("select proformas.*, ProformaDetalle.* from Proformas inner join ProformaDetalle on proformas.Codigo=ProformasDetalle.Proforma_Codigo where proformas." + columna+ " like '%" + value + "%'" );
 
           //  st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -355,11 +356,11 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
                 registros[7] = rs.getString("ValorUnitario");
                 registros[8] = rs.getString("ValorTotal");
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
             }
 
         } catch (Exception ex) {
@@ -394,7 +395,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             PreparedStatement st;
 //sql="select proformas.*, ProformaDetalle.* from Proformas inner join ProformaDetalle on proformas.Codigo=ProformasDetalle.Proforma_Codigo where proformas.codigo" + columna+ " like '%" + value + "%'";
             st = this.getCnx().prepareCall(sql);
-            System.out.println("");
+            Deb.consola("");
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -409,7 +410,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
                 registros[7] = rs.getString("Provincia");
                 registros[8] = rs.getString("Ciudad");
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
 
             }
 

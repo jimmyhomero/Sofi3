@@ -8,11 +8,13 @@ package Vista.Usuarios;
 import Vista.Productos.Buscar_Productos;
 import ClasesAuxiliares.CodigodeBarras;
 import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
+import ClasesAuxiliares.Variables;
 import ClasesAuxiliares.http.getUrlFromGoogle;
 import Controlador.Usuarios.MarcasDao;
 import Controlador.Usuarios.ModelosDao;
 import Controlador.Usuarios.ProductosDao;
 import Modelo.Marcas;
+import ClasesAuxiliares.debug.Deb;
 import Modelo.Modelos;
 import Modelo.Productos;
 import Modelo.Usuarios;
@@ -51,6 +53,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import static Vista.Usuarios.Crear_Clientes.jcb_FormaPagoPredeterminada;
+import java.util.Random;
 
 /**
  *
@@ -95,11 +98,11 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
         initComponents();
         OperacionesForms.inicializarJtextFieldMyusculas(txt_producto);
         txt_costo.selectAll();
-        txt_garantia.setEnabled(false);
+        txt_garantiameses.setEnabled(false);
         this.setSize(850, 613);
-        System.out.println("Vista.Usuarios.Crear_Productos.<init>()actializarsiNo" + actualizarSiNO);
-        System.out.println("Vista.Usuarios.Crear_Productos.<init>()uuuu" + setItemSelectMarcas);
-        System.out.println("Vista.Usuarios.Crear_Productos.<init>()//" + setItemSelectModelo);
+        Deb.consola("Vista.Usuarios.Crear_Productos.<init>()actializarsiNo" + actualizarSiNO);
+        Deb.consola("Vista.Usuarios.Crear_Productos.<init>()uuuu" + setItemSelectMarcas);
+        Deb.consola("Vista.Usuarios.Crear_Productos.<init>()//" + setItemSelectModelo);
         txt_utilidad.setText(Principal.utilidad);
 
         ModelosDao objModeloDao = new ModelosDao();
@@ -115,7 +118,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
 
             }
         } catch (Exception e) {
-            System.out.println("ssss" + e.toString());
+            Deb.consola("ssss" + e.toString());
         }
 ///////////////// marcas
 
@@ -137,10 +140,10 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
                     codigoMarca = c.getCodigo();
                     marcaSeleccionada = c.getMarca();
                     txt_categorias.transferFocus();
-                    //System.out.println(((Clientes) selectedItem).getNombre() + " casas"); // Imprime 25
+                    //Deb.consola(((Clientes) selectedItem).getNombre() + " casas"); // Imprime 25
 
                 } else {
-                    System.out.println("El item es de un tipo desconocido");
+                    Deb.consola("El item es de un tipo desconocido");
                 }
 
             }
@@ -163,7 +166,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
                     txt_categorias.setText(c.getModelo());
                     categoriaSeleccionada = c.getModelo();
                 } else {
-                    System.out.println("El item es de un tipo desconocido");
+                    Deb.consola("El item es de un tipo desconocido");
                 }
 
             }
@@ -243,8 +246,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
         txt_categorias = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         chekMeses = new javax.swing.JCheckBox();
-        chek_anos = new javax.swing.JCheckBox();
-        txt_garantia = new javax.swing.JTextField();
+        txt_garantiameses = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         txt_codigo = new javax.swing.JLabel();
@@ -325,9 +327,15 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
 
         jLabel12.setText("Codigo de Barras");
 
+        txt_producto.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_productoFocusLost(evt);
+            }
+        });
+
         jLabel5.setText("Producto(*)");
 
-        jLabel4.setText("Codigo Alternativo");
+        jLabel4.setText("Codigo Alterno");
 
         txt_codigoAlternativo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -700,22 +708,15 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
             }
         });
 
-        chek_anos.setText("Años");
-        chek_anos.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                chek_anosItemStateChanged(evt);
-            }
-        });
-
-        txt_garantia.setText("1");
-        txt_garantia.addActionListener(new java.awt.event.ActionListener() {
+        txt_garantiameses.setText("12");
+        txt_garantiameses.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_garantiaActionPerformed(evt);
+                txt_garantiamesesActionPerformed(evt);
             }
         });
-        txt_garantia.addKeyListener(new java.awt.event.KeyAdapter() {
+        txt_garantiameses.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_garantiaKeyTyped(evt);
+                txt_garantiamesesKeyTyped(evt);
             }
         });
 
@@ -725,29 +726,22 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chekMeses)
-                    .addComponent(chek_anos))
+                .addComponent(chekMeses)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_garantia, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                .addComponent(txt_garantiameses, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(chekMeses)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chek_anos))
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(txt_garantia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chekMeses)
+                    .addComponent(txt_garantiameses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        jPanel2.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 140, 150, 90));
+        jPanel2.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 140, 150, 80));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 520, 490));
 
@@ -1054,7 +1048,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
 //        ValidaNUmeros val = new ValidaNUmeros();
 //        val.keyTyped(evt);
 //        ValidaCedula vc = new ValidaCedula();
-//        //System.out.println("Vista.Usuarios.FCUsuarios.txt_cedulaKeyTyped()"+txt_cedula.getSize().width);
+//        //Deb.consola("Vista.Usuarios.FCUsuarios.txt_cedulaKeyTyped()"+txt_cedula.getSize().width);
 //        //if(txt_cedula.getText().length()==10){
 //        try {
 //            vc.isCedula(txt_codigoAlternativo.getText());
@@ -1102,7 +1096,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
             u.setCodigoBarras(txt_codigoBarras.getText());
 
             if (radIvaSI.isSelected()) {
-                u.setImpuesto("IVA " + Principal.iva);
+                u.setImpuesto(Principal.iva);
 
                 Double base = Double.parseDouble(txt_costo.getText().replace(",", ".")) / ((Double.parseDouble(Principal.iva) / 100) + 1);
                 Double iva = Double.parseDouble(txt_costo.getText().replace(",", ".")) - base;
@@ -1112,7 +1106,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
                 u.setBase(Double.parseDouble(String.format("%.4f", base).replace(",", ".")));
             }
             if (radIvaNo.isSelected()) {
-                u.setImpuesto("IVA CERO");
+                u.setImpuesto("0");
                 u.setIva0(Double.valueOf(0.00));
                 u.setIva12(Double.valueOf(0.00));
                 u.setBase(Double.parseDouble(txt_costo.getText().replace(",", ".")));
@@ -1129,21 +1123,19 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
             u.setUtilidad(txt_utilidad.getText().replace(",", "."));
             u.setPvp(txt_pvp.getText().replace(",", "."));
 
-            u.setUnidades(txt_unidades.getText());
-            u.setUbicacion(txt_bodega.getText().concat(" , ").concat(txt_pasillo.getText().concat(" , ").concat(txt_percha.getText())));
+            u.setUnidades(txt_unidades.getText());            
+            u.setUbicacion(txt_bodega.getText().concat(txt_pasillo.getText().concat(txt_percha.getText())));            
             u.setObservacion(txt_observacion.getText());
             u.setMinimo(txt_mminimosok.getText().replace(",", "."));
             u.setMaximo(txt_maximosok.getText().replace(",", "."));
             if (chekMeses.isSelected()) {
-                u.setGarantia(txt_garantia.getText() + " MESES");
+                u.setGarantia(txt_garantiameses.getText());
 
+            }else{
+                u.setGarantia("0");
             }
-            if (chek_anos.isSelected()) {
-                u.setGarantia(txt_garantia.getText() + " ANOS");
-            }
-            if (!chekMeses.isSelected() && !chek_anos.isSelected()) {
-                u.setGarantia("SIN GARANTIA");
-            }
+            
+            
             if (txt_p1.getText().isEmpty()) {
                 u.setP1(0.0);
             } else {
@@ -1226,7 +1218,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
             u.setModelo_codigo(codigoModelo);
             u.setModelos_marcas_codigo(codigoMarca);
             if (evt.getActionCommand().equals("Actualizar")) {
-                System.out.println("Vista.Usuarios.CrearUsuarios.jButton1ActionPerformed()");
+                Deb.consola("Vista.Usuarios.CrearUsuarios.jButton1ActionPerformed()");
                 u.setCodigo(Integer.parseInt(txt_codigo.getText()));
 
                 ///si no se ha seleccionado una imagen solo se guarada con el segundo metodo de guardar
@@ -1253,9 +1245,8 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
             VaciarTexto limpiar = new VaciarTexto();
             limpiar.limpiar_texto(jPanel1);
             limpiar.limpiar_texto(jPanel2);
-            txt_garantia.setText("1");
-            chekMeses.setSelected(false);
-            chek_anos.setSelected(false);
+            txt_garantiameses.setText("12");
+            chekMeses.setSelected(false);            
             limpiar.limpiar_texto(jPanel5);
             txt_utilidad.setText(Principal.utilidad);
             txt_unidades.setText("UNIDADES");
@@ -1298,7 +1289,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
 //            jcb_Categoorias.setSelectedItem("");
 //            jcb_modelo.setSelectedItem("");
         }
-        System.out.println("Vista.Usuarios.Crear_Usuarios.jButton1Prop,,,,,,,,ertyChange()" + evt.getNewValue());
+        Deb.consola("Vista.Usuarios.Crear_Usuarios.jButton1Prop,,,,,,,,ertyChange()" + evt.getNewValue());
     }//GEN-LAST:event_jButton1PropertyChange
 
     private void txt_costoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_costoKeyReleased
@@ -1431,10 +1422,10 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
 //        Object itemSelected = autocomplete.getItemSelected();  
 //            System.err.println("marca seleccionada: " +itemSelected.toString());
 //              if (itemSelected instanceof Marcas) {
-//                  System.out.println(((Marcas) itemSelected).getMarca());
+//                  Deb.consola(((Marcas) itemSelected).getMarca());
 //              } else {
-//                  System.out.println("El item es de un tipo desconocido");
-////            System.out.println(((Marcas) itemSelected).getMarca());
+//                  Deb.consola("El item es de un tipo desconocido");
+////            Deb.consola(((Marcas) itemSelected).getMarca());
 //              }
         }
         //jcb_marca.removeAllItems();
@@ -1464,7 +1455,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
         //}
 //
 //        Marcas personSelected = (Marcas) a.getItemSelected();
-//        System.out.println(personSelected.getMarca()); // Imprime 25
+//        Deb.consola(personSelected.getMarca()); // Imprime 25
 
     }//GEN-LAST:event_txt_marcaKeyPressed
 
@@ -1475,9 +1466,9 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txt_codigoBarrasKeyTyped
 
-    private void txt_garantiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_garantiaActionPerformed
+    private void txt_garantiamesesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_garantiamesesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_garantiaActionPerformed
+    }//GEN-LAST:event_txt_garantiamesesActionPerformed
 
     private void txt_codigoBarrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_codigoBarrasActionPerformed
         // TODO add your handling code here:
@@ -1486,7 +1477,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         // TODO add your handling code here:
-//System.out.println("irteddsasdasd : "+txt_marca.getText());
+//Deb.consola("irteddsasdasd : "+txt_marca.getText());
         int resultado;
         CargarFoto ventana = new CargarFoto();
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("JPG y PNG", "jpg", "png");
@@ -1500,7 +1491,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
             try {
                 ImageIcon icon = new ImageIcon(imageProducto.toString());
                 Icon icono = new ImageIcon(icon.getImage().getScaledInstance(lbl_img.getWidth(), lbl_img.getHeight(), Image.SCALE_DEFAULT));
-                System.out.println("Vista.Usuarios.Crear_Productos.jButton3ActionPerformed()with :" + lbl_img.getWidth() + " heig : " + lbl_img.getHeight());
+                Deb.consola("Vista.Usuarios.Crear_Productos.jButton3ActionPerformed()with :" + lbl_img.getWidth() + " heig : " + lbl_img.getHeight());
                 lbl_img.setText(null);
                 lbl_img.setIcon(icono);
                 imagenexitasamentecargadSiNo = true;
@@ -1543,22 +1534,16 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
     private void chekMesesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chekMesesItemStateChanged
         // TODO add your handling code here:
         if (chekMeses.isSelected()) {
-            chek_anos.setSelected(false);
-            txt_garantia.setEnabled(true);
+           
+            txt_garantiameses.setEnabled(true);             
+            txt_garantiameses.grabFocus();
+            txt_garantiameses.selectAll();
         } else {
+            txt_garantiameses.setEnabled(false);
+            
             //   txt_garantia.setEnabled(false);
         }
     }//GEN-LAST:event_chekMesesItemStateChanged
-
-    private void chek_anosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chek_anosItemStateChanged
-        // TODO add your handling code here:
-        if (chek_anos.isSelected()) {
-            chekMeses.setSelected(false);
-            txt_garantia.setEnabled(true);
-        } else {
-            // txt_garantia.setEnabled(false);
-        }
-    }//GEN-LAST:event_chek_anosItemStateChanged
 
     private void radProductoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_radProductoItemStateChanged
         // TODO add your handling code here:
@@ -1673,10 +1658,10 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txt_p3KeyReleased
 
-    private void txt_garantiaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_garantiaKeyTyped
+    private void txt_garantiamesesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_garantiamesesKeyTyped
         // TODO add your handling code here:
         ValidaNUmeros.keyTyped(evt);
-    }//GEN-LAST:event_txt_garantiaKeyTyped
+    }//GEN-LAST:event_txt_garantiamesesKeyTyped
 
     private void txt_maximosokKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_maximosokKeyTyped
         // TODO add your handling code here:
@@ -1823,6 +1808,29 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_txt_codigoBarrasKeyPressed
 
+    private void txt_productoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_productoFocusLost
+        // TODO add your handling code here:
+        
+        if(txt_codigoAlternativo.isEnabled()){
+        txt_codigoAlternativo.setText("");
+       
+        String codigo = "";
+        String cad = txt_producto.getText();
+        String codex[];
+        String r[] = cad.split(" ");
+        for (String s : r) {
+            if (s.length() >= 2 && !ValidaNUmeros.isOnlyNumbers(s) ) {                
+              txt_codigoAlternativo.setText(txt_codigoAlternativo.getText().concat(s.substring(0, 1)));
+
+            }
+
+        }
+       
+        txt_codigoAlternativo.setText(txt_codigoAlternativo.getText().concat(String.valueOf( Math.round(Math.random()*9995899+1))));
+        Deb.consola(codigo);
+        }
+    }//GEN-LAST:event_txt_productoFocusLost
+
 //    public boolean guardarImagen(String ruta, String nombre) {
 ////        String insert = "insert into Imagenes(imagen,nombre) values(?,?)";
 ////        FileInputStream fis = null;
@@ -1853,7 +1861,6 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox check_codigoBarras;
     public static javax.swing.JCheckBox chekMeses;
-    public static javax.swing.JCheckBox chek_anos;
     private javax.swing.JLabel img;
     public static javax.swing.JButton jButton1;
     public static javax.swing.JButton jButton2;
@@ -1911,7 +1918,7 @@ public class Crear_Productos extends javax.swing.JInternalFrame {
     public static javax.swing.JTextField txt_codigoAlternativo;
     public static javax.swing.JTextField txt_codigoBarras;
     public static javax.swing.JTextField txt_costo;
-    public static javax.swing.JTextField txt_garantia;
+    public static javax.swing.JTextField txt_garantiameses;
     public static javax.swing.JTextField txt_marca;
     public static javax.swing.JTextField txt_maximos;
     public static javax.swing.JTextField txt_maximosok;

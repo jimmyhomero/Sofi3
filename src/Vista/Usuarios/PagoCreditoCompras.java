@@ -9,6 +9,7 @@ package Vista.Usuarios;
 import Controlador.Usuarios.ComprasDao;
 import Controlador.Usuarios.HoraFecha;
 import Controlador.Usuarios.cxpDao;
+import ClasesAuxiliares.debug.Deb;
 import Modelo.Compras;
 import Modelo.Cxp;
 import Vlidaciones.ValidaNUmeros;
@@ -28,6 +29,7 @@ public class PagoCreditoCompras extends javax.swing.JDialog {
     double abono=0.0;
     double saldo=0.0;
     public static Compras comp = new Compras();
+    public static Cxp cxpx = new Cxp();
     
     Integer codigoCompra;
 
@@ -99,6 +101,9 @@ public class PagoCreditoCompras extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -302,7 +307,7 @@ public class PagoCreditoCompras extends javax.swing.JDialog {
 
     private void bnt_siguenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnt_siguenteActionPerformed
         // TODO add your handling code here:
-        // System.out.println("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd");
+        // Deb.consola("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd");
         isclicked = true;
         jTabbedPane1.setSelectedIndex(1);
     }//GEN-LAST:event_bnt_siguenteActionPerformed
@@ -310,31 +315,22 @@ public class PagoCreditoCompras extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         
-            Cxp cxp = new Cxp();
-            cxpDao cxcDao = new cxpDao();
-            cxp.setDescripcion(Crear_Compras.tipoDocumento + " -- FORMA DE PAGO : " + Crear_Compras.formaPagoSeelccionada + " DESDE : " + login.nombreDelEquipo);
-            cxp.setTotal(txt_total.getText());
-            cxp.setTipo(Crear_Compras.tipoDocumento);
-            cxp.setAbono("0.0");                        
-            cxp.setSaldo(String.valueOf(String.format("%.4f", total)));            
-            cxp.setFormasPagoc_codigo(Crear_Compras.codigFormaPagoSeleccionada);
-            cxp.setSaldo(String.valueOf(txt_total.getText()));
             
-           //////////guardamos la compra
-                ComprasDao fDao = new ComprasDao();
-                codigoCompra = fDao.guardar(comp);
-            ////////////
-            
-
-            Crear_Compras.codigoCompra = codigoCompra;
-            cxp.setCompras_codigo(codigoCompra);
-            cxp.setDiasCredito(spinerDiasCredito.getValue().toString());
-            // System.out.println("Vista.Usuarios.PagoCredito.jButton2ActionPerformed() dias credito :" + spinerDiasCredito.getValue().toString());
-            cxp.setFechaVencimiento(jDateChooser1.getDate());
-            cxp.setProveedores_Codigo(Crear_Compras.codigoClienteCompra);            
-            cxcDao.guardar(cxp);                                    
-            //   System.out.println("Vista.Usuarios.PagoCredito.jButton2ActionPerformed()se registro el ");
-            Crear_Compras.RegistrodeCreditoExitoso=true;
+           
+            cxpx.setDescripcion(Modal_Crear_compras.tipoDocumento + " -- FORMA DE PAGO : " + Modal_Crear_compras.formaPagoSeelccionada + " DESDE : " + login.nombreDelEquipo);
+            cxpx.setTotal(txt_total.getText());
+            cxpx.setTipo(Modal_Crear_compras.tipoDocumento);
+            cxpx.setAbono("0.0");                        
+            cxpx.setSaldo(String.valueOf(String.format("%.4f", total)));            
+            cxpx.setFormasPagoc_codigo(Modal_Crear_compras.codigFormaPagoSeleccionada);
+            cxpx.setSaldo(String.valueOf(txt_total.getText()));                                  
+            cxpx.setCompras_codigo(codigoCompra);
+            cxpx.setDiasCredito(spinerDiasCredito.getValue().toString());
+            // Deb.consola("Vista.Usuarios.PagoCredito.jButton2ActionPerformed() dias credito :" + spinerDiasCredito.getValue().toString());
+            cxpx.setFechaVencimiento(jDateChooser1.getDate());
+            cxpx.setProveedores_Codigo(Modal_Crear_compras.codigoClienteCompra);                        
+            //   Deb.consola("Vista.Usuarios.PagoCredito.jButton2ActionPerformed()se registro el ");
+            Modal_Crear_compras.RegistrodeCreditoExitoso=true;
             this.dispose();
         
 
@@ -365,25 +361,27 @@ public class PagoCreditoCompras extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (isclicked) {
             jDateChooser1.setDate(sumarRestarDiasFecha(fecha, Integer.valueOf(spinerDiasCredito.getValue().toString())));
-            System.out.println("Vista.Usuarios.PagoCredito.spinerDiasCreditoKeyReleased() estaechange");
+            Deb.consola("Vista.Usuarios.PagoCredito.spinerDiasCreditoKeyReleased() estaechange");
         }
     }//GEN-LAST:event_spinerDiasCreditoStateChanged
 
     private void jPanel2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPanel2FocusGained
         // TODO add your handling code here:
         isclicked = true;
-        System.out.println("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd");
+        Deb.consola("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd");
     }//GEN-LAST:event_jPanel2FocusGained
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         //jDateChooser1.setDate(sumarRestarDiasFecha(fecha,Integer.valueOf(spinerDiasCredito.getValue().toString())));
         isclicked = true;
-        System.out.println("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd al opneform");
+        Deb.consola("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd al opneform");
     }//GEN-LAST:event_formWindowOpened
 
     private void bnt_siguente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnt_siguente1ActionPerformed
         // TODO add your handling code here:
+        Modal_Crear_compras.RegistrodeCreditoExitoso=false;
+        
         this.dispose();
     }//GEN-LAST:event_bnt_siguente1ActionPerformed
 
@@ -396,6 +394,11 @@ public class PagoCreditoCompras extends javax.swing.JDialog {
         isclicked = true;
         jTabbedPane1.setSelectedIndex(0);
     }//GEN-LAST:event_bnt_siguente3ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        Modal_Crear_compras.RegistrodeCreditoExitoso=false;
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

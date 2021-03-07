@@ -46,7 +46,7 @@ public class ClientMultipartFormPost {
 
     public static void main(String[] args) throws Exception {
         if (args.length != 1)  {
-            System.out.println("File path not given");
+            Deb.consola("File path not given");
             System.exit(1);
         }
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -65,14 +65,14 @@ public class ClientMultipartFormPost {
 
             httppost.setEntity(reqEntity);
 
-            System.out.println("executing request " + httppost.getRequestLine());
+            Deb.consola("executing request " + httppost.getRequestLine());
             CloseableHttpResponse response = httpclient.execute(httppost);
             try {
-                System.out.println("----------------------------------------");
-                System.out.println(response.getStatusLine());
+                Deb.consola("----------------------------------------");
+                Deb.consola(response.getStatusLine());
                 HttpEntity resEntity = response.getEntity();
                 if (resEntity != null) {
-                    System.out.println("Response content length: " + resEntity.getContentLength());
+                    Deb.consola("Response content length: " + resEntity.getContentLength());
                 }
                 EntityUtils.consume(resEntity);
             } finally {

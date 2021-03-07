@@ -47,11 +47,11 @@ public class ClientConnectionRelease {
         try {
             HttpGet httpget = new HttpGet("http://httpbin.org/get");
 
-            System.out.println("Executing request " + httpget.getRequestLine());
+            Deb.consola("Executing request " + httpget.getRequestLine());
             CloseableHttpResponse response = httpclient.execute(httpget);
             try {
-                System.out.println("----------------------------------------");
-                System.out.println(response.getStatusLine());
+                Deb.consola("----------------------------------------");
+                Deb.consola(response.getStatusLine());
 
                 // Get hold of the response entity
                 HttpEntity entity = response.getEntity();

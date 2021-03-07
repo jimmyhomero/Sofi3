@@ -5,6 +5,7 @@
  */
 package ClasesAuxiliares;
 
+import ClasesAuxiliares.debug.Deb;
 import static java.lang.System.in;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -54,7 +55,7 @@ public class MaquinaDao {
             address = InetAddress.getLocalHost();
             sHostName = address.getHostName();
         } catch (UnknownHostException ex) {
-            System.out.println("ClasesAuxiliares.Maquina.getNombreEquipo(): " + ex);
+            Deb.consola("ClasesAuxiliares.Maquina.getNombreEquipo(): " + ex);
         }
 
         return sHostName;
@@ -87,8 +88,8 @@ public class MaquinaDao {
             Logger.getLogger(MaquinaDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        System.out.println("ClasesAuxiliares.Maquina.getCaracteristicasEquipo() " + sIPAddress);
-        System.out.println("ClasesAuxiliares.Maquina.getCaracteristicasEquipo() " + sHostName);
+        Deb.consola("ClasesAuxiliares.Maquina.getCaracteristicasEquipo() " + sIPAddress);
+        Deb.consola("ClasesAuxiliares.Maquina.getCaracteristicasEquipo() " + sHostName);
         return sIPAddress;
     }
 
@@ -104,7 +105,7 @@ public class MaquinaDao {
             datos.add(os.getVersion());
             datos.add("Arquitectura: ");
             datos.add(os.getArch());
-            System.out.println("ClasesAuxiliares.Maquina.obtenerDatosSO():  " + datos);
+            Deb.consola("ClasesAuxiliares.Maquina.obtenerDatosSO():  " + datos);
 
         } catch (Exception e) {
         }
@@ -137,7 +138,7 @@ public class MaquinaDao {
         } catch (SigarException e) {
             e.printStackTrace();
         }
-        System.out.println("ClasesAuxiliares.Maquina.obtenerDatosSO()" + datos);
+        Deb.consola("ClasesAuxiliares.Maquina.obtenerDatosSO()" + datos);
         return datos;
     }
 
@@ -154,7 +155,7 @@ public class MaquinaDao {
         } catch (Exception e) {
         }
 
-        System.out.println("ClasesAuxiliares.Maquina.obtenerDatosSO()" + datos);
+        Deb.consola("ClasesAuxiliares.Maquina.obtenerDatosSO()" + datos);
         return datos;
     }
 

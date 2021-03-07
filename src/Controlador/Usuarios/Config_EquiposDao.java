@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -78,7 +79,7 @@ public class Config_EquiposDao extends Coneccion {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
-            //System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            //Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -127,7 +128,7 @@ public class Config_EquiposDao extends Coneccion {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -177,7 +178,7 @@ public class Config_EquiposDao extends Coneccion {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -215,7 +216,7 @@ public class Config_EquiposDao extends Coneccion {
             st.setString(2, persona.getNombre());
             st.setInt(3, persona.getEquipos_codigo());
             String sql = st.toString();
-            System.out.println("XXXXXXXXXXXXÑ "+sql);
+            Deb.consola("XXXXXXXXXXXXÑ "+sql);
             //JOptionPane.showMessageDialog(null, sql);
             st.executeUpdate();
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
@@ -251,7 +252,7 @@ public class Config_EquiposDao extends Coneccion {
         } catch (Exception ex) {
             alerta.menajes(ex.toString());
             msg.setMensaje(ex.toString());
-            //System.out.println("Controlador.CUsuarios.listar()" + ex);
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -281,7 +282,7 @@ public class Config_EquiposDao extends Coneccion {
 
             alerta.menajes(ex.toString());
             msg.setMensaje(ex.toString());
-            //System.out.println("Controlador.CUsuarios.listar()" + ex);
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -311,7 +312,7 @@ public class Config_EquiposDao extends Coneccion {
         } catch (Exception ex) {
             alerta.menajes(ex.toString());
             // msg.setMensaje(ex.toString());
-            //System.out.println("Controlador.CUsuarios.listar()" + ex);
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -356,7 +357,7 @@ public class Config_EquiposDao extends Coneccion {
             this.conectar();
             PreparedStatement st;
             String sql="SELECT * FROM Config_equipos  WHERE equipos_codigo=" +ID_EQUIPO +" and config2_codigo="+codigo_config2;
-            System.out.println("swl: "+sql);
+            Deb.consola("swl: "+sql);
             st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
             

@@ -1,10 +1,12 @@
 package ecx.unomas.elements;
 
+import Vista.Principal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.WebServiceException;
 import ec.gob.sri.comprobantes.ws.RecepcionComprobantesOfflineService;
+import javafx.scene.control.ProgressBar;
 
 public class CheckConnection {
 	
@@ -34,6 +36,12 @@ public class CheckConnection {
 	        }
 	        i++;
 	    }
+            if(respuesta=false){
+                Vlidaciones.ProgressBar.mostrarMensajeRojo("NO EXISTE CONECCION CON EL SERVICO DE RENTAS INTERNAS (SRI)");
+                
+            }
+            
+            Principal.existeConeccionSRI=respuesta;
 	    return respuesta;
 	}
 }

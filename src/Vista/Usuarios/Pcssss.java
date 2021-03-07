@@ -8,6 +8,7 @@ package Vista.Usuarios;
 import Controlador.Usuarios.cxcDao;
 import Modelo.Cxc;
 import login.login;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -210,17 +211,17 @@ public class Pcssss extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Cxc pagos = new Cxc();
         cxcDao pagosDao = new cxcDao();
-        pagos.setDescripcion(" FORMA DE PAGO : " + Crear_Facturas.formaPagoSeelccionada + " DESDE : " + login.nombreDelEquipo);
+        pagos.setDescripcion(" FORMA DE PAGO : " + Modal_CrearFacturas.formaPagoSeelccionada + " DESDE : " + login.nombreDelEquipo);
         pagos.setTotal(txt_total.getText());
         pagos.setAbono(txt_entrada.getText());
         pagos.setSaldo(String.valueOf(saldo));
        // txt_total.setText(String.valueOf(String.format("%.4f", total)).replace(",", "."));
-        pagos.setFacturas_codigo(Crear_Facturas.codigoFactura);
-        pagos.setFormasPagoV_codigo(Crear_Facturas.codigFormaPagoSeleccionada);
+        pagos.setFacturas_codigo(Modal_CrearFacturas.codigoFactura);
+        pagos.setFormasPagoV_codigo(Modal_CrearFacturas.codigFormaPagoSeleccionada);
         pagos.setSaldo(String.valueOf(this.saldo));
-        pagos.setTipo(Crear_Facturas.formaPagoSeelccionada);
+        pagos.setTipo(Modal_CrearFacturas.formaPagoSeelccionada);
         pagosDao.guardar(pagos);
-        System.out.println("Vista.Usuarios.PagoCredito.jButton2ActionPerformed()se registro el ");
+        Deb.consola("Vista.Usuarios.PagoCredito.jButton2ActionPerformed()se registro el ");
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 

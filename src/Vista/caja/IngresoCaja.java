@@ -16,6 +16,7 @@ import login.login;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.text.html.parser.DTDConstants;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -188,7 +189,7 @@ public class IngresoCaja extends javax.swing.JInternalFrame {
         char a = 0;
         //JOptionPane.showMessageDialog(null, evt.getKeyChar());
         // txt_valor.setText(txt_valor.getText()+ );
-        System.out.println("Char: " + evt.getKeyCode());
+        Deb.consola("Char: " + evt.getKeyCode());
         String s = "";
         if ((evt.getKeyCode() >= 96 && evt.getKeyCode() <= 105) || (evt.getKeyCode() >= 48 && evt.getKeyCode() <= 57) || evt.getKeyCode() == 110) {
             s = txt_valor.getText() + evt.getKeyChar();
@@ -203,7 +204,7 @@ public class IngresoCaja extends javax.swing.JInternalFrame {
             s = txt_valor.getText();
             txt_valor.setText("0.0");
             txt_valor.selectAll();
-            System.out.println("Vista.Usuarios.IngresoCaja.txt_valorKeyPressed()" + s);
+            Deb.consola("Vista.Usuarios.IngresoCaja.txt_valorKeyPressed()" + s);
         }
 
     }//GEN-LAST:event_txt_valorKeyPressed

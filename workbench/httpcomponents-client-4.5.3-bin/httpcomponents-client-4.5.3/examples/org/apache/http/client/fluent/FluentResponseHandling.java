@@ -87,7 +87,7 @@ public class FluentResponseHandling {
 
             });
         // Do something useful with the result
-        System.out.println(result);
+        Deb.consola(result);
     }
 
 }

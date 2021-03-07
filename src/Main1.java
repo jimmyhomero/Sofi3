@@ -7,6 +7,7 @@ import ecx.unomas.factura.Factura;
 import ecx.unomas.factura.Impuesto;
 import ecx.unomas.factura.InfoAdicional;
 import ecx.unomas.factura.Pago;
+import ClasesAuxiliares.debug.Deb;
 import ecx.unomas.factura.TotalImpuesto;
 import ecx.unomas.service.Comprobante;
 import ecx.unomas.service.Config;
@@ -37,7 +38,7 @@ public class Main1 {
     File fichero = new File(Config.GENERADOS_DIR );
        String[] listaArchivos=fichero.list();
         for(int i=0; i<listaArchivos.length; i++){
-            System.out.println(listaArchivos[i]);
+            Deb.consola(listaArchivos[i]);
         }
 
 //        if (txt_cedula.getText().length() == 10) {
@@ -52,16 +53,16 @@ public class Main1 {
            //1002201801172223996700110010020000000510018794116
        //  1002201801172223996700110010020000000510018794111
                                 //  20020010001879380018794119
-         //System.out.println("Main1.main()  : "+claveAcceso);
+         //Deb.consola("Main1.main()  : "+claveAcceso);
          String claveAcceso;
         String fecha = "12022018";
 //        String claveCosmo="100220180123900212270012002001000187938001879411";
         claveAcceso = fecha + Variables.FE_FACTURA + ruc + Variables.FE_TIPO_AMBIENTE + "001" + "002" + "000000090" + Variables.FE_CODIGO_NUMERICO + Variables.FE_TIPO_EMISION;                       
          Variables.FE_DIGITO_VERIFICADOR=   String.valueOf(FeCodigoNUmerico.obtenerSumaPorDigitosOK(FeCodigoNUmerico.invertirCadenaOK(claveAcceso)));
-         System.out.println("DIGITO VERIFICADOR " +Variables.FE_DIGITO_VERIFICADOR);
+         Deb.consola("DIGITO VERIFICADOR " +Variables.FE_DIGITO_VERIFICADOR);
          claveAcceso=claveAcceso+Variables.FE_DIGITO_VERIFICADOR;
         //claveAcceso="1002201801172223996700110010020000000031234567811";  
-        System.out.println("calve de acceso: " + claveAcceso);        
+        Deb.consola("calve de acceso: " + claveAcceso);        
         Factura f = new Factura();
         f.setTipoEmision(1);
         f.setAmbiente(1);
@@ -144,7 +145,7 @@ public class Main1 {
 //        
 
         String s = f.getXML();
-   //     System.out.println("xmls" + s);
+   //     Deb.consola("xmls" + s);
         // TODO code application logic here
         //byte[] xmlBytes=  readBytesFromFile("D:\\comprobantes\\generados\\fac3.xml");
         ArchivoUtil.stringToFile(Config.GENERADOS_DIR + claveAcceso + ".xml", s);

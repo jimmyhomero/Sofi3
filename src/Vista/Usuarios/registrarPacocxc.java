@@ -15,6 +15,7 @@ import Controlador.Usuarios.cxcDao;
 import Controlador.Usuarios.TicketsDao;
 import Controlador.cheques.BancosDao;
 import Modelo.Bancos;
+import ClasesAuxiliares.debug.Deb;
 import Modelo.Cajas;
 import Modelo.CajasDetalle;
 import Modelo.Facturas;
@@ -26,6 +27,7 @@ import Vista.Dialogs.PagoConCheque;
 import Vista.Principal;
 import Vlidaciones.ValidaNUmeros;
 import java.awt.Frame;
+import ClasesAuxiliares.debug.Deb;
 import java.util.ArrayList;
 import login.login;
 import java.util.Calendar;
@@ -827,7 +829,7 @@ public class registrarPacocxc extends javax.swing.JDialog {
 
                 txt_saldo.setText(String.valueOf(saldo));
             } else {
-                //  System.out.println("Vista.Usuarios.PagoCredito.txt_entradaKeyReleased()auuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+                //  Deb.consola("Vista.Usuarios.PagoCredito.txt_entradaKeyReleased()auuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
                 JOptionPane.showMessageDialog(null, "El valor de Entrada del Credito no puede ser Mayor al Total de la Venta");
                 txt_entrada.requestFocus();
                 txt_entrada.setText("0.0");
@@ -842,8 +844,7 @@ public class registrarPacocxc extends javax.swing.JDialog {
     }//GEN-LAST:event_txt_entradaKeyReleased
 
     private void bnt_siguenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnt_siguenteActionPerformed
-        // TODO add your handling code here:
-        // System.out.println("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd");
+
         Double entradax = Double.parseDouble(txt_entrada.getText());
         if (jComboBox1.getSelectedItem().toString().equalsIgnoreCase("EFECTIVO") && !entradax.equals(0.0)) {
 //Cajas caja = new Cajas();
@@ -936,7 +937,7 @@ public class registrarPacocxc extends javax.swing.JDialog {
 //        Crear_Facturas.codigoFactura = codigoFactura;
 //        cxc.setFacturas_codigo(codigoFactura);
 //        cxc.setDiasCredito(spinerDiasCredito.getValue().toString());
-//        // System.out.println("Vista.Usuarios.PagoCredito.jButton2ActionPerformed() dias credito :" + spinerDiasCredito.getValue().toString());
+//        // Deb.consola("Vista.Usuarios.PagoCredito.jButton2ActionPerformed() dias credito :" + spinerDiasCredito.getValue().toString());
 //        cxc.setFechaVencimiento(jDateChooser1.getDate());
 //        cxc.setClientes_Codigo(Crear_Facturas.codigoClienteFactura);
 //        cxcDao.guardar(cxc);
@@ -944,7 +945,7 @@ public class registrarPacocxc extends javax.swing.JDialog {
 //        Crear_Facturas.cd.setCodigoDocuemnto(codigoFactura);
 //        
 //        if (txt_entrada.getText().equals("0.0")) {
-//            // System.out.println("Vista.Usuarios.PagoCredito.jButton2ActionPerformed(): "+);    
+//            // Deb.consola("Vista.Usuarios.PagoCredito.jButton2ActionPerformed(): "+);    
 //            cdDao.guardar(Crear_Facturas.cd);
 //        } else {
 //            //Crear_Facturas.cd.setDetalle(" - ABONO: "+Crear_Facturas.cd.getDetalle()+" - TOTAL VENTA: "+total+" - TOTAL ABONO: "+abono+" - SALDO: "+saldo);
@@ -957,7 +958,7 @@ public class registrarPacocxc extends javax.swing.JDialog {
 //            cdDao1.guardar(Crear_Facturas.cd);
 //        }
 //
-//        //   System.out.println("Vista.Usuarios.PagoCredito.jButton2ActionPerformed()se registro el ");
+//        //   Deb.consola("Vista.Usuarios.PagoCredito.jButton2ActionPerformed()se registro el ");
 //        Crear_Facturas.procedeVentaExitosa = true;
 //        this.dispose();
 
@@ -966,14 +967,14 @@ public class registrarPacocxc extends javax.swing.JDialog {
     private void jPanel2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPanel2FocusGained
         // TODO add your handling code here:
         isclicked = true;
-        System.out.println("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd");
+        Deb.consola("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd");
     }//GEN-LAST:event_jPanel2FocusGained
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         //jDateChooser1.setDate(sumarRestarDiasFecha(fecha,Integer.valueOf(spinerDiasCredito.getValue().toString())));
         isclicked = true;
-        System.out.println("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd al opneform");
+        Deb.consola("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd al opneform");
     }//GEN-LAST:event_formWindowOpened
 
     private void bnt_siguente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnt_siguente1ActionPerformed
@@ -1004,39 +1005,36 @@ public class registrarPacocxc extends javax.swing.JDialog {
         if (jComboBox1.getSelectedItem().toString().equalsIgnoreCase("CHEQUE")) {
 
             /////////
-            System.out.println(".run()asdasdadsadadasdadsadsasdasdsasdadsasdasdasdadas");
-            BancosDao bancoDao = new BancosDao();
-            HoraFecha ob2 = new HoraFecha();
-            jDateChooser2.setDate(ob2.obtenerFecha());
-
-            txtCantidad.setEditable(false);
-            txtCliente.setEditable(false);
-
-            for (Bancos b : bancoDao.listar()) {
-                jcbBanco.addItem(b.getNombre());
-            }
-            jTabbedPane1.setTitleAt(1, "REGISTRAR CHEQUE");
-            jTabbedPane1.setSelectedIndex(1);
-            System.out.println("ffffffffffffffffffffffffffffff");
-
-            //////////
-//            Frame frame = JOptionPane.getFrameForComponent(this);
-//            PagoConCheque pcdialog = new PagoConCheque(frame, true);
-////                                pcdialog.txt_total.setText(registros[9]);
-////                                pcdialog.txt_entrada.setText("0.0");
-//// //                               formaPagoSeelccionada = jcbFormasPago.getSelectedItem().toString();
-////                                pcdialog.txt_saldo.setText(registros[9]);
-//////                                u.setFormaPago(formaPagoSeelccionada);
-////                                u.setEfectivo(0.00);
-////                                u.setCambio(0.00);
-//            //      pcdialog.fac = u;
-//            pcdialog.setLocationRelativeTo(frame);
-//            this.setVisible(false);
-//            pcdialog.setVisible(true);
+//            Deb.consola(".run()asdasdadsadadasdadsadsasdasdsasdadsasdasdasdadas");
+//            BancosDao bancoDao = new BancosDao();
+//            HoraFecha ob2 = new HoraFecha();
+//            jDateChooser2.setDate(ob2.obtenerFecha());
+//
+//            txtCantidad.setEditable(false);
+//            txtCliente.setEditable(false);
+//
+//            for (Bancos b : bancoDao.listar()) {
+//                jcbBanco.addItem(b.getNombre());
+//            }
+//            jTabbedPane1.setTitleAt(1, "REGISTRAR CHEQUE");
+//            jTabbedPane1.setSelectedIndex(1);
+//            Deb.consola("ffffffffffffffffffffffffffffff");
+            ////////
+            Frame frame = JOptionPane.getFrameForComponent(this);
+            PagoConCheque pcdialog = new PagoConCheque(frame, true);
+            pcdialog.txt_Valor.setText(txt_entrada.getText());
+            pcdialog.txtCliente.setText(txtCliente.getText());
+//            pcdialog.txt_saldo.setText(registros[9]);
+//            u.setFormaPago(formaPagoSeelccionada);
+//            u.setEfectivo(0.00);
+//            u.setCambio(0.00);
+//            pcdialog.fac = u;
+            pcdialog.setLocationRelativeTo(frame);
+            this.setVisible(false);
+            pcdialog.setVisible(true);
         }
 
     }//GEN-LAST:event_jComboBox1ItemStateChanged
-
     private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
         // TODO add your handling code here:
         if (ValidaNUmeros.isOnlyDouble(txtCantidad.getText())) {
@@ -1053,7 +1051,7 @@ public class registrarPacocxc extends javax.swing.JDialog {
             //                saldo = total - abono;
             //                txt_saldo.setText(String.valueOf(saldo));
             //            } else {
-            //                //  System.out.println("Vista.Usuarios.PagoCredito.txt_entradaKeyReleased()auuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+            //                //  Deb.consola("Vista.Usuarios.PagoCredito.txt_entradaKeyReleased()auuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
             //                JOptionPane.showMessageDialog(null, "El valor de Entrada del Credito no puede ser Mayor al Total de la Venta");
             //                txt_entrada.requestFocus();
             //                txt_entrada.setText("0.0");

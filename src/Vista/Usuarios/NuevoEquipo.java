@@ -6,6 +6,7 @@
 package Vista.Usuarios;
 
 import ClasesAuxiliares.MaquinaDao;
+import ClasesAuxiliares.debug.Deb;
 import ClasesAuxiliares.NewConfigfile;
 import Controlador.Coneccion;
 import Controlador.Ejemplo;
@@ -97,7 +98,7 @@ public class NuevoEquipo extends javax.swing.JDialog {
         lista = cajaDao.listar();
         for (Cajas cajas : lista) {
             jComboBox1.addItem(cajas.getCaja());
-            System.out.println("Cajassss: " + cajas.getCaja());
+            Deb.consola("Cajassss: " + cajas.getCaja());
         }
 
         BodegasDao bDao = new BodegasDao();
@@ -530,7 +531,7 @@ public class NuevoEquipo extends javax.swing.JDialog {
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         // TODO add your handling code here:
-        System.out.println("Vista.Usuarios.SelectCaja.jComboBox1ItemStateChanged()se ha seleccinadosss");
+        Deb.consola("Vista.Usuarios.SelectCaja.jComboBox1ItemStateChanged()se ha seleccinadosss");
         if (jComboBox1.getSelectedItem() != null) {
             for (Cajas cajas : lista) {
                 if (jComboBox1.getSelectedItem().toString().equals(cajas.getCaja())) {
@@ -559,9 +560,9 @@ public class NuevoEquipo extends javax.swing.JDialog {
 
         for (Config2 config2 : listConfig2) {
             if (config2.getNombre().equalsIgnoreCase(jList1.getSelectedValue())) {
-                System.out.println("Nombre Coonfig2 sleeccionado: " + jList1.getSelectedValue());
+                Deb.consola("Nombre Coonfig2 sleeccionado: " + jList1.getSelectedValue());
                 codigoConfig2 = config2.getCodigo();
-                System.out.println("Codigo Coonfig2 sleeccionado: " + codigoConfig2);
+                Deb.consola("Codigo Coonfig2 sleeccionado: " + codigoConfig2);
             }
 
         }
@@ -641,8 +642,8 @@ public class NuevoEquipo extends javax.swing.JDialog {
             Config_Equipos configEqtoUpdate = new Config_Equipos();
             Config_EquiposDao configEqDaoupdate = new Config_EquiposDao();
             configEqtoUpdate = configEqDaoupdate.buscarConfiguracionesdeEquipos(codigoNewEquipo, codigoConfig2);
-            System.out.println("equipo en operacion: " + configEqtoUpdate.toString());
-            System.out.println("Codifoxxxx: " + configEqtoUpdate.getCodigo());
+            Deb.consola("equipo en operacion: " + configEqtoUpdate.toString());
+            Deb.consola("Codifoxxxx: " + configEqtoUpdate.getCodigo());
             if (configEqtoUpdate.getCodigo() == null) {
                 Config_Equipos configEq = new Config_Equipos();
                 Config_EquiposDao configEqDao = new Config_EquiposDao();

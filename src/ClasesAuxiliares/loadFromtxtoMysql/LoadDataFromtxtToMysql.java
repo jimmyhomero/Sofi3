@@ -5,13 +5,13 @@
  */
 package ClasesAuxiliares.loadFromtxtoMysql;
 
+import ClasesAuxiliares.debug.Deb;
 import Modelo.Equipos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author USUARIO
@@ -30,7 +30,7 @@ public class LoadDataFromtxtToMysql extends Controlador.Coneccion{
                consulta.executeUpdate();
             
         } catch (SQLException ex) {
-            System.out.println("ClasesAuxiliares.loadFromtxtoMysql.LoadDataFromtxtToMysql.guardar()"+ex);
+            Deb.consola("ClasesAuxiliares.loadFromtxtoMysql.LoadDataFromtxtToMysql.guardar()"+ex);
             JOptionPane.showMessageDialog(null,ex);
             
 

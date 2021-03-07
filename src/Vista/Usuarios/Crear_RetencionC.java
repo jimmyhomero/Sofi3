@@ -13,6 +13,7 @@ import Controlador.Usuarios.DetalleRetencionDao;
 import Controlador.Usuarios.HoraFecha;
 import Controlador.Usuarios.RetencionCDao;
 import Controlador.Usuarios.SeriesRetencionsDao;
+import Modelo.Clientes;
 import Modelo.Compras;
 import Modelo.DetalleRetencion;
 import Modelo.Proveedores;
@@ -46,7 +47,7 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
      */
     private static ArrayList<sri_tipocomprobante> listaTipoComporabante = new ArrayList<sri_tipocomprobante>();
     private static ArrayList<Sri_porcentajes_retencion> listaporcentajesRetencion = new ArrayList<Sri_porcentajes_retencion>();
-    public static Proveedores proveerdor = new Proveedores();
+    public static Clientes proveerdor = new Clientes();
     public static Compras compra = new Compras();
     public static boolean isOpenfromCrearRetencion = false;
 
@@ -481,9 +482,8 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Total Retenido");
 
-        txtTotal.setBackground(new java.awt.Color(204, 204, 255));
+        txtTotal.setBackground(new java.awt.Color(204, 255, 204));
         txtTotal.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtTotal.setForeground(new java.awt.Color(204, 0, 0));
         txtTotal.setEnabled(false);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
@@ -759,13 +759,13 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
                 jTable1.setModel(modelo);
 
             } catch (Exception e) {
-                System.out.println("Vista.Usuarios.Crear_RetencionC.jTable1MouseClicked()" + e);
+                Deb.consola("Vista.Usuarios.Crear_RetencionC.jTable1MouseClicked()" + e);
             }
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void operacionesSumaColumnasOnJtablet() {
-        System.out.println("aaaaaaaaaaaaentraaaaaaaa");
+        Deb.consola("aaaaaaaaaaaaentraaaaaaaa");
         if (jTable1.getRowCount() > 0) {
             ///eliminamos la fila seleccionada y actualizamos el total de la factura
             Double costo = 0.0;
@@ -783,7 +783,7 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
             @Override
             public void tableChanged(TableModelEvent e) {
                 boolean esNUmero = false;
-                System.out.println(".tableChanged()ssentro en ek jtatableeee");
+                Deb.consola(".tableChanged()ssentro en ek jtatableeee");
 //                if (e.getType() == TableModelEvent.UPDATE) {
 //
 //                    int col = e.getColumn();
@@ -806,7 +806,7 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
 //
 ////                        
 ////                        for (int i = 0; i < jTable1.getModel().getRowCount(); i++) {
-////                            //  System.out.println("Vista.Usuarios.Crear_Facturas.addOrDeleteRowTable(): " + jTable1.getRowCount());
+////                            //  Deb.consola("Vista.Usuarios.Crear_Facturas.addOrDeleteRowTable(): " + jTable1.getRowCount());
 ////                            jTable1.setValueAt("dd", i, 1);
 ////                        }
 //                    }
@@ -833,17 +833,17 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
     private void jTable1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTable1PropertyChange
         // TODO add your handling code here:
 
-        System.out.println("Vista.Usuarios.Crear_RetencionC.jTable1PropertyChange()sssssssssssssssssssssss");
+        Deb.consola("Vista.Usuarios.Crear_RetencionC.jTable1PropertyChange()sssssssssssssssssssssss");
     }//GEN-LAST:event_jTable1PropertyChange
 
     private void jTable1InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jTable1InputMethodTextChanged
         // TODO add your handling code here:
-        System.out.println("sssssssffff");
+        Deb.consola("sssssssffff");
     }//GEN-LAST:event_jTable1InputMethodTextChanged
 
     private void jTable1VetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_jTable1VetoableChange
         // TODO add your handling code here:
-        System.out.println("sssssssfffwwwwwwwwwwwwwf");
+        Deb.consola("sssssssfffwwwwwwwwwwwwwf");
     }//GEN-LAST:event_jTable1VetoableChange
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -892,18 +892,7 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
             det.setRetenido(Double.parseDouble(jTable1.getValueAt(i, 6).toString()));
             detDao.guardar(det);
         }
-        RetencionCDao rda = new RetencionCDao();
-
-        try {
-            String fa = rda.creaxmlRetencionElectronica(codigoRetencion);
-            com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
-            com.ws.localhost.Response resp = new com.ws.localhost.Response();
-            resp = wslocal.getWSElectroPort().receiptXMLIn(fa, "admin", "admin", "homer_loading@hotmail.com;homer.loading@gmail.com");
-
-        } catch (Exception e) {
-            Deb.consola("erro al enviar al WS: " + e);
-        }
-
+    
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jcbtipoDocumentoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbtipoDocumentoItemStateChanged

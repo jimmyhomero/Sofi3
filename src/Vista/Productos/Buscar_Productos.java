@@ -8,6 +8,7 @@ package Vista.Productos;
 import ClasesAuxiliares.tablas.SetRenderJTableCXC;
 import Controlador.Ejemplo;
 import Controlador.Usuarios.MarcasDao;
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Usuarios.ModelosDao;
 import Controlador.Usuarios.ProductosDao;
 import Modelo.Marcas;
@@ -44,7 +45,7 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
      */
     public static Integer indexPositiotoolBar;
     Integer clicJtable = 0;
-    Productos usuario1 = new Productos();
+    private static Productos usuario1 = new Productos();
     //String sql_allss = "select * from usuarios";
     // String sql_all = "select usuarios.*,tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo order BY usuarios.Nombres LIMIT 0, 50";
 
@@ -108,7 +109,6 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Producto");
 
@@ -184,8 +184,6 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 13, 1220, -1));
-
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Listar Productos"));
 
         jTable1.setBackground(new java.awt.Color(194, 241, 241));
@@ -222,6 +220,9 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jTable1MouseEntered(evt);
+            }
         });
         jScrollPane1.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -231,18 +232,16 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 9, Short.MAX_VALUE))
+                .addComponent(jScrollPane1)
+                .addGap(9, 9, 9))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+                .addContainerGap())
         );
-
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 104, 1270, 400));
 
         btn_Eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/ShowAll.png"))); // NOI18N
         btn_Eliminar.setText("Mostrar Todo");
@@ -251,7 +250,6 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
                 btn_MostrarTodoActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_Eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 510, 180, 50));
 
         btn_mostrarAll1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/deleteUser.png"))); // NOI18N
         btn_mostrarAll1.setText("Eliminar");
@@ -260,7 +258,6 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
                 btn_EliminarActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_mostrarAll1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 160, 50));
 
         btn_excel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/icons8-MS Excel-48.png"))); // NOI18N
         btn_excel.setText("Excel");
@@ -269,7 +266,45 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
                 btn_excelActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_excel, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 510, 170, 50));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(btn_mostrarAll1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(btn_Eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(btn_excel, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 34, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(13, 13, 13)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_mostrarAll1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_Eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_excel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -328,7 +363,7 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
                 //Crear_Usuarios.jcb_tipo.setSelectedItem(0);
                 Crear_Productos.setItemSelectMarcas = ob;
 
-                //    System.out.println("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
+                //    Deb.consola("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
             }
 
         }
@@ -350,7 +385,7 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
                 //Crear_Usuarios.jcb_tipo.setSelectedItem(0);
                 Crear_Productos.setItemSelectModelo = ob;
 
-                //  System.out.println("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + mode.getTipo());
+                //  Deb.consola("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + mode.getTipo());
             }
 
         }
@@ -360,115 +395,119 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         clicJtable = 1;
+        //Double clicked                    
 
-        Crear_Usuarios.actualizarSiNO = "si";
-        //Double clicked
-        if (evt.getClickCount() == 2) {
-            Productos usuario = new Productos();
+        JTable table = (JTable) evt.getSource();
+        int row = table.getSelectedRow();
+        int col = table.getSelectedColumn();
+        //obtengo el codigo del usuario
+        String Valor = table.getValueAt(row, 0).toString();
+        Deb.consola("VALOR CODIGO : " + Valor);
+        if (evt.getClickCount() == 1) {
             ProductosDao objDao = new ProductosDao();
-            Crear_Productos obj_crea = new Crear_Productos();
-            //jTable1.setShowHorizontalLines(true);
-            // jTable1.setSelectionForeground(Color.ORANGE);
-            jTable1.setShowVerticalLines(true);
-            //jTable1.setBackground(Color.red);
-            JTable table = (JTable) evt.getSource();
-            int row = table.getSelectedRow();
-            int col = table.getSelectedColumn();
-            //obtengo el codigo del usuario
-            String Valor = table.getValueAt(row, 0).toString();
-            System.out.println("VALOR CODIGO : " + Valor);
-            //mando a buscar la informacion del usuaruio con el codigo obtenido dle evento click
-            usuario = objDao.buscarConID(Integer.parseInt(Valor));
-            usuario1 = usuario;
-            System.err.println(usuario.getGarantia());
-            System.err.println(usuario.getIva12());
-
-            System.out.println("-------------------------------------------------------###########################--------------");
-            //lleno el fomulario 
-            obj_crea.txt_codigo.setText(String.valueOf(usuario.getCodigo()));
-            obj_crea.txt_producto.setText(usuario.getProducto());
-            obj_crea.txt_codigoAlternativo.setText(usuario.getCodigoAlterno());
-            obj_crea.txt_codigoBarras.setText(usuario.getCodigoBarras());
-            obj_crea.txt_costo.setText(usuario.getCosto());
-            obj_crea.txt_garantia.setText(usuario.getGarantia());
-            obj_crea.txt_maximosok.setText(usuario.getMaximo());
-            obj_crea.txt_mminimosok.setText(usuario.getMinimo());
-            obj_crea.txt_observacion.setText(usuario.getObservacion());
-            obj_crea.txt_pvp.setText(usuario.getPvp());
-            obj_crea.txt_percha.setText(usuario.getUbicacion());
-            obj_crea.txt_unidades.setText(usuario.getUnidades());
-            obj_crea.txt_utilidad.setText(usuario.getUtilidad());
-            if (usuario.getImagen() != null) {
-                ImageIcon icon = new ImageIcon(usuario.getImagen());
-                Icon icono = new ImageIcon(icon.getImage().getScaledInstance(251, 205, Image.SCALE_DEFAULT));
-                obj_crea.lbl_img.setText(null);
-                obj_crea.lbl_img.setIcon(icono);
-            } else {
-                obj_crea.lbl_img.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/producto.jpg")));
-            }
-
-            if (usuario.getGarantia().contains("MESES")) {
-
-                String numero = ValidaNUmeros.buscarNumeroIntoString(usuario.getGarantia());
-                obj_crea.txt_garantia.setText(numero);
-                obj_crea.chek_anos.setSelected(false);
-                obj_crea.chekMeses.setSelected(true);
-            }
-            if (usuario.getGarantia().contains("ANOS")) {
-                String numero = ValidaNUmeros.buscarNumeroIntoString(usuario.getGarantia());
-                obj_crea.txt_garantia.setText(numero);
-                obj_crea.chek_anos.setSelected(true);
-                obj_crea.chekMeses.setSelected(false);
-            }
-            if (usuario.getGarantia().contains("SIN GARANTIA")) {
-                obj_crea.chekMeses.setSelected(false);
-                obj_crea.chek_anos.setSelected(false);
-                //obj_crea.txt_garantia.setText(1);
-            }
-            //////////////////graba iva si o no ////////
-            System.err.println(usuario.getIva12());
-            if (usuario.getIva12().equals(0.0)) {
-                obj_crea.radIvaNo.setSelected(true);
-            } else {
-                obj_crea.radIvaSI.setSelected(true);
-            }
-            //////////PRODUCTO SERVICIO O ACTIVO FIJO
-            if (usuario.getProductoOServicio().equals(1)) {
-                obj_crea.radProducto.setSelected(true);
-            } else if (usuario.getProductoOServicio().equals(2)) {
-                obj_crea.radServicio.setSelected(true);
-            } else {
-                obj_crea.radActivoFijo.setSelected(true);
-            }
-            ////////////P1 P2 P3 ...N
-            obj_crea.txt_p1.setText(usuario.getP1().toString());
-            obj_crea.txt_p2.setText(usuario.getP2().toString());
-            obj_crea.txt_p3.setText(usuario.getP3().toString());
-            Double costo = Double.parseDouble(usuario.getCosto());
-            obj_crea.lbl_p1.setText(String.valueOf(((costo * usuario.getP1()) / 100) + costo));
-            obj_crea.lbl_p2.setText(String.valueOf(((costo * usuario.getP2()) / 100) + costo));
-            obj_crea.lbl_p3.setText(String.valueOf(((costo * usuario.getP2()) / 100) + costo));
-            ///
-
-//llenasmos JCBOX marcas        
-            Marcas obj = new Marcas();
-            MarcasDao a = new MarcasDao();
-            obj = a.buscarConID(usuario.getModelos_marcas_codigo());
-            Crear_Productos.txt_marca.setText(obj.getMarca());
-            //this.llenarjcbSelectedItemMarca(obj.getMarca());
-//llenasmos JCBOX Modelos
-            Modelos objm = new Modelos();
-            ModelosDao abjmDao = new ModelosDao();
-            objm = abjmDao.buscarConID(usuario.getModelo_codigo());
-            Crear_Productos.txt_categorias.setText(objm.getModelo());
-
-            obj_crea.jButton1.setText("Actualizar");
-            Principal.desktopPane.add(obj_crea);
-            obj_crea.setVisible(true);
-
+            usuario1 = objDao.buscarConID(Integer.parseInt(Valor));
+        }
+        if (evt.getClickCount() == 2) {
+            acturlziarProductos(Valor);
+            //ProductosDao objDao = new ProductosDao();
+            //usuario1 = objDao.buscarConID(Integer.parseInt(Valor));
         }
     }//GEN-LAST:event_jTable1MouseClicked
+    private static Icon iconodefault() {
 
+        //javax.swing.ImageIcon a =new javax.swing.ImageIcon(getClass().getResource("/Img/producto.jpg"));
+        return null;
+    }
+
+    public static void acturlziarProductos(String Valor) {
+        Crear_Usuarios.actualizarSiNO = "si";
+        Crear_Productos obj_crea = new Crear_Productos();
+        ProductosDao objDao = new ProductosDao();
+        //mando a buscar la informacion del usuaruio con el codigo obtenido dle evento click
+        usuario1 = objDao.buscarConID(Integer.parseInt(Valor));
+
+        System.err.println(usuario1.getGarantia());
+        System.err.println(usuario1.getIva12());
+
+        Deb.consola("-------------------------------------------------------###########################--------------");
+        //lleno el fomulario 
+        obj_crea.txt_codigoAlternativo.setEnabled(false);///para que no cambie el codigo alterno
+        obj_crea.txt_codigo.setText(String.valueOf(usuario1.getCodigo()));
+        obj_crea.txt_producto.setText(usuario1.getProducto());
+        obj_crea.txt_codigoAlternativo.setText(usuario1.getCodigoAlterno());
+        obj_crea.txt_codigoBarras.setText(usuario1.getCodigoBarras());
+        obj_crea.txt_costo.setText(usuario1.getCosto());
+        obj_crea.txt_garantiameses.setText(usuario1.getGarantia());
+        obj_crea.txt_maximosok.setText(usuario1.getMaximo());
+        obj_crea.txt_mminimosok.setText(usuario1.getMinimo());
+        obj_crea.txt_observacion.setText(usuario1.getObservacion());
+        obj_crea.txt_pvp.setText(usuario1.getPvp());
+        obj_crea.txt_percha.setText(usuario1.getUbicacion());
+        obj_crea.txt_unidades.setText(usuario1.getUnidades());
+        obj_crea.txt_utilidad.setText(usuario1.getUtilidad());
+        if (usuario1.getImagen() != null) {
+            ImageIcon icon = new ImageIcon(usuario1.getImagen());
+            Icon icono = new ImageIcon(icon.getImage().getScaledInstance(251, 205, Image.SCALE_DEFAULT));
+            obj_crea.lbl_img.setText(null);
+            obj_crea.lbl_img.setIcon(icono);
+        } else {
+            obj_crea.lbl_img.setIcon(iconodefault());
+        }
+
+        if (usuario1.getGarantia().equals("0")) {
+            obj_crea.chekMeses.setSelected(false);
+        } else {
+            String numero = ValidaNUmeros.buscarNumeroIntoString(usuario1.getGarantia());
+            obj_crea.txt_garantiameses.setText(numero);
+            obj_crea.chekMeses.setSelected(true);
+        }
+        //////////////////graba iva si o no ////////
+        System.err.println(usuario1.getIva12());
+        if (usuario1.getIva12().equals(0.0)) {
+            obj_crea.radIvaNo.setSelected(true);
+        } else {
+            obj_crea.radIvaSI.setSelected(true);
+        }
+        //////////PRODUCTO SERVICIO O ACTIVO FIJO
+        if (usuario1.getProductoOServicio().equals(1)) {
+            obj_crea.radProducto.setSelected(true);
+        } else if (usuario1.getProductoOServicio().equals(2)) {
+            obj_crea.radServicio.setSelected(true);
+        } else {
+            obj_crea.radActivoFijo.setSelected(true);
+        }
+        ////////////P1 P2 P3 ...N
+        obj_crea.txt_p1.setText(usuario1.getP1().toString());
+        obj_crea.txt_p2.setText(usuario1.getP2().toString());
+        obj_crea.txt_p3.setText(usuario1.getP3().toString());
+        Double costo = Double.parseDouble(usuario1.getCosto());
+        obj_crea.lbl_p1.setText(String.valueOf(((costo * usuario1.getP1()) / 100) + costo));
+        obj_crea.lbl_p2.setText(String.valueOf(((costo * usuario1.getP2()) / 100) + costo));
+        obj_crea.lbl_p3.setText(String.valueOf(((costo * usuario1.getP2()) / 100) + costo));
+        ///
+
+//llenasmos JCBOX marcas        
+        Marcas obj = new Marcas();
+        MarcasDao a = new MarcasDao();
+        if (usuario1.getModelos_marcas_codigo() != 0) {
+            obj = a.buscarConID(usuario1.getModelos_marcas_codigo());
+            obj_crea.txt_marca.setText(obj.getMarca());
+        }
+
+        //this.llenarjcbSelectedItemMarca(obj.getMarca());
+//llenasmos JCBOX Modelos
+        Modelos objm = new Modelos();
+        ModelosDao abjmDao = new ModelosDao();
+        if (usuario1.getModelo_codigo() != 0) {
+            objm = abjmDao.buscarConID(usuario1.getModelo_codigo());
+            obj_crea.txt_categorias.setText(objm.getModelo());
+        }
+
+        obj_crea.jButton1.setText("Actualizar");
+        Principal.desktopPane.add(obj_crea);
+        obj_crea.setVisible(true);
+
+    }
     private void txt_productoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_productoKeyTyped
         // TODO add your handling code here:
 //        ValidaNUmeros val = new ValidaNUmeros();
@@ -488,7 +527,6 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
                 CellStyle style = workbook.createCellStyle();
                 style.setFillBackgroundColor(IndexedColors.AQUA.getIndex());
 
-                
                 fila.createCell(0).setCellValue("Num");
                 fila.createCell(1).setCellValue("Codigo");
                 fila.setHeightInPoints(23);
@@ -531,7 +569,7 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
                 Principal.jProgressBar2.setString("");
                 Date now = new java.util.Date();
                 try {
-                    System.out.println("Now : " + now);
+                    Deb.consola("Now : " + now);
                     //workbook.write(new FileOutputStream(new File("C:\\sofi\\temp\\productos.xlsx")));
                     workbook.write(new FileOutputStream(new File(Ejemplo.productosFileExample)));
                     try {
@@ -618,6 +656,10 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_formInternalFrameClosed
+
+    private void jTable1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseEntered
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

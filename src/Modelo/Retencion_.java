@@ -27,6 +27,7 @@ public class Retencion_ {
     String sec1;
     String sec2;
     String sec3;
+    Integer autorizado;
     int estado;
 
     public int getEstado() {
@@ -157,6 +158,14 @@ public class Retencion_ {
 
     public void setConcepto(String concepto) {
         this.concepto = concepto;
+    }
+
+    public Integer getAutorizado() {
+        return autorizado;
+    }
+
+    public void setAutorizado(Integer autorizado) {
+        this.autorizado = autorizado;
     }
     
 }

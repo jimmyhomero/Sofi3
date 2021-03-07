@@ -5,6 +5,7 @@
  */
 package Vista.Sat;
 
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Sat.SatAparatoDao;
 import Controlador.Sat.SatSerieDao;
 import Controlador.Usuarios.CategoriasDao;
@@ -87,7 +88,7 @@ public class New_Aparato extends javax.swing.JDialog {
                     txtModelo.transferFocus();
 
                 } else {
-                    System.out.println("El item es de un tipo desconocido");
+                    Deb.consola("El item es de un tipo desconocido");
                 }
 
             }
@@ -116,7 +117,7 @@ public class New_Aparato extends javax.swing.JDialog {
                     txtModelo.transferFocus();
 
                 } else {
-                    System.out.println("El item es de un tipo desconocido");
+                    Deb.consola("El item es de un tipo desconocido");
                 }
 
             }
@@ -148,7 +149,7 @@ public class New_Aparato extends javax.swing.JDialog {
                     txtColor.transferFocus();
 
                 } else {
-                    System.out.println("El item es de un tipo desconocido");
+                    Deb.consola("El item es de un tipo desconocido");
                 }
 
             }
@@ -173,7 +174,7 @@ public class New_Aparato extends javax.swing.JDialog {
                     txtModelo.setText(c.getModelo());
                     modeloSeleccionada = c.getModelo();
                 } else {
-                    System.out.println("El item es de un tipo desconocido");
+                    Deb.consola("El item es de un tipo desconocido");
                 }
 
             }

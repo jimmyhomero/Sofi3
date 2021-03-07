@@ -10,8 +10,6 @@ import Controlador.Usuarios.FacturasDao;
 import Modelo.Facturas;
 import Vista.Usuarios.Buscar_electronicas;
 import com.sun.glass.events.KeyEvent;
-import com.ws.electro.cliente.Response;
-import com.ws.electro.cliente.WSElectro_Service;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.io.IOException;
@@ -22,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -129,19 +128,19 @@ public class Main {
                 Thread.sleep(20);
                 r.keyRelease(KeyEvent.VK_ENTER);
                 Thread.sleep(20);
-                System.out.println("login.Main.main() ---->>>>>>  inciando eentronica");
+                Deb.consola("login.Main.main() ---->>>>>>  inciando eentronica");
                 Thread.sleep(2000);
 
-                System.out.println("INICIO DEMONIO FACTURACION ELECTRONICA.............");
+                Deb.consola("INICIO DEMONIO FACTURACION ELECTRONICA.............");
                 Variables.FE_ESTADO1 = "ESTADO FACTURACION ELECTRONICA DESACTIVADO";
 ////                while (iniciarfacturacioELectronica) {
 ////                    Variables.FE_ESTADO1 = "ESTADO FACTURACION ELECTRONICA ACTVIVO";
-////                    System.out.println("factura electronica iniciada");
+////                    Deb.consola("factura electronica iniciada");
 ////
 ////                    if (estaenviandofacturasactuamentealws) {
 ////
 ////                        Variables.FE_ESTADO2 = "ENVIANDO ACTUALEMNTE DOCUMENTOS AL SRI";
-////                        System.out.println("EnviandoActualmeten siiiii");
+////                        Deb.consola("EnviandoActualmeten siiiii");
 ////                        FacturasDao fac1 = new FacturasDao();
 ////                        for (Facturas ff : fac1.buscarFacturasNoAutorizadas()) {
 ////                            FacturasDao fac101 = new FacturasDao();
@@ -164,7 +163,7 @@ public class Main {
 ////                    }
 ////                    Thread.sleep(2000);
 ////                }
-////                System.out.println("login.Main.main()xxxxxxxxxxxxxxxxxxxxxxxxxx facturacion main ");
+////                Deb.consola("login.Main.main()xxxxxxxxxxxxxxxxxxxxxxxxxx facturacion main ");
 
             } catch (AWTException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

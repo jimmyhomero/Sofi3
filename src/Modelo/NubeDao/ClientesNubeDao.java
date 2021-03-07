@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -58,11 +59,11 @@ public class ClientesNubeDao extends Coneccion {
             consulta.setString(10, tarea.getEmail());
             
             
-            System.out.println("Controlador.CUsuarios.guardar()" + consulta);
+            Deb.consola("Controlador.CUsuarios.guardar()" + consulta);
             consulta.executeUpdate();
         } catch (SQLException ex) {
           
-            System.out.println("Controlador.CUsuarios.guardar()" + ex);
+            Deb.consola("Controlador.CUsuarios.guardar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -96,13 +97,13 @@ public class ClientesNubeDao extends Coneccion {
             st.setInt(10, persona.getTipo_Usuario_codigo());
             st.setInt(11, persona.getCodigo());
              String sql = st.toString();
-            System.out.println("Controlador.Usuarios.CUsuarios.modificar()"+ sql);
+            Deb.consola("Controlador.Usuarios.CUsuarios.modificar()"+ sql);
             st.executeUpdate();
             Principal.jProgressBar2.setString("eeeeeeeeeeeee");
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
         } catch (SQLException e) {
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error" + e + sql, "Error al modificar Registro" + e.toString()));
-System.out.println("Controlador.CUsuarios.guardar()" + e);
+Deb.consola("Controlador.CUsuarios.guardar()" + e);
         } finally {
             this.cerrar();
         }
@@ -132,12 +133,12 @@ System.out.println("Controlador.CUsuarios.guardar()" + e);
                 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
                 this.lista.add(per);
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.listar()" + ex);
+            Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -168,12 +169,12 @@ System.out.println("Controlador.CUsuarios.guardar()" + e);
 //                per.setTipo_Usuario_codigo(rs.getInt("Tipo_Usuario_codigo"));
 //                //per.setObservaciones(rs.getString("PersonaObservaciones"));
 //                //per.setFechaN(rs.getDate("PersonaFN").toString());
-//                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+//                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
 //                this.lista.add(per);
 //            }
 //
 //        } catch (Exception ex) {
-//            System.out.println("Controlador.CUsuarios.listar()" + ex);
+//            Deb.consola("Controlador.CUsuarios.listar()" + ex);
 //        } finally {
 //            this.cerrar();
 //        }
@@ -211,12 +212,12 @@ System.out.println("Controlador.CUsuarios.guardar()" + e);
                 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
                 u = per;
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -251,12 +252,12 @@ System.out.println("Controlador.CUsuarios.guardar()" + e);
                 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
                 u = per;
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
         } finally {
             this.cerrar();
         }
@@ -303,7 +304,7 @@ System.out.println("Controlador.CUsuarios.guardar()" + e);
             st = this.getCnx().prepareCall("select usuarios.*,tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo where usuarios."+columna+"  like '%"+value+ "%' order BY usuarios.Nombres LIMIT 0, 50" );
 
           //  st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -318,11 +319,11 @@ System.out.println("Controlador.CUsuarios.guardar()" + e);
                 registros[7] = rs.getString("Estado");
                 registros[8] = rs.getString("Tipo");
                 modelo.addRow(registros);
-           //     System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+           //     Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
             }
 
         } catch (Exception ex) {
@@ -357,7 +358,7 @@ System.out.println("Controlador.CUsuarios.guardar()" + e);
             PreparedStatement st;
 
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -372,7 +373,7 @@ System.out.println("Controlador.CUsuarios.guardar()" + e);
                 registros[7] = rs.getString("Estado");
                 registros[8] = rs.getString("Tipo");
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
 
             }
 

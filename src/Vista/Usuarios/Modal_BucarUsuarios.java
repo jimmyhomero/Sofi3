@@ -11,6 +11,7 @@ import Controlador.Usuarios.UsuariosDao;
 import Modelo.Tipo_Usuario;
 import Modelo.Usuarios;
 import Vista.Principal;
+import ClasesAuxiliares.debug.Deb;
 import static Vista.Usuarios.Buscar_usuarios.jTable1;
 import static Vista.Usuarios.Crear_Usuarios.jcb_tipo;
 import Vlidaciones.ValidaNUmeros;
@@ -359,7 +360,7 @@ public class Modal_BucarUsuarios extends javax.swing.JInternalFrame {
                 //Crear_Usuarios.jcb_tipo.setSelectedItem(0);
                 Crear_Usuarios.setItemSelect = o;
                 
-                System.out.println("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
+                Deb.consola("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
             }
 
         }

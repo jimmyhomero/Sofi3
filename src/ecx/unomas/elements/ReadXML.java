@@ -19,6 +19,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import ClasesAuxiliares.debug.Deb;
 
 public class ReadXML {
     //originalmente era asi 
@@ -37,7 +38,7 @@ public class ReadXML {
             NodeList ambiente = ambienteElement.getChildNodes();
             factura.setAmbiente(Integer.parseInt(((Node) ambiente.item(0)).getNodeValue()));
         } catch (Exception e) {
-            System.out.println("Falta ambiente");
+            Deb.consola("Falta ambiente");
         }
 
         try {
@@ -47,7 +48,7 @@ public class ReadXML {
             factura.setTipoEmision(Integer.parseInt(((Node) tipoEmision.item(0)).getNodeValue()));
         } catch (Exception e) {
 
-            System.out.println("Falta tipoEmision");
+            Deb.consola("Falta tipoEmision");
         }
 
         try {
@@ -57,21 +58,21 @@ public class ReadXML {
             factura.setRazonSocial(removeAccents(((Node) razonSocial.item(0)).getNodeValue().trim().toLowerCase()));
         } catch (Exception e) {
 
-            System.out.println("Falta razonSocial");
-            System.out.println("");
+            Deb.consola("Falta razonSocial");
+            Deb.consola("");
         }
 
         try {
-            System.out.println("ecx.unomas.elements.ReadXML.readFactura()");
+            Deb.consola("ecx.unomas.elements.ReadXML.readFactura()");
             NodeList nombreComercialTag = infoTributariaElements.getElementsByTagName("nombreComercial");
-            System.out.println("Falta nombreComercial");
-            System.out.println(nombreComercialTag);
+            Deb.consola("Falta nombreComercial");
+            Deb.consola(nombreComercialTag);
             Element nombreComercialElement = (Element) nombreComercialTag.item(0);
             NodeList nombreComercial = nombreComercialElement.getChildNodes();
             factura.setNombreComercial(removeAccents(((Node) nombreComercial.item(0)).getNodeValue().trim().toLowerCase()));
         } catch (Exception e) {
-            System.out.println("ecx.unomas.elements.ReadXML.readFactura(): " + e);
-            System.out.println("Falta nombreComercial");
+            Deb.consola("ecx.unomas.elements.ReadXML.readFactura(): " + e);
+            Deb.consola("Falta nombreComercial");
         }
 
         try {
@@ -80,7 +81,7 @@ public class ReadXML {
             NodeList ruc = rucElement.getChildNodes();
             factura.setRUC(((Node) ruc.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta ruc");
+            Deb.consola("Falta ruc");
         }
 
         try {
@@ -89,7 +90,7 @@ public class ReadXML {
             NodeList claveAcceso = claveAccesoElement.getChildNodes();
             factura.setClaveAcceso(((Node) claveAcceso.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta claveAcceso");
+            Deb.consola("Falta claveAcceso");
         }
 
         try {
@@ -98,7 +99,7 @@ public class ReadXML {
             NodeList codDoc = codDocElement.getChildNodes();
             factura.setCodDoc(((Node) codDoc.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta codDoc");
+            Deb.consola("Falta codDoc");
         }
 
         try {
@@ -107,7 +108,7 @@ public class ReadXML {
             NodeList estab = estabElement.getChildNodes();
             factura.setEstab(((Node) estab.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta estab");
+            Deb.consola("Falta estab");
         }
 
         try {
@@ -116,7 +117,7 @@ public class ReadXML {
             NodeList ptoEmi = ptoEmiElement.getChildNodes();
             factura.setPtoEmi(((Node) ptoEmi.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta ptoEmi");
+            Deb.consola("Falta ptoEmi");
         }
 
         try {
@@ -125,7 +126,7 @@ public class ReadXML {
             NodeList secuencial = secuencialElement.getChildNodes();
             factura.setSecuencia(((Node) secuencial.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta secuencial");
+            Deb.consola("Falta secuencial");
         }
 
         try {
@@ -134,7 +135,7 @@ public class ReadXML {
             NodeList dirMatriz = dirMatrizElement.getChildNodes();
             factura.setDirMatriz(removeAccents(((Node) dirMatriz.item(0)).getNodeValue().trim().toLowerCase()));
         } catch (Exception e) {
-            System.out.println("Falta dirMatriz");
+            Deb.consola("Falta dirMatriz");
         }
 
         // INFO FACTURA
@@ -148,7 +149,7 @@ public class ReadXML {
             NodeList fechaEmision = fechaEmisionElement.getChildNodes();
             factura.setFechaEmision(((Node) fechaEmision.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta fechaEmision");
+            Deb.consola("Falta fechaEmision");
         }
 
         try {
@@ -157,7 +158,7 @@ public class ReadXML {
             NodeList dirEstablecimiento = dirEstablecimientoElement.getChildNodes();
             factura.setDirEstablecimiento(removeAccents(((Node) dirEstablecimiento.item(0)).getNodeValue().trim().toLowerCase()));
         } catch (Exception e) {
-            System.out.println("Falta dirEstablecimiento");
+            Deb.consola("Falta dirEstablecimiento");
         }
 
         try {
@@ -174,7 +175,7 @@ public class ReadXML {
             NodeList obligadoContabilidad = obligadoContabilidadElement.getChildNodes();
             factura.setObligadoContabilidad(((Node) obligadoContabilidad.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta obligadoContabilidad");
+            Deb.consola("Falta obligadoContabilidad");
         }
 
         try {
@@ -183,7 +184,7 @@ public class ReadXML {
             NodeList comercioExterior = comercioExteriorElement.getChildNodes();
             factura.setComercioExterior(((Node) comercioExterior.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta comercio exterior");
+            Deb.consola("Falta comercio exterior");
         }
 
         try {
@@ -192,7 +193,7 @@ public class ReadXML {
             NodeList incoTermFactura = incoTermFacturaElement.getChildNodes();
             factura.setIncoTermFactura(((Node) incoTermFactura.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta incoTermFactura");
+            Deb.consola("Falta incoTermFactura");
         }
 
         try {
@@ -201,7 +202,7 @@ public class ReadXML {
             NodeList lugarIncoTerm = lugarIncoTermElement.getChildNodes();
             factura.setLugarIncoTerm(((Node) lugarIncoTerm.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta lugarIncoTerm");
+            Deb.consola("Falta lugarIncoTerm");
         }
 
         try {
@@ -210,7 +211,7 @@ public class ReadXML {
             NodeList paisOrigen = paisOrigenElement.getChildNodes();
             factura.setPaisOrigen(Integer.parseInt(((Node) paisOrigen.item(0)).getNodeValue()));
         } catch (Exception e) {
-            System.out.println("Falta paisOrigen");
+            Deb.consola("Falta paisOrigen");
         }
 
         try {
@@ -219,7 +220,7 @@ public class ReadXML {
             NodeList puertoEmbarque = puertoEmbarqueElement.getChildNodes();
             factura.setPuertoEmbarque(((Node) puertoEmbarque.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta puertoEmbarque");
+            Deb.consola("Falta puertoEmbarque");
         }
 
         try {
@@ -228,7 +229,7 @@ public class ReadXML {
             NodeList puertoDestino = puertoDestinoElement.getChildNodes();
             factura.setPuertoDestino(((Node) puertoDestino.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta puertoDestino");
+            Deb.consola("Falta puertoDestino");
         }
 
         try {
@@ -237,7 +238,7 @@ public class ReadXML {
             NodeList paisDestino = paisDestinoElement.getChildNodes();
             factura.setPaisDestino(Integer.parseInt(((Node) paisDestino.item(0)).getNodeValue()));
         } catch (Exception e) {
-            System.out.println("Falta paisDestino");
+            Deb.consola("Falta paisDestino");
         }
 
         try {
@@ -246,7 +247,7 @@ public class ReadXML {
             NodeList paisAdquisicion = paisAdquisicionElement.getChildNodes();
             factura.setPaisAdquisicion(Integer.parseInt(((Node) paisAdquisicion.item(0)).getNodeValue()));
         } catch (Exception e) {
-            System.out.println("Falta paisAdquisicion");
+            Deb.consola("Falta paisAdquisicion");
         }
 
         try {
@@ -255,7 +256,7 @@ public class ReadXML {
             NodeList tipoIdentificacionComprador = tipoIdentificacionCompradorElement.getChildNodes();
             factura.setTipoIdentificacionComprador(((Node) tipoIdentificacionComprador.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta tipoIdentificacionComprador");
+            Deb.consola("Falta tipoIdentificacionComprador");
         }
         try {
             NodeList guiaRemisionTag = infoFacturaElements.getElementsByTagName("guiaRemision");
@@ -271,7 +272,7 @@ public class ReadXML {
             NodeList razonSocialComprador = razonSocialCompradorElement.getChildNodes();
             factura.setRazonSocialComprador(removeAccents(((Node) razonSocialComprador.item(0)).getNodeValue().trim().toLowerCase()));
         } catch (Exception e) {
-            System.out.println("Falta razonSocialComprador");
+            Deb.consola("Falta razonSocialComprador");
         }
 
         try {
@@ -280,7 +281,7 @@ public class ReadXML {
             NodeList identificacionComprador = identificacionCompradorElement.getChildNodes();
             factura.setIdentificacionComprador(((Node) identificacionComprador.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta identificacionComprador");
+            Deb.consola("Falta identificacionComprador");
         }
 
         try {
@@ -297,7 +298,7 @@ public class ReadXML {
             NodeList totalSinImpuestos = totalSinImpuestosElement.getChildNodes();
             factura.setTotalSinImpuestos(Double.parseDouble(((Node) totalSinImpuestos.item(0)).getNodeValue().replace(",", "")));
         } catch (Exception e) {
-            System.out.println("Falta totalSinImpuestos");
+            Deb.consola("Falta totalSinImpuestos");
         }
 
         try {
@@ -315,7 +316,7 @@ public class ReadXML {
             NodeList totalDescuento = totalDescuentoElement.getChildNodes();
             factura.setTotalDescuento(Double.parseDouble(((Node) totalDescuento.item(0)).getNodeValue().replace(",", "")));
         } catch (Exception e) {
-            System.out.println("Falta el total de descuento");
+            Deb.consola("Falta el total de descuento");
         }
 
         // TOTAL CON IMPUESTOS
@@ -336,7 +337,7 @@ public class ReadXML {
                     NodeList codigo = codigoElement.getChildNodes();
                     totalImpuesto.setCodigo(Integer.parseInt(((Node) codigo.item(0)).getNodeValue()));
                 } catch (Exception e) {
-                    System.out.println("Falta el codigo (total impuestos)");
+                    Deb.consola("Falta el codigo (total impuestos)");
                 }
 
                 try {
@@ -345,7 +346,7 @@ public class ReadXML {
                     NodeList codigoPorcentaje = codigoPorcentajeElement.getChildNodes();
                     totalImpuesto.setCodigoPorcentaje(Integer.parseInt(((Node) codigoPorcentaje.item(0)).getNodeValue()));
                 } catch (Exception e) {
-                    System.out.println("Falta el codigo de porcentaje (total impuestos)");
+                    Deb.consola("Falta el codigo de porcentaje (total impuestos)");
                 }
 
                 try {
@@ -354,7 +355,7 @@ public class ReadXML {
                     NodeList baseImponible = baseImponibleElement.getChildNodes();
                     totalImpuesto.setBaseImponible(Double.parseDouble(((Node) baseImponible.item(0)).getNodeValue().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta la base imponible");
+                    Deb.consola("Falta la base imponible");
                 }
 
                 try {
@@ -363,7 +364,7 @@ public class ReadXML {
                     NodeList valor = valorElement.getChildNodes();
                     totalImpuesto.setValor(Double.parseDouble(((Node) valor.item(0)).getNodeValue().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta el valor");
+                    Deb.consola("Falta el valor");
                 }
             }
             factura.setTotalImpuestos(totalImpuesto);
@@ -375,7 +376,7 @@ public class ReadXML {
             NodeList propina = propinaElement.getChildNodes();
             factura.setPropina(Double.parseDouble(((Node) propina.item(0)).getNodeValue().replace(",", "")));
         } catch (Exception e) {
-            System.out.println("Falta la propina");
+            Deb.consola("Falta la propina");
         }
 
         try {
@@ -384,7 +385,7 @@ public class ReadXML {
             NodeList fleteInternacional = fleteInternacionalElement.getChildNodes();
             factura.setFleteInternacional(Double.parseDouble(((Node) fleteInternacional.item(0)).getNodeValue().replace(",", "")));
         } catch (Exception e) {
-            System.out.println("Falta fleteInternacional");
+            Deb.consola("Falta fleteInternacional");
         }
 
         try {
@@ -393,7 +394,7 @@ public class ReadXML {
             NodeList seguroInternacional = seguroInternacionalElement.getChildNodes();
             factura.setSeguroInternacional(Double.parseDouble(((Node) seguroInternacional.item(0)).getNodeValue().replace(",", "")));
         } catch (Exception e) {
-            System.out.println("Falta seguroInternacional");
+            Deb.consola("Falta seguroInternacional");
         }
 
         try {
@@ -402,7 +403,7 @@ public class ReadXML {
             NodeList gastosAduaneros = gastosAduanerosElement.getChildNodes();
             factura.setGastosAduaneros(Double.parseDouble(((Node) gastosAduaneros.item(0)).getNodeValue().replace(",", "")));
         } catch (Exception e) {
-            System.out.println("Falta gastosAduaneros");
+            Deb.consola("Falta gastosAduaneros");
         }
 
         try {
@@ -411,7 +412,7 @@ public class ReadXML {
             NodeList gastosTransporteOtros = gastosTransporteOtrosElement.getChildNodes();
             factura.setGastosTransporteOtros(Double.parseDouble(((Node) gastosTransporteOtros.item(0)).getNodeValue().replace(",", "")));
         } catch (Exception e) {
-            System.out.println("Falta gastosTransporteOtros");
+            Deb.consola("Falta gastosTransporteOtros");
         }
 
         try {
@@ -420,7 +421,7 @@ public class ReadXML {
             NodeList importeTotal = importeTotalElement.getChildNodes();
             factura.setImporteTotal(Double.parseDouble(((Node) importeTotal.item(0)).getNodeValue().replace(",", "")));
         } catch (Exception e) {
-            System.out.println("Falta el importe total");
+            Deb.consola("Falta el importe total");
         }
 
         try {
@@ -429,7 +430,7 @@ public class ReadXML {
             NodeList moneda = monedaElement.getChildNodes();
             factura.setMoneda(((Node) moneda.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta la moneda");
+            Deb.consola("Falta la moneda");
         }
 
         // PAGOS
@@ -451,7 +452,7 @@ public class ReadXML {
                         NodeList formaPago = formaPagoElement.getChildNodes();
                         pago.setFormaPago(((Node) formaPago.item(0)).getNodeValue());
                     } catch (Exception e) {
-                        System.out.println("Falta la forma de pago");
+                        Deb.consola("Falta la forma de pago");
                     }
 
                     try {
@@ -460,7 +461,7 @@ public class ReadXML {
                         NodeList total = totalElement.getChildNodes();
                         pago.setTotal(Double.parseDouble(((Node) total.item(0)).getNodeValue()));
                     } catch (Exception e) {
-                        System.out.println("Falta el total");
+                        Deb.consola("Falta el total");
                     }
 
                     try {
@@ -469,7 +470,7 @@ public class ReadXML {
                         NodeList plazo = plazoElement.getChildNodes();
                         pago.setPlazo(Integer.parseInt(((Node) plazo.item(0)).getNodeValue()));
                     } catch (Exception e) {
-                        System.out.println("Falta el plazo");
+                        Deb.consola("Falta el plazo");
                     }
 
                     try {
@@ -478,7 +479,7 @@ public class ReadXML {
                         NodeList unidadTiempo = unidadTiempoElement.getChildNodes();
                         pago.setUnidadTiempo(((Node) unidadTiempo.item(0)).getNodeValue());
                     } catch (Exception e) {
-                        System.out.println("Falta la unidad de tiempo");
+                        Deb.consola("Falta la unidad de tiempo");
                     }
                 }
                 pagos.add(pago);
@@ -505,7 +506,7 @@ public class ReadXML {
                     NodeList codigoPrincipal = codigoPrincipalElement.getChildNodes();
                     factura_detalle.setCodigoPrincipal(((Node) codigoPrincipal.item(0)).getNodeValue());
                 } catch (Exception e) {
-                    System.out.println("Falta el codigo principal");
+                    Deb.consola("Falta el codigo principal");
                 }
 
                 try {
@@ -523,7 +524,7 @@ public class ReadXML {
                     NodeList descripcion = descripcionElement.getChildNodes();
                     factura_detalle.setDescripcion(removeAccents(((Node) descripcion.item(0)).getNodeValue().trim().toLowerCase()));
                 } catch (Exception e) {
-                    System.out.println("Falta la descripcion");
+                    Deb.consola("Falta la descripcion");
                 }
 
                 try {
@@ -532,7 +533,7 @@ public class ReadXML {
                     NodeList cantidad = cantidadElement.getChildNodes();
                     factura_detalle.setCantidad(Double.parseDouble(((Node) cantidad.item(0)).getNodeValue().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta la cantidad");
+                    Deb.consola("Falta la cantidad");
                 }
 
                 try {
@@ -541,7 +542,7 @@ public class ReadXML {
                     NodeList precioUnitario = precioUnitarioElement.getChildNodes();
                     factura_detalle.setPrecioUnitario(Double.parseDouble(((Node) precioUnitario.item(0)).getNodeValue().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta el precio unitario");
+                    Deb.consola("Falta el precio unitario");
                 }
 
                 try {
@@ -550,7 +551,7 @@ public class ReadXML {
                     NodeList descuento = descuentoElement.getChildNodes();
                     factura_detalle.setDescuento(Double.parseDouble(((Node) descuento.item(0)).getNodeValue().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta el descuento");
+                    Deb.consola("Falta el descuento");
                 }
 
                 try {
@@ -559,7 +560,7 @@ public class ReadXML {
                     NodeList precioTotalSinImpuesto = precioTotalSinImpuestoElement.getChildNodes();
                     factura_detalle.setPrecioTotalSinImpuesto(Double.parseDouble(((Node) precioTotalSinImpuesto.item(0)).getNodeValue().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta el precio total sin impuestos");
+                    Deb.consola("Falta el precio total sin impuestos");
                 }
 
                 try {
@@ -606,7 +607,7 @@ public class ReadXML {
                             NodeList codigo = codigoElement.getChildNodes();
                             impuesto.setCodigo(Integer.parseInt(((Node) codigo.item(0)).getNodeValue()));
                         } catch (Exception e) {
-                            System.out.println("Falta el codigo (impuesto)");
+                            Deb.consola("Falta el codigo (impuesto)");
                         }
 
                         try {
@@ -619,7 +620,7 @@ public class ReadXML {
                                 existeiva12 = true;
                             }
                         } catch (Exception e) {
-                            System.out.println("Falta el codigo de porcentaje (impuesto)");
+                            Deb.consola("Falta el codigo de porcentaje (impuesto)");
                         }
 
                         try {
@@ -628,7 +629,7 @@ public class ReadXML {
                             NodeList tarifa = tarifaElement.getChildNodes();
                             impuesto.setTarifa(Double.parseDouble(((Node) tarifa.item(0)).getNodeValue().replace(",", "")));
                         } catch (Exception e) {
-                            System.out.println("Falta la tarifa ");
+                            Deb.consola("Falta la tarifa ");
                         }
 
                         try {
@@ -637,7 +638,7 @@ public class ReadXML {
                             NodeList baseImponible = baseImponibleElement.getChildNodes();
                             impuesto.setBaseImponible(Double.parseDouble(((Node) baseImponible.item(0)).getNodeValue().replace(",", "")));
                         } catch (Exception e) {
-                            System.out.println("Falta la base imponible");
+                            Deb.consola("Falta la base imponible");
                         }
 
                         try {
@@ -646,7 +647,7 @@ public class ReadXML {
                             NodeList valor = valorElement.getChildNodes();
                             impuesto.setValor(Double.parseDouble(((Node) valor.item(0)).getNodeValue().replace(",", "")));
                         } catch (Exception e) {
-                            System.out.println("Falta el valor");
+                            Deb.consola("Falta el valor");
                         }
                     }
 
@@ -696,8 +697,8 @@ public class ReadXML {
             retencion.setAmbiente(Integer.parseInt(((Node) ambiente.item(0)).getNodeValue()));
         } catch (Exception e) {
 
-            System.out.println("ec.unomas.elements.ReadXML.readRetencion(): Falta el ambiente " + e);
-            System.out.println("Falta el ambiente");
+            Deb.consola("ec.unomas.elements.ReadXML.readRetencion(): Falta el ambiente " + e);
+            Deb.consola("Falta el ambiente");
         }
 
         try {
@@ -706,7 +707,7 @@ public class ReadXML {
             NodeList tipoEmision = timpoEmisionElement.getChildNodes();
             retencion.setTipoEmision(Integer.parseInt(((Node) tipoEmision.item(0)).getNodeValue()));
         } catch (Exception e) {
-            System.out.println("Falta el tipo de emision");
+            Deb.consola("Falta el tipo de emision");
         }
 
         try {
@@ -715,7 +716,7 @@ public class ReadXML {
             NodeList razonSocial = razonSocialElement.getChildNodes();
             retencion.setRazonSocial(removeAccents(((Node) razonSocial.item(0)).getNodeValue().trim().toLowerCase()));
         } catch (Exception e) {
-            System.out.println("Falta la razon social");
+            Deb.consola("Falta la razon social");
         }
 
         try {
@@ -732,7 +733,7 @@ public class ReadXML {
             NodeList ruc = rucElement.getChildNodes();
             retencion.setRUC(((Node) ruc.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el RUC");
+            Deb.consola("Falta el RUC");
         }
 
         try {
@@ -741,7 +742,7 @@ public class ReadXML {
             NodeList claveAcceso = claveAccesoElement.getChildNodes();
             retencion.setClaveAcceso(((Node) claveAcceso.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta la clave de acceso");
+            Deb.consola("Falta la clave de acceso");
         }
 
         try {
@@ -750,7 +751,7 @@ public class ReadXML {
             NodeList codDoc = codDocElement.getChildNodes();
             retencion.setCodDoc(((Node) codDoc.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el codigo de documento");
+            Deb.consola("Falta el codigo de documento");
         }
 
         try {
@@ -759,7 +760,7 @@ public class ReadXML {
             NodeList estab = estabElement.getChildNodes();
             retencion.setEstab(((Node) estab.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el establecimiento");
+            Deb.consola("Falta el establecimiento");
         }
 
         try {
@@ -768,7 +769,7 @@ public class ReadXML {
             NodeList ptoEmi = ptoEmiElement.getChildNodes();
             retencion.setPtoEmi(((Node) ptoEmi.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el punto de emision");
+            Deb.consola("Falta el punto de emision");
         }
 
         try {
@@ -777,7 +778,7 @@ public class ReadXML {
             NodeList secuencial = secuencialElement.getChildNodes();
             retencion.setSecuencia(((Node) secuencial.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el secuencial");
+            Deb.consola("Falta el secuencial");
         }
 
         try {
@@ -786,7 +787,7 @@ public class ReadXML {
             NodeList dirMatriz = dirMatrizElement.getChildNodes();
             retencion.setDirMatriz(removeAccents(((Node) dirMatriz.item(0)).getNodeValue().trim().toLowerCase()));
         } catch (Exception e) {
-            System.out.println("Falta el direccion matriz");
+            Deb.consola("Falta el direccion matriz");
         }
 
         // INFO COMPROBANTE RETENCION
@@ -800,7 +801,7 @@ public class ReadXML {
             NodeList fechaEmision = fechaEmisionElement.getChildNodes();
             retencion.setFechaEmision(((Node) fechaEmision.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta la fecha de emision");
+            Deb.consola("Falta la fecha de emision");
         }
 
         try {
@@ -809,7 +810,7 @@ public class ReadXML {
             NodeList dirEstablecimiento = dirEstablecimientoElement.getChildNodes();
             retencion.setDirEstablecimiento(removeAccents(((Node) dirEstablecimiento.item(0)).getNodeValue().trim().toLowerCase()));
         } catch (Exception e) {
-            System.out.println("Falta la direccion del establecimiento");
+            Deb.consola("Falta la direccion del establecimiento");
         }
 
         try {
@@ -827,7 +828,7 @@ public class ReadXML {
             NodeList obligadoContabilidad = obligadoContabilidadElement.getChildNodes();
             retencion.setObligadoContabilidad(((Node) obligadoContabilidad.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta obligado a llevar contabilidad");
+            Deb.consola("Falta obligado a llevar contabilidad");
         }
 
         try {
@@ -836,7 +837,7 @@ public class ReadXML {
             NodeList tipoIdentificacionSujetoRetenido = tipoIdentificacionSujetoRetenidoElement.getChildNodes();
             retencion.setTipoIdentificacionSujetoRetenido(((Node) tipoIdentificacionSujetoRetenido.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el tipo de identificacion del sujeto retenido");
+            Deb.consola("Falta el tipo de identificacion del sujeto retenido");
         }
 
         try {
@@ -845,7 +846,7 @@ public class ReadXML {
             NodeList razonSocialSujetoRetenido = razonSocialSujetoRetenidoElement.getChildNodes();
             retencion.setRazonSocialSujetoRetenido(removeAccents(((Node) razonSocialSujetoRetenido.item(0)).getNodeValue().trim().toLowerCase()));
         } catch (Exception e) {
-            System.out.println("Falta la razon social del sujeto retenido");
+            Deb.consola("Falta la razon social del sujeto retenido");
         }
 
         try {
@@ -854,7 +855,7 @@ public class ReadXML {
             NodeList identificacionSujetoRetenido = identificacionSujetoRetenidoElement.getChildNodes();
             retencion.setIdentificacionSujetoRetenido(((Node) identificacionSujetoRetenido.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta la identificacion del sujeto retenido");
+            Deb.consola("Falta la identificacion del sujeto retenido");
         }
 
         try {
@@ -863,7 +864,7 @@ public class ReadXML {
             NodeList periodoFiscal = periodoFiscalElement.getChildNodes();
             retencion.setPeriodoFiscal(((Node) periodoFiscal.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el periodo fiscal");
+            Deb.consola("Falta el periodo fiscal");
         }
 
         // IMPUESTOS
@@ -884,7 +885,7 @@ public class ReadXML {
                     NodeList codigo = codigoElement.getChildNodes();
                     retencion_impuestos.setCodigo(Integer.parseInt(((Node) codigo.item(0)).getNodeValue()));
                 } catch (Exception e) {
-                    System.out.println("Falta el codigo (impuesto)");
+                    Deb.consola("Falta el codigo (impuesto)");
                 }
 
                 try {
@@ -893,7 +894,7 @@ public class ReadXML {
                     NodeList codigoRetencion = codigoRetencionElement.getChildNodes();
                     retencion_impuestos.setCodigoRetencion(((Node) codigoRetencion.item(0)).getNodeValue());
                 } catch (Exception e) {
-                    System.out.println("Falta el codigo de retencion");
+                    Deb.consola("Falta el codigo de retencion");
                 }
 
                 try {
@@ -902,7 +903,7 @@ public class ReadXML {
                     NodeList baseImponible = baseImponibleElement.getChildNodes();
                     retencion_impuestos.setBaseImponible(Double.parseDouble(((Node) baseImponible.item(0)).getNodeValue().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta la base imponible");
+                    Deb.consola("Falta la base imponible");
                 }
 
                 try {
@@ -911,7 +912,7 @@ public class ReadXML {
                     NodeList porcentajeRetener = porcentajeRetenerElement.getChildNodes();
                     retencion_impuestos.setPorcentajeRetener(Integer.parseInt(String.valueOf(Math.round(Double.parseDouble(((Node) porcentajeRetener.item(0)).getNodeValue().replace(",", "."))))));
                 } catch (Exception e) {
-                    System.out.println("Falta el porcentaje a retener");
+                    Deb.consola("Falta el porcentaje a retener");
                 }
 
                 try {
@@ -920,7 +921,7 @@ public class ReadXML {
                     NodeList valorRetenido = valorRetenidoElement.getChildNodes();
                     retencion_impuestos.setValorRetenido(Double.parseDouble(((Node) valorRetenido.item(0)).getNodeValue().toString().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta el valor retenido");
+                    Deb.consola("Falta el valor retenido");
                 }
 
                 try {
@@ -929,7 +930,7 @@ public class ReadXML {
                     NodeList codDocSustento = codDocSustentoElement.getChildNodes();
                     retencion_impuestos.setCodDocSustento(((Node) codDocSustento.item(0)).getNodeValue());
                 } catch (Exception e) {
-                    System.out.println("Falta el codigo de documento de sustento");
+                    Deb.consola("Falta el codigo de documento de sustento");
                 }
 
                 try {
@@ -938,7 +939,7 @@ public class ReadXML {
                     NodeList numDocSustento = numDocSustentoElement.getChildNodes();
                     retencion_impuestos.setNumDocSustento(((Node) numDocSustento.item(0)).getNodeValue());
                 } catch (Exception e) {
-                    System.out.println("Falta el numero de documento de sustento");
+                    Deb.consola("Falta el numero de documento de sustento");
                 }
 
                 try {
@@ -947,7 +948,7 @@ public class ReadXML {
                     NodeList fechaEmisionDocSustento = fechaEmisionDocSustentoElement.getChildNodes();
                     retencion_impuestos.setFechaEmisionDocSustento(((Node) fechaEmisionDocSustento.item(0)).getNodeValue());
                 } catch (Exception e) {
-                    System.out.println("Falta la fecha de emision del documento de sustento");
+                    Deb.consola("Falta la fecha de emision del documento de sustento");
                 }
             }
             retencion.setImpuesto(retencion_impuestos);
@@ -1220,7 +1221,7 @@ public class ReadXML {
             NodeList ambiente = ambienteElement.getChildNodes();
             notaCredito.setAmbiente(Integer.parseInt(((Node) ambiente.item(0)).getNodeValue()));
         } catch (Exception e) {
-            System.out.println("Falta el ambiente");
+            Deb.consola("Falta el ambiente");
         }
 
         try {
@@ -1229,7 +1230,7 @@ public class ReadXML {
             NodeList tipoEmision = timpoEmisionElement.getChildNodes();
             notaCredito.setTipoEmision(Integer.parseInt(((Node) tipoEmision.item(0)).getNodeValue()));
         } catch (Exception e) {
-            System.out.println("Falta el tipo de emision");
+            Deb.consola("Falta el tipo de emision");
         }
 
         try {
@@ -1238,7 +1239,7 @@ public class ReadXML {
             NodeList razonSocial = razonSocialElement.getChildNodes();
             notaCredito.setRazonSocial(removeAccents(((Node) razonSocial.item(0)).getNodeValue().trim().toLowerCase()));
         } catch (Exception e) {
-            System.out.println("Falta la razon social");
+            Deb.consola("Falta la razon social");
         }
 
         try {
@@ -1255,7 +1256,7 @@ public class ReadXML {
             NodeList ruc = rucElement.getChildNodes();
             notaCredito.setRUC(((Node) ruc.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el RUC");
+            Deb.consola("Falta el RUC");
         }
 
         try {
@@ -1264,7 +1265,7 @@ public class ReadXML {
             NodeList claveAcceso = claveAccesoElement.getChildNodes();
             notaCredito.setClaveAcceso(((Node) claveAcceso.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta la clave de acceso");
+            Deb.consola("Falta la clave de acceso");
         }
 
         try {
@@ -1273,7 +1274,7 @@ public class ReadXML {
             NodeList codDoc = codDocElement.getChildNodes();
             notaCredito.setCodDoc(((Node) codDoc.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el codigo de documento");
+            Deb.consola("Falta el codigo de documento");
         }
 
         try {
@@ -1282,7 +1283,7 @@ public class ReadXML {
             NodeList estab = estabElement.getChildNodes();
             notaCredito.setEstab(((Node) estab.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el establecimiento");
+            Deb.consola("Falta el establecimiento");
         }
 
         try {
@@ -1291,7 +1292,7 @@ public class ReadXML {
             NodeList ptoEmi = ptoEmiElement.getChildNodes();
             notaCredito.setPtoEmi(((Node) ptoEmi.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el punto de emision");
+            Deb.consola("Falta el punto de emision");
         }
 
         try {
@@ -1300,7 +1301,7 @@ public class ReadXML {
             NodeList secuencial = secuencialElement.getChildNodes();
             notaCredito.setSecuencia(((Node) secuencial.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el secuencial");
+            Deb.consola("Falta el secuencial");
         }
 
         try {
@@ -1309,7 +1310,7 @@ public class ReadXML {
             NodeList dirMatriz = dirMatrizElement.getChildNodes();
             notaCredito.setDirMatriz(removeAccents(((Node) dirMatriz.item(0)).getNodeValue().trim().toLowerCase()));
         } catch (Exception e) {
-            System.out.println("Falta la direccion matriz");
+            Deb.consola("Falta la direccion matriz");
         }
 
         // INFO NOTA CREDITO
@@ -1323,7 +1324,7 @@ public class ReadXML {
             NodeList fechaEmision = fechaEmisionElement.getChildNodes();
             notaCredito.setFechaEmision(((Node) fechaEmision.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta la fecha de emision");
+            Deb.consola("Falta la fecha de emision");
         }
 
         try {
@@ -1332,7 +1333,7 @@ public class ReadXML {
             NodeList dirEstablecimiento = dirEstablecimientoElement.getChildNodes();
             notaCredito.setDirEstablecimiento(removeAccents(((Node) dirEstablecimiento.item(0)).getNodeValue().trim().toLowerCase()));
         } catch (Exception e) {
-            System.out.println("Falta la direccion de establecimiento");
+            Deb.consola("Falta la direccion de establecimiento");
         }
 
         try {
@@ -1341,7 +1342,7 @@ public class ReadXML {
             NodeList tipoIdentificacionComprador = tipoIdentificacionCompradorElement.getChildNodes();
             notaCredito.setTipoIdentificacionComprador(((Node) tipoIdentificacionComprador.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el tipo de identificacion del comprador");
+            Deb.consola("Falta el tipo de identificacion del comprador");
         }
 
         try {
@@ -1350,7 +1351,7 @@ public class ReadXML {
             NodeList razonSocialComprador = razonSocialCompradorElement.getChildNodes();
             notaCredito.setRazonSocialComprador(removeAccents(((Node) razonSocialComprador.item(0)).getNodeValue().trim().toLowerCase()));
         } catch (Exception e) {
-            System.out.println("Falta la razon social del comprador");
+            Deb.consola("Falta la razon social del comprador");
         }
 
         try {
@@ -1359,7 +1360,7 @@ public class ReadXML {
             NodeList identificacionComprador = identificacionCompradorElement.getChildNodes();
             notaCredito.setIdentificacionComprador(((Node) identificacionComprador.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta la identificacion del comprador");
+            Deb.consola("Falta la identificacion del comprador");
         }
 
         try {
@@ -1376,7 +1377,7 @@ public class ReadXML {
             NodeList obligadoContabilidad = obligadoContabilidadElement.getChildNodes();
             notaCredito.setObligadoContabilidad(((Node) obligadoContabilidad.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta obligado a llevar contabilidad");
+            Deb.consola("Falta obligado a llevar contabilidad");
         }
 
         try {
@@ -1393,7 +1394,7 @@ public class ReadXML {
             NodeList codDocModificado = codDocModificadoElement.getChildNodes();
             notaCredito.setCodDocModificado(((Node) codDocModificado.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el codigo de documento modificado");
+            Deb.consola("Falta el codigo de documento modificado");
         }
 
         try {
@@ -1402,7 +1403,7 @@ public class ReadXML {
             NodeList numDocModificado = numDocModificadoElement.getChildNodes();
             notaCredito.setNumDocModificado(((Node) numDocModificado.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta el numero de documento modificado");
+            Deb.consola("Falta el numero de documento modificado");
         }
 
         try {
@@ -1411,7 +1412,7 @@ public class ReadXML {
             NodeList fechaEmisionDocSustento = fechaEmisionDocSustentoElement.getChildNodes();
             notaCredito.setFechaEmisionDocSustento(((Node) fechaEmisionDocSustento.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta la fecha de emision de documento de sustento");
+            Deb.consola("Falta la fecha de emision de documento de sustento");
         }
 
         try {
@@ -1420,7 +1421,7 @@ public class ReadXML {
             NodeList totalSinImpuestos = totalSinImpuestosElement.getChildNodes();
             notaCredito.setTotalSinImpuestos(Double.parseDouble(((Node) totalSinImpuestos.item(0)).getNodeValue().replace(",", "")));
         } catch (Exception e) {
-            System.out.println("Falta total sin impuestos");
+            Deb.consola("Falta total sin impuestos");
         }
 
         try {
@@ -1429,7 +1430,7 @@ public class ReadXML {
             NodeList valorModificacion = valorModificacionElement.getChildNodes();
             notaCredito.setValorModificacion(Double.parseDouble(((Node) valorModificacion.item(0)).getNodeValue().replace(",", "")));
         } catch (Exception e) {
-            System.out.println("Falta el valor de modificacion");
+            Deb.consola("Falta el valor de modificacion");
         }
 
         try {
@@ -1438,7 +1439,7 @@ public class ReadXML {
             NodeList moneda = monedaElement.getChildNodes();
             notaCredito.setMoneda(((Node) moneda.item(0)).getNodeValue());
         } catch (Exception e) {
-            System.out.println("Falta la moneda");
+            Deb.consola("Falta la moneda");
         }
 
         // TOTAL CON IMPUESTOS
@@ -1459,7 +1460,7 @@ public class ReadXML {
                     NodeList codigo = codigoElement.getChildNodes();
                     totalImpuesto.setCodigo(Integer.parseInt(((Node) codigo.item(0)).getNodeValue()));
                 } catch (Exception e) {
-                    System.out.println("Falta el codigo (total impuesto)");
+                    Deb.consola("Falta el codigo (total impuesto)");
                 }
 
                 try {
@@ -1468,7 +1469,7 @@ public class ReadXML {
                     NodeList codigoPorcentaje = codigoPorcentajeElement.getChildNodes();
                     totalImpuesto.setCodigoPorcentaje(Integer.parseInt(String.valueOf(Math.round(Double.parseDouble(((Node) codigoPorcentaje.item(0)).getNodeValue().replace(",", "."))))));
                 } catch (Exception e) {
-                    System.out.println("Falta el codigo de porcentaje (total impuesto)");
+                    Deb.consola("Falta el codigo de porcentaje (total impuesto)");
                 }
 
                 try {
@@ -1477,7 +1478,7 @@ public class ReadXML {
                     NodeList baseImponible = baseImponibleElement.getChildNodes();
                     totalImpuesto.setBaseImponible(Double.parseDouble(((Node) baseImponible.item(0)).getNodeValue().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta la base imponible");
+                    Deb.consola("Falta la base imponible");
                 }
 
                 try {
@@ -1486,7 +1487,7 @@ public class ReadXML {
                     NodeList valor = valorElement.getChildNodes();
                     totalImpuesto.setValor(Double.parseDouble(((Node) valor.item(0)).getNodeValue().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta el valor (total impuesto)");
+                    Deb.consola("Falta el valor (total impuesto)");
                 }
             }
             notaCredito.setTotalConImpuesto(totalImpuesto);
@@ -1498,7 +1499,7 @@ public class ReadXML {
             NodeList motivo = motivoElement.getChildNodes();
             notaCredito.setMotivo(removeAccents(((Node) motivo.item(0)).getNodeValue().toLowerCase()));
         } catch (Exception e) {
-            System.out.println("Falta el motivo");
+            Deb.consola("Falta el motivo");
         }
 
         // DETALLES
@@ -1525,7 +1526,7 @@ public class ReadXML {
                         NodeList codigoInterno = codigoInternoElement.getChildNodes();
                         notacredito_detalle.setCodigoInterno(((Node) codigoInterno.item(0)).getNodeValue());
                     } catch (Exception ex) {
-                        System.out.println("Falta el codigo interno");
+                        Deb.consola("Falta el codigo interno");
                     }
                 }
                 try {
@@ -1550,7 +1551,7 @@ public class ReadXML {
                     NodeList descripcion = descripcionElement.getChildNodes();
                     notacredito_detalle.setDescripcion(removeAccents(((Node) descripcion.item(0)).getNodeValue().trim().toLowerCase()));
                 } catch (Exception e) {
-                    System.out.println("Falta la descripcion");
+                    Deb.consola("Falta la descripcion");
                 }
 
                 try {
@@ -1559,7 +1560,7 @@ public class ReadXML {
                     NodeList cantidad = cantidadElement.getChildNodes();
                     notacredito_detalle.setCantidad(Double.parseDouble(((Node) cantidad.item(0)).getNodeValue().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta la cantidad");
+                    Deb.consola("Falta la cantidad");
                 }
 
                 try {
@@ -1568,7 +1569,7 @@ public class ReadXML {
                     NodeList precioUnitario = precioUnitarioElement.getChildNodes();
                     notacredito_detalle.setPrecioUnitario(Double.parseDouble(((Node) precioUnitario.item(0)).getNodeValue().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta el precio unitario");
+                    Deb.consola("Falta el precio unitario");
                 }
 
                 try {
@@ -1577,7 +1578,7 @@ public class ReadXML {
                     NodeList descuento = descuentoElement.getChildNodes();
                     notacredito_detalle.setDescuento(Double.parseDouble(((Node) descuento.item(0)).getNodeValue().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta el descuento");
+                    Deb.consola("Falta el descuento");
                 }
 
                 try {
@@ -1586,7 +1587,7 @@ public class ReadXML {
                     NodeList precioTotalSinImpuesto = precioTotalSinImpuestoElement.getChildNodes();
                     notacredito_detalle.setPrecioTotalSinImpuesto(Double.parseDouble(((Node) precioTotalSinImpuesto.item(0)).getNodeValue().replace(",", "")));
                 } catch (Exception e) {
-                    System.out.println("Falta el precio total sin impuestos");
+                    Deb.consola("Falta el precio total sin impuestos");
                 }
 
                 try {
@@ -1633,7 +1634,7 @@ public class ReadXML {
                             NodeList codigo = codigoElement.getChildNodes();
                             impuesto.setCodigo(Integer.parseInt(((Node) codigo.item(0)).getNodeValue()));
                         } catch (Exception e) {
-                            System.out.println("Falta el codigo (impuesto)");
+                            Deb.consola("Falta el codigo (impuesto)");
                         }
 
                         try {
@@ -1642,7 +1643,7 @@ public class ReadXML {
                             NodeList codigoPorcentaje = codigoPorcentajeElement.getChildNodes();
                             impuesto.setCodigoPorcentaje(Integer.parseInt(String.valueOf(Math.round(Double.parseDouble(((Node) codigoPorcentaje.item(0)).getNodeValue().replace(",", "."))))));
                         } catch (Exception e) {
-                            System.out.println("Falta el codigo de porcentaje (impuesto)");
+                            Deb.consola("Falta el codigo de porcentaje (impuesto)");
                         }
 
                         try {
@@ -1651,7 +1652,7 @@ public class ReadXML {
                             NodeList tarifa = tarifaElement.getChildNodes();
                             impuesto.setTarifa(Double.parseDouble(((Node) tarifa.item(0)).getNodeValue().replace(",", "")));
                         } catch (Exception e) {
-                            System.out.println("Falta la tarifa (impuesto)");
+                            Deb.consola("Falta la tarifa (impuesto)");
                         }
 
                         try {
@@ -1660,7 +1661,7 @@ public class ReadXML {
                             NodeList baseImponible = baseImponibleElement.getChildNodes();
                             impuesto.setBaseImponible(Double.parseDouble(((Node) baseImponible.item(0)).getNodeValue().replace(",", "")));
                         } catch (Exception e) {
-                            System.out.println("Falta la base imponible (impuesto)");
+                            Deb.consola("Falta la base imponible (impuesto)");
                         }
 
                         try {
@@ -1669,7 +1670,7 @@ public class ReadXML {
                             NodeList valor = valorElement.getChildNodes();
                             impuesto.setValor(Double.parseDouble(((Node) valor.item(0)).getNodeValue().replace(",", "")));
                         } catch (Exception e) {
-                            System.out.println("Falta el valor (impuesto)");
+                            Deb.consola("Falta el valor (impuesto)");
                         }
                     }
                     DetImpuestos.add(impuesto);

@@ -1,6 +1,8 @@
 package Controlador;
 
 import ClasesAuxiliares.NewConfigfile;
+import ClasesAuxiliares.Variables;
+import ClasesAuxiliares.debug.Deb;
 import Vista.Usuarios.ErrorConexion;
 import static login.login.cerrar;
 import java.sql.Connection;
@@ -67,17 +69,18 @@ public class Coneccion {
 //             configuracionInicial ci = new configuracionInicial();
                 if (sesionok == false) {
                     host = Ejemplo.getPrpertyValue("servidor");
-                    System.out.println("Servidor: " +host);
+                    Deb.consola("Servidor: " +host);
                     rutaConfig = Ejemplo.getPrpertyValue("ruta");
-                    
+                    Variables.DIR_IP_SERVER=host;
                     //host="localhost";                 
                 }
 
                 if (!host.equals("error")) {                  
-                    System.out.println("Controlador.Coneccion.conectar()hostttt: " + host);
+                    Deb.consola("Controlador.Coneccion.conectar()hostttt: " + host);
                     Class.forName("com.mysql.jdbc.Driver");
                     con = DriverManager.getConnection("jdbc:mysql://" + host + "/" + bdd, "root", "miguel66677710101418/2=golosos");
-                    System.out.println("Controlador.Coneccion.conectar()con: "+host +"--- "+bdd);
+                    Deb.consola("Controlador.Coneccion.conectar()con: "+host +"--- "+bdd);
+                    Variables.DIR_IP_SERVER=host;
                     if (con != null) {
                         sesionok = true;
                     }
@@ -95,12 +98,10 @@ public class Coneccion {
     }
     public  Connection conectarNube() {
         if (conN == null) {
-            try {                                    
-                    Class.forName("com.mysql.jdbc.Driver");
-                    conN = DriverManager.getConnection("jdbc:mysql://compueconomia.com.ec/clientes" , "root", "miguel66677710101418/2=golosos");
-                    
-                    
-            } catch (SQLException ex) {
+            try {  
+                Class.forName("com.mysql.jdbc.Driver");
+                conN = DriverManager.getConnection("jdbc:mysql://compueconomia.com.ec/clientes" , "root", "miguel66677710101418/2=golosos");
+                } catch (SQLException ex) {
 
             } catch (ClassNotFoundException ex) {
                 throw new ClassCastException(ex.getMessage());
@@ -111,10 +112,10 @@ public class Coneccion {
 
     public  void cerrar() {
         if (con != null) {
-            try {
-                con.close();
+            try {                
+                con.close();                
             } catch (SQLException ex) {
-                System.out.println("Controlador.Coneccion.cerrar()" + ex);
+                Deb.consola("Controlador.Coneccion.cerrar()" + ex);
                 //  Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

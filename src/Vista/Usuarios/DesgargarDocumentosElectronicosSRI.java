@@ -7,11 +7,14 @@ package Vista.Usuarios;
 
 import ClasesAuxiliares.Leertxt;
 import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
+import ClasesAuxiliares.debug.Deb;
 import Vlidaciones.ProgressBar;
+import ecx.unomas.elements.CheckConnection;
 import ecx.unomas.service.Config;
 import java.awt.Dimension;
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -42,7 +45,7 @@ public class DesgargarDocumentosElectronicosSRI extends javax.swing.JInternalFra
           while (modelo.getRowCount() > 0) {
             modelo.removeRow(0);
         }
-          System.out.println("Vista.Usuarios.DesgargarDocumentosElectronicosSRI.eliminar()Modelosssspppppppppp");
+          Deb.consola("Vista.Usuarios.DesgargarDocumentosElectronicosSRI.eliminar()Modelosssspppppppppp");
           jTable1.setModel(modelo);
       }
     
@@ -83,6 +86,7 @@ public class DesgargarDocumentosElectronicosSRI extends javax.swing.JInternalFra
         jPanel9 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -238,6 +242,13 @@ public class DesgargarDocumentosElectronicosSRI extends javax.swing.JInternalFra
                 .addContainerGap())
         );
 
+        jButton2.setText("DETALLE");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -248,6 +259,8 @@ public class DesgargarDocumentosElectronicosSRI extends javax.swing.JInternalFra
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(95, 95, 95)
+                .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -261,6 +274,10 @@ public class DesgargarDocumentosElectronicosSRI extends javax.swing.JInternalFra
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(27, 27, 27))
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Docuemntos"));
@@ -412,9 +429,13 @@ public class DesgargarDocumentosElectronicosSRI extends javax.swing.JInternalFra
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        if (!nombrearchivoseleccionado.isEmpty()) {
+        if (!nombrearchivoseleccionado.isEmpty() ) {
+            OperacionesForms.solocrearFacturaNOgenerrarPDF=false;
+            
+            
          Leertxt.descargarXMLformSRItoFileXMLandPFDenUnSoloPaso(ruta);
          String file=Config.AUTORIZADOS_DIR+"Excel.xlsx";
+         
         //Leertxt.exportxml();
         Leertxt.exportxmlexcelFacturas();
         } else {
@@ -426,7 +447,7 @@ public class DesgargarDocumentosElectronicosSRI extends javax.swing.JInternalFra
     private void txt_numDocPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txt_numDocPropertyChange
         // TODO add your handling code here:
         txt_numDoc.setText(documentosProcesados.toString());
-        System.out.println("Vista.Usuarios.DesgargarDocumentosElectronicosSRI.txt_numDocPropertyChange()");
+        Deb.consola("Vista.Usuarios.DesgargarDocumentosElectronicosSRI.txt_numDocPropertyChange()");
     }//GEN-LAST:event_txt_numDocPropertyChange
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -436,11 +457,11 @@ public class DesgargarDocumentosElectronicosSRI extends javax.swing.JInternalFra
             Integer row = jTable1.getSelectedRow();
             String claveAcceso = jTable1.getValueAt(row, colClaveAcceso).toString();
             Leertxt.descargarXMLformSRItoFileXMLandPFDenUnSoloPasoclickjtable(claveAcceso);
-
-            String file = Config.AUTORIZADOS_DIR + claveAcceso + ".pdf";
-
+            String file = OperacionesForms.rutadocPDFgeneradook;//Config.AUTORIZADOS_DIR +claveAcceso + ".pdf";
+            JOptionPane.showMessageDialog(null, file);
             //definiendo la ruta en la propiedad file
             try {
+                Deb.consola("ruta file pdf:  "+file);
                 Runtime.getRuntime().exec("cmd /c start " + file);
             } catch (Exception e) {
             ProgressBar.mostrarMensajeRojo("Error al abrir el PDF :"+e.toString());
@@ -455,9 +476,24 @@ public class DesgargarDocumentosElectronicosSRI extends javax.swing.JInternalFra
         OperacionesForms.filtro(jTextField1.getText().toUpperCase(), jTable1);
     }//GEN-LAST:event_jTextField1KeyReleased
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        while (modelo.getRowCount() > 0) {
+            modelo.removeRow(0);
+            // System.err.println("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+        }
+        JOptionPane.showMessageDialog(null, closable);
+        
+        modelo=Leertxt.listaDetalleFacturasrecibidas();
+            jTable1.setModel(modelo);
+            Leertxt.registrarcomprasdesdesri();
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -481,7 +517,7 @@ public class DesgargarDocumentosElectronicosSRI extends javax.swing.JInternalFra
 
     @Override
     public void run() {
-        System.out.println("Vista.Usuarios.DesgargarDocumentosElectronicosSRI.run()");
+        Deb.consola("Vista.Usuarios.DesgargarDocumentosElectronicosSRI.run()");
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
     }

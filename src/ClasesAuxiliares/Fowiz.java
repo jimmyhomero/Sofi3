@@ -5,6 +5,7 @@
  */
 package ClasesAuxiliares;
 
+import ClasesAuxiliares.debug.Deb;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -51,7 +52,7 @@ public class Fowiz {
             HttpGet request = new HttpGet("http://cloud.fowiz.com/api/message_http_api.php?username=" + myUsername
                     + "&phonenumber=" + toPhoneNumber + "&message=" + myMessage + "&passcode=" + myPasscode);
             HttpResponse response = null;
-            System.out.println("Cadena emviada: "+request);
+            Deb.consola("Cadena emviada: "+request);
             response = client.execute(request);
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -61,9 +62,9 @@ public class Fowiz {
             while ((line = rd.readLine()) != null) {
                 response2.append(line);
             }
-            System.out.println(response.toString());
+            Deb.consola(response.toString());
         } catch (Exception e) {
-            System.out.println("ClasesAuxiliares.Fowiz.sms(): " + e.toString());
+            Deb.consola("ClasesAuxiliares.Fowiz.sms(): " + e.toString());
         }
 
     }

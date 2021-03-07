@@ -10,7 +10,7 @@ import Modelo.Clientes;
 import Modelo.Usuarios;
 import Vista.Principal;
 import Vista.Usuarios.Crear_Clientes;
-
+import ClasesAuxiliares.debug.Deb;
 import Vlidaciones.ProgressBar;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import java.awt.Font;
@@ -19,8 +19,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -40,12 +43,39 @@ public class ClientesDao extends Coneccion {
     //private Conec mysql = new conexion(); //Instanciando la clase conexion
     //private Connection cn = mysql.conectar();
 
+    private Clientes getCliente(ResultSet rs) {
+        Clientes per = new Clientes();
+        try {
+            per.setCodigo(rs.getInt("Codigo"));
+            per.setCedula(rs.getString("Cedula"));
+            per.setNombre(rs.getString("Nombres"));
+            per.setTelefono(rs.getString("telefono"));
+            per.setCelular(rs.getString("celular"));
+            per.setMail(rs.getString("Mail"));
+            per.setDireccion(rs.getString("Direccion"));
+            per.setProvincia(rs.getString("Provincia"));
+            per.setCiudad(rs.getString("Ciudad"));
+            per.setNacionalidad(rs.getString("Nacionalidad"));
+            per.setPagoPredeterminado(rs.getInt("PagoPredeterminado"));
+            per.setTipoCliente(rs.getInt("TipoCliente"));
+            per.setVendedorPredeterminado(rs.getInt("VendedorPredeterminado"));
+            per.setObservaciones(rs.getString("Observaciones"));
+            per.setEstadoCivil(rs.getString("estadoCivil"));
+            per.setHuella(rs.getString("huella"));
+            per.setGenereo(rs.getString("genero"));
+            per.setNacimiento(rs.getString("Nacimiento"));
+            per.setProveedor(rs.getInt("proveedor"));
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return per;
+    }
+
     public void Auto_CompletarClientes(JTextField j) {
-        
 
         TextAutoCompleter textAutoAcompleter = new TextAutoCompleter(j);//Le pasan el nombre del campo de texto.
 
-         ResultSet rs;
+        ResultSet rs;
         try {
             this.conectar();
             PreparedStatement st;
@@ -73,25 +103,67 @@ public class ClientesDao extends Coneccion {
                 per.setHuella(rs.getString("huella"));
                 per.setGenereo(rs.getString("genero"));
                 per.setNacimiento(rs.getString("Nacimiento"));
-                
+
                 this.lista.add(per);
-                       textAutoAcompleter.addItem(per);
+                textAutoAcompleter.addItem(per);
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.listar()" + ex);
+            Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
-         
+
     }
 
-    public void guardar(Clientes tarea) {
+    private int setpreparedstatemen(PreparedStatement consulta, Clientes tarea) {
+        int codigoThisFactura = 0;
+        try {
+            consulta.setString(1, tarea.getCedula());
+
+            consulta.setString(2, tarea.getNombre());
+            consulta.setString(3, tarea.getTelefono());
+            consulta.setString(4, tarea.getCelular());
+            consulta.setString(5, tarea.getMail());
+            consulta.setString(6, tarea.getDireccion());
+            consulta.setString(7, tarea.getProvincia());
+            consulta.setString(8, tarea.getCiudad());
+            consulta.setString(9, tarea.getNacionalidad());
+            consulta.setInt(10, 0);
+            consulta.setInt(11, 0);
+            consulta.setInt(12, 0);
+            consulta.setString(13, tarea.getObservaciones());
+            consulta.setString(14, tarea.getEstadoCivil());
+            consulta.setString(15, tarea.getHuella());
+            consulta.setString(16, String.valueOf(tarea.getGenereo()));
+            if (!tarea.getNacimiento().isEmpty()) {
+                String f = HoraFecha.fecha_ddmmaaa_conSlash_to_aa_mm_dd(tarea.getNacimiento());
+                consulta.setString(17, f);
+            } else {
+                consulta.setString(17, "1000-01-01");
+            }
+            consulta.setInt(18, tarea.getProveedor());
+            Deb.consola("Controlador.CUsuarios.guardar()" + consulta);
+            consulta.executeUpdate();
+            ResultSet rs = consulta.getGeneratedKeys();
+            if (rs.next()) {
+                codigoThisFactura = rs.getInt(1);
+                Deb.consola("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return codigoThisFactura;
+    }
+
+    public Integer guardar(Clientes tarea) {
+        int codigoThisFactura = 0;
         try {
             this.conectar();
             PreparedStatement consulta;
 
-            consulta = this.con.prepareStatement("INSERT INTO " + this.tabla + " (Cedula, nombres, telefono, celular, mail, direccion, Provincia, Ciudad,Nacionalidad,PagoPredeterminado,TipoCliente,VendedorPredeterminado,Observaciones,estadoCivil,huella,genero,Nacimiento,proveedor) VALUES(?,?,?,?,?,?,?,?,?,?,?, ?, ?,?, ?, ?,?,?)");
+            consulta = this.con.prepareStatement("INSERT INTO " + this.tabla + " (Cedula, nombres, telefono, celular, mail, direccion, Provincia, Ciudad,Nacionalidad,PagoPredeterminado,TipoCliente,VendedorPredeterminado,Observaciones,estadoCivil,huella,genero,Nacimiento,proveedor) VALUES(?,?,?,?,?,?,?,?,?,?,?, ?, ?,?, ?, ?,?,?)", Statement.RETURN_GENERATED_KEYS);
+
             consulta.setString(1, tarea.getCedula());
             consulta.setString(2, tarea.getNombre());
             consulta.setString(3, tarea.getTelefono());
@@ -115,14 +187,20 @@ public class ClientesDao extends Coneccion {
                 consulta.setString(17, "1000-01-01");
             }
             consulta.setInt(18, tarea.getProveedor());
-            System.out.println("Controlador.CUsuarios.guardar()" + consulta);
+            Deb.consola("Controlador.CUsuarios.guardar()" + consulta);
             consulta.executeUpdate();
+            ResultSet rs = consulta.getGeneratedKeys();
+            if (rs.next()) {
+                codigoThisFactura = rs.getInt(1);
+                Deb.consola("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
+            }
         } catch (SQLException ex) {
             msg.setProgressBar_mensajae(ex.toString());
-            System.out.println("Controlador.CUsuarios.guardar()" + ex);
+            Deb.consola("Controlador.CUsuarios.guardar()" + ex);
         } finally {
             this.cerrar();
         }
+        return codigoThisFactura;
     }
 
     public void modificar(Clientes persona) {
@@ -166,62 +244,39 @@ public class ClientesDao extends Coneccion {
             st.setString(17, persona.getNacimiento());
             st.setInt(18, persona.getCodigo());
             String sql = st.toString();
-            System.out.println("Controlador.Usuarios.CUsuarios.modificar()" + sql);
+            Deb.consola("Controlador.Usuarios.CUsuarios.modificar()" + sql);
             st.executeUpdate();
 //            Principal.jProgressBar2.setString("eeeeeeeeeeeee");
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
         } catch (SQLException e) {
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error" + e + sql, "Error al modificar Registro" + e.toString()));
-            System.out.println("Controlador.CUsuarios.guardar()" + e);
+            Deb.consola("Controlador.CUsuarios.guardar()" + e);
         } finally {
             this.cerrar();
         }
-
     }
 
     public List<Clientes> listarClientesOprovedores(Integer val) {
         ResultSet rs;
         try {
-             String sql = null;
+            String sql = null;
             this.conectar();
             PreparedStatement st;
-            
-            if(val==1){
-                sql="select * from Clientes  order BY Nombres LIMIT 0, 50";
-            }else if(val==0){
-                sql="select * from Clientes where proveedor=1  order BY Nombres LIMIT 0, 50";
+
+            if (val == 1) {
+                sql = "select * from Clientes  order BY Nombres LIMIT 0, 50";
+            } else if (val == 0) {
+                sql = "select * from Clientes where proveedor=1  order BY Nombres LIMIT 0, 50";
             }
             st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
-                Clientes per = new Clientes();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setCedula(rs.getString("Cedula"));
-                per.setNombre(rs.getString("Nombres"));
-                per.setTelefono(rs.getString("telefono"));
-                per.setCelular(rs.getString("celular"));
-                per.setMail(rs.getString("Mail"));
-                per.setDireccion(rs.getString("Direccion"));
-                per.setProvincia(rs.getString("Provinvia"));
-                per.setCiudad(rs.getString("Ciudad"));
-                per.setNacionalidad(rs.getString("Nacionalidad"));
-                per.setPagoPredeterminado(rs.getInt("PagoPredeterminado"));
-                per.setTipoCliente(rs.getInt("TipoCliente"));
-                per.setVendedorPredeterminado(rs.getInt("VendedorPredeterminado"));
-                per.setObservaciones(rs.getString("Observaciones"));
-                per.setEstadoCivil(rs.getString("estadoCivil"));
-                per.setHuella(rs.getString("huella"));
-                per.setGenereo(rs.getString("genero"));
-                per.setNacimiento(rs.getString("Nacimiento"));
-                //per.setObservaciones(rs.getString("PersonaObservaciones"));
-                //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
-                this.lista.add(per);
+                this.lista.add(getCliente(rs));
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.listar()" + ex);
+            Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -233,16 +288,16 @@ public class ClientesDao extends Coneccion {
         ResultSet rs;
         Clientes u = new Clientes();
         try {
-            
+
             this.conectar();
             PreparedStatement st;
-            String sql=null;
-            if(val==1){
+            String sql = null;
+            if (val == 1) {
                 ///provedores
-                sql="select * from Clientes where codigo= " + id + " and proveedor=1 order BY Nombres LIMIT 0, 50";
-            }else if(val==0){
+                sql = "select * from Clientes where codigo= " + id + " and proveedor=1 order BY Nombres LIMIT 0, 50";
+            } else if (val == 0) {
                 ///clientes
-                sql="select * from Clientes where codigo= " + id + " order BY Nombres LIMIT 0, 50";
+                sql = "select * from Clientes where codigo= " + id + " order BY Nombres LIMIT 0, 50";
             }
 //            select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
 //            select usuarios.*, tipos_usuarios.codigo,tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo where usuarios.codigo = 1
@@ -253,34 +308,39 @@ public class ClientesDao extends Coneccion {
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
-                Clientes per = new Clientes();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setCedula(rs.getString("Cedula"));
-                per.setNombre(rs.getString("Nombres"));
-                per.setTelefono(rs.getString("telefono"));
-                per.setCelular(rs.getString("celular"));
-                per.setMail(rs.getString("Mail"));
-                per.setDireccion(rs.getString("Direccion"));
-                per.setProvincia(rs.getString("Provincia"));
-                per.setCiudad(rs.getString("Ciudad"));
-                per.setNacionalidad(rs.getString("Nacionalidad"));
-                per.setPagoPredeterminado(rs.getInt("PagoPredeterminado"));
-                per.setTipoCliente(rs.getInt("TipoCliente"));
-                per.setVendedorPredeterminado(rs.getInt("VendedorPredeterminado"));
-                per.setObservaciones(rs.getString("Observaciones"));
-                per.setEstadoCivil(rs.getString("estadoCivil"));
-                per.setHuella(rs.getString("huella"));
-                per.setGenereo(rs.getString("genero"));
-                per.setNacimiento(rs.getString("Nacimiento"));
-                per.setProveedor(rs.getInt("proveedor"));
-                //per.setObservaciones(rs.getString("PersonaObservaciones"));
-                //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
-                u = per;
+                u = getCliente(rs);
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
+        } finally {
+            this.cerrar();
+        }
+        return u;
+    }
+        public Clientes buscarConID(Integer id) {
+        ResultSet rs;
+        Clientes u = new Clientes();
+        try {
+
+            this.conectar();
+            PreparedStatement st;
+            String sql = null;
+            sql = "select * from Clientes where codigo= " + id + " order BY Nombres LIMIT 0, 50";
+//            select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
+//            select usuarios.*, tipos_usuarios.codigo,tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo where usuarios.codigo = 1
+
+            st = this.getCnx().prepareCall(sql);
+            //select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
+
+            rs = st.executeQuery();
+            //this.lista= new ArrayList();
+            while (rs.next()) {
+                u = getCliente(rs);
+            }
+
+        } catch (Exception ex) {
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -288,49 +348,68 @@ public class ClientesDao extends Coneccion {
         return u;
     }
 
-    public Clientes buscarConCedula(String cedula,Integer val) {
+        public Clientes buscarConCedula(String cedula, Integer val) {
         ResultSet rs;
         Clientes u = new Clientes();
+        u.setCedula("XX");
+        u.setNombre("XX");
+        
         try {
             this.conectar();
             PreparedStatement st;
-            String sql=null;
-            if(val==1){
+            String sql = null;
+            if (val == 1) {
                 ///provedores
-                sql="select * from Clientes "+ "where cedula like '%" + cedula + "%' and proveedor=1 order BY Nombres LIMIT 0, 50";
-            }else if(val==0){
+                sql = "select * from Clientes " + "where cedula like '%" + cedula + "%' and proveedor=1 order BY Nombres LIMIT 0, 50";
+            } else if (val == 0) {
                 ///clientes
-                sql="select * from Clientes "+ "where cedula like '%" + cedula + "%' order BY Nombres LIMIT 0, 50";
+                sql = "select * from Clientes " + "where cedula like '%" + cedula + "%' order BY Nombres LIMIT 0, 50";
             }
-            
+
             st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
-                Clientes per = new Clientes();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setCedula(rs.getString("Cedula"));
-                per.setNombre(rs.getString("Nombres"));
-                per.setTelefono(rs.getString("telefono"));
-                per.setCelular(rs.getString("celular"));
-                per.setMail(rs.getString("Mail"));
-                per.setDireccion(rs.getString("Direccion"));
-                per.setProvincia(rs.getString("Provinvia"));
-                per.setCiudad(rs.getString("Ciudad"));
-                per.setNacionalidad(rs.getString("Nacionalidad"));
-                per.setPagoPredeterminado(rs.getInt("PagoPredeterminado"));
-                per.setTipoCliente(rs.getInt("TipoCliente"));
-                per.setVendedorPredeterminado(rs.getInt("VendedorPredeterminado"));
-                per.setObservaciones(rs.getString("Observaciones"));
-                per.setEstadoCivil(rs.getString("estadoCivil"));
-                per.setHuella(rs.getString("huella"));
-                per.setGenereo(rs.getString("genero"));
-                per.setNacimiento(rs.getString("Nacimiento"));
-                u = per;
+                u = getCliente(rs);
+
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
+        } finally {
+            this.cerrar();
+        }
+
+        return u;
+    }
+    public Clientes buscarConCedulaRUC(String cedula, Integer val) {
+        ResultSet rs;
+        Clientes u = new Clientes();
+        u.setCedula("XX");
+        u.setNombre("XX");
+        
+        try {
+            this.conectar();
+            PreparedStatement st;
+            String sql = null;
+            if (val == 1) {
+                ///provedores
+                sql = "select * from Clientes " + "where cedula = " + cedula + " and proveedor=1 order BY Nombres LIMIT 0, 50";
+            } else if (val == 0) {
+                ///clientes
+                sql = "select * from Clientes " + "where cedula = " + cedula + " order BY Nombres LIMIT 0, 50";
+            }
+
+            st = this.getCnx().prepareCall(sql);
+            rs = st.executeQuery();
+            //this.lista= new ArrayList();
+            while (rs.next()) {
+                u = getCliente(rs);
+
+            }
+
+        } catch (Exception ex) {
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
         } finally {
             this.cerrar();
         }
@@ -338,21 +417,21 @@ public class ClientesDao extends Coneccion {
         return u;
     }
 
-    public boolean buscarClienteRegistrado(String cedula,Integer val) {
+    public boolean buscarClienteRegistrado(String cedula, Integer val) {
         ResultSet rs;
         Clientes u = new Clientes();
         try {
             this.conectar();
             PreparedStatement st;
-            String sql=null;
-            if(val==1){
+            String sql = null;
+            if (val == 1) {
                 ///provedores
-                sql="select * from Clientes "+ "where proveedor=1 and cedula =" + cedula;
-            }else if(val==0){
+                sql = "select * from Clientes " + "where proveedor=1 and cedula =" + cedula;
+            } else if (val == 0) {
                 ///clientes
-                sql="select * from Clientes "+ "where cedula =" + cedula;
+                sql = "select * from Clientes " + "where cedula =" + cedula;
             }
-            
+
             st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
             //this.lista= new ArrayList();
@@ -361,7 +440,7 @@ public class ClientesDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
         } finally {
             this.cerrar();
         }
@@ -369,113 +448,68 @@ public class ClientesDao extends Coneccion {
         return false;
     }
 
-    public Clientes buscarConCedulaLike(String cedula,Integer val) {
+    public Clientes buscarConCedulaLike(String cedula, Integer val) {
         ResultSet rs;
         Clientes u = new Clientes();
-        u=null;
+        u = null;
         try {
             this.conectar();
             PreparedStatement st;
-            
-            String sql=null;
-            if(val==1){
+
+            String sql = null;
+            if (val == 1) {
                 ///provedores
-                sql="select * from Clientes where cedula = " + cedula + " and proveedor=1 order BY Nombres LIMIT 0, 50";
-            }else if(val==0){
+                sql = "select * from Clientes where cedula = " + cedula + " and proveedor=1 order BY Nombres LIMIT 0, 50";
+            } else if (val == 0) {
                 ///clientes
-                sql="select * from Clientes where cedula = " + cedula + " order BY Nombres LIMIT 0, 50";
+                sql = "select * from Clientes where cedula = " + cedula + " order BY Nombres LIMIT 0, 50";
             }
-            System.out.println("Controlador.Usuarios.ClientesDao.buscarConCedulaLike()sda_ ;"+sql);
+            Deb.consola("Controlador.Usuarios.ClientesDao.buscarConCedulaLike()sda_ ;" + sql);
             st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
 
             //this.lista= new ArrayList();
-           
             while (rs.next()) {
-                Clientes per = new Clientes();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setCedula(rs.getString("Cedula"));
-                per.setNombre(rs.getString("Nombres"));
-                per.setTelefono(rs.getString("telefono"));
-                per.setCelular(rs.getString("celular"));
-                per.setMail(rs.getString("Mail"));
-                per.setDireccion(rs.getString("Direccion"));
-                per.setProvincia(rs.getString("Provincia"));
-                per.setCiudad(rs.getString("Ciudad"));
-                per.setNacionalidad(rs.getString("Nacionalidad"));
-                per.setPagoPredeterminado(rs.getInt("PagoPredeterminado"));
-                per.setTipoCliente(rs.getInt("TipoCliente"));
-                per.setVendedorPredeterminado(rs.getInt("VendedorPredeterminado"));
-                per.setObservaciones(rs.getString("Observaciones"));
-                per.setEstadoCivil(rs.getString("estadoCivil"));
-                per.setHuella(rs.getString("huella"));
-                per.setGenereo(rs.getString("genero"));
-                per.setNacimiento(rs.getString("Nacimiento"));
-                per.setProveedor(rs.getInt("proveedor"));
-                u = per;
-                System.out.println("******************: ");
-                  System.out.println("Controlador.Usuarios.ClientesDao.buscarConCedulaLike()usuario: " + u.getNombre());
+                u = getCliente(rs);
             }
-            
-            
-          //
+
+            //
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()" + ex);
-        } finally {   
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
+        } finally {
             this.cerrar();
 
         }
-        
+
         return u;
     }
 
-    public ArrayList<Clientes> BuscarClietneslikokokok(String nombre,Integer val) {
+    public ArrayList<Clientes> BuscarClietneslikokokok(String nombre, Integer val) {
         ArrayList<Clientes> c = new ArrayList<>();
         ResultSet rs;
         Clientes u = new Clientes();
         try {
             this.conectar();
             PreparedStatement st;
-            String sql=null;
-            if(val==1){
+            String sql = null;
+            if (val == 1) {
                 ///provedores
-                sql="select * from Clientes "+ "where NOMBRES like '%" + nombre + "%' and proveedor =1 order BY Nombres LIMIT 0, 50";
-            }else if(val==0){
+                sql = "select * from Clientes " + "where NOMBRES like '%" + nombre + "%' and proveedor =1 order BY Nombres LIMIT 0, 50";
+            } else if (val == 0) {
                 ///clientes
-                sql="select * from Clientes "+ "where NOMBRES like '%" + nombre + "%' order BY Nombres LIMIT 0, 50";
+                sql = "select * from Clientes " + "where NOMBRES like '%" + nombre + "%' order BY Nombres LIMIT 0, 50";
             }
-            
+
             st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
-            System.out.println("enta por cada txt movidasssxxxxxxxxxxxxxxsss");
+            Deb.consola("enta por cada txt movidasssxxxxxxxxxxxxxxsss");
             //this.lista= new ArrayList();
             while (rs.next()) {
-                Clientes per = new Clientes();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setCedula(rs.getString("Cedula"));
-                per.setNombre(rs.getString("Nombres"));
-                per.setTelefono(rs.getString("telefono"));
-                per.setCelular(rs.getString("celular"));
-                per.setMail(rs.getString("Mail"));
-                per.setDireccion(rs.getString("Direccion"));
-                per.setProvincia(rs.getString("Provincia"));
-                per.setCiudad(rs.getString("Ciudad"));
-                per.setNacionalidad(rs.getString("Nacionalidad"));
-                per.setPagoPredeterminado(rs.getInt("PagoPredeterminado"));
-                per.setTipoCliente(rs.getInt("TipoCliente"));
-                per.setVendedorPredeterminado(rs.getInt("VendedorPredeterminado"));
-                per.setObservaciones(rs.getString("Observaciones"));
-                per.setEstadoCivil(rs.getString("estadoCivil"));
-                per.setHuella(rs.getString("huella"));
-                per.setGenereo(rs.getString("genero"));
-                per.setNacimiento(rs.getString("Nacimiento"));
-                per.setProveedor(rs.getInt("proveedor"));
-                u = per;
-                c.add(per);
+                c.add(getCliente(rs));
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
 //             if(){
@@ -486,62 +520,38 @@ public class ClientesDao extends Coneccion {
 
         return c;
     }
-public ArrayList<Clientes> buscarAllCLientes(Integer val) {
+
+    public ArrayList<Clientes> buscarAllCLientes(Integer val) {
         ArrayList<Clientes> c = new ArrayList<>();
         ResultSet rs;
-        Clientes u = new Clientes();
         try {
             this.conectar();
             PreparedStatement st;
-            String sql=null;
-            if(val==1){
+            String sql = null;
+            if (val == 1) {
                 ///provedores
-                sql="select * from Clientes where proveedor =1 ";
-            }else if(val==0){
+                sql = "select * from Clientes where proveedor =1 ";
+            } else if (val == 0) {
                 ///clientes
-                sql="select * from Clientes";
+                sql = "select * from Clientes";
             }
             st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
-            System.out.println("enta por cada txt movidassssss");
+            Deb.consola("enta por cada txt movidassssss");
             //this.lista= new ArrayList();
             while (rs.next()) {
-                Clientes per = new Clientes();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setCedula(rs.getString("Cedula"));
-                per.setNombre(rs.getString("Nombres"));
-                per.setTelefono(rs.getString("telefono"));
-                per.setCelular(rs.getString("celular"));
-                per.setMail(rs.getString("Mail"));
-                per.setDireccion(rs.getString("Direccion"));
-                per.setProvincia(rs.getString("Provincia"));
-                per.setCiudad(rs.getString("Ciudad"));
-                per.setNacionalidad(rs.getString("Nacionalidad"));
-                per.setPagoPredeterminado(rs.getInt("PagoPredeterminado"));
-                per.setTipoCliente(rs.getInt("TipoCliente"));
-                per.setVendedorPredeterminado(rs.getInt("VendedorPredeterminado"));
-                per.setObservaciones(rs.getString("Observaciones"));
-                per.setEstadoCivil(rs.getString("estadoCivil"));
-                per.setHuella(rs.getString("huella"));
-                per.setGenereo(rs.getString("genero"));
-                per.setNacimiento(rs.getString("Nacimiento"));
-                per.setProveedor(rs.getInt("proveedor"));
-                u = per;
-                c.add(per);
+                c.add(getCliente(rs));
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
-//             if(){
-//            u.setCodigo(-100);
-//            }
-
         }
 
         return c;
     }
+
     public void eliminar(Clientes persona) throws Exception {
         try {
             this.conectar();
@@ -577,18 +587,18 @@ public ArrayList<Clientes> buscarAllCLientes(Integer val) {
         try {
             this.conectar();
             PreparedStatement st;
-            String sql=null;
-            if(val==1){
+            String sql = null;
+            if (val == 1) {
                 ///provedores
-                sql="select * from Clientes where " + columna + "  like '%" + value + "%' and proveedor =1 order BY Nombres LIMIT 0, 50";
-            }else if(val==0){
+                sql = "select * from Clientes where " + columna + "  like '%" + value + "%' and proveedor =1 order BY Nombres LIMIT 0, 50";
+            } else if (val == 0) {
                 ///clientes
-                sql="select * from Clientes where " + columna + "  like '%" + value + "%' order BY Nombres LIMIT 0, 50";
+                sql = "select * from Clientes where " + columna + "  like '%" + value + "%' order BY Nombres LIMIT 0, 50";
             }
             st = this.getCnx().prepareCall(sql);
 
             //  st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -603,11 +613,11 @@ public ArrayList<Clientes> buscarAllCLientes(Integer val) {
                 registros[7] = rs.getString("Provincia");
                 registros[8] = rs.getString("Ciudad");
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
             }
 
         } catch (Exception ex) {
@@ -619,13 +629,13 @@ public ArrayList<Clientes> buscarAllCLientes(Integer val) {
         return modelo;
     }
 
-    public DefaultTableModel Buscar_table_only_Activos(Integer val ) {
+    public DefaultTableModel Buscar_table_only_Activos(Integer val) {
         DefaultTableModel modelo = null;
 
         String[] titulos
                 = {"Codigo", "Cedula", "Nombres",
                     "Celular", "Telefono",
-                    "E-Mail", "Direccion", "Provincia", "Ciudad","Eliminar","SELECCIONAR"};
+                    "E-Mail", "Direccion", "Provincia", "Ciudad", "Eliminar", "SELECCIONAR"};
         Object[] registros = new Object[11];
         modelo = new DefaultTableModel(null, titulos) {
             @Override
@@ -640,19 +650,19 @@ public ArrayList<Clientes> buscarAllCLientes(Integer val) {
         try {
             this.conectar();
             PreparedStatement st;
-            String sql=null;
-            if(val==1){
+            String sql = null;
+            if (val == 1) {
                 ///provedores
-                sql="select * from clientes where proveedor=1 order by nombres";
-            }else if(val==0){
+                sql = "select * from clientes where proveedor=1 order by nombres";
+            } else if (val == 0) {
                 ///clientes
-                sql="select * from clientes order by nombres";
+                sql = "select * from clientes order by nombres";
             }
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
-            JButton btn1 =new JButton("ELIMINAR");
+            JButton btn1 = new JButton("ELIMINAR");
             while (rs.next()) {
 
                 registros[0] = String.valueOf(rs.getInt("Codigo"));
@@ -664,9 +674,9 @@ public ArrayList<Clientes> buscarAllCLientes(Integer val) {
                 registros[6] = rs.getString("Direccion");
                 registros[7] = rs.getString("Provincia");
                 registros[8] = rs.getString("Ciudad");
-                 registros[9]= btn1;
+                registros[9] = btn1;
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
 
             }
 

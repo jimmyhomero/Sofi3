@@ -36,6 +36,7 @@ public class Buscar_electronicas extends javax.swing.JInternalFrame {
      */
     ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
     DefaultTableModel modelo = null;
+    DefaultTableModel modeloNC = null;
 
     public Buscar_electronicas() {
         initComponents();
@@ -49,18 +50,21 @@ public class Buscar_electronicas extends javax.swing.JInternalFrame {
         String fecha1 = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jDateChooser1.getDate().toString());
         String fecha2 = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jDateChooser2.getDate().toString());
         FacturasDao facdao = new FacturasDao();
+        FacturasDao facdaNC = new FacturasDao();
 
         modelo = facdao.listarFacturasElectronicasTbModel(fecha1, fecha2, "FACTURA");
         jTable1.setModel(modelo);
+        modeloNC = facdao.listarFacturasElectronicasTbModel(fecha1, fecha2, "NC");
+        jTable1.setModel(modeloNC);
 
 //        Electronica e = new Electronica();
 //        jTable1.setRowHeight(25);
 //        jTable1.setModel(e.buscarDocElectronicosXFecha(fecha1, fecha2));
-        try {
-            Process proc = Runtime.getRuntime().exec("java -jar C:\\Sofi\\ElectronicaSofi.jar");
-        } catch (IOException ex) {
-            Logger.getLogger(Buscar_electronicas.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//////////////////        try {
+//////////////////            Process proc = Runtime.getRuntime().exec("java -jar C:\\Sofi\\ElectronicaSofi.jar");
+//////////////////        } catch (IOException ex) {
+//////////////////            Logger.getLogger(Buscar_electronicas.class.getName()).log(Level.SEVERE, null, ex);
+//////////////////        }
 
     }
 
@@ -79,6 +83,8 @@ public class Buscar_electronicas extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
@@ -144,15 +150,34 @@ public class Buscar_electronicas extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("Facuras", jPanel2);
 
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1492, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1468, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 338, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Notas de Credito", jPanel3);
@@ -291,17 +316,17 @@ public class Buscar_electronicas extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(30, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -387,8 +412,10 @@ public class Buscar_electronicas extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     public static javax.swing.JLabel txtDocumentos;
     public static javax.swing.JLabel txtEnviandoDocumentos;

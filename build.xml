@@ -72,7 +72,7 @@
     -->
     <!-- preuba de empaquetador librerias dentro de jar-->
     <target name="-post-jar">
-    <property name="store.jar.name" value="Nombre_del_proyecto"/>
+    <property name="store.jar.name" value="Sofi3"/>
 
     <property name="store.dir" value="dist"/>
     <property name="store.jar" value="${store.dir}/${store.jar.name}.jar"/>

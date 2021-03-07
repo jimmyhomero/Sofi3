@@ -5,6 +5,7 @@
  */
 package ClasesAuxiliares;
 
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Ejemplo;
 import login.login;
 //import sun.util.logging.resources.logging;
@@ -24,9 +25,8 @@ import javax.swing.JOptionPane;
 public class Variables {
 
     /*VARIABLES PARA EL SISTEMA*/
-    public static String BODEGA_PREDETERMINDA_VENTA= "";
-    
-    
+    public static String BODEGA_PREDETERMINDA_VENTA = "";
+
     /**
      * VARIABLES FACTURACION ELECTRONICA
      */
@@ -52,14 +52,14 @@ public class Variables {
     public static String FE_OBLIGADO_CONTABILIDAD = "SI";
     public static String FE_ACTIVO = "NO";
 
-        /**
-     *VARIABLES DE ESTADO FACTURACION ELECTRONICA
-     * 
+    /**
+     * VARIABLES DE ESTADO FACTURACION ELECTRONICA
+     *
      */
-public static String FE_ESTADO1 = " ";
-public static String FE_ESTADO2 = "";
-public static String FE_ESTADO3 = "";
-    
+    public static String FE_ESTADO1 = " ";
+    public static String FE_ESTADO2 = "";
+    public static String FE_ESTADO3 = "";
+
     /**
      * FIN VARIABLES DIRECTAS DEL SISTEMA
      */
@@ -70,16 +70,18 @@ public static String FE_ESTADO3 = "";
     public static String CAJA_INGRESO_TICKET = "INGRESO POR TICKET ";
     public static String CAJA_INGRESO_TRASLADO_CAJA = "INGRESO POR TRASLADO DE GAJA ";
     public static String CAJA_INGRESO_MANUAL = "INGRESO MANUAL DE CAJA ";
+    public static String CAJA_INGRESO_ANTICPO_CLIENTE = "INGRESO ANTICIPO A CLIENTE ";
+    public static String CAJA_EGRESO_ANTICPO_ = "EGRESO ANTICIPO A PROVEEDOR ";
+    public static String CAJA_INGRESO_ANTICPO_CLIENTE_NC = "INGRESO ANTICIPO A CLIENTE POR NC";
+    public static String CAJA_EGRESO_ANTICPO_NC = "EGRESO ANTICIPO A PROVEEDOR POR NC";
+    public static String CAJA_EGRESO_FACTURA_ANULADA = "EGRESO POR FACURA ANULADA ";
+    public static String CAJA_EGRESO_TICKET = "EGRESO POR TICKET ANULADO ";
+    public static String CAJA_EGRESO_TRASLADO_CAJA = "INGRESO POR TRASLADO DE GAJA ";
+    public static String CAJA_EGRESO_MANUAL = "EGRESO MANUAL DE CAJA ";
+    public static String CAJA_EGRESO_NC = "EGRESO POR NOTA DE CREDITO ";
+    public static String CAJA_EGRESO_COMPRA_EFECTIVO = "EGRESO POR COMPRA EN EFECIVO ";
 
-    public static String CAJA_EGRESO_FACTURA_ANULADA = " EGRESO POR FACURA ANULADA ";
-    public static String CAJA_EGRESO_TICKET = " AGRESO POR TICKET ANULADO ";
-    public static String CAJA_EGRESO_TRASLADO_CAJA = " INGRESO POR TRASLADO DE GAJA ";
-    public static String CAJA_EGRESO_MANUAL = " EGRESO MANUAL DE CAJA ";
-    public static String CAJA_EGRESO_NC = " EGRESO POR NOTA DE CREDITO ";
-
-    
     //public static  String =etiqueta_caja
-    
 //    public static String DIR_REPORTE_DETALLE_CAJA = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\Cajas1.jasper";
 //    public static String DIR_REPORTE_FACTURA = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\facturaA5_preimpreso.jasper";
 //    public static String DIR_REPORTE_TICKET = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\ticket.jasper";
@@ -94,7 +96,6 @@ public static String FE_ESTADO3 = "";
 //    public static String DIR_REPORTE_COMPROBANTE_CHEQUE_BB = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\FACTURA.jasper";
 //    public static String DIR_REPORTE_COMPROBANTE_CHEQUE_BAUSTR = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\FACTURA.jasper";
 //    
-    
     public static String DIR_REPORTE_DETALLE_CAJA = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\Cajas1.jasper";
     public static String DIR_REPORTE_FACTURA = "C:\\Sofi\\reportes\\facturaA5_preimpreso.jasper";
     public static String DIR_REPORTE_TICKET = "C:\\Sofi\\reportes\\ticket.jasper";
@@ -108,15 +109,16 @@ public static String FE_ESTADO3 = "";
     public static String DIR_REPORTE_COMPROBANTE_CHEQUE_BPACIFICO = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\FACTURA.jasper";
     public static String DIR_REPORTE_COMPROBANTE_CHEQUE_BB = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\FACTURA.jasper";
     public static String DIR_REPORTE_COMPROBANTE_CHEQUE_BAUSTR = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\FACTURA.jasper";
-    
+
     public static String DIR_IP_SERVER = "";
-    public static String _URL_UPDATE = "http://compueconomia.com.ec/UPDATES/"; //dirección url del recurso a descargar
+    public static String _URL_UPDATE = "http://update1.compueconomia.com.ec/update/"; //dirección url del recurso a descargar
     public static String _FILE_UPDATE = "Sofi3.jar"; //nombre del archivo destino
 //Directorio destino para las descargas
-    public static String _DIR_DESTINO = "Sofi/";
+    public static String _DIR_DESTINO = "Sofi";
     ////////////fina ctualizaciones
 
     public Variables() {
+
         String ip = "";
         if (DIR_IP_SERVER.equalsIgnoreCase("localhost")) {
             ip = "**";
@@ -155,12 +157,12 @@ public static String FE_ESTADO3 = "";
 //        DIR_REPORTE_COMPROBANTE_CHEQUE_BPACIFICO = c + dir + "Sofi" + dir + "reportes" + dir + "FACTURA.jasper";
 //        DIR_REPORTE_COMPROBANTE_CHEQUE_BB = c + dir + "Sofi" + dir + "reportes" + dir + "FACTURA.jasper";
 //        DIR_REPORTE_COMPROBANTE_CHEQUE_BAUSTR = c + dir   + "Sofi" + dir + "reportes" + dir + "FACTURA.jasper";
-
         ////////////actuzlaciones 
-        _URL_UPDATE = "http://compueconomia.com.ec/UPDATES/"; //dirección url del recurso a descargar
+        _URL_UPDATE = "http://update1.compueconomia.com.ec/update/"; //dirección url del recurso a descargar
         _FILE_UPDATE = "Sofi3.jar"; //nombre del archivo destino
 //Directorio destino para las descargas
-        _DIR_DESTINO = c + dir + "Sofi/";
+        _DIR_DESTINO = c + dir + "Sofi" + File.separator;
+        Deb.consola("xxxxxx> ruta actuaizcione>: " + _DIR_DESTINO);
         ////////////fina ctualizaciones
 
     }
@@ -168,15 +170,15 @@ public static String FE_ESTADO3 = "";
     public static void trial() {
         java.util.Date fecha = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //Para declarar valores en nuevos objetos date, usa el mismo formato date que usaste al crear las fechas 
-        Date date1 = null;// = ObtenerFecha.getNTPDate();
+        Date date1 = ObtenerFecha.getNTPDate();
 
         try {
-            date1 = sdf.parse("2022-12-28"); //date1 es el 23 de febrero de 1995
+            date1 = sdf.parse("2021-12-31"); //date1 es el 23 de febrero de 1995
             if (fecha.after(date1)) {
-            // JOptionPane.showMessageDialog(null, "Ha vencido el periodo de prueba contactarse al: 0992669329 -02 2765821 ");
-              //  exit(0);
+                JOptionPane.showMessageDialog(null, "Ha vencido el periodo de prueba contactarse al: 0992669329 -02 2765821 ");
+                exit(0);
             } else {
-             //   JOptionPane.showMessageDialog(null, "Se esta usando la aplicacion en modo prueba..!!! (contactarse al: 0992669329 -02 2765821)");
+                //   JOptionPane.showMessageDialog(null, "Se esta usando la aplicacion en modo prueba..!!! (contactarse al: 0992669329 -02 2765821)");
             }
         } catch (ParseException ex) {
             Logger.getLogger(Variables.class.getName()).log(Level.SEVERE, null, ex);

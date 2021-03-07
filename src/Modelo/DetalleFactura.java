@@ -29,6 +29,7 @@ public class DetalleFactura {
     String tienteIce;
     String tineIRBPNR;
     String tineIsd;
+    String productos_codigoAlterno;
 
     public Integer getBodega() {
         return bodega;
@@ -183,6 +184,14 @@ public class DetalleFactura {
 
     public void setTineIsd(String tineIsd) {
         this.tineIsd = tineIsd;
+    }
+
+    public String getProductos_codigoAlterno() {
+        return productos_codigoAlterno;
+    }
+
+    public void setProductos_codigoAlterno(String productos_codigoAlterno) {
+        this.productos_codigoAlterno = productos_codigoAlterno;
     }
     
     

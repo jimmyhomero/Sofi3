@@ -16,6 +16,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -51,7 +52,7 @@ public class EquiposDao extends Coneccion {
             ResultSet rs = consulta.getGeneratedKeys();
             if (rs.next()) {
                 codigoThisEquipo = rs.getInt(1);
-                System.out.println("Controlador.Usuarios.EquiposDao.guardar()>: " + codigoThisEquipo);
+                Deb.consola("Controlador.Usuarios.EquiposDao.guardar()>: " + codigoThisEquipo);
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null,ex);
@@ -227,7 +228,7 @@ public Equipos Buscar_by_NombreReal(String nombreReal) {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -337,7 +338,7 @@ public Equipos Buscar_by_NombreReal(String nombreReal) {
             
         } catch (Exception ex) {
             msg.setMensaje(ex.toString());
-            System.out.println("Controlador.CUsuarios.listar() ++listar equipos " + ex);
+            Deb.consola("Controlador.CUsuarios.listar() ++listar equipos " + ex);
         } finally {
             this.cerrar();
         }

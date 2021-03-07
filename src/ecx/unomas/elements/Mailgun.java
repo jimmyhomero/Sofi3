@@ -9,6 +9,7 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.multipart.file.FileDataBodyPart;
 import ecx.unomas.service.Config;
+import ClasesAuxiliares.debug.Deb;
 
 public class Mailgun {
 	
@@ -52,7 +53,7 @@ public class Mailgun {
 		form.bodyPart(new FileDataBodyPart("attachment",pdf,MediaType.APPLICATION_OCTET_STREAM_TYPE));
 		ClientResponse clientResponse = webResource.type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, form);
 		String output = clientResponse.getEntity(String.class);
-		System.out.println(output);
+		Deb.consola(output);
 		return true;
 	}
 }

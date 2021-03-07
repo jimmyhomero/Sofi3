@@ -10,6 +10,7 @@ import Controlador.Coneccion;
 import Controlador.Usuarios.ClientesDao;
 import Controlador.Usuarios.ProveedoresDao;
 import Modelo.Clientes;
+import ClasesAuxiliares.debug.Deb;
 import Modelo.Proveedores;
 import Modelo.Tipo_Usuario;
 import Modelo.Usuarios;
@@ -63,7 +64,7 @@ public class Crear_Proveedores extends javax.swing.JInternalFrame {
 //        tf.addKeyListener(new KeyAdapter() {
 //            @Override
 //            public void keyTyped(java.awt.event.KeyEvent evt ) {
-//                System.out.println(".keyTyped()qqqq key jcb");
+//                Deb.consola(".keyTyped()qqqq key jcb");
 //            }
 //        });
         JRootPane rootPane = SwingUtilities.getRootPane(this.jButton1);
@@ -599,7 +600,7 @@ public class Crear_Proveedores extends javax.swing.JInternalFrame {
             }
             if (evt.getActionCommand().equals("Actualizar")) {
 
-                System.out.println("Vista.Usuarios.CrearUsuarios.jButton1ActionPerformed()");
+                Deb.consola("Vista.Usuarios.CrearUsuarios.jButton1ActionPerformed()");
                 u.setCodigo(Integer.parseInt(txt_codigo.getText()));
                 obj.modificar(u);
                 this.dispose();
@@ -618,7 +619,7 @@ public class Crear_Proveedores extends javax.swing.JInternalFrame {
             limpiar.limpiar_texto(jPanel1);
             limpiar.limpiar_texto(jPanel2);
 
-            System.out.println("Vista.Usuarios.FUsuarios.jButton1ActionPerformed()");
+            Deb.consola("Vista.Usuarios.FUsuarios.jButton1ActionPerformed()");
 
         } else {
 //ProgressBar a = new ProgressBar(1000, "LLenar los campos Obligatorios");
@@ -656,7 +657,7 @@ public class Crear_Proveedores extends javax.swing.JInternalFrame {
         if (jButton1.getText().equals("Actualizar")) {
             //jcb_estado.setSelectedItem("");
         }
-        System.out.println("Vista.Usuarios.Crear_Usuarios.jButton1Prop,,,,,,,,ertyChange()" + evt.getNewValue());
+        Deb.consola("Vista.Usuarios.Crear_Usuarios.jButton1Prop,,,,,,,,ertyChange()" + evt.getNewValue());
     }//GEN-LAST:event_jButton1PropertyChange
 
     private void jcb_tipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcb_tipoActionPerformed
@@ -719,8 +720,8 @@ public class Crear_Proveedores extends javax.swing.JInternalFrame {
 
                             myResponse = ConsultaCedulas.getinfoSRI(txt_cedula.getText());
                             JSONObject mydir = ConsultaCedulas.getinfoSRIDireccion(txt_cedula.getText());
-                            System.out.println("" + mydir);
-                            System.out.println("RUC: " + myResponse.getString("numeroRuc"));                     
+                            Deb.consola("" + mydir);
+                            Deb.consola("RUC: " + myResponse.getString("numeroRuc"));                     
                             txt_dir.setText("");
                             txt_nombres.setText(myResponse.getString("razonSocial"));                            
                             if (!myResponse.isNull("nombreComercial")) {
@@ -730,11 +731,11 @@ public class Crear_Proveedores extends javax.swing.JInternalFrame {
 //                           
                             t_Observaciones.setText("OBLIGADO: " + myResponse.getString("obligado") + "\n" + myResponse.getString("actividadContribuyente") + "\n");
                             if (!myResponse.isNull("nombreFantasiaComercial")) {
-                                System.out.println("Nombre Comercial: " + myResponse.getString("nombreFantasiaComercial"));
+                                Deb.consola("Nombre Comercial: " + myResponse.getString("nombreFantasiaComercial"));
                             }
 
                             if (!mydir.isNull("direccionCompleta")) {
-                                System.out.println("direccionCompleta: " + mydir.getString("direccionCompleta"));
+                                Deb.consola("direccionCompleta: " + mydir.getString("direccionCompleta"));
                                 String direccion = mydir.getString("direccionCompleta");
                                 txt_dir.setText(direccion);
                                 String separador = Pattern.quote("/");
@@ -742,7 +743,7 @@ public class Crear_Proveedores extends javax.swing.JInternalFrame {
 
 // En este momento tenemos un array en el que cada elemento es un color.
                                 for (int i = 0; i < arrayDireccion.length; i++) {
-                                    System.out.println(arrayDireccion[i]);
+                                    Deb.consola(arrayDireccion[i]);
                                     txt_provincia.setText(arrayDireccion[1]);
                                     txt_ciudad.setText(arrayDireccion[2]);
                                     if (arrayDireccion.length == 3) {

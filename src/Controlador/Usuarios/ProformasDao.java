@@ -17,6 +17,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -38,7 +39,7 @@ public class ProformasDao extends Coneccion {
             this.conectar();
             PreparedStatement st;
             st = this.getCnx().prepareCall("select canTidad, producto from productos where producto like '%" + value + "%' order BY productos.producto LIMIT 0, 50");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -93,7 +94,7 @@ public class ProformasDao extends Coneccion {
             this.conectar();
             PreparedStatement st;
             st = this.getCnx().prepareCall("select Productos.*, modelos.Modelo from productos inner join modelos on modelos.Codigo=productos.Modelos_Codigo where " + tabla + "." + columna + " like '%" + value + "%' order BY productos.producto LIMIT 0, 50");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -108,7 +109,7 @@ public class ProformasDao extends Coneccion {
                 registros[8] = "0";
                 registros[9] = rs.getString("cantidad");                
 
-                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
 
             }
 
@@ -146,16 +147,16 @@ public class ProformasDao extends Coneccion {
             consulta.setString(12, tarea.getSecuencia());
             consulta.setString(13, tarea.getFechain());
             consulta.setString(14, tarea.getIva_valor());
-            System.out.println("Controlador.CUsuarios.guardar()" + consulta);
+            Deb.consola("Controlador.CUsuarios.guardar()" + consulta);
             consulta.executeUpdate();
             ResultSet rs = consulta.getGeneratedKeys();
             if (rs.next()) {
                 codigoThisProforma = rs.getInt(1);
-                System.out.println("Controlador.Usuarios.ProformasDao.guardar()>: " + codigoThisProforma);
+                Deb.consola("Controlador.Usuarios.ProformasDao.guardar()>: " + codigoThisProforma);
             }
         } catch (SQLException ex) {
             //msg.setProgressBar_mensajae(ex.toString());
-            System.out.println("Controlador.CUsuarios.guardar()" + ex);
+            Deb.consola("Controlador.CUsuarios.guardar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -192,7 +193,7 @@ public class ProformasDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -225,7 +226,7 @@ public class ProformasDao extends Coneccion {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -245,7 +246,7 @@ public class ProformasDao extends Coneccion {
                 }
 
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
 
             }
 

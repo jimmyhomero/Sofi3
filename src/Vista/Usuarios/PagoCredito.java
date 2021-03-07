@@ -7,6 +7,7 @@ package Vista.Usuarios;
 
 import Controlador.Usuarios.CajasDetalleDao;
 import Controlador.Usuarios.FacturasDao;
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Usuarios.HoraFecha;
 import Controlador.Usuarios.cxcDao;
 import Controlador.Usuarios.TicketsDao;
@@ -25,14 +26,14 @@ import org.codehaus.groovy.ast.stmt.DoWhileStatement;
  * @author USUARIO
  */
 public class PagoCredito extends javax.swing.JDialog {
-    
+
     double total;
     double abono;
     double saldo;
     public static Facturas fac = new Facturas();
     public static Tickets t = new Tickets();
     Integer codigoFactura;
-    
+
     boolean isclicked = false;
     Date fecha = new Date();
 
@@ -42,22 +43,22 @@ public class PagoCredito extends javax.swing.JDialog {
     public PagoCredito(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         spinerDiasCredito.setValue(30);
         HoraFecha ob2 = new HoraFecha();
         fecha = ob2.obtenerFecha();
         jDateChooser1.setDate(fecha);
-        
+
         jDateChooser1.setDate(sumarRestarDiasFecha(fecha, Integer.valueOf(spinerDiasCredito.getValue().toString())));
-        txt_entrada.grabFocus();        
+        txt_entrada.grabFocus();
         txt_entrada.selectAll();
         /// HoraFecha.fecha(fecha)
         rootPane.setDefaultButton(this.bnt_siguente);
-        
+
     }
-    
+
     public Date sumarRestarDiasFecha(Date fecha, int dias) {
-        
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(fecha); // Configuramos la fecha que se recibe
         calendar.add(Calendar.DAY_OF_YEAR, dias);  // numero de días a añadir, o restar en caso de días<0
@@ -328,29 +329,29 @@ public class PagoCredito extends javax.swing.JDialog {
     private void txt_entradaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_entradaKeyReleased
         // TODO add your handling code here:
         if (ValidaNUmeros.isOnlyDouble(txt_entrada.getText())) {
-            
+
             if (Double.valueOf(txt_total.getText()) > Double.valueOf(txt_entrada.getText())) {
-                
+
                 total = Double.valueOf(txt_total.getText().replace(",", "."));
                 if (txt_entrada.getText().contains(",")) {
                     abono = Double.valueOf(txt_entrada.getText().replace(",", "."));
                 } else {
                     abono = Double.valueOf(txt_entrada.getText());
                 }
-                
+
                 saldo = total - abono;
-                
+
                 String sald = String.valueOf(String.format("%.4f", saldo));
                 saldo = Double.valueOf(sald.replace(",", "."));
-                
+
                 txt_saldo.setText(String.valueOf(saldo));
             } else {
-                //  System.out.println("Vista.Usuarios.PagoCredito.txt_entradaKeyReleased()auuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+                //  Deb.consola("Vista.Usuarios.PagoCredito.txt_entradaKeyReleased()auuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
                 JOptionPane.showMessageDialog(null, "El valor de Entrada del Credito no puede ser Mayor al Total de la Venta");
                 txt_entrada.requestFocus();
                 txt_entrada.setText("0.0");
                 txt_entrada.selectAll();
-                
+
             }
         } else {
             txt_entrada.setText("0.0");
@@ -360,69 +361,79 @@ public class PagoCredito extends javax.swing.JDialog {
 
     private void bnt_siguenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnt_siguenteActionPerformed
         // TODO add your handling code here:
-        // System.out.println("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd");
+        // Deb.consola("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd");
         isclicked = true;
         jTabbedPane1.setSelectedIndex(1);
     }//GEN-LAST:event_bnt_siguenteActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        
+
         Cxc cxc = new Cxc();
         cxcDao cxcDao = new cxcDao();
-        cxc.setDescripcion(Crear_Facturas.tipoDocumento + " -- FORMA DE PAGO : " + Crear_Facturas.formaPagoSeelccionada + " DESDE : " + login.nombreDelEquipo);
+        cxc.setDescripcion(Modal_CrearFacturas.tipoDocumento + " -- FORMA DE PAGO : " + Modal_CrearFacturas.formaPagoSeelccionada + " DESDE : " + login.nombreDelEquipo);
         cxc.setTotal(txt_total.getText());
-        cxc.setTipo(Crear_Facturas.tipoDocumento);
+        cxc.setTipo(Modal_CrearFacturas.tipoDocumento);
         cxc.setAbono(txt_entrada.getText());
-        
+
         total = Double.valueOf(txt_total.getText().replace(",", "."));
         if (txt_entrada.getText().contains(",")) {
             abono = Double.valueOf(txt_entrada.getText().replace(",", "."));
         } else {
             abono = Double.valueOf(txt_entrada.getText());
         }
-        saldo = total - abono;        
-        cxc.setSaldo(String.valueOf(String.format("%.4f", total)));        
-        cxc.setFormasPagoV_codigo(Crear_Facturas.codigFormaPagoSeleccionada);
-        cxc.setSaldo(String.valueOf(this.saldo));
-        
-        if (Crear_Facturas.tipoDocumento.equals("FACTURA")) {
+        saldo = total - abono;
+        //cxc.setSaldo(String.valueOf(String.format("%.4f", total)));        
+        cxc.setFormasPagoV_codigo(Modal_CrearFacturas.codigFormaPagoSeleccionada);
+        String sald = String.valueOf(String.format("%.4f", saldo));
+        saldo = Double.valueOf(sald.replace(",", "."));
+        Modal_CrearFacturas.cd.setValor(saldo);
+        cxc.setSaldo(String.valueOf(saldo));
+
+        if (Modal_CrearFacturas.tipoDocumento.equals("FACTURA")) {
             FacturasDao fDao = new FacturasDao();
-            codigoFactura = fDao.guardar(fac);
+            //codigoFactura = fDao.guardar(fac);
         }
-        if (Crear_Facturas.tipoDocumento.equals("TICKET")) {
+        if (Modal_CrearFacturas.tipoDocumento.equals("TICKET")) {
             TicketsDao tDao = new TicketsDao();
-            codigoFactura = tDao.guardar(t);
-        }
-        
-        Crear_Facturas.codigoFactura = codigoFactura;
-        cxc.setFacturas_codigo(codigoFactura);
-        cxc.setDiasCredito(spinerDiasCredito.getValue().toString());
-        // System.out.println("Vista.Usuarios.PagoCredito.jButton2ActionPerformed() dias credito :" + spinerDiasCredito.getValue().toString());
-        cxc.setFechaVencimiento(jDateChooser1.getDate());
-        cxc.setClientes_Codigo(Crear_Facturas.codigoClienteFactura);        
-        cxcDao.guardar(cxc);
-        CajasDetalleDao cdDao = new CajasDetalleDao();
-        Crear_Facturas.cd.setCodigoDocuemnto(codigoFactura);        
-        
-        if (txt_entrada.getText().equals("0.0")) {
-            // System.out.println("Vista.Usuarios.PagoCredito.jButton2ActionPerformed(): "+);    
-            cdDao.guardar(Crear_Facturas.cd);
-        } else {
-            //Crear_Facturas.cd.setDetalle(" - ABONO: "+Crear_Facturas.cd.getDetalle()+" - TOTAL VENTA: "+total+" - TOTAL ABONO: "+abono+" - SALDO: "+saldo);
-            Crear_Facturas.cd.setDetalle("ABONO - VENTA  " + Crear_Facturas.tipoDocumento + " - " + Crear_Facturas.jcbFormasPago.getSelectedItem().toString() + " # " + Crear_Facturas.secuenciaFac + " EN EQUIPO: " + login.nombreDelEquipo + " USUARIO: " + login.nombresUsuario + " - SALDO: " + saldo);
-            Crear_Facturas.cd.setValor(abono);            
-            cdDao.guardar(Crear_Facturas.cd);
-            CajasDetalleDao cdDao1 = new CajasDetalleDao();
-            Crear_Facturas.cd.setDetalle("SALDO - VENTA  " + Crear_Facturas.tipoDocumento + " - " + Crear_Facturas.jcbFormasPago.getSelectedItem().toString() + " # " + Crear_Facturas.secuenciaFac + " EN EQUIPO: " + login.nombreDelEquipo + " USUARIO: " + login.nombresUsuario + " - SALDO: " + saldo);
-            Crear_Facturas.cd.setValor(saldo);            
-            cdDao1.guardar(Crear_Facturas.cd);
+            //codigoFactura = tDao.guardar(t);
         }
 
-        //   System.out.println("Vista.Usuarios.PagoCredito.jButton2ActionPerformed()se registro el ");
-        Crear_Facturas.procedeVentaExitosa = true;
+        //Modal_CrearFacturas.codigoFactura = codigoFactura;
+        cxc.setFacturas_codigo(codigoFactura);
+        cxc.setDiasCredito(spinerDiasCredito.getValue().toString());
+        // Deb.consola("Vista.Usuarios.PagoCredito.jButton2ActionPerformed() dias credito :" + spinerDiasCredito.getValue().toString());
+        cxc.setFechaVencimiento(jDateChooser1.getDate());
+        cxc.setClientes_Codigo(Modal_CrearFacturas.codigoClienteFactura);
+        //cxcDao.guardar(cxc);
+        Modal_CrearFacturas.cxc = cxc;
+
+        CajasDetalleDao cdDao = new CajasDetalleDao();
+        Modal_CrearFacturas.cd.setCodigoDocuemnto(codigoFactura);
+
+        if (txt_entrada.getText().equals("0.0")) {
+            // Deb.consola("Vista.Usuarios.PagoCredito.jButton2ActionPerformed(): "+);    
+            //   cdDao.guardar(Modal_CrearFacturas.cd);
+        } else {
+            //Modal_CrearFacturas.cd.setDetalle(" - ABONO: "+Modal_CrearFacturas.cd.getDetalle()+" - TOTAL VENTA: "+total+" - TOTAL ABONO: "+abono+" - SALDO: "+saldo);
+            Modal_CrearFacturas.cd.setDetalle("ABONO - VENTA  " + Modal_CrearFacturas.tipoDocumento + " - " + Modal_CrearFacturas.jcbFormasPago.getSelectedItem().toString() + " # " + Modal_CrearFacturas.secuenciaFac + " EN EQUIPO: " + login.nombreDelEquipo + " USUARIO: " + login.nombresUsuario + " - SALDO: " + saldo);
+            Modal_CrearFacturas.cd.setValor(abono);
+            // cdDao.guardar(Modal_CrearFacturas.cd);
+            CajasDetalleDao cdDao1 = new CajasDetalleDao();
+//            Modal_CrearFacturas.cd.setDetalle("SALDO - VENTA  " + Modal_CrearFacturas.tipoDocumento + " - " + Modal_CrearFacturas.jcbFormasPago.getSelectedItem().toString() + " # " + Modal_CrearFacturas.secuenciaFac + " EN EQUIPO: " + login.nombreDelEquipo + " USUARIO: " + login.nombresUsuario + " - SALDO: " + saldo);
+            String saldx = String.valueOf(String.format("%.4f", saldo));
+            saldo = Double.valueOf(saldx.replace(",", "."));            
+            String abonox = String.valueOf(String.format("%.4f", this.abono));
+            this.abono = Double.valueOf(abonox.replace(",", "."));
+            Modal_CrearFacturas.ValoeEntradaenventaaCredito = this.abono;
+            Modal_CrearFacturas.afectacaja=true;
+            //cdDao1.guardar(Modal_CrearFacturas.cd);
+        }
+
+        //   Deb.consola("Vista.Usuarios.PagoCredito.jButton2ActionPerformed()se registro el ");
+        Modal_CrearFacturas.procedeVentaExitosa = true;
         this.dispose();
-        
+
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -438,16 +449,16 @@ public class PagoCredito extends javax.swing.JDialog {
 
     private void spinerDiasCreditoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_spinerDiasCreditoKeyReleased
         // TODO add your handling code here:
-        if(spinerDiasCredito.getValue().toString().contains("-")){
-        spinerDiasCredito.setValue(0);
+        if (spinerDiasCredito.getValue().toString().contains("-")) {
+            spinerDiasCredito.setValue(0);
         }
 
     }//GEN-LAST:event_spinerDiasCreditoKeyReleased
 
     private void spinerDiasCreditoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_spinerDiasCreditoMouseClicked
         // TODO add your handling code here:
-if(spinerDiasCredito.getValue().toString().contains("-")){
-        spinerDiasCredito.setValue(0);
+        if (spinerDiasCredito.getValue().toString().contains("-")) {
+            spinerDiasCredito.setValue(0);
         }
 
     }//GEN-LAST:event_spinerDiasCreditoMouseClicked
@@ -456,21 +467,21 @@ if(spinerDiasCredito.getValue().toString().contains("-")){
         // TODO add your handling code here:
         if (isclicked) {
             jDateChooser1.setDate(sumarRestarDiasFecha(fecha, Integer.valueOf(spinerDiasCredito.getValue().toString())));
-            System.out.println("Vista.Usuarios.PagoCredito.spinerDiasCreditoKeyReleased() estaechange");
+            Deb.consola("Vista.Usuarios.PagoCredito.spinerDiasCreditoKeyReleased() estaechange");
         }
     }//GEN-LAST:event_spinerDiasCreditoStateChanged
 
     private void jPanel2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPanel2FocusGained
         // TODO add your handling code here:
         isclicked = true;
-        System.out.println("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd");
+        Deb.consola("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd");
     }//GEN-LAST:event_jPanel2FocusGained
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         //jDateChooser1.setDate(sumarRestarDiasFecha(fecha,Integer.valueOf(spinerDiasCredito.getValue().toString())));
         isclicked = true;
-        System.out.println("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd al opneform");
+        Deb.consola("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd al opneform");
     }//GEN-LAST:event_formWindowOpened
 
     private void bnt_siguente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnt_siguente1ActionPerformed

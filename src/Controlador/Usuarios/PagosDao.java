@@ -51,7 +51,7 @@ public class PagosDao extends Coneccion {
             ResultSet rs = consulta.getGeneratedKeys();
             if (rs.next()) {
                 CodigoThisInsert = rs.getInt(1);
-                //System.out.println("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
+                //Deb.consola("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
             }
 
         } catch (SQLException ex) {

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package ClasesAuxiliares;
-
+import ClasesAuxiliares.debug.Deb;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class DaoEmpresaImpl extends Controlador.Coneccion {
             }
             
         } catch (Exception e) {
-            System.out.println("ClasesAuxiliares.DaoEmpresaImpl.getListEmpresa()" + e.toString());
+            Deb.consola("ClasesAuxiliares.DaoEmpresaImpl.getListEmpresa()" + e.toString());
         } finally {
             this.cerrar();
         }

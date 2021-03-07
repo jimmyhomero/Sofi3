@@ -6,6 +6,7 @@
 package Vista.Usuarios;
 
 import ClasesAuxiliares.Exporter;
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Usuarios.Tipo_UsuariosDao;
 import Controlador.Usuarios.UsuariosDao;
 import Modelo.Tipo_Usuario;
@@ -304,7 +305,7 @@ public class Buscar_usuarios extends javax.swing.JInternalFrame {
                 //Crear_Usuarios.jcb_tipo.setSelectedItem(0);
                 Crear_Usuarios.setItemSelect = o;
                 
-                System.out.println("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
+                Deb.consola("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
             }
 
         }

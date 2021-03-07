@@ -5,11 +5,17 @@
  */
 package ClasesAuxiliares.tablas;
 
+import ClasesAuxiliares.Leertxt;
+import ClasesAuxiliares.debug.Deb;
+import Modelo.Clientes;
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.CellRendererPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import org.jespxml.gui.CellRender;
 
 /**
  *
@@ -18,9 +24,17 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class SetRenderJTableCXC extends DefaultTableCellRenderer {
 
     private int columna;
+    private int row;
+    private int colClaveaccso;
 
     public SetRenderJTableCXC(int Colpatron) {
         this.columna = Colpatron;
+        colClaveaccso = 8;
+    }
+
+    public SetRenderJTableCXC(int row, int col) {
+        this.columna = col;
+        this.row = row;
     }
 
     @Override
@@ -30,25 +44,36 @@ public class SetRenderJTableCXC extends DefaultTableCellRenderer {
         super.getTableCellRendererComponent(table, value, selected, focused, row, column);
         if ((row % 2) != 0) {
 
-            this.setBackground(new java.awt.Color(194, 241, 241));
+            this.setBackground(new java.awt.Color(245,245,245));
         }
-             
-        if (table.getValueAt(row, columna).equals("0")) {
-            this.setForeground(Color.BLACK);
-        }  else {
-            this.setForeground(Color.red);
+
+        //
+        if (column == columna) {
+            if ((String.valueOf(table.getValueAt(row, columna))).equals("NO")) {
+                this.setForeground(Color.BLACK);
+                this.setBackground(new java.awt.Color(255, 102, 178));
+            }
+
         }
-     
-//        if (table.getValueAt(row, columna).equals("0")) {
-//            this.setForeground(Color.BLACK);
-//        } else if (table.getValueAt(row, columna).equals("B")) {
-//            this.setForeground(Color.BLUE);
-//        } else if (table.getValueAt(row, columna).equals("C")) {
-//            this.setForeground(Color.GREEN);
-//        } else {
-//            this.setForeground(Color.red);
-//        }
+        
+        if (column == 11) {
+             if ((String.valueOf(table.getValueAt(row,11))).equals("SI")) {
+                this.setBackground(new java.awt.Color(153, 255, 51));
+            }
+
+        }
+
         return this;
     }
+
+    public static Component get_jtable_cell_component(JTable table, int row, int column) {
+        TableCellRenderer renderer =  table.getCellRenderer(row, column);
+        Object value = table.getModel().getValueAt(row, column);
+        boolean selectedColor = table.getSelectionModel().isSelectedIndex(row);
+        boolean hasFocus = true;
+        Component component = renderer.getTableCellRendererComponent (table, value, selectedColor, hasFocus, row, column);
+        return component;
+    }
+    
 
 }

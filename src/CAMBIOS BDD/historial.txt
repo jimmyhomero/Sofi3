@@ -24,3 +24,21 @@ UPDATE `formaspagoc` SET `codigo`='3',`FormaPago`='TRANSFERENCIA',`descripcion`=
 UPDATE `formaspagoc` SET `codigo`='4',`FormaPago`='MIXTO',`descripcion`=NULL,`tipo_pago`='0',`plan_codigo`=NULL,`sri_forma_pago_codigo`=NULL,`afecta_a_caja`=NULL,`numero_cuotas`=NULL,`porcentaje_entrada`=NULL,`perido_cobranza`=NULL,`es_cxc_cxp`=NULL,`codigo_precio_a_usar`='1' WHERE `codigo`='4';
 ALTER TABLE `formaspagoc` ADD CONSTRAINT `FK_formaspagoc_precio_usar` FOREIGN KEY (`codigo_precio_a_usar`) REFERENCES `precios` (`codigo`);
 ALTER TABLE `facturas` ADD COLUMN `codigo_doc_afectado_nc` INT NULL AFTER `equipos_codigo`, ADD COLUMN `secuencia_doc_afectado_nc` VARCHAR(50) NULL AFTER `codigo_doc_afectado_nc`;
+CREATE TABLE `a`.`smenu`( `codigo` INT NOT NULL AUTO_INCREMENT , `menu` VARCHAR(200) , `url` VARCHAR(200) , `visible` VARCHAR(10) DEFAULT 'SI' , `codigo_menu` INT , PRIMARY KEY (`codigo`))  ;
+ALTER TABLE `a`.`smenu` ADD CONSTRAINT `FK_smenu` FOREIGN KEY (`codigo_menu`) REFERENCES `menu` (`codigo`);
+CREATE TABLE `productostemp` (                                                                
+                 `codigo` INT(11) NOT NULL AUTO_INCREMENT,                                                   
+                 `nombreA` VARCHAR(1000) NOT NULL,                                                           
+                 `nombreB` VARCHAR(1000) NOT NULL,                                                           
+                 `codigoProductoA` VARCHAR(100) NOT NULL,                                                    
+                 `codigoProductoB` VARCHAR(100) NOT NULL,                                                    
+                 `CodigoProveedor` INT(11) NOT NULL,                                                         
+                 `costo` DOUBLE DEFAULT NULL,                                                                
+                 `fechaCompra` VARCHAR(100) DEFAULT NULL,                                                    
+                 `numeroFactura` VARCHAR(100) DEFAULT NULL,                                                  
+                 PRIMARY KEY (`codigo`),                                                                     
+                 KEY `FK_Clientes` (`CodigoProveedor`),                                                      
+                 CONSTRAINT `FK_Clientes` FOREIGN KEY (`CodigoProveedor`) REFERENCES `clientes` (`codigo`),  
+                 CONSTRAINT `FK_productostemp_2` FOREIGN KEY (`codigo`) REFERENCES `productos` (`Codigo`)    
+               ) ENGINE=INNODB DEFAULT CHARSET=latin1 ;                                                       
+

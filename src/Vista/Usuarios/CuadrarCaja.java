@@ -7,12 +7,15 @@ package Vista.Usuarios;
 
 import ClasesAuxiliares.Variables;
 import Controlador.Coneccion;
+import ClasesAuxiliares.debug.Deb;
+import Controlador.Usuarios.HoraFecha;
 import Controlador.Usuarios.ImpresionDao;
-import static Vista.Usuarios.Crear_Facturas.secuenciaFac;
+import static Vista.Usuarios.Modal_CrearFacturas.secuenciaFac;
 import Vlidaciones.ValidaNUmeros;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -47,16 +50,29 @@ public class CuadrarCaja extends javax.swing.JInternalFrame {
         crearModelo();
         addOrDeleteRowTable(jTable1);
         operacionFacturauPDATEandAddRowrs();
+        setFechayHoraActualJDChooser();
 
-        ///"C:\\Users\\USUARIO\\Desktop\\Cajas1.jasper"
-        //String rutaInforme = Variables.DIR_REPORTE_FACTURA;
-        String rutaInforme = Variables.DIR_REPORTE_DETALLE_CAJA;
-        parametros.put("doc", "FACTURA");
+   
+    ///"C:\\Users\\USUARIO\\Desktop\\Cajas1.jasper"
+    //String rutaInforme = Variables.DIR_REPORTE_FACTURA;
+    String rutaInforme = Variables.DIR_REPORTE_DETALLE_CAJA;
+
+    parametros.put (
+
+    "doc", "FACTURA");
        // parametros.put("numeroFactura", "001-001-000000005");      
-        getdetallesmovimiento(parametros,rutaInforme);
-    }
+    getdetallesmovimiento(parametros, rutaInforme);
+}
+ private void setFechayHoraActualJDChooser() {
+        HoraFecha ob = new HoraFecha();
+        ob.getHoraActualmyMachine();
+        Date inicio = ob.fechaActual_00_00_00();
+        Date fin = ob.fechaActual_23_59_59();
+        jdchoserdesde.setDate(inicio);
+        jdchoserhasta.setDate(fin);
 
-    public void getdetallesmovimiento(Map parametros, String rutaInforme) {
+    }
+public void getdetallesmovimiento(Map parametros, String rutaInforme) {
 
         try {
             Coneccion c = new Coneccion();
@@ -85,7 +101,7 @@ public class CuadrarCaja extends javax.swing.JInternalFrame {
         String[] registros = new String[2];
         modelo = new DefaultTableModel(null, titulos) {
             @Override
-            public boolean isCellEditable(int row, int column) {
+        public boolean isCellEditable(int row, int column) {
                 // make read only fields except column 0,13,14
                 //  return column == 0 || column == 13 || column == 14;
                 return column == 1;
@@ -184,7 +200,7 @@ public class CuadrarCaja extends javax.swing.JInternalFrame {
 
     private void operacionFacturauPDATEandAddRowrs() {
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        System.out.println("Vista.Usuarios.CuadrarCaja.operacionFacturauPDATEandAddRowrs()operacionFacturauPDATEandAddRowrs: ");
+        Deb.consola("Vista.Usuarios.CuadrarCaja.operacionFacturauPDATEandAddRowrs()operacionFacturauPDATEandAddRowrs: ");
         try {
 
             Double totalefectivo = 0.0;
@@ -226,7 +242,7 @@ public class CuadrarCaja extends javax.swing.JInternalFrame {
             }
 
         } catch (Exception e) {
-            System.out.println("Vista.Usuarios.CuadrarCaja.operacionFacturauPDATEandAddRowrs(): " + e);
+            Deb.consola("Vista.Usuarios.CuadrarCaja.operacionFacturauPDATEandAddRowrs(): " + e);
             // msg.setMensaje(e.toString());
         }
     }
@@ -235,7 +251,7 @@ public class CuadrarCaja extends javax.swing.JInternalFrame {
         table.getModel().addTableModelListener(new TableModelListener() {
 
             @Override
-            public void tableChanged(TableModelEvent e) {
+        public void tableChanged(TableModelEvent e) {
                 boolean esNUmero = false;
                 if (e.getType() == TableModelEvent.UPDATE) {
                     int col = e.getColumn();
@@ -272,7 +288,6 @@ public class CuadrarCaja extends javax.swing.JInternalFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel3 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
@@ -297,6 +312,12 @@ public class CuadrarCaja extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jCheckBox1 = new javax.swing.JCheckBox();
         jpContainer = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jdchoserdesde = new com.toedter.calendar.JDateChooser();
+        jdchoserhasta = new com.toedter.calendar.JDateChooser();
+        jTextField1 = new javax.swing.JTextField();
 
         setClosable(true);
         setTitle("CUADRE DE CAJA");
@@ -330,14 +351,14 @@ public class CuadrarCaja extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jPanel24.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel24.setLayout(new java.awt.GridLayout());
+        jPanel24.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel14.setText("TOTAL EFECTIVO");
         jPanel24.add(jLabel14);
         jPanel24.add(txt_total_efectivo);
 
         jPanel25.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel25.setLayout(new java.awt.GridLayout());
+        jPanel25.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel15.setText("TOTAL OTROS ");
         jPanel25.add(jLabel15);
@@ -423,7 +444,7 @@ public class CuadrarCaja extends javax.swing.JInternalFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
 
         jpContainer.setBorder(javax.swing.BorderFactory.createTitledBorder("Detalle de Movimientos de Caja"));
@@ -436,7 +457,62 @@ public class CuadrarCaja extends javax.swing.JInternalFrame {
         );
         jpContainerLayout.setVerticalGroup(
             jpContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 753, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("DESDE: ");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setText("HASTA:");
+
+        jdchoserdesde.setDateFormatString("yyyy-MM-dd");
+        jdchoserdesde.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jdchoserdesdeMouseClicked(evt);
+            }
+        });
+
+        jdchoserhasta.setDateFormatString("yyyy-MM-dd");
+
+        jTextField1.setEditable(false);
+        jTextField1.setText("ULTIMA FECHA DE CUADRE");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jdchoserdesde, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jdchoserhasta, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jdchoserdesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jdchoserhasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -446,15 +522,18 @@ public class CuadrarCaja extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jpContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jpContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jpContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -465,15 +544,23 @@ public class CuadrarCaja extends javax.swing.JInternalFrame {
         operacionFacturauPDATEandAddRowrs();
     }//GEN-LAST:event_jTable1KeyTyped
 
+    private void jdchoserdesdeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jdchoserdesdeMouseClicked
+        // TODO add your handling code here:
+        //jdchoserdesde
+    }//GEN-LAST:event_jdchoserdesdeMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel21;
@@ -484,6 +571,9 @@ public class CuadrarCaja extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    private com.toedter.calendar.JDateChooser jdchoserdesde;
+    private com.toedter.calendar.JDateChooser jdchoserhasta;
     private javax.swing.JPanel jpContainer;
     private javax.swing.JTextField txt_total_arqueo;
     private javax.swing.JTextField txt_total_caja;

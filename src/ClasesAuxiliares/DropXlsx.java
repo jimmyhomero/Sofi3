@@ -189,7 +189,7 @@ public class DropXlsx implements DropTargetListener {
 
                         esPrimero++;
                     } else {
-                       // System.out.println("ClasesAuxiliares.DropXlsx.readXLSX() esprimero :" + esPrimero + "---Maxcol :" + maxCol);
+                       // Deb.consola("ClasesAuxiliares.DropXlsx.readXLSX() esprimero :" + esPrimero + "---Maxcol :" + maxCol);
                         tableModel.addRow(obj);
                     }
                 }

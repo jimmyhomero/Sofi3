@@ -12,6 +12,7 @@ import java.awt.Component;
 import static java.awt.font.GlyphMetrics.COMPONENT;
 import java.util.ArrayList;
 import javax.swing.SwingUtilities;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -33,10 +34,10 @@ public class SelectCaja extends javax.swing.JDialog {
         lista = cajaDao.listar();
         for (Cajas cajas : lista) {
             jComboBox1.addItem(cajas.getCaja());
-            System.out.println("Cajassss: " + cajas.getCaja());
+            Deb.consola("Cajassss: " + cajas.getCaja());
         }
 //        if (!esllamadodesdeNuevoEquipo) {
-//            System.out.println("Caja Cliked" + Configuracion.cajaClicked);
+//            Deb.consola("Caja Cliked" + Configuracion.cajaClicked);
 //            jComboBox1.setSelectedItem(Configuracion.cajaClicked);
 //        } else {
 //            jComboBox1.setSelectedItem("seleccione");
@@ -103,7 +104,7 @@ public class SelectCaja extends javax.swing.JDialog {
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         // TODO add your handling code here:
-        System.out.println("Vista.Usuarios.SelectCaja.jComboBox1ItemStateChanged()se ha seleccinadosss");
+        Deb.consola("Vista.Usuarios.SelectCaja.jComboBox1ItemStateChanged()se ha seleccinadosss");
         if (jComboBox1.getSelectedItem() != null) {
             for (Cajas cajas : lista) {
                 if (jComboBox1.getSelectedItem().toString().equals(cajas.getCaja())) {

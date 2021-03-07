@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.*;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -44,7 +45,7 @@ public class impresora {
             if (dispositivo.trim().length() <= 0) {
 
                 dispositivo = service.getName();
-                System.out.println("impresoras.impresora.setDispositivo(): "+dispositivo);
+                Deb.consola("impresoras.impresora.setDispositivo(): "+dispositivo);
                 //Esto si  es windows
             } else {
                 dispositivo = "/dev/lp0";//Esto si  es linux

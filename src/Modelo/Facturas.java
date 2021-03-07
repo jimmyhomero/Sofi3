@@ -42,6 +42,10 @@ public class Facturas {
     Double efectivo;
     Double Cambio;
     Integer equipos_codigo;
+    Integer codigo_doc_afectado_nc;
+    String secuencia_doc_afectado_nc;
+    String fecha_doc_afectado_nc;
+    String valorAfectadoxNCenFactura;
 
     public Integer getCodigo() {
         return codigo;
@@ -273,5 +277,45 @@ public class Facturas {
     public void setEquipos_codigo(Integer equipos_codigo) {
         this.equipos_codigo = equipos_codigo;
     }
+
+    public Integer getCodigo_doc_afectado_nc() {
+        return codigo_doc_afectado_nc;
+    }
+
+    public void setCodigo_doc_afectado_nc(Integer codigo_doc_afectado_nc) {
+        this.codigo_doc_afectado_nc = codigo_doc_afectado_nc;
+    }
+
+    public String getSecuencia_doc_afectado_nc() {
+        return secuencia_doc_afectado_nc;
+    }
+
+    public void setSecuencia_doc_afectado_nc(String secuencia_doc_afectado_nc) {
+        this.secuencia_doc_afectado_nc = secuencia_doc_afectado_nc;
+    }
+    
+
+    public String getFecha_doc_afectado_nc() {
+        return fecha_doc_afectado_nc;
+    }
+
+    public void setFecha_doc_afectado_nc(String fecha_doc_afectado_nc) {
+        this.fecha_doc_afectado_nc = fecha_doc_afectado_nc;
+    }
+
+    public void setValorAfectadoxNCenFactura(String valorAfectadoxNCenFactura) {
+        this.valorAfectadoxNCenFactura = valorAfectadoxNCenFactura;
+    }
+
+    public String getValorAfectadoxNCenFactura() {
+        return valorAfectadoxNCenFactura;
+    }
+
+    @Override
+    public String toString() {
+        return "Facturas{" + "codigo=" + codigo + ", fecha=" + fecha + ", hora=" + hora + ", iva=" + iva + ", iva_valor=" + iva_valor + ", subtotaI_con_iva=" + subtotaI_con_iva + ", subtotal_sin_iva=" + subtotal_sin_iva + ", total=" + total + ", utilidad=" + utilidad + ", tipo_documento=" + tipo_documento + ", descuento=" + descuento + ", Clientes_codigo=" + Clientes_codigo + ", Usuarios_Codigo=" + Usuarios_Codigo + ", equipo=" + equipo + ", secuencia=" + secuencia + ", anulada=" + anulada + ", fechain=" + fechain + ", estado=" + estado + ", calveAcceso=" + calveAcceso + ", DescripcionElectronica=" + DescripcionElectronica + ", autorizado=" + autorizado + ", establecimiento=" + establecimiento + ", ptoEmision=" + ptoEmision + ", secfactura=" + secfactura + ", formaPago=" + formaPago + ", efectivo=" + efectivo + ", Cambio=" + Cambio + ", equipos_codigo=" + equipos_codigo + ", codigo_doc_afectado_nc=" + codigo_doc_afectado_nc + ", secuencia_doc_afectado_nc=" + secuencia_doc_afectado_nc + ", fecha_doc_afectado_nc=" + fecha_doc_afectado_nc + ", valorAfectadoxNCenFactura=" + valorAfectadoxNCenFactura + '}';
+    }
+    
+    
 
 }

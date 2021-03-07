@@ -75,7 +75,7 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
 //        lista_Marcas = objMarcasDao.listar();
 //        ModelosDao objModeloDao = new ModelosDao();
 //        lista_Modelos = objModeloDao.listar();
-       // new PegarExcelIntoJtable(jTable1);
+        // new PegarExcelIntoJtable(jTable1);
     }
 
     /**
@@ -191,7 +191,7 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(jTable1);
         new PegarExcelIntoJtable(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 81, 1164, 318));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 1170, 340));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -327,7 +327,7 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
                 .addGap(6, 6, 6))
         );
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 20, 230, 60));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 10, 230, 60));
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/ok.png"))); // NOI18N
         jMenu1.setText("Importar");
@@ -364,13 +364,11 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1204, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
         );
 
         pack();
@@ -387,8 +385,8 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     public boolean validaBodegas() {
-        if ( chek_productos.isSelected()) {
-        //if(jTable1.getValueAt(i, 14).toString().)    
+        if (chek_productos.isSelected()) {
+            //if(jTable1.getValueAt(i, 14).toString().)    
             int col = jTable1.getColumnCount();
             int row = jTable1.getRowCount();
             for (int i = 0; i < row; i++) {
@@ -400,8 +398,8 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
             }
 
         }
-        if(chek_clientes.isSelected()){
-        
+        if (chek_clientes.isSelected()) {
+
         }
         return true;
     }
@@ -495,8 +493,13 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
                     p.setProducto(jTable1.getValueAt(i, 2).toString());
                     p.setPvp(jTable1.getValueAt(i, 5).toString().replace(",", "."));
                     p.setBodegaPredCompra(baseformat);
-
-                    if (Double.parseDouble(jTable1.getValueAt(i, 3).toString()) > 0) {
+                    Double iv = 0.0;
+                    if (jTable1.getValueAt(i, 3).toString().isEmpty() || jTable1.getValueAt(i, 3).toString().equalsIgnoreCase(" ")) {
+                        iv = 0.0;
+                    } else {
+                        iv = Double.parseDouble(jTable1.getValueAt(i, 3).toString());
+                    }
+                    if ( iv> 0) {
                         p.setIva0(0.0);
                         Double costo = Double.parseDouble(jTable1.getValueAt(i, 4).toString().replace(",", "."));
                         Double pvp = Double.parseDouble(jTable1.getValueAt(i, 5).toString().replace(",", "."));
@@ -507,23 +510,24 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
                         baseformat = String.valueOf(String.format("%.4f", base).replace(",", "."));
                         utilidadFormat = String.valueOf(String.format("%.4f", utilidad).replace(",", "."));
                         iva12valformat = String.valueOf(String.format("%.4f", iva12valor).replace(",", "."));
-                        p.setImpuesto("IVA " + jTable1.getValueAt(i, 3).toString().replace(",", "."));
+                        p.setImpuesto(jTable1.getValueAt(i, 3).toString().replace(",", "."));
                         p.setIva12(Double.parseDouble(iva12valformat.replace(",", ".")));
                         p.setBase(Double.parseDouble(baseformat.replace(",", ".")));
                         p.setCosto(costoformat.replace(",", "."));
                         p.setProductoOServicio(1);
+                        p.setGarantia("0");
                         p.setUtilidad(utilidadFormat.replace(",", "."));
-                        if (jTable1.getValueAt(i, 6).toString().equals("")) {
+                        if (jTable1.getValueAt(i, 6).toString().isEmpty() || jTable1.getValueAt(i, 6).toString().equalsIgnoreCase(" ")) {
                             p1 = 0.0;
                         } else {
                             p1 = Double.parseDouble(jTable1.getValueAt(i, 6).toString().replace(",", "."));
                         }
-                        if (jTable1.getValueAt(i, 7).toString().equals("")) {
+                        if (jTable1.getValueAt(i, 7).toString().isEmpty() || jTable1.getValueAt(i, 7).toString().equalsIgnoreCase(" ")) {
                             p2 = 0.0;
                         } else {
                             p2 = Double.parseDouble(jTable1.getValueAt(i, 7).toString().replace(",", "."));
                         }
-                        if (jTable1.getValueAt(i, 8).toString().equals("")) {
+                        if (jTable1.getValueAt(i, 8).toString().isEmpty() || jTable1.getValueAt(i, 8).toString().equalsIgnoreCase(" ")) {
                             p3 = 0.0;
                         } else {
                             p3 = Double.parseDouble(jTable1.getValueAt(i, 8).toString().replace(",", "."));
@@ -540,8 +544,8 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
                         porcentajeUtil = (porcentajeUtil * 100) / costo;
                         percent = Double.parseDouble(String.valueOf(String.format("%.4f", porcentajeUtil).replace(",", ".")));
                         p.setP3(percent);
-                    } else if (jTable1.getValueAt(i, 3).toString().contains("0.0")) {
-                        p.setImpuesto("IVA 0");
+                    } else if (jTable1.getValueAt(i, 3).toString().contains("0.0")|| jTable1.getValueAt(i, 3).toString().equals("0")) {
+                        p.setImpuesto("0");
                         Double pvp = Double.parseDouble(jTable1.getValueAt(i, 5).toString().replace(",", "."));
                         Double costo = Double.parseDouble(jTable1.getValueAt(i, 4).toString().replace(",", "."));
                         costoformat = String.valueOf(String.format("%.4f", costo).replace(",", "."));
@@ -552,17 +556,17 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
                         utilidad = pvp - costo;
                         utilidadFormat = String.valueOf(String.format("%.4f", utilidad).replace(",", "."));
                         p.setUtilidad(utilidadFormat.replace(",", "."));
-                        if (jTable1.getValueAt(i, 6).toString().equals("")) {
+                        if (jTable1.getValueAt(i, 6).toString().equals("") || jTable1.getValueAt(i, 6).toString().equalsIgnoreCase(" ")) {
                             p1 = 0.0;
                         } else {
                             p1 = Double.parseDouble(jTable1.getValueAt(i, 6).toString().replace(",", "."));
                         }
-                        if (jTable1.getValueAt(i, 7).toString().equals("")) {
+                        if (jTable1.getValueAt(i, 7).toString().equals("") || jTable1.getValueAt(i, 7).toString().equalsIgnoreCase(" ")) {
                             p2 = 0.0;
                         } else {
                             p2 = Double.parseDouble(jTable1.getValueAt(i, 7).toString().replace(",", "."));
                         }
-                        if (jTable1.getValueAt(i, 8).toString().equals("")) {
+                        if (jTable1.getValueAt(i, 8).toString().equals("") || jTable1.getValueAt(i, 7).toString().equalsIgnoreCase(" ")) {
                             p3 = 0.0;
                         } else {
                             p3 = Double.parseDouble(jTable1.getValueAt(i, 8).toString().replace(",", "."));
@@ -592,7 +596,7 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
 ////                p.setObservacion(jTable1.getValueAt(i, 14).toString() + "\n " + "0-No hayBodegaPredeterminada del prodcuto " + jTable1.getValueAt(i, 13).toString() + " en el archivo de importacion");
 ////            } else 
 //{
-                    int bodega = (int) Double.parseDouble(jTable1.getValueAt(i, 14).toString());
+                    int bodega = (int) Double.parseDouble(Principal.bodegaPredeterminadaenCOmpra.substring(0, 1));
                     String bodegaS = String.valueOf(bodega);
                     p.setBodegaPredCompra(bodegaS);
                     p.setObservacion(bodegaS + " - Predeterminada del prodcuto " + jTable1.getValueAt(i, 2).toString() + " desde el archivo de importacion");
@@ -602,10 +606,10 @@ public class ImprtarInventario extends javax.swing.JInternalFrame {
                     ////////////////// MARCAS Y CATEGORIAS CODIGO 
                     String txtmarca = jTable1.getValueAt(i, 12).toString();
                     String txtmodelo = jTable1.getValueAt(i, 11).toString();
-                    if (txtmarca.equals("")) {
+                    if (txtmarca.isEmpty()) {
                         txtmarca = "GENERAL";
                     }
-                    if (txtmodelo.equals("")) {
+                    if (txtmodelo.isEmpty()) {
                         txtmodelo = "GENERAL";
                     }
                     if (!txtmarca.isEmpty()) {

@@ -16,40 +16,6 @@
             <classpath path="${libs.jaxws21.classpath}"/>
         </taskdef>
     </target>
-    <target name="wsimport-client-WSElectro" depends="wsimport-init">
-        <mkdir dir="${build.generated.dir}/jax-wsCache/WSElectro"/>
-        <property name="wsdl-WSElectro" location="xml-resources/web-service-references/WSElectro/wsdl/compueconomia.com.ec_8080/WSElectro/WSElectro.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/WSElectro" destdir="${build.generated.dir}/jax-wsCache/WSElectro" wsdl="${wsdl-WSElectro}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://compueconomia.com.ec:8080/WSElectro/WSElectro?wsdl" xnocompile="true" xendorsed="true" package="com.ws.electro.cliente">
-            <depends file="${wsdl-WSElectro}"/>
-            <produces dir="${build.generated.dir}/jax-wsCache/WSElectro"/>
-        </wsimport>
-        <copy todir="${build.generated.sources.dir}/jax-ws">
-            <fileset dir="${build.generated.dir}/jax-wsCache/WSElectro">
-                <include name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="wsimport-client-clean-WSElectro" depends="-init-project">
-        <delete dir="${build.generated.dir}/jax-wsCache/WSElectro"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/com/ws/electro/cliente"/>
-    </target>
-    <target name="wsimport-client-WSElectro_1" depends="wsimport-init">
-        <mkdir dir="${build.generated.dir}/jax-wsCache/WSElectro_1"/>
-        <property name="wsdl-WSElectro_1" location="xml-resources/web-service-references/WSElectro_1/wsdl/app.cosmobelleza.com.ec_8080/WSElectro/WSElectro.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/WSElectro_1" destdir="${build.generated.dir}/jax-wsCache/WSElectro_1" wsdl="${wsdl-WSElectro_1}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://app.cosmobelleza.com.ec:8080/WSElectro/WSElectro?wsdl" xnocompile="true" xendorsed="true" package="com.ws.cosmobelleza">
-            <depends file="${wsdl-WSElectro_1}"/>
-            <produces dir="${build.generated.dir}/jax-wsCache/WSElectro_1"/>
-        </wsimport>
-        <copy todir="${build.generated.sources.dir}/jax-ws">
-            <fileset dir="${build.generated.dir}/jax-wsCache/WSElectro_1">
-                <include name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="wsimport-client-clean-WSElectro_1" depends="-init-project">
-        <delete dir="${build.generated.dir}/jax-wsCache/WSElectro_1"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/com/ws/cosmobelleza"/>
-    </target>
     <target name="wsimport-client-WSElectro_2" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/WSElectro_2"/>
         <property name="wsdl-WSElectro_2" location="xml-resources/web-service-references/WSElectro_2/wsdl/localhost_8080/WSElectro/WSElectro.wsdl"/>
@@ -67,5 +33,5 @@
         <delete dir="${build.generated.dir}/jax-wsCache/WSElectro_2"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/com/ws/localhost"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-WSElectro, wsimport-client-WSElectro_1, wsimport-client-WSElectro_2"/>
+    <target name="wsimport-client-generate" depends="wsimport-client-WSElectro_2"/>
 </project>

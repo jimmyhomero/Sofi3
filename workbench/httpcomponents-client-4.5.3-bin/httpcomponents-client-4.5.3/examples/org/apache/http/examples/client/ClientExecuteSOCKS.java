@@ -70,11 +70,11 @@ public class ClientExecuteSOCKS {
             HttpHost target = new HttpHost("httpbin.org", 80, "http");
             HttpGet request = new HttpGet("/");
 
-            System.out.println("Executing request " + request + " to " + target + " via SOCKS proxy " + socksaddr);
+            Deb.consola("Executing request " + request + " to " + target + " via SOCKS proxy " + socksaddr);
             CloseableHttpResponse response = httpclient.execute(target, request, context);
             try {
-                System.out.println("----------------------------------------");
-                System.out.println(response.getStatusLine());
+                Deb.consola("----------------------------------------");
+                Deb.consola(response.getStatusLine());
                 EntityUtils.consume(response.getEntity());
             } finally {
                 response.close();

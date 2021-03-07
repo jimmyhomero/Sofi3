@@ -17,6 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -58,7 +59,7 @@ public class importdesdeExcel {
                 String stringCellValue = hssfCell.toString();
                 System.out.print(stringCellValue + " ");
             }
-            System.out.println();
+            Deb.consola();
         }
     }
 
@@ -95,7 +96,7 @@ public class importdesdeExcel {
                         System.out.print(stringCellValue + " ");
                     }
                 }
-                System.out.println();
+                Deb.consola("");
             }
             modelonuevo = new DefaultTableModel(datos, nombrecolumnas);
 

@@ -6,6 +6,7 @@
 package Vista;
 
 import Controlador.Usuarios.ConfigDao;
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Usuarios.Config_EquiposDao;
 import Controlador.Usuarios.Config_UsuariosDao;
 import Modelo.CajasDetalle;
@@ -107,13 +108,13 @@ public class jc extends javax.swing.JFrame {
         desktopPane.add(c);
         c.setVisible(true);
 
-        System.out.println("tamaño :" + desktopPane.getSize().toString());
-        System.out.println("tamaño :" + desktopPane.getBounds());
+        Deb.consola("tamaño :" + desktopPane.getSize().toString());
+        Deb.consola("tamaño :" + desktopPane.getBounds());
         X = desktopPane.getBounds().x;
         Y = desktopPane.getBounds().y;
         X2 = desktopPane.getBounds().width;
         Y2 = desktopPane.getBounds().height;
-        System.out.println("jDESKTOPINTD; " + X + "-" + Y + "-" + X2 + "-" + Y2);
+        Deb.consola("jDESKTOPINTD; " + X + "-" + Y + "-" + X2 + "-" + Y2);
         
 
     }
@@ -134,7 +135,7 @@ public class jc extends javax.swing.JFrame {
 
         for (JMenu menu : listaMenus) {
             if (menu.getName().equals("CXC")) {
-                System.out.println("Vista.jc.menu()");
+                Deb.consola("Vista.jc.menu()");
                 calseframe c = new calseframe();
                 desktopPane.add(c);
                 c.setVisible(true);

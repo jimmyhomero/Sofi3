@@ -3,15 +3,15 @@ package ecx.unomas.service;
 import Controlador.Usuarios.HoraFecha;
 import java.io.File;
 import login.login;
+import ClasesAuxiliares.debug.Deb;
 
 public class Config {
 
-    
-    public static String RECEPCION_WSDL_PRUEBAS =        "https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl";
-    public static String AUTORIZACION_WSDL_PRUEBAS =     "https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl";
+    public static String RECEPCION_WSDL_PRUEBAS = "https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl";
+    public static String AUTORIZACION_WSDL_PRUEBAS = "https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl";
 
-    public static String RECEPCION_WSDL_PRODUCCION =     "https://cel.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl";
-    public static String AUTORIZACION_WSDL_PRODUCCION =  "https://cel.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl";
+    public static String RECEPCION_WSDL_PRODUCCION = "https://cel.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl";
+    public static String AUTORIZACION_WSDL_PRODUCCION = "https://cel.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl";
 
     ////////////////////////////
     ///// UNOMAS.EC
@@ -47,13 +47,13 @@ public class Config {
 	public static String NO_AUTORIZADOS_DIR = "/var/www/html/comprobantes" + File.separatorChar + "no_autorizados" + File.separatorChar;
 	public static String REENVIAR_DIR = "/var/www/html/comprobantes" + File.separatorChar + "reenviar" + File.separatorChar;
      */
-    
+
     public static String SUBIDOS_DIR = "C:\\Sofi\\electronica" + File.separatorChar + "subidos" + File.separatorChar;
     public static String GENERADOS_TEMP = "C:\\Sofi\\electronica" + File.separatorChar + "generados_temp" + File.separatorChar;
-    public static String GENERADOS_DIR = "C:\\Sofi\\electronica" + File.separatorChar + "generados" + File.separatorChar;    
+    public static String GENERADOS_DIR = "C:\\Sofi\\electronica" + File.separatorChar + "generados" + File.separatorChar;
     public static String FIRMADOS_DIR = "C:\\Sofi\\electronica" + File.separatorChar + "firmados" + File.separatorChar;
-    public static String EMITIDOS_DIR = "C:\\Sofi\\electronica" + File.separatorChar + "DESCARGADOS_SRI" +File.separatorChar+ "EMITIDOS"+File.separatorChar  ;
-    public static String RECIBIDOS_DIR = "C:\\Sofi\\electronica" + File.separatorChar + "DESCARGADOS_SRI" +File.separatorChar+ "RECIBIDOS"+File.separatorChar;
+    public static String EMITIDOS_DIR = "C:\\Sofi\\electronica" + File.separatorChar + "DESCARGADOS_SRI" + File.separatorChar + "EMITIDOS" + File.separatorChar;
+    public static String RECIBIDOS_DIR = "C:\\Sofi\\electronica" + File.separatorChar + "DESCARGADOS_SRI" + File.separatorChar + "RECIBIDOS" + File.separatorChar;
     public static String AUTORIZADOS_DIR = "C:\\Sofi\\electronica" + File.separatorChar + "autorizados" + File.separatorChar;
     public static String AUTORIZADOS_DIR_CONSULTADOS = "C:\\Sofi\\electronica" + File.separatorChar + "autorizados_consultados" + File.separatorChar;
     public static String NO_AUTORIZADOS_DIR = "C:\\Sofi\\electronica" + File.separatorChar + "no_autorizados" + File.separatorChar;
@@ -77,7 +77,7 @@ public class Config {
 //    public static boolean FE_DOCUMENTO_FIRMADO= false;
 //    public static boolean FE_DOCUMENTO_GUARDADO_EN_FIRMADOS= false;
     public static boolean FE_DOCUMENTO_AUTORIZADO = false;
-    public static String FE_LISTA_DE_RESPUESTA_SRI ="";
+    public static String FE_LISTA_DE_RESPUESTA_SRI = "";
 //    public static boolean FE_DOCUMENTO_GUARDADO_EN_AUTORIZADO= false;
 //    /////////////////
 
@@ -94,15 +94,16 @@ public class Config {
         CACERT = c + dir + "Sofi" + dir + "electronica" + dir + "cacerts";
         PKCS12_RESOURCE = c + dir + "Sofi" + dir + "electronica" + dir + "firma.p12";
         PKCS12_PASSWORD_DIR = c + dir + "Sofi" + dir + "electronica" + dir + "clave.txt";
-        RAIZ= c + dir;
-        SEPARADOR=dir;
-        System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");         
-        System.out.println("ec.unomas.service.Config.<init>(xxx): -> "+RAIZ); 
-        System.out.println("ec.unomas.service.Config.<init>(xxxx): -> "+SEPARADOR); 
-        System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"); 
-    }   
-    public static void iniciarConfig(){
-String c = "";
+        RAIZ = c + dir;
+        SEPARADOR = dir;
+        Deb.consola("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+        Deb.consola("ec.unomas.service.Config.<init>(xxx): -> " + RAIZ);
+        Deb.consola("ec.unomas.service.Config.<init>(xxxx): -> " + SEPARADOR);
+        Deb.consola("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+    }
+
+    public static void iniciarConfig() {
+        String c = "";
         char dir = File.separatorChar;
         if (login.os.equalsIgnoreCase("w")) {
             c = "c:";
@@ -114,22 +115,21 @@ String c = "";
         CACERT = c + dir + "Sofi" + dir + "electronica" + dir + "cacerts";
         PKCS12_RESOURCE = c + dir + "Sofi" + dir + "electronica" + dir + "firma.p12";
         PKCS12_PASSWORD_DIR = c + dir + "Sofi" + dir + "electronica" + dir + "clave.txt";
-        RAIZ= c + dir;
-        SEPARADOR=dir;
-        SUBIDOS_DIR =c + dir + "Sofi" + dir + "electronica" + dir +"subidos" +dir;
-     GENERADOS_TEMP = c + dir + "Sofi" + dir + "electronica" + dir + "generados_temp" +dir;
-     GENERADOS_DIR = c + dir + "Sofi" + dir + "electronica" + dir + "generados" +dir;  
-    FIRMADOS_DIR = c + dir + "Sofi" + dir + "electronica" + dir + "firmados" +dir;
-     AUTORIZADOS_DIR = c + dir + "Sofi" + dir + "electronica" + dir + "autorizados" +dir;
-     AUTORIZADOS_DIR_CONSULTADOS = c + dir + "Sofi" + dir + "electronica" + dir + "autorizados_consultados" +dir;
-     NO_AUTORIZADOS_DIR = c + dir + "Sofi" + dir + "electronica" + dir + "no_autorizados"+dir;
-     REENVIAR_DIR =c + dir + "Sofi" + dir + "electronica" + dir+ "reenviar"+ dir;
-        System.out.println("ecx.unomas.service.Config.iniciarConfig()xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx:"+ FIRMADOS_DIR);
-        System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");         
-        System.out.println("ec.unomas.service.Config.<init>(): -> "+RAIZ); 
-        System.out.println("ec.unomas.service.Config.<init>(): -> "+SEPARADOR); 
-        System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"); 
-        
-        
-}    
+        RAIZ = c + dir;
+        SEPARADOR = dir;
+        SUBIDOS_DIR = c + dir + "Sofi" + dir + "electronica" + dir + "subidos" + dir;
+        GENERADOS_TEMP = c + dir + "Sofi" + dir + "electronica" + dir + "generados_temp" + dir;
+        GENERADOS_DIR = c + dir + "Sofi" + dir + "electronica" + dir + "generados" + dir;
+        FIRMADOS_DIR = c + dir + "Sofi" + dir + "electronica" + dir + "firmados" + dir;
+        AUTORIZADOS_DIR = c + dir + "Sofi" + dir + "electronica" + dir + "autorizados" + dir;
+        AUTORIZADOS_DIR_CONSULTADOS = c + dir + "Sofi" + dir + "electronica" + dir + "autorizados_consultados" + dir;
+        NO_AUTORIZADOS_DIR = c + dir + "Sofi" + dir + "electronica" + dir + "no_autorizados" + dir;
+        REENVIAR_DIR = c + dir + "Sofi" + dir + "electronica" + dir + "reenviar" + dir;
+        Deb.consola("ecx.unomas.service.Config.iniciarConfig()xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx:" + FIRMADOS_DIR);
+        Deb.consola("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+        Deb.consola("ec.unomas.service.Config.<init>(): -> " + RAIZ);
+        Deb.consola("ec.unomas.service.Config.<init>(): -> " + SEPARADOR);
+        Deb.consola("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+
+    }
 }

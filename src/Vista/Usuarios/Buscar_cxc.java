@@ -16,6 +16,7 @@ import Controlador.Usuarios.MarcasDao;
 import Controlador.Usuarios.ModelosDao;
 import Controlador.Usuarios.ProductosDao;
 import Controlador.Usuarios.cxcDao;
+import ClasesAuxiliares.debug.Deb;
 import Modelo.Clientes;
 import Modelo.Cxc;
 import Modelo.DetalleFactura;
@@ -86,9 +87,9 @@ public class Buscar_cxc extends javax.swing.JInternalFrame {
                     modelo = cxcdao.getCxCnow(4, 0.0, c.getCodigo());
                     jTable1.setModel(modelo);
                     SetancocolumnasFIlasJtable();
-                    //System.out.println(((Clientes) selectedItem).getNombre() + " casas"); // Imprime 25
+                    //Deb.consola(((Clientes) selectedItem).getNombre() + " casas"); // Imprime 25
                 } else {
-                    System.out.println("El item es de un tipo desconocido");
+                    Deb.consola("El item es de un tipo desconocido");
                 }
                 txt_xcliente.setText(c.getNombre());
             }
@@ -125,7 +126,6 @@ public class Buscar_cxc extends javax.swing.JInternalFrame {
         modelo = cxcdao.getCxCnow(1, 0.0, 1);
         jTable1.setModel(modelo);
         SetRenderJTableCXC rendcxc = new SetRenderJTableCXC(6);
-
         jTable1.setDefaultRenderer(Object.class, rendcxc);
         this.SetancocolumnasFIlasJtable();
     }
@@ -498,7 +498,7 @@ public class Buscar_cxc extends javax.swing.JInternalFrame {
 
             }
         ));
-        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
         jTable1.setColumnSelectionAllowed(true);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -512,15 +512,11 @@ public class Buscar_cxc extends javax.swing.JInternalFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1)
-                .addGap(20, 20, 20))
+            .addComponent(jScrollPane1)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
         );
 
         btn_mostrarAll1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/deleteUser.png"))); // NOI18N
@@ -553,20 +549,17 @@ public class Buscar_cxc extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addComponent(btn_mostrarAll1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(btn_excel, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(449, 449, 449)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, 0))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -575,13 +568,15 @@ public class Buscar_cxc extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_mostrarAll1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_excel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(174, 174, 174)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_mostrarAll1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_excel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())))
         );
 
         pack();
@@ -593,19 +588,19 @@ public class Buscar_cxc extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_xclienteKeyPressed
 
     private void SetancocolumnasFIlasJtable() {
-        // JOptionPane.showMessageDialog(null,"acho col: "+ jTable1.getColumnModel().getColumn(0).getPreferredWidth());
-        jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
-        jTable1.getColumnModel().getColumn(0).setMinWidth(0);
-        jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
-        jTable1.getColumnModel().getColumn(1).setMaxWidth(75);
-        jTable1.getColumnModel().getColumn(1).setMinWidth(45);
-        jTable1.getColumnModel().getColumn(1).setPreferredWidth(50);
-        jTable1.getColumnModel().getColumn(2).setMaxWidth(600);
-        jTable1.getColumnModel().getColumn(2).setMinWidth(100);
-        jTable1.getColumnModel().getColumn(2).setPreferredWidth(350);
-        jTable1.getColumnModel().getColumn(3).setPreferredWidth(80);
-        jTable1.getColumnModel().getColumn(4).setPreferredWidth(125);
-        jTable1.getColumnModel().getColumn(5).setPreferredWidth(100);
+//        // JOptionPane.showMessageDialog(null,"acho col: "+ jTable1.getColumnModel().getColumn(0).getPreferredWidth());
+//        jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+//        jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+//        jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
+//        jTable1.getColumnModel().getColumn(1).setMaxWidth(75);
+//        jTable1.getColumnModel().getColumn(1).setMinWidth(45);
+//        jTable1.getColumnModel().getColumn(1).setPreferredWidth(50);
+//        jTable1.getColumnModel().getColumn(2).setMaxWidth(600);
+//        jTable1.getColumnModel().getColumn(2).setMinWidth(100);
+//        jTable1.getColumnModel().getColumn(2).setPreferredWidth(350);
+//        jTable1.getColumnModel().getColumn(3).setPreferredWidth(80);
+//        jTable1.getColumnModel().getColumn(4).setPreferredWidth(125);
+//        jTable1.getColumnModel().getColumn(5).setPreferredWidth(100);
     }
 
     private void txt_xclienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_xclienteKeyReleased
@@ -621,7 +616,7 @@ public class Buscar_cxc extends javax.swing.JInternalFrame {
             listaClientes = cd.BuscarClietneslikokokok(txt_xcliente.getText(),0);
             clienteAutoCompleter.removeAllItems();
             for (Clientes p : listaClientes) {
-                //     System.out.println("Vista.Usuarios.Crear_Facturas.<init>()asdasdasdasdasdasdasvccccccccccccccccc");
+                //     Deb.consola("Vista.Usuarios.Crear_Facturas.<init>()asdasdasdasdasdasdasvccccccccccccccccc");
                 clienteAutoCompleter.addItem(p);
             }
 
@@ -659,7 +654,7 @@ public class Buscar_cxc extends javax.swing.JInternalFrame {
                 //Crear_Usuarios.jcb_tipo.setSelectedItem(0);
                 Crear_Productos.setItemSelectMarcas = ob;
 
-                //    System.out.println("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
+                //    Deb.consola("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
             }
 
         }
@@ -681,7 +676,7 @@ public class Buscar_cxc extends javax.swing.JInternalFrame {
                 //Crear_Usuarios.jcb_tipo.setSelectedItem(0);
                 Crear_Productos.setItemSelectModelo = ob;
 
-                //  System.out.println("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + mode.getTipo());
+                //  Deb.consola("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + mode.getTipo());
             }
 
         }
@@ -731,11 +726,11 @@ public class Buscar_cxc extends javax.swing.JInternalFrame {
         rowSeleccionadaJTable = row;
         int col = jTable1.getSelectedColumn();
         modelo = (DefaultTableModel) jTable1.getModel();
-        System.out.println("row: " + row);
-        System.out.println("col: " + col);
+        Deb.consola("row: " + row);
+        Deb.consola("col: " + col);
         Integer codigoSeleccionado = Integer.parseInt(modelo.getValueAt(row, 0).toString());
         codigoCxcSeleccionada = codigoSeleccionado;
-        System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()codiggo>:" + modelo.getValueAt(row, 0));
+        Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()codiggo>:" + modelo.getValueAt(row, 0));
 //////////////////// abrir ventana para registrar pago
         if (!jracanceladas.isSelected()&& evt.getClickCount()==2) {            
             registrapagocxc();
@@ -743,18 +738,18 @@ public class Buscar_cxc extends javax.swing.JInternalFrame {
 
 //////////////////////////////
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            System.out.println("BOTON 1");
-            System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
+            Deb.consola("BOTON 1");
+            Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
             // operacionFacturauPDATEandAddRowrs();
         }
         if (evt.getButton() == MouseEvent.BUTTON2) {
-            System.out.println("BOTON 2");
+            Deb.consola("BOTON 2");
         }
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            System.out.println("BOTON 3");
+            Deb.consola("BOTON 3");
         }
         try {
-            System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
+            Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
             if (evt.getClickCount() == 2) {
 
                 if (jTable1.getSelectedRow() != -1) {
@@ -766,7 +761,7 @@ public class Buscar_cxc extends javax.swing.JInternalFrame {
                         String rutaInforme = Ejemplo.factura2;
                         Map parametros = new HashMap();
                         parametros.put("numeroFactura", modelo.getValueAt(row, 2).toString());
-                        System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
+                        Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
                         //JOptionPane.showConfirmDialog(rootPane, a +"--"+b);
                         ImpresionDao imp = new ImpresionDao();
                         imp.getShowReport(parametros, rutaInforme);

@@ -15,8 +15,8 @@
             standard specification.</p>
         <pre class="programlisting">
 UsernamePasswordCredentials creds = new UsernamePasswordCredentials("user", "pwd");
-System.out.println(creds.getUserPrincipal().getName());
-System.out.println(creds.getPassword());
+Deb.consola(creds.getUserPrincipal().getName());
+Deb.consola(creds.getPassword());
         </pre>
         <p>stdout &gt;</p>
         <pre class="programlisting">
@@ -30,8 +30,8 @@ pwd
             authorizations.</p>
         <pre class="programlisting">
 NTCredentials creds = new NTCredentials("user", "pwd", "workstation", "domain");
-System.out.println(creds.getUserPrincipal().getName());
-System.out.println(creds.getPassword());
+Deb.consola(creds.getUserPrincipal().getName());
+Deb.consola(creds.getPassword());
 </pre>
         <p>stdout &gt;</p>
         <pre class="programlisting">
@@ -127,13 +127,13 @@ credsProvider.setCredentials(
     new AuthScope("otherhost", 8080, AuthScope.ANY_REALM, "ntlm"), 
     new UsernamePasswordCredentials("u3", "p3"));
 
-System.out.println(credsProvider.getCredentials(
+Deb.consola(credsProvider.getCredentials(
     new AuthScope("somehost", 80, "realm", "basic")));
-System.out.println(credsProvider.getCredentials(
+Deb.consola(credsProvider.getCredentials(
     new AuthScope("somehost", 8080, "realm", "basic")));
-System.out.println(credsProvider.getCredentials(
+Deb.consola(credsProvider.getCredentials(
     new AuthScope("otherhost", 8080, "realm", "basic")));
-System.out.println(credsProvider.getCredentials(
+Deb.consola(credsProvider.getCredentials(
     new AuthScope("otherhost", 8080, null, "ntlm")));
 </pre>
         <p>stdout &gt;</p>
@@ -211,13 +211,13 @@ CloseableHttpResponse response1 = httpclient.execute(httpget, context);
 &lt;...&gt;
 
 AuthState proxyAuthState = context.getProxyAuthState();
-System.out.println("Proxy auth state: " + proxyAuthState.getState());
-System.out.println("Proxy auth scheme: " + proxyAuthState.getAuthScheme());
-System.out.println("Proxy auth credentials: " + proxyAuthState.getCredentials());
+Deb.consola("Proxy auth state: " + proxyAuthState.getState());
+Deb.consola("Proxy auth scheme: " + proxyAuthState.getAuthScheme());
+Deb.consola("Proxy auth credentials: " + proxyAuthState.getCredentials());
 AuthState targetAuthState = context.getTargetAuthState();
-System.out.println("Target auth state: " + targetAuthState.getState());
-System.out.println("Target auth scheme: " + targetAuthState.getAuthScheme());
-System.out.println("Target auth credentials: " + targetAuthState.getCredentials());
+Deb.consola("Target auth state: " + targetAuthState.getState());
+Deb.consola("Target auth scheme: " + targetAuthState.getAuthScheme());
+Deb.consola("Target auth credentials: " + targetAuthState.getCredentials());
 </pre>
     </div>
     <div class="section" title="4.5.&nbsp;Caching of authentication data"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d5e714"></a>4.5.&nbsp;Caching of authentication data</h2></div></div></div>

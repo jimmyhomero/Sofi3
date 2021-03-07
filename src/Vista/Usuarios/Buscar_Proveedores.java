@@ -35,7 +35,7 @@ public class Buscar_Proveedores extends javax.swing.JInternalFrame {
     public static Integer indexPositiotoolBar;
     public static boolean consultadesdeCrearRetencio = false;
     Integer clicJtable = 0;
-    Proveedores usuario1 = new Proveedores();
+    Clientes usuario1 = new Clientes();
     //String sql_allss = "select * from usuarios";
     
 
@@ -284,7 +284,7 @@ public class Buscar_Proveedores extends javax.swing.JInternalFrame {
 //                //Crear_Usuarios.jcb_tipo.setSelectedItem(0);
 //                Crear_Usuarios.setItemSelect = o;
 //                
-//                System.out.println("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
+//                Deb.consola("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
 //            }
 //
 //        }
@@ -297,21 +297,26 @@ public class Buscar_Proveedores extends javax.swing.JInternalFrame {
         clicJtable = 1;
         // Crear_Clientes.actualizarSiNO="si";
         //Double clicked
-        Proveedores usuario = new Proveedores();
-        ProveedoresDao objDao = new ProveedoresDao();
-        Crear_Proveedores obj_crea = new Crear_Proveedores();
+        
+        
+        Clientes usuario = new Clientes();
+        ClientesDao objDao = new ClientesDao();
+        Crear_Clientes obj_crea = new Crear_Clientes();
+        obj_crea.setTitle("Nuevo Proveedor");
+        ///false valor por defeccto, para cleintes
+        obj_crea.isllamadoDesdeNuevoProveedor = true;
         JTable table = (JTable) evt.getSource();
         int row = table.getSelectedRow();
         int col = table.getSelectedColumn();
         //obtengo el codigo del usuario
         String Valor = table.getValueAt(row, 0).toString();
         //mando a buscar la informacion del usuaruio con el codigo obtenido dle evento click
-        usuario = objDao.buscarConID(Integer.parseInt(Valor));
+        usuario = objDao.buscarConID(Integer.parseInt(Valor),1);
         usuario1 = usuario;
 
         //lleno el fomulario 
         obj_crea.txt_codigo.setText(String.valueOf(usuario.getCodigo()));
-        obj_crea.txt_cedula.setText(usuario.getCedula());
+        obj_crea.txt_cedulax.setText(usuario.getCedula());
         obj_crea.txt_nombres.setText(usuario.getNombre());
         obj_crea.txt_celular.setText(usuario.getCelular());
         obj_crea.txt_dir.setText(usuario.getDireccion());
@@ -319,20 +324,16 @@ public class Buscar_Proveedores extends javax.swing.JInternalFrame {
         obj_crea.txt_provincia.setText(usuario.getProvincia());
         obj_crea.txt_telefono.setText(usuario.getTelefono());
         obj_crea.txt_ciudad.setText(usuario.getCiudad());
-        obj_crea.t_extension.setText(usuario.getExtension());
-        obj_crea.t_nacionalidad.setText(usuario.getNacionalidad());
-        obj_crea.t_vendedor.setText(usuario.getVendedor());
-        obj_crea.txt_nombreComercial.setText(usuario.getNombreComercial());
-        obj_crea.t_Observaciones.setTabSize(10);
-        obj_crea.t_Observaciones.setText(usuario.getObservaciones());
-        if (usuario.getCredito() == 1) {
-            obj_crea.chek.setSelected(true);
-            obj_crea.t_diasCredito.setText(usuario.getTiempoCredito());
-        } else {
-            obj_crea.chek.setSelected(false);
-            obj_crea.t_diasCredito.setText(usuario.getTiempoCredito());
-        }
-        obj_crea.jcb_tipo.setSelectedItem(usuario.getPagoPredeterminado());
+        
+        
+//        if (usuario.getCredito() == 1) {
+//            obj_crea.chek.setSelected(true);
+//            obj_crea.t_diasCredito.setText(usuario.getTiempoCredito());
+//        } else {
+//            obj_crea.chek.setSelected(false);
+//            obj_crea..setText(usuario.getTiempoCredito());
+//        }
+        obj_crea.jcb_FormaPagoPredeterminada.setSelectedItem(usuario.getPagoPredeterminado());
         if (evt.getClickCount() == 2) {
 
             if (consultadesdeCrearRetencio) {
@@ -446,7 +447,7 @@ public class Buscar_Proveedores extends javax.swing.JInternalFrame {
 
     private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
         // TODO add your handling code here:
-        ProveedoresDao obj1 = new ProveedoresDao();
+        ClientesDao obj1 = new ClientesDao();
         try {
             if (clicJtable == 1) {
                 obj1.eliminar(usuario1);

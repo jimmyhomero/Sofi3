@@ -68,7 +68,7 @@ public class ClientWithRequestFuture {
             HttpRequestFutureTask<Boolean> futureTask1 = requestExecService.execute(request1,
                     HttpClientContext.create(), handler);
             Boolean wasItOk1 = futureTask1.get();
-            System.out.println("It was ok? "  + wasItOk1);
+            Deb.consola("It was ok? "  + wasItOk1);
 
             // Cancel a request
             try {
@@ -77,9 +77,9 @@ public class ClientWithRequestFuture {
                         HttpClientContext.create(), handler);
                 futureTask2.cancel(true);
                 Boolean wasItOk2 = futureTask2.get();
-                System.out.println("It was cancelled so it should never print this: " + wasItOk2);
+                Deb.consola("It was cancelled so it should never print this: " + wasItOk2);
             } catch (CancellationException e) {
-                System.out.println("We cancelled it, so this is expected");
+                Deb.consola("We cancelled it, so this is expected");
             }
 
             // Request with a timeout
@@ -87,22 +87,22 @@ public class ClientWithRequestFuture {
             HttpRequestFutureTask<Boolean> futureTask3 = requestExecService.execute(request3,
                     HttpClientContext.create(), handler);
             Boolean wasItOk3 = futureTask3.get(10, TimeUnit.SECONDS);
-            System.out.println("It was ok? "  + wasItOk3);
+            Deb.consola("It was ok? "  + wasItOk3);
 
             FutureCallback<Boolean> callback = new FutureCallback<Boolean>() {
                 @Override
                 public void completed(Boolean result) {
-                    System.out.println("completed with " + result);
+                    Deb.consola("completed with " + result);
                 }
 
                 @Override
                 public void failed(Exception ex) {
-                    System.out.println("failed with " + ex.getMessage());
+                    Deb.consola("failed with " + ex.getMessage());
                 }
 
                 @Override
                 public void cancelled() {
-                    System.out.println("cancelled");
+                    Deb.consola("cancelled");
                 }
             };
 
@@ -113,7 +113,7 @@ public class ClientWithRequestFuture {
             HttpRequestFutureTask<Boolean> futureTask4 = requestExecService.execute(request4,
                     HttpClientContext.create(), handler, callback);
             Boolean wasItOk4 = futureTask4.get(10, TimeUnit.SECONDS);
-            System.out.println("It was ok? "  + wasItOk4);
+            Deb.consola("It was ok? "  + wasItOk4);
         } finally {
             requestExecService.close();
         }

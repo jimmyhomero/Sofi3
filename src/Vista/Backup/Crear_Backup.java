@@ -6,11 +6,18 @@
 package Vista.Backup;
 
 import ClasesAuxiliares.BackupBaseDatos.BackupMysql;
+import ClasesAuxiliares.Variables;
+import static ClasesAuxiliares.Variables._DIR_DESTINO;
+import ClasesAuxiliares.debug.Deb;
 import Vista.Usuarios.*;
 import ecx.unomas.service.Config;
 import java.awt.Dimension;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,6 +67,8 @@ public class Crear_Backup extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jPanel5 = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -182,7 +191,7 @@ public class Crear_Backup extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -226,15 +235,39 @@ public class Crear_Backup extends javax.swing.JInternalFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jButton3.setText("BACKUP");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("restaurar RESPALDO");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addComponent(jButton3)
+                .addGap(102, 102, 102)
+                .addComponent(jButton4)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 46, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -284,6 +317,93 @@ public class Crear_Backup extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_comboItemStateChanged
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        backup();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        restore();
+    }//GEN-LAST:event_jButton4ActionPerformed
+private  void restore() {
+   try {
+       String cad = "mysql -uroot -pmiguel66677710101418/2=golosos";
+       Deb.consola(cad);
+       
+      Process p = Runtime.getRuntime().exec(cad);
+      new HiloLector(p.getErrorStream()).start();
+      OutputStream os = p.getOutputStream();
+      FileInputStream fis = new FileInputStream(Variables._DIR_DESTINO+"XXXXXrespaldosxxx.sql");
+      byte[] buffer = new byte[1000];
+
+      int leido = fis.read(buffer);
+      while (leido > 0) {
+         os.write(buffer, 0, leido);
+         leido = fis.read(buffer);
+      }
+
+      os.flush();
+      os.close();
+      fis.close();
+
+   } catch (Exception e) {
+      e.printStackTrace();
+   }
+}
+
+public class HiloLector extends Thread {
+   private InputStream is;
+
+   public HiloLector(InputStream is) {
+      this.is = is;
+   }
+
+   @Override
+   public void run() {
+      try {
+         byte[] buffer = new byte[1000];
+         int leido = is.read(buffer);
+         while (leido > 0) {
+            String texto = new String(buffer, 0, leido);
+            System.out.print(texto);
+            leido = is.read(buffer);
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+}
+
+    private  void backup() {
+        
+   try {
+       String cad = "mysqldump --all-databases -uroot -pmiguel66677710101418/2=golosos";
+       Deb.consola(cad);
+      Process p = Runtime
+            .getRuntime()
+             .exec(cad);
+            new HiloLector(p.getErrorStream()).start();
+           // .exec("C:/Aplicaciones/wamp/bin/mysql/mysql5.1.36/bin/mysqldump -u root -ppassword database");
+
+      InputStream is = p.getInputStream();
+      FileOutputStream fos = new FileOutputStream(Variables._DIR_DESTINO+"XXXXXrespaldosxxx.sql");
+      byte[] buffer = new byte[1000];
+
+      int leido = is.read(buffer);
+      while (leido > 0) {
+         fos.write(buffer, 0, leido);
+         leido = is.read(buffer);
+      }
+
+      fos.close();
+
+   } catch (Exception e) {
+      e.printStackTrace();
+      Deb.consola(e);
+   }
+}
+    
     public static String getGestorBDD() {
         String ruta = null;
         switch (combo.getSelectedItem().toString()) {
@@ -316,7 +436,7 @@ public class Crear_Backup extends javax.swing.JInternalFrame {
         explorador.setFileFilter(filter);
         explorador.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
     //    File backupFile = new File(String.valueOf(explorador.getCurrentDirectory().getAbsoluteFile()) + Config.SEPARADOR+"Respaldo.sql");              
-///        System.out.println("Vista.Backup.Crear_Backup.selectDirectorio()sssssssssss: "+explorador.getSelectedFile().getName());
+///        Deb.consola("Vista.Backup.Crear_Backup.selectDirectorio()sssssssssss: "+explorador.getSelectedFile().getName());
         
                 
         switch (seleccion) {
@@ -326,7 +446,7 @@ public class Crear_Backup extends javax.swing.JInternalFrame {
               //  
                 BackupMysql.respaldar(ruta, gestor);
                 
-                //   System.out.println("Ruta:  " + ruta);
+                //   Deb.consola("Ruta:  " + ruta);
                 //seleccionó abrir
                 break;
 
@@ -349,6 +469,8 @@ public class Crear_Backup extends javax.swing.JInternalFrame {
     private static javax.swing.JComboBox<String> combo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

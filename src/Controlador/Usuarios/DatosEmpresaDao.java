@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import static javax.management.Query.gt;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -70,7 +71,7 @@ public class DatosEmpresaDao extends Coneccion {
                 this.cerrar();
             } catch (Exception ex) {
 
-                System.out.println("Controlador.Usuarios.DatosEmpresaDao.guardarImagen()" + ex);
+                Deb.consola("Controlador.Usuarios.DatosEmpresaDao.guardarImagen()" + ex);
             }
         }
         return false;
@@ -114,7 +115,7 @@ public class DatosEmpresaDao extends Coneccion {
                 fis = new FileInputStream(img);
                 ps.setBinaryStream(13, fis, (int) img.length());
             } catch (FileNotFoundException ex) {
-                System.out.println("Controlador.Usuarios.DatosEmpresaDao.ActualizarDatosEMpresa()cccsss: " + ex);
+                Deb.consola("Controlador.Usuarios.DatosEmpresaDao.ActualizarDatosEMpresa()cccsss: " + ex);
                 Logger.getLogger(ProductosDao.class.getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -150,7 +151,7 @@ public class DatosEmpresaDao extends Coneccion {
 
             } catch (Exception ex) {
 
-                System.out.println("Controlador.Usuarios.DatosEmpresaDao.guardarImagen()" + ex);
+                Deb.consola("Controlador.Usuarios.DatosEmpresaDao.guardarImagen()" + ex);
             }
         }
         return false;
@@ -212,7 +213,7 @@ public class DatosEmpresaDao extends Coneccion {
                 ps.close();            
             } catch (Exception ex) {
 
-                System.out.println("Controlador.Usuarios.DatosEmpresaDao.guardarImagen()" + ex);
+                Deb.consola("Controlador.Usuarios.DatosEmpresaDao.guardarImagen()" + ex);
             }
         }
         return false;
@@ -235,7 +236,7 @@ public class DatosEmpresaDao extends Coneccion {
                 try {
                     img = ImageIO.read(new ByteArrayInputStream(data));
                 } catch (IOException ex) {
-                    System.out.println("Controlador.Usuarios.DatosEmpresaDao.getImagenes() error al leer imagen BDD" + ex);
+                    Deb.consola("Controlador.Usuarios.DatosEmpresaDao.getImagenes() error al leer imagen BDD" + ex);
                     //Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
@@ -261,7 +262,7 @@ public class DatosEmpresaDao extends Coneccion {
             rs.close();
         } catch (SQLException ex) {
 
-            System.out.println("Controlador.Usuarios.DatosEmpresaDao.getImagenes()" + ex);
+            Deb.consola("Controlador.Usuarios.DatosEmpresaDao.getImagenes()" + ex);
             //Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             this.cerrar();
@@ -288,7 +289,7 @@ public class DatosEmpresaDao extends Coneccion {
                 try {
                     img = ImageIO.read(new ByteArrayInputStream(data));
                 } catch (IOException ex) {
-                    System.out.println("Controlador.Usuarios.DatosEmpresaDao.getImagenes() error al leer imagen BDD" + ex);
+                    Deb.consola("Controlador.Usuarios.DatosEmpresaDao.getImagenes() error al leer imagen BDD" + ex);
                     //Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 obj.setCodigo(rs.getInt("codigo"));
@@ -314,7 +315,7 @@ public class DatosEmpresaDao extends Coneccion {
             rs.close();
         } catch (SQLException ex) {
 
-            System.out.println("Controlador.Usuarios.DatosEmpresaDao.getImagenes()" + ex);
+            Deb.consola("Controlador.Usuarios.DatosEmpresaDao.getImagenes()" + ex);
             //Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             this.cerrar();
@@ -353,7 +354,7 @@ public class DatosEmpresaDao extends Coneccion {
 //                try {
 //                    img = ImageIO.read(new ByteArrayInputStream(data));
 //                } catch (IOException ex) {
-//                    System.out.println("Controlador.Usuarios.DatosEmpresaDao.getImagenes() error al leer imagen BDD" + ex);
+//                    Deb.consola("Controlador.Usuarios.DatosEmpresaDao.getImagenes() error al leer imagen BDD" + ex);
 //                    //Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
 //                }
                 String nombre = rs.getObject("nombre").toString();
@@ -380,7 +381,7 @@ public class DatosEmpresaDao extends Coneccion {
             rs.close();
         } catch (SQLException ex) {
 
-            System.out.println("Controlador.Usuarios.DatosEmpresaDao.getImagenes()" + ex);
+            Deb.consola("Controlador.Usuarios.DatosEmpresaDao.getImagenes()" + ex);
             //Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             this.cerrar();

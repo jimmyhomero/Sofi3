@@ -5,6 +5,7 @@
  */
 package Controlador.Usuarios;
 
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Coneccion;
 import Modelo.Bodegas;
 import Vista.Principal;
@@ -59,7 +60,7 @@ public class BodegasDao extends Coneccion {
 //            consulta.setString(13, tarea.getGarantia());
 //            consulta.setInt(14, tarea.getModelo_codigo());
 //            consulta.setInt(15, tarea.getModelos_marcas_codigo());
-//            System.out.println("Controlador.CUsuarios.guardar()" + consulta);
+//            Deb.consola("Controlador.CUsuarios.guardar()" + consulta);
 //            consulta.executeUpdate();
 //            ResultSet rs = consulta.getGeneratedKeys();
 //            if (rs.next()) {
@@ -67,7 +68,7 @@ public class BodegasDao extends Coneccion {
 //            }
 //        } catch (SQLException ex) {
 //            msg.setProgressBar_mensajae(ex.toString());
-//            System.out.println("Controlador.CUsuarios.guardar()" + ex);
+//            Deb.consola("Controlador.CUsuarios.guardar()" + ex);
 //        } finally {
 //            this.cerrar();
 //        }
@@ -85,13 +86,13 @@ public class BodegasDao extends Coneccion {
             st.setString(2, persona.getBodegaID());
             st.setInt(3, persona.getCodigo());
             String sql = st.toString();
-            System.out.println("Controlador.Bodegas.Bodegas.modificar()" + sql);
+            Deb.consola("Controlador.Bodegas.Bodegas.modificar()" + sql);
             st.executeUpdate();
             
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
         } catch (SQLException e) {
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error" + e + sql, "Error al modificar Registro" + e.toString()));
-            System.out.println("Controlador.Bodegass.guardar()" + e);
+            Deb.consola("Controlador.Bodegass.guardar()" + e);
         } finally {
             this.cerrar();
         }
@@ -116,7 +117,7 @@ public class BodegasDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.listar()xccd" + ex);
+            Deb.consola("Controlador.CUsuarios.listar()xccd" + ex);
         } finally {
             this.cerrar();
         }
@@ -158,12 +159,12 @@ public class BodegasDao extends Coneccion {
 //                per.setModelos_marcas_codigo(rs.getInt("Modelos_Marcas_Codigo"));                
 //                //per.setObservaciones(rs.getString("PersonaObservaciones"));
 //                //per.setFechaN(rs.getDate("PersonaFN").toString());
-//                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+//                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
 //                u = per;
 //            }
 //
 //        } catch (Exception ex) {
-//            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+//            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
 //        } finally {
 //            this.cerrar();
 //        }
@@ -203,7 +204,7 @@ public class BodegasDao extends Coneccion {
 //            }
 //
 //        } catch (Exception ex) {
-//            System.out.println("Controlador.CUsuarios.BuscarConCedula()" + ex);
+//            Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
 //        } finally {
 //            this.cerrar();
 //        }
@@ -287,7 +288,7 @@ public DefaultTableModel Buscar_table_only_Activos() {
             this.conectar();
             PreparedStatement st;
             st = this.getCnx().prepareCall("select Productos.*, modelos.Modelo from productos inner join modelos on modelos.Codigo=productos.Modelos_Codigo  order BY productos.producto LIMIT 0, 50");           
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -303,11 +304,11 @@ public DefaultTableModel Buscar_table_only_Activos() {
                 registros[8] = rs.getString("minimo");
                 
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
             }
 
         } catch (Exception ex) {

@@ -5,11 +5,6 @@
  */
 package xml.factura;
 
-import com.ws.electro.cliente.ReceiptXMLIn;
-import com.ws.electro.cliente.Response;
-import com.ws.electro.cliente.Respuesta;
-import com.ws.electro.cliente.WSElectro;
-import com.ws.electro.cliente.WSElectro_Service;
 
 /**
  *

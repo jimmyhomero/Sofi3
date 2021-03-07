@@ -15,6 +15,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import org.json.JSONObject;
+import ClasesAuxiliares.debug.Deb;
+import ClasesAuxiliares.debug.Deb;
 
 public class ConsultaCedulas {
 
@@ -58,7 +60,7 @@ public class ConsultaCedulas {
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
         String urlParameters = "tipo=getDataWsRc&ci=" + cedula + "&tp=C&ise=SI";
-        System.out.println("URL: { " + url + " }   parametros post { " + urlParameters + " }");
+        Deb.consola("URL: { " + url + " }   parametros post { " + urlParameters + " }");
         // Send post request
         con.setDoOutput(true);
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
@@ -80,17 +82,17 @@ public class ConsultaCedulas {
         String a = response.toString();
         a = a.substring(1, a.length());
         a = a.substring(0, a.length() - 1);
-        System.out.println(response.toString());
+        Deb.consola(response.toString());
         JSONObject myResponse = new JSONObject(a);
-        System.out.println("Nacionalodad: " + myResponse.getString("nationality"));
-        System.out.println("Direccion: " + myResponse.getString("streets"));
-        System.out.println("Cedula: " + myResponse.getString("identity"));
-        System.out.println("Nacimiento: " + myResponse.getString("dob"));
-        System.out.println("Nombre: " + myResponse.getString("name"));
-        System.out.println("Genero: " + myResponse.getString("genre"));
-        System.out.println("huella digital: " + myResponse.getString("fingerprint"));
-        System.out.println("estado civil: " + myResponse.getString("civilstate"));
-        System.out.println("provinvia " + myResponse.getString("residence"));
+        Deb.consola("Nacionalodad: " + myResponse.getString("nationality"));
+        Deb.consola("Direccion: " + myResponse.getString("streets"));
+        Deb.consola("Cedula: " + myResponse.getString("identity"));
+        Deb.consola("Nacimiento: " + myResponse.getString("dob"));
+        Deb.consola("Nombre: " + myResponse.getString("name"));
+        Deb.consola("Genero: " + myResponse.getString("genre"));
+        Deb.consola("huella digital: " + myResponse.getString("fingerprint"));
+        Deb.consola("estado civil: " + myResponse.getString("civilstate"));
+        Deb.consola("provinvia " + myResponse.getString("residence"));
 
         return myResponse;
     }
@@ -122,11 +124,11 @@ public class ConsultaCedulas {
 
             String cad = content.toString();
             cad = cad.trim();
-            System.out.println("cc: " + cad);
+            Deb.consola("cc: " + cad);
             cad = cad.replace("******", ",");
-            System.out.println("org:" + cad);
+            Deb.consola("org:" + cad);
             cad = cad.replace("***", ",");
-            System.out.println("cc:" + cad);
+            Deb.consola("cc:" + cad);
 
             String[] parts = cad.split(",");
             String actividades="";
@@ -193,9 +195,9 @@ public class ConsultaCedulas {
 //                    default:
 //                        break;
 //                }
-                System.out.println(i + " - " + parts[i] + "\n");
+                Deb.consola(i + " - " + parts[i] + "\n");
             }
-            System.out.println("ccccc: "+hm.toString());
+            Deb.consola("ccccc: "+hm.toString());
         } finally {
 
             con.disconnect();
@@ -214,7 +216,7 @@ public class ConsultaCedulas {
 //        con.setRequestProperty("User-Agent", "Mozilla/5.0");
 //        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 //        String urlParameters = url + cedula;
-//        System.out.println("URL: " + urlParameters);
+//        Deb.consola("URL: " + urlParameters);
 //        // Send post request
 //        con.setDoOutput(true);
 //        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
@@ -233,20 +235,20 @@ public class ConsultaCedulas {
 //        }
 //        in.close();
 //        String a = response.toString();
-//        System.out.println("XXX: " + a);
+//        Deb.consola("XXX: " + a);
 //        a = a.substring(1, a.length()); 
 //        a = a.substring(0, a.length() - 1);
-//        System.out.println(response.toString());
+//        Deb.consola(response.toString());
 //       JSONObject myResponse = new JSONObject(a);
-//        System.out.println("Nacionalodad: " + myResponse.getString("nationality"));
-//        System.out.println("Direccion: " + myResponse.getString("streets"));
-//        System.out.println("Cedula: " + myResponse.getString("identity"));
-//        System.out.println("Nacimiento: " + myResponse.getString("dob"));
-//        System.out.println("Nombre: " + myResponse.getString("name"));
-//        System.out.println("Genero: " + myResponse.getString("genre"));
-//        System.out.println("huella digital: " + myResponse.getString("fingerprint"));
-//        System.out.println("estado civil: " + myResponse.getString("civilstate"));
-//        System.out.println("provinvia " + myResponse.getString("residence"));
+//        Deb.consola("Nacionalodad: " + myResponse.getString("nationality"));
+//        Deb.consola("Direccion: " + myResponse.getString("streets"));
+//        Deb.consola("Cedula: " + myResponse.getString("identity"));
+//        Deb.consola("Nacimiento: " + myResponse.getString("dob"));
+//        Deb.consola("Nombre: " + myResponse.getString("name"));
+//        Deb.consola("Genero: " + myResponse.getString("genre"));
+//        Deb.consola("huella digital: " + myResponse.getString("fingerprint"));
+//        Deb.consola("estado civil: " + myResponse.getString("civilstate"));
+//        Deb.consola("provinvia " + myResponse.getString("residence"));
 //
 ////        return resp;
 //    }
@@ -273,7 +275,7 @@ public class ConsultaCedulas {
         wr.close();
 
         int responseCode = con.getResponseCode();
-        System.out.println("ClasesAuxiliares.http.ConsultaCedulas.getAntecedentesPenalesEcuatorianos(): " + responseCode);
+        Deb.consola("ClasesAuxiliares.http.ConsultaCedulas.getAntecedentesPenalesEcuatorianos(): " + responseCode);
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
@@ -285,20 +287,20 @@ public class ConsultaCedulas {
         }
         in.close();
         String a = response.toString();
-        System.out.println("" + a);
+        Deb.consola("" + a);
 //        a = a.substring(1, a.length());        
 //        a = a.substring(0, a.length() - 1);        
-        System.out.println(response.toString());
+        Deb.consola(response.toString());
         JSONObject myResponse = new JSONObject(a);
-        System.out.println("Cedula: " + myResponse.getString("identity"));
-        System.out.println("Antecedentes: " + myResponse.getString("antecedent"));
-        System.out.println("Cedula: " + myResponse.getString("identity"));
-        System.out.println("Nacimiento: " + myResponse.getString("dob"));
-        System.out.println("Nombre: " + myResponse.getString("name"));
-        System.out.println("Genero: " + myResponse.getString("genre"));
-        System.out.println("huella digital: " + myResponse.getString("fingerprint"));
-        System.out.println("estado civil: " + myResponse.getString("civilstate"));
-        System.out.println("provinvia " + myResponse.getString("residence"));
+        Deb.consola("Cedula: " + myResponse.getString("identity"));
+        Deb.consola("Antecedentes: " + myResponse.getString("antecedent"));
+        Deb.consola("Cedula: " + myResponse.getString("identity"));
+        Deb.consola("Nacimiento: " + myResponse.getString("dob"));
+        Deb.consola("Nombre: " + myResponse.getString("name"));
+        Deb.consola("Genero: " + myResponse.getString("genre"));
+        Deb.consola("huella digital: " + myResponse.getString("fingerprint"));
+        Deb.consola("estado civil: " + myResponse.getString("civilstate"));
+        Deb.consola("provinvia " + myResponse.getString("residence"));
 
         return myResponse;
     }
@@ -333,27 +335,27 @@ public class ConsultaCedulas {
         a = a.substring(0, a.length() - 7);
         JSONObject myResponse = new JSONObject(a);
 
-        System.out.println(myResponse);
-        System.out.println("razonSocial: " + myResponse.getString("razonSocial"));
+        Deb.consola(myResponse);
+        Deb.consola("razonSocial: " + myResponse.getString("razonSocial"));
 
         if (!myResponse.isNull("nombreComercial")) {
-            System.out.println("Nombre Comercial: " + myResponse.getString("nombreComercial"));
+            Deb.consola("Nombre Comercial: " + myResponse.getString("nombreComercial"));
         }
 
         if (!myResponse.isNull("estadoPersonaNatural")) {
-            System.out.println("EstadoPersonaNatural: " + myResponse.getString("estadoPersonaNatural"));
+            Deb.consola("EstadoPersonaNatural: " + myResponse.getString("estadoPersonaNatural"));
         }
-        System.out.println("Obligado: " + myResponse.getString("obligado"));
-        System.out.println("Actividad del Contribuyente: " + myResponse.getString("actividadContribuyente"));
-        // System.out.println("Inicio de Actividades: " + myResponse.getString("fechaInicioActividades"));
+        Deb.consola("Obligado: " + myResponse.getString("obligado"));
+        Deb.consola("Actividad del Contribuyente: " + myResponse.getString("actividadContribuyente"));
+        // Deb.consola("Inicio de Actividades: " + myResponse.getString("fechaInicioActividades"));
 
         if (!myResponse.isNull("agenteRepresentante")) {
-            System.out.println("Representante Nombre: " + myResponse.getString("agenteRepresentante"));
+            Deb.consola("Representante Nombre: " + myResponse.getString("agenteRepresentante"));
         }
         if (!myResponse.isNull("representanteLegal")) {
-            System.out.println("Representante CI: " + myResponse.getString("representanteLegal"));
+            Deb.consola("Representante CI: " + myResponse.getString("representanteLegal"));
         }
-        System.out.println("Sociedad: " + myResponse.getString("personaSociedad"));
+        Deb.consola("Sociedad: " + myResponse.getString("personaSociedad"));
         return myResponse;
     }
 
@@ -383,17 +385,17 @@ public class ConsultaCedulas {
         }
         in.close();
         String a = response.toString();
-        System.out.println(a);
+        Deb.consola(a);
         a = a.substring(1, a.length());
         a = a.substring(0, a.length() - 7);
         JSONObject myResponse = new JSONObject(a);
 
         if (!myResponse.isNull("nombreFantasiaComercial")) {
-            System.out.println("Nombre Comercial: " + myResponse.getString("nombreFantasiaComercial"));
+            Deb.consola("Nombre Comercial: " + myResponse.getString("nombreFantasiaComercial"));
         }
 
         if (!myResponse.isNull("direccionCompleta")) {
-            System.out.println("direccionCompleta: " + myResponse.getString("direccionCompleta"));
+            Deb.consola("direccionCompleta: " + myResponse.getString("direccionCompleta"));
         }
         return myResponse;
     }

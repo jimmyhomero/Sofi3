@@ -8,6 +8,7 @@ package ClasesAuxiliares.NewSql.Forms;
 import ClasesAuxiliares.KeysEnventos;
 import Modelo.Clientes;
 import Vista.Principal;
+import ClasesAuxiliares.debug.Deb;
 import Vlidaciones.ProgressBar;
 import Vlidaciones.ValidaNUmeros;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addComponentListener;
@@ -32,6 +33,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
+import javax.swing.event.InternalFrameEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -41,6 +43,12 @@ import javax.swing.table.TableRowSorter;
  */
 public class OperacionesForms {
 
+    public static ecx.unomas.factura.Factura factura = new ecx.unomas.factura.Factura();
+    public static String rutadocPDFgeneradook;
+    
+    public static boolean solocrearFacturaNOgenerrarPDF = false;
+    public static String _CONSUMIDIR_FINAL = "CONSUMIDORFINAL";
+    public static String _CONSUMIDOR_FINAL_RUC = "9999999999";
     public static String _TITLE_FORM_NOTA_CREDITO = "CREAR_NOTA_DE_CREDITO";
     public static String _TITLE_FORM_FACTURA = "CREAR_NOTA_FACTURA";
     public static DefaultTableModel dm;
@@ -48,6 +56,7 @@ public class OperacionesForms {
     //////////////FORMAS DE PAGO POR DEFECTO
     public static String _EFECTIVO_TEXT = "EFECTIVO";
     public static String _CREDITO_TEXT = "CREDITO";
+    public static String _CHEQUE_TEXT = "CHEQUE";
     public static String _PLAN_ACUMULATIVO_TEXT = "PLAN ACUMULATIVO";
     ////////////PERIDOS DE COBRANZA BASICOS
     public static String _DIARIO_TEXT = "DIARIO";
@@ -55,6 +64,8 @@ public class OperacionesForms {
     public static String _QUINCENAL_TEXT = "QUINCENAL";
     public static String _MENSUAL_TEXT = "MENSUAL";
     public static String _ANUAL_TEXT = "ANUAL";
+    public static String _FORMA_PAGO_CXC_TEXT = "CXC";
+    public static String _FORMA_PAGO_CXP_TEXT = "CXP";
 
     public static String _BOTON_ACEPTAR_TEXT = "ACEPTAR";
     public static String _COMBO_SELECCIONE_TEXT = "SELECCIONE";
@@ -72,6 +83,15 @@ public class OperacionesForms {
     public static Clientes _OBJ_CONSUMIDOR_FINAL = new Clientes();
 
     //////////////////////////////
+    
+    
+    ///////////////////
+    
+    public static void jtableVentascolumnas(JTable tb, int valorClumnas,boolean modoDesarrollo){
+    
+    
+    }
+    /////////////////////
 ///////////////////////combobox
     public static void inicializarJtextFieldMyusculas(JTextField j) {
 
@@ -88,19 +108,7 @@ public class OperacionesForms {
         });
     }
 
-    public static void ocultarComponente(JTextField obj,Integer x, Integer y){
-
-        obj.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
-            public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
-            }
-
-            public void ancestorResized(java.awt.event.HierarchyEvent evt) {
-                obj.setSize(new Dimension(x, y));
-            }
-        });
-
-    }
-    public static void ocultarComponente(JCheckBox obj,Integer x, Integer y) {
+    public static void ocultarComponente(JTextField obj, Integer x, Integer y) {
 
         obj.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
             public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
@@ -113,7 +121,7 @@ public class OperacionesForms {
 
     }
 
-    public static void ocultarComponente(JComboBox obj,Integer x, Integer y){
+    public static void ocultarComponente(JCheckBox obj, Integer x, Integer y) {
 
         obj.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
             public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
@@ -126,7 +134,7 @@ public class OperacionesForms {
 
     }
 
-    public static void ocultarComponente(JButton obj,Integer x, Integer y){
+    public static void ocultarComponente(JComboBox obj, Integer x, Integer y) {
 
         obj.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
             public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
@@ -139,7 +147,7 @@ public class OperacionesForms {
 
     }
 
-    public static void ocultarComponente(JRadioButton obj,Integer x, Integer y){
+    public static void ocultarComponente(JButton obj, Integer x, Integer y) {
 
         obj.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
             public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
@@ -152,7 +160,7 @@ public class OperacionesForms {
 
     }
 
-    public static void ocultarComponente(JPanel obj,Integer x, Integer y){
+    public static void ocultarComponente(JRadioButton obj, Integer x, Integer y) {
 
         obj.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
             public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
@@ -165,7 +173,7 @@ public class OperacionesForms {
 
     }
 
-    public static void ocultarComponente(JTextArea obj,Integer x, Integer y){
+    public static void ocultarComponente(JPanel obj, Integer x, Integer y) {
 
         obj.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
             public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
@@ -178,9 +186,9 @@ public class OperacionesForms {
 
     }
 
-    public static void ocultarComponente(JDateChooser obj,Integer x, Integer y){
+    public static void ocultarComponente(JTextArea obj, Integer x, Integer y) {
 
-   obj.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
+        obj.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
             public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
             }
 
@@ -190,6 +198,20 @@ public class OperacionesForms {
         });
 
     }
+
+    public static void ocultarComponente(JDateChooser obj, Integer x, Integer y) {
+
+        obj.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
+            public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
+            }
+
+            public void ancestorResized(java.awt.event.HierarchyEvent evt) {
+                obj.setSize(new Dimension(x, y));
+            }
+        });
+
+    }
+
     public static void inicializarJtextFieldMyusculas(JTextArea j) {
 
         j.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -213,7 +235,12 @@ public class OperacionesForms {
             }
         });
     }
+    
+        public static void Inicializar_Combobox_TamanoCero(JComboBox j) {
+            j.setSize(0, 0);       
+    }
 
+    //
     public static void inicializadPeriodosCObranza(JComboBox j) {
 
         j.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{_DIARIO_TEXT, _SEMANAL_TEXT, _QUINCENAL_TEXT, _MENSUAL_TEXT, _ANUAL_TEXT}));
@@ -263,7 +290,7 @@ public class OperacionesForms {
             }
 
         } catch (Exception e) {
-            System.out.println("ClasesAuxiliares.NewSql.Forms.OperacionesForms.validaNumeroFactura9(): " + e);
+            Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.validaNumeroFactura9(): " + e);
         }
         return cadena;
     }
@@ -295,7 +322,7 @@ public class OperacionesForms {
 
     public static void nuevaVentanaInternalForm(JInternalFrame val, String tituloVentana, boolean maximizado) {
         int numVentana = 0;/// si es cero, significa que no se ha encontrado un frmulario de tipo que ya ecista 
-        System.out.println("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm():nombre:  " + val.getName());
+        Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm():nombre:  " + val.getName());
         JInternalFrame v[] = Principal.desktopPane.getAllFrames();
         Principal.controlareduccionPrincilapParamenusuperior = 1;
         if (maximizado) {
@@ -303,10 +330,10 @@ public class OperacionesForms {
                 public void componentResized(java.awt.event.ComponentEvent evt) {
 
                     try {
-                        System.out.println("Tamano de la ventana se adapta al Principal");
+                        Deb.consola("Tamano de la ventana se adapta al Principal");
                         Principal.tananoVentanas(val);
                         val.setSelected(true);
-
+                        Principal.crearBarraBotones(val);
                     } catch (PropertyVetoException ex) {
                         ProgressBar.mostrarMensajeRojo("123a" + ex.toString());
                         Logger.getLogger(OperacionesForms.class.getName()).log(Level.SEVERE, null, ex);
@@ -318,9 +345,9 @@ public class OperacionesForms {
 
             for (int i = 0; i < v.length; i++) {
                 if (v[i].getTitle() == tituloVentana) {
-                    System.out.println("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()xxxxxxxaas");
+                    Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()xxxxxxxaas");
                     if (numVentana == 0) {
-                        System.out.println("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()ventana nueva");
+                        Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()ventana nueva");
                         numVentana = 100;
                         try {
                             v[i].setSelected(true);
@@ -328,12 +355,12 @@ public class OperacionesForms {
                             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
-                        System.out.println("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()dispose");
+                        Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()dispose");
                         v[i].dispose();
                     }
                 } else {
                     if (numVentana == 0) {
-                        System.out.println("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm() Hay ventanas abiertas perono no hay abireta la que necesito");
+                        Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm() Hay ventanas abiertas perono no hay abireta la que necesito");
                         try {
 
                             numVentana = 100;
@@ -353,7 +380,7 @@ public class OperacionesForms {
             numVentana = 0;
         } else {
             try {
-                System.out.println("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()NUevoooooo");
+                Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()NUevoooooo");
                 Principal.desktopPane.add(val);
                 if (maximizado) {
                     val.setMaximum(true);
@@ -369,9 +396,59 @@ public class OperacionesForms {
         }
     }
 
+    public static void EliminarJbutonsalcerrarJinternalFrame(JInternalFrame val) {
+        int numVentana = 0;/// si es cero, significa que no se ha encontrado un frmulario de tipo que ya ecista 
+        Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm():nombre:  " + val.getName());
+        JInternalFrame v[] = Principal.desktopPane.getAllFrames();
+        Principal.controlareduccionPrincilapParamenusuperior = 1;
+        /////////////
+        val.addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                Principal.elimiarBotonalCerrarVentanas(val);
+            }
+
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void internalFrameIconified(InternalFrameEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void internalFrameDeiconified(InternalFrameEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void internalFrameDeactivated(InternalFrameEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+        });
+
+        ///////////
+        if (v.length >= 1) {
+        
+        }
+    }
+
     public static void eliminaventanasyorganizabotones(JInternalFrame val, String tituloVentana) {
         int numVentana = 0;/// si es cero, significa que no se ha encontrado un frmulario de tipo que ya ecista 
-        System.out.println("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm():nombre:  " + val.getName());
+        Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm():nombre:  " + val.getName());
         JInternalFrame v[] = Principal.desktopPane.getAllFrames();
         Principal.controlareduccionPrincilapParamenusuperior = 1;
         if (v.length >= 1) {
@@ -379,9 +456,9 @@ public class OperacionesForms {
             for (int i = 0; i < v.length; i++) {
                 if (v[i].getTitle() == tituloVentana) {
 
-                    System.out.println("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()xxxxxxxaas");
+                    Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()xxxxxxxaas");
                     if (numVentana == 0) {
-                        System.out.println("CasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()ventana nueva");
+                        Deb.consola("CasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()ventana nueva");
                         numVentana = 100;
                         try {
                             v[i].setSelected(true);
@@ -389,12 +466,12 @@ public class OperacionesForms {
                             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
-                        System.out.println("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()dispose");
+                        Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()dispose");
                         v[i].dispose();
                     }
                 } else {
                     if (numVentana == 0) {
-                        System.out.println("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm() Hay ventanas abiertas perono no hay abireta la que necesito");
+                        Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm() Hay ventanas abiertas perono no hay abireta la que necesito");
                         numVentana = 100;
                         Principal.desktopPane.add(val);
                         val.setVisible(true);
@@ -405,7 +482,7 @@ public class OperacionesForms {
             numVentana = 0;
         } else {
 
-            System.out.println("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()NUevoooooo");
+            Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()NUevoooooo");
             Principal.desktopPane.add(val);
 
             val.setVisible(true);

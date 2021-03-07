@@ -9,6 +9,7 @@ package ClasesAuxiliares;
  *
  * @author USUARIO
  */
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Usuarios.ConfigDao;
 import Modelo.ConfigSofia;
 import java.io.BufferedWriter;
@@ -38,7 +39,7 @@ public class NewConfigfile {
             case JFileChooser.APPROVE_OPTION:
                 File archivo = explorador.getSelectedFile();
                 ruta = archivo.getAbsolutePath();
-                System.out.println("Ruta:  " + ruta);
+                Deb.consola("Ruta:  " + ruta);
                 //seleccionó abrir
                 break;
             
@@ -59,7 +60,7 @@ public class NewConfigfile {
     public static void EscribieConfigIp(String ruta, String Ip) {
         
         String os = System.getProperty("os.name");
-        //System.out.println("ClasesAuxiliares.NewArchivo.EscribieConfigIP()  : "+os);
+        //Deb.consola("ClasesAuxiliares.NewArchivo.EscribieConfigIP()  : "+os);
 
 //        if( os.contains("Windows")){
 //        //ruta="C://config.properties";
@@ -102,7 +103,7 @@ public class NewConfigfile {
     }
     
     public static void crearArchivo(String ruta, String ip) {
-        //System.out.println("ClasesAuxiliares.NewConfigfile.crearArchivo()ruta>:  " + ruta);
+        //Deb.consola("ClasesAuxiliares.NewConfigfile.crearArchivo()ruta>:  " + ruta);
         
         if (ruta.contains(".properties")) {
             ruta = ruta;// + "\\config.porperties";
@@ -159,7 +160,7 @@ public class NewConfigfile {
 //            case JFileChooser.APPROVE_OPTION:
 //                File archivo = explorador.getCurrentDirectory();
 //                String ruta = archivo.getPath();
-//                System.out.println("llllllClasesAuxiliares.NewArchivo.main()ryta:"+ruta);
+//                Deb.consola("llllllClasesAuxiliares.NewArchivo.main()ryta:"+ruta);
 //                //seleccionó abrir
 //                break;
 //

@@ -10,6 +10,7 @@ package impresoras;
  * @author USUARIO
  */
 import Vista.Principal;
+import ClasesAuxiliares.debug.Deb;
 import java.awt.Desktop;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
@@ -71,10 +72,10 @@ public class ServicioDeImpresion {
                 if (services[i].getName().equals("cocina")) {//aqui escribimos/elegimos la impresora por la que queremos imprimir
                     //manejar error en caso de que no esté conectada
                     //Desktop.getDesktop().print(null);//para imprimir un archivo ya existente  
-                    job = services[i].createPrintJob();// System.out.println(i+": "+services[i].getName());
+                    job = services[i].createPrintJob();// Deb.consola(i+": "+services[i].getName());
 
                 } else {
-                    System.out.println("No se encontró la impresora cocina");
+                    Deb.consola("No se encontró la impresora cocina");
                 }
             }
 
@@ -101,7 +102,7 @@ public class ServicioDeImpresion {
 //                job.print(doc, null);
 //            }
 //        } catch (PrintException ex) {
-//            System.out.println(ex);
+//            Deb.consola(ex);
 //        }
     }
 
@@ -121,13 +122,13 @@ public class ServicioDeImpresion {
         if (services.length > 0) {
 //            for (int i = 0; i < services.length; i++) {
 //                if (services[i].getName().equals("caja")) {//aqui escribimos/elegimos la impresora por la que queremos imprimir
-//                    job = services[i].createPrintJob();// System.out.println(i+": "+services[i].getName());
+//                    job = services[i].createPrintJob();// Deb.consola(i+": "+services[i].getName());
 //                }
 //            }
             for (PrintService service : services) {
                 if (service.getName().equals("caja")) {
                     //aqui escribimos/elegimos la impresora por la que queremos imprimir
-                    job = service.createPrintJob(); // System.out.println(i+": "+services[i].getName());
+                    job = service.createPrintJob(); // Deb.consola(i+": "+services[i].getName());
                 }
             }
         }
@@ -136,7 +137,7 @@ public class ServicioDeImpresion {
         try {
             job.print(doc, null);
         } catch (PrintException ex) {
-            System.out.println(ex);
+            Deb.consola(ex);
         }
 
     }
@@ -150,7 +151,7 @@ public class ServicioDeImpresion {
                 if (services[i].getName().equals(Principal.impresoraTicket)) {
         pos=i;
                     job = services[i].createPrintJob();
-                    System.out.println(i + "IMPRESORA selec : " + services[i].getName());
+                    Deb.consola(i + "IMPRESORA selec : " + services[i].getName());
                 }
             }
         }
@@ -165,7 +166,7 @@ public class ServicioDeImpresion {
                 if (services[i].getName().equals(impresora)) {
         pos=i;
                     job = services[i].createPrintJob();
-                    System.out.println(i + "IMPRESORA selec : " + services[i].getName());
+                    Deb.consola(i + "IMPRESORA selec : " + services[i].getName());
                 }
             }
         }
@@ -189,7 +190,7 @@ public class ServicioDeImpresion {
         try {
             job.print(doc, null);
         } catch (PrintException ex) {
-            System.out.println("probel : "+ex);
+            Deb.consola("probel : "+ex);
         }
     }
 

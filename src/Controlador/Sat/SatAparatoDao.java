@@ -5,6 +5,7 @@
  */
 package Controlador.Sat;
 
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Usuarios.*;
 import Controlador.Coneccion;
 import Modelo.Clientes;
@@ -43,7 +44,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             this.conectar();
             PreparedStatement consulta;
             consulta = this.con.prepareStatement("INSERT INTO SatAparato (descripcion,parte,categoria,marca,modelo,observaciones,satorden_codigo) VALUES (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            System.out.println("Controlador.satAparato.guardar()" + consulta);
+            Deb.consola("Controlador.satAparato.guardar()" + consulta);
             consulta.setString(1, tarea.getDescripcion()); 
             consulta.setString(2, tarea.getParte());
             consulta.setString(3, tarea.getCategria());
@@ -51,8 +52,8 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             consulta.setString(5, tarea.getModelo());            
             consulta.setString(6, tarea.getObservaciones());
             consulta.setInt(7, tarea.getSatOrden_codigo());
-            System.out.println("Controlador.satAparato.guardar()" + consulta);
-            System.out.println("Controlador.Sat.SatAparatoDao.guardar():  "+consulta);
+            Deb.consola("Controlador.satAparato.guardar()" + consulta);
+            Deb.consola("Controlador.Sat.SatAparatoDao.guardar():  "+consulta);
                    consulta.executeUpdate();
             ResultSet rs = consulta.getGeneratedKeys();
             if (rs.next()) {
@@ -61,9 +62,9 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             }
         } catch (SQLException ex) {
             
-            System.out.println("Controlador.Sat.SatAparatoDao.guardar():  "+ex);
+            Deb.consola("Controlador.Sat.SatAparatoDao.guardar():  "+ex);
             msg.setProgressBar_mensajae(ex.toString());
-            System.out.println("Controlador.satAparato.guardar() : " + ex);
+            Deb.consola("Controlador.satAparato.guardar() : " + ex);
         } finally {
             this.cerrar();
         }
@@ -104,13 +105,13 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
 //            st.setString(13, "obsercvaciones");
 //            st.setInt(14, persona.getCodigo());
 //             String sql = st.toString();
-//            System.out.println("Controlador.Usuarios.CUsuarios.modificar()"+ sql);
+//            Deb.consola("Controlador.Usuarios.CUsuarios.modificar()"+ sql);
 //            st.executeUpdate();
 //            Principal.jProgressBar2.setString("eeeeeeeeeeeee");
 //            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
 //        } catch (SQLException e) {
 //            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error" + e + sql, "Error al modificar Registro" + e.toString()));
-//System.out.println("Controlador.CUsuarios.guardar()" + e);
+//Deb.consola("Controlador.CUsuarios.guardar()" + e);
 //        } finally {
 //            this.cerrar();
 //        }
@@ -140,7 +141,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.listar()" + ex);
+            Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -190,7 +191,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -211,7 +212,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
         
             st = this.getCnx().prepareCall("SELECT  * , a.codigo AS cod_aparato FROM sataparato a INNER JOIN satseries s  ON a.codigo=s.satAparato_codigo WHERE s.serie='"+serie+"'");
             //select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
-System.out.println("Controlador.Sat.SatAparatoDao.buscarAparatoSerie()ssss: "+st.toString());
+Deb.consola("Controlador.Sat.SatAparatoDao.buscarAparatoSerie()ssss: "+st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -240,7 +241,7 @@ System.out.println("Controlador.Sat.SatAparatoDao.buscarAparatoSerie()ssss: "+st
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -277,7 +278,7 @@ System.out.println("Controlador.Sat.SatAparatoDao.buscarAparatoSerie()ssss: "+st
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
 //             if(){
@@ -318,7 +319,7 @@ System.out.println("Controlador.Sat.SatAparatoDao.buscarAparatoSerie()ssss: "+st
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
 //             if(){
@@ -379,7 +380,7 @@ System.out.println("Controlador.Sat.SatAparatoDao.buscarAparatoSerie()ssss: "+st
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
 //             if(){
@@ -428,7 +429,7 @@ System.out.println("Controlador.Sat.SatAparatoDao.buscarAparatoSerie()ssss: "+st
             st = this.getCnx().prepareCall("select * from SatAparato where "+columna+"  like '%"+value+ "%' order BY descripcion" );
 
           //  st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -443,11 +444,11 @@ System.out.println("Controlador.Sat.SatAparatoDao.buscarAparatoSerie()ssss: "+st
                 registros[7]=String.valueOf(rs.getInt("satorden_codigo"));                
                 registros[8]=rs.getString("observaciones");
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
             }
 
         } catch (Exception ex) {

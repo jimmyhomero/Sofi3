@@ -5,6 +5,7 @@
  */
 package Vista.Sat;
 
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Sat.SatAparatoDao;
 import Controlador.Usuarios.MarcasDao;
 import Modelo.Clientes;
@@ -65,7 +66,7 @@ public class Crear_Aparato extends javax.swing.JInternalFrame {
 
 
                 } else {
-                    System.out.println("El item es de un tipo desconocido");
+                    Deb.consola("El item es de un tipo desconocido");
                 }
 
             }
@@ -88,7 +89,7 @@ public class Crear_Aparato extends javax.swing.JInternalFrame {
                     txtModelo.setText(c.getModelo());
                     categoriaSeleccionada = c.getModelo();
                 } else {
-                    System.out.println("El item es de un tipo desconocido");
+                    Deb.consola("El item es de un tipo desconocido");
                 }
 
             }

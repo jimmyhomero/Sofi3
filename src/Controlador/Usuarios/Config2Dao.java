@@ -80,7 +80,7 @@ public class Config2Dao extends Coneccion {
             
         } catch (Exception ex) {
             alerta.menajes(ex.toString());
-            //System.out.println("Controlador.CUsuarios.listar()" + ex);
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }

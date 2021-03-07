@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -42,7 +43,7 @@ public class HoraFecha extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
         } finally {
             this.cerrar();
 
@@ -65,7 +66,7 @@ public class HoraFecha extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
         } finally {
             this.cerrar();
 
@@ -85,7 +86,7 @@ public class HoraFecha extends Coneccion {
             public void run() {
                 try {
 
-                    //  System.out.println(".run()hora");
+                    //  Deb.consola(".run()hora");
                     hora = calendario.get(Calendar.HOUR_OF_DAY);
                     minutos = calendario.get(Calendar.MINUTE);
                     segundos = calendario.get(Calendar.SECOND);
@@ -107,7 +108,7 @@ public class HoraFecha extends Coneccion {
     
     public static String fecha_aa_mm_dd_HH_mm_ss(String fecha) {
         //   String s = "Mon Oct 02 00:00:00 COT 2017";
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha);
         String s = fecha;
         String ano = s.substring(24, 28);
         String mes = s.substring(4, 7);
@@ -156,12 +157,12 @@ public class HoraFecha extends Coneccion {
                 break;
         }
         Fechasql = ano + "-" + mes + "-" + dia + " " + hora + ":" + minuto + ":" + segundo;
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
         return Fechasql;
     }
     public static String fecha_aa_mm_dd_conSlash(String fecha) {
         //   String s = "Mon Oct 02 00:00:00 COT 2017";
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha);
         String s = fecha;
         String ano = s.substring(24, 28);
         String mes = s.substring(4, 7);
@@ -210,12 +211,23 @@ public class HoraFecha extends Coneccion {
                 break;
         }
         Fechasql = ano + "/" + mes + "/" + dia ;
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
         return Fechasql;
+    }
+    public static String fecha_aaaa_mm_dd_cambiamos_a_ddmmaaaa_conslash_facElectronica(String fecha) {
+    String fechax[]=fecha.split("-");
+    String dia="";
+    String mes="";
+    String ano="";
+    ano=fechax[0];
+    mes=fechax[1];
+    dia=fechax[2];
+    
+    return dia+"/"+mes+"/"+ano;
     }
     public static String fecha_ddmmaaa_conslash_facElectronica(String fecha) {
         //   String s = "Mon Oct 02 00:00:00 COT 2017";
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha);
         String s = fecha;
         String ano = s.substring(24, 28);
         String mes = s.substring(4, 7);
@@ -264,13 +276,13 @@ public class HoraFecha extends Coneccion {
                 break;
         }
         Fechasql = dia +"/" + mes +"/"+ ano;
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
         return Fechasql;
     }
     
     public static String fecha_ddmmaaa(String fecha) {
         //   String s = "Mon Oct 02 00:00:00 COT 2017";
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha);
         String s = fecha;
         String ano = s.substring(24, 28);
         String mes = s.substring(4, 7);
@@ -319,7 +331,7 @@ public class HoraFecha extends Coneccion {
                 break;
         }
         Fechasql = dia  + mes + ano;
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
         return Fechasql;
     }
   
@@ -327,7 +339,7 @@ public class HoraFecha extends Coneccion {
     public static String fecha_ddmmaaa_conSlash(String fecha_aa_mm_dd) {
         
         //   String s = "2018-12-01";
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha_aa_mm_dd);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha_aa_mm_dd);
         String s = fecha_aa_mm_dd;
         String ano = s.substring(0, 4);
         String mes = s.substring(5, 7);
@@ -336,13 +348,13 @@ public class HoraFecha extends Coneccion {
         
         
        
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
         return Fechasql;
     }
         public static String fecha_ddmmaaa_conSlash_to_aa_mm_dd(String fecha_dd_mm_aaaa) {
         
         //   String s = "2018-12-01";
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha_dd_mm_aaaa);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha_dd_mm_aaaa);
         String s = fecha_dd_mm_aaaa;
         String ano = s.substring(0, 2);
         String mes = s.substring(3, 5);
@@ -351,7 +363,7 @@ public class HoraFecha extends Coneccion {
         
         
        
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
         return Fechasql;
     }
     
@@ -359,21 +371,21 @@ public static String fecha_mmaaConSlash(String fecha) {
            String s = "Mon Oct 02 00:00:00 COT 2017";
         //    "2018-02-28"
            
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha);
         s = fecha;
         String ano = s.substring(0, 4);
         String mes = s.substring(5, 7);
 
         String Fechasql = mes + "/" + ano ;
         
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
         return Fechasql;
     }
 public static String fecha_aaMMdd_to_ddMMaa(String fecha) {
            String s = "Mon Oct 02 00:00:00 COT 2017";
         //    "2018/02/28"
            
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha()feha que entra: " + fecha);
         s = fecha;
         String ano = s.substring(0, 4);
         String mes = s.substring(5, 7);
@@ -381,7 +393,7 @@ public static String fecha_aaMMdd_to_ddMMaa(String fecha) {
 
         String Fechasql = dia+ "/" + mes +"/"+ano ;
         
-        System.out.println("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
         return Fechasql;
     }
 
@@ -399,9 +411,9 @@ public static String fecha_aaMMdd_to_ddMMaa(String fecha) {
                 fecha = rs.getDate("now()");
                 sqlTimestamp2 = rs.getTimestamp("now()");
                 sqlTime = rs.getTime("now()");
-                System.out.println("Controlador.Usuarios.HoraFecha.obtenerFechaHorasMinutosSegundo()feha: " + fecha);
-                System.out.println("Controlador.Usuarios.HoraFecha.obtenerFechaHorasMinutosSegundo()feha: " + sqlTime);
-                System.out.println("Controlador.Usuarios.HoraFecha.obtenerFechaHorasMinutosSegundo()feha: " + sqlTimestamp2);
+                Deb.consola("Controlador.Usuarios.HoraFecha.obtenerFechaHorasMinutosSegundo()feha: " + fecha);
+                Deb.consola("Controlador.Usuarios.HoraFecha.obtenerFechaHorasMinutosSegundo()feha: " + sqlTime);
+                Deb.consola("Controlador.Usuarios.HoraFecha.obtenerFechaHorasMinutosSegundo()feha: " + sqlTimestamp2);
 
             }
 

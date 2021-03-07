@@ -8,6 +8,7 @@ package Controlador.Sat;
 
 import Controlador.Coneccion;
 
+import ClasesAuxiliares.debug.Deb;
 import Modelo.SatSeries;
 import Vlidaciones.ProgressBar;
 import java.sql.PreparedStatement;
@@ -36,7 +37,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             this.conectar();
             PreparedStatement consulta;
             consulta = this.con.prepareStatement("INSERT INTO SatSeries (serie,disponible,satAparato_codigo,compra_sec,venta_sec,Descripcion,fecha_compra,fecha_venta,color) VALUES (?,?,?,?,?,?,?,?,?)");
-            System.out.println("Controlador.SatSeries.guardar()" + consulta);
+            Deb.consola("Controlador.SatSeries.guardar()" + consulta);
             consulta.setString(1, tarea.getSerie()); 
             consulta.setInt(2, tarea.getDisponible());
             consulta.setInt(3, tarea.getSatAparato_codigo());
@@ -46,15 +47,15 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             consulta.setDate(7, tarea.getFecha_compra());
             consulta.setDate(8, tarea.getFecha_venta());
             consulta.setString(9, tarea.getColor());
-            System.out.println("Controlador.satAparato.guardar()" + consulta);
-            System.out.println("Controlador.Sat.SatAparatoDao.guardar():  "+consulta);
+            Deb.consola("Controlador.satAparato.guardar()" + consulta);
+            Deb.consola("Controlador.Sat.SatAparatoDao.guardar():  "+consulta);
             consulta.executeUpdate();
             
         } catch (SQLException ex) {
             
-            System.out.println("Controlador.Sat.SatAparatoDao.guardar():  "+ex);
+            Deb.consola("Controlador.Sat.SatAparatoDao.guardar():  "+ex);
             msg.setProgressBar_mensajae(ex.toString());
-            System.out.println("Controlador.satAparato.guardar() : " + ex);
+            Deb.consola("Controlador.satAparato.guardar() : " + ex);
         } finally {
             this.cerrar();
         }
@@ -94,13 +95,13 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
 //            st.setString(13, "obsercvaciones");
 //            st.setInt(14, persona.getCodigo());
 //             String sql = st.toString();
-//            System.out.println("Controlador.Usuarios.CUsuarios.modificar()"+ sql);
+//            Deb.consola("Controlador.Usuarios.CUsuarios.modificar()"+ sql);
 //            st.executeUpdate();
 //            Principal.jProgressBar2.setString("eeeeeeeeeeeee");
 //            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
 //        } catch (SQLException e) {
 //            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error" + e + sql, "Error al modificar Registro" + e.toString()));
-//System.out.println("Controlador.CUsuarios.guardar()" + e);
+//Deb.consola("Controlador.CUsuarios.guardar()" + e);
 //        } finally {
 //            this.cerrar();
 //        }
@@ -131,7 +132,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.listar()" + ex);
+            Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -170,7 +171,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -207,7 +208,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
 //            }
 //
 //        } catch (Exception ex) {
-//            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+//            Deb.consola("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
 //        } finally {
 //            this.cerrar();
 ////             if(){
@@ -247,7 +248,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
 //             if(){
@@ -287,7 +288,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
 
@@ -323,7 +324,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
 //            }
 //
 //        } catch (Exception ex) {
-//            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+//            Deb.consola("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
 //        } finally {
 //            this.cerrar();
 ////             if(){
@@ -372,7 +373,7 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             st = this.getCnx().prepareCall("select * from SatSeries where "+columna+"  like '%"+value+ "%'" );
 
           //  st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -387,11 +388,11 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
                 registros[7]=String.valueOf(rs.getInt("satorden_codigo"));                
                 registros[8]=rs.getString("observaciones");
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
             }
 
         } catch (Exception ex) {

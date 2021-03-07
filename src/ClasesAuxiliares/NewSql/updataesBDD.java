@@ -5,6 +5,7 @@
  */
 package ClasesAuxiliares.NewSql;
 
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Coneccion;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -21,12 +22,12 @@ public class updataesBDD extends Coneccion {
             //String sql = "ALTER TABLE `USUARIOS` ADD COLUMN `USU_PRESUPUESTO` DOUBLE DEFAULT '5000' NULL AFTER `USU_TARJETA_CONTROL_MONTO`;";
             String a="CREATE TABLE IF NOT EXISTS `precios`( `codigo` INT NOT NULL AUTO_INCREMENT , `nombre` VARCHAR(500) , `valor` DOUBLE DEFAULT '0.0' , PRIMARY KEY (`codigo`));";
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
             st.execute();
             st.close();
 
         } catch (SQLException sqle) {
-            System.out.println("Error en la ejecución: "
+            Deb.consola("Error en la ejecución: "
                     + sqle.getErrorCode() + " " + sqle.getMessage());
         }
     }

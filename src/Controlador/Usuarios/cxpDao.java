@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -52,12 +53,12 @@ public class cxpDao extends Coneccion {
             consulta.setString(9, tarea.getDiasCredito());
             consulta.setString(10, tarea.getDiasAtrazo());
             consulta.setInt(11, tarea.getProveedores_Codigo());
-            System.out.println("Controlador.Usuarios.PagosDao.guardar()consulta: "+consulta.toString());
+            Deb.consola("Controlador.Usuarios.PagosDao.guardar()consulta: "+consulta.toString());
             consulta.executeUpdate();
             ResultSet rs = consulta.getGeneratedKeys();
             if (rs.next()) {
                 CodigoThisInsert = rs.getInt(1);
-                //System.out.println("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
+                //Deb.consola("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
             }
 
         } catch (SQLException ex) {
@@ -91,7 +92,7 @@ public class cxpDao extends Coneccion {
 //            PreparedStatement st;
 //
 //            st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
-//            //System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+//            //Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
 //            rs = st.executeQuery();
 //            //this.lista= new ArrayList();
 //            while (rs.next()) {
@@ -133,7 +134,7 @@ public class cxpDao extends Coneccion {
 //            PreparedStatement st;
 //
 //            st = this.getCnx().prepareCall(sql);
-//            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+//            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
 //            rs = st.executeQuery();
 //            //this.lista= new ArrayList();
 //            while (rs.next()) {
@@ -204,7 +205,7 @@ public class cxpDao extends Coneccion {
 
         } catch (Exception ex) {
             msg.setMensaje(ex.toString());
-            //System.out.println("Controlador.CUsuarios.listar()" + ex);
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -237,7 +238,7 @@ public class cxpDao extends Coneccion {
 
         } catch (Exception ex) {
             msg.setMensaje(ex.toString());
-            //System.out.println("Controlador.CUsuarios.listar()" + ex);
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }

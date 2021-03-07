@@ -9,6 +9,7 @@ import Controlador.Usuarios.ClientesDao;
 import Controlador.Usuarios.ConfigDao;
 import Controlador.Usuarios.DatosEmpresaDao;
 import Modelo.ConfigSofia;
+import ClasesAuxiliares.debug.Deb;
 
 import Modelo.DatosEmpresa;
 import Vista.Principal;
@@ -58,8 +59,8 @@ public class DatosEmpresaForm extends javax.swing.JInternalFrame {
      */
     public DatosEmpresaForm() {
         initComponents();
-        System.out.println("Vista.Usuarios.DatosEmpresaForm.<init>() tama;o label foft:  " + lbl_imagen.getWidth());
-        System.out.println("Vista.Usuarios.DatosEmpresaForm.<init>() tama;o label foft:  " + lbl_imagen.getHeight());
+        Deb.consola("Vista.Usuarios.DatosEmpresaForm.<init>() tama;o label foft:  " + lbl_imagen.getWidth());
+        Deb.consola("Vista.Usuarios.DatosEmpresaForm.<init>() tama;o label foft:  " + lbl_imagen.getHeight());
 
         llenaInfoEmpresaAlCargarForm();
         JRootPane rootPane = SwingUtilities.getRootPane(this.jButton1);
@@ -552,7 +553,7 @@ public class DatosEmpresaForm extends javax.swing.JInternalFrame {
         }
 
 //        if (d.getImagen() != null) {
-//            System.out.println("Vista.Usuarios.DatosEmpresaForm.<init>()" + d.getImagen());
+//            Deb.consola("Vista.Usuarios.DatosEmpresaForm.<init>()" + d.getImagen());
 //            ImageIcon icon = new ImageIcon(d.getImagen().getScaledInstance(300, 180, Image.SCALE_DEFAULT));
 //            //ImageIcon icon = new ImageIcon(d.getImagen().getScaledInstance(lbl_imagen.getWidth(), lbl_imagen.getHeight(), Image.SCALE_DEFAULT));
 //            lbl_imagen.setText("");
@@ -651,7 +652,7 @@ public class DatosEmpresaForm extends javax.swing.JInternalFrame {
         if (jButton1.getText().equals("Actualizar")) {
             //jcb_estado.setSelectedItem("");
         }
-        System.out.println("Vista.Usuarios.Crear_Usuarios.jButton1Prop,,,,,,,,ertyChange()" + evt.getNewValue());
+        Deb.consola("Vista.Usuarios.Crear_Usuarios.jButton1Prop,,,,,,,,ertyChange()" + evt.getNewValue());
     }//GEN-LAST:event_jButton1PropertyChange
 
     private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed

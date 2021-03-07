@@ -7,7 +7,11 @@ package Vista.Usuarios;
 
 import ClasesAuxiliares.Exporter;
 import Controlador.Ejemplo;
+import ClasesAuxiliares.debug.Deb;
+import Controlador.ComitsAll;
+import Controlador.Usuarios.ClientesDao;
 import Controlador.Usuarios.ComprasDao;
+import Controlador.Usuarios.DetalleComprasDao;
 import Controlador.Usuarios.DetalleFacturaDao;
 import Controlador.Usuarios.FormasPagoCVDao;
 import Controlador.Usuarios.HoraFecha;
@@ -17,16 +21,20 @@ import Controlador.Usuarios.ModelosDao;
 import Controlador.Usuarios.ProductosDao;
 import Controlador.Usuarios.ProveedoresDao;
 import Controlador.Usuarios.RetencionCDao;
+import Modelo.Clientes;
 import Modelo.Compras;
+import Modelo.DetalleCompra;
 import Modelo.Facturas;
 import Modelo.FormasPagoCV;
 import Modelo.FormasPagoV;
+import Modelo.Kardex;
 import Modelo.Marcas;
 import Modelo.Modelos;
 import Modelo.Proveedores;
 import Vista.Principal;
 import Vlidaciones.ProgressBar;
 import com.toedter.calendar.JDateChooser;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
@@ -69,6 +78,7 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
     ProgressBar msg = new ProgressBar(3000, "");
     DefaultTableModel modelo = null;
     public static Integer indexPositiotoolBar;
+    Integer codigoSeleccionado = null;
     //String sql_allss = "select * from usuarios";
     // String sql_all = "select usuarios.*,tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo order BY usuarios.Nombres LIMIT 0, 50";
 
@@ -105,7 +115,20 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
         String fechaFIn = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserhasta.getDate().toString());
         jTable1.setModel(obj.listarComprasTbModelok(fechaInicio, fechaFIn));
         this.ocultarFIlasJtable();
+        sumartotales();
 
+    }
+
+    private void sumartotales() {
+        Integer filas = jTable1.getRowCount();
+        Double total = 0.0;
+        Double cantidad = 0.0;
+
+        for (int j = 0; j < filas; j++) {
+            cantidad = Double.parseDouble(jTable1.getValueAt(j, 3).toString());
+            total = total + cantidad;
+        }
+        txt_total.setText(String.format("%.2f", total).replace(",", "."));
     }
 
     private void setFechayHoraActualJDChooser() {
@@ -151,6 +174,8 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
         btn_mostrarAll1 = new javax.swing.JButton();
         btn_excel = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        txt_total = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
 
         setClosable(true);
         setMaximizable(true);
@@ -173,9 +198,6 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
         });
-        getContentPane().setLayout(null);
-
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jdchoserdesde.setDateFormatString("yyyy-MM-dd");
         jdchoserdesde.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -183,16 +205,17 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
                 jdchoserdesdeMouseClicked(evt);
             }
         });
-        jPanel1.add(jdchoserdesde, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 190, -1));
+        jdchoserdesde.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jdchoserdesdeKeyPressed(evt);
+            }
+        });
 
         jdchoserhasta.setDateFormatString("yyyy-MM-dd");
-        jPanel1.add(jdchoserhasta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 190, -1));
 
         jLabel4.setText("Desde:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
         jLabel5.setText("Hasta:");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
 
         btn_hoy.setText("HOY");
         btn_hoy.addActionListener(new java.awt.event.ActionListener() {
@@ -200,7 +223,6 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
                 btn_hoyActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_hoy, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 30, 82, -1));
 
         btn_buscar.setText("Buscar");
         btn_buscar.addActionListener(new java.awt.event.ActionListener() {
@@ -208,8 +230,6 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
                 btn_buscarActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 70, 82, 38));
-        jPanel1.add(fec, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, 120, 20));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -267,8 +287,6 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 10, 290, 120));
-
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel2.setText("Buscar por Numero de Factura");
@@ -316,10 +334,57 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 10, 270, 120));
-
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(10, 10, 920, 125);
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jdchoserdesde, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(jdchoserhasta, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_hoy, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(fec, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel4)
+                        .addGap(4, 4, 4)
+                        .addComponent(jdchoserdesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel5)
+                        .addGap(4, 4, 4)
+                        .addComponent(jdchoserhasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(btn_hoy)
+                        .addGap(15, 15, 15)
+                        .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(fec, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Listar Productos"));
 
@@ -343,20 +408,12 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1050, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane1)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
-
-        getContentPane().add(jPanel2);
-        jPanel2.setBounds(0, 155, 1062, 440);
 
         btn_Eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/ShowAll.png"))); // NOI18N
         btn_Eliminar.setText("Mostrar Todo");
@@ -365,8 +422,6 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
                 btn_MostrarTodoActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_Eliminar);
-        btn_Eliminar.setBounds(190, 600, 180, 50);
 
         btn_mostrarAll1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/deleteUser.png"))); // NOI18N
         btn_mostrarAll1.setText("Eliminar");
@@ -375,8 +430,6 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
                 btn_EliminarActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_mostrarAll1);
-        btn_mostrarAll1.setBounds(20, 600, 160, 50);
 
         btn_excel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/icons8-MS Excel-48.png"))); // NOI18N
         btn_excel.setText("Excel");
@@ -385,10 +438,60 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
                 btn_excelActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_excel);
-        btn_excel.setBounds(380, 600, 170, 50);
-        getContentPane().add(jLabel7);
-        jLabel7.setBounds(449, 824, 90, 24);
+
+        txt_total.setEditable(false);
+
+        jLabel8.setText("TOTAL COMPRAS");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(9, 9, 9))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(btn_mostrarAll1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_Eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_excel, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txt_total)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 171, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btn_excel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_Eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_mostrarAll1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -411,8 +514,9 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
     private void txt_xclienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_xclienteKeyReleased
         // TODO add your handling code here:
         ComprasDao obj = new ComprasDao();
-        jTable1.setModel(obj.Buscar_table_compras("proveedores.nombres", txt_xcliente.getText()));
+        jTable1.setModel(obj.Buscar_table_compras("CLIENTES.nombres", txt_xcliente.getText()));
         this.ocultarFIlasJtable();///
+        sumartotales();
 
     }//GEN-LAST:event_txt_xclienteKeyReleased
 
@@ -421,6 +525,7 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
         ComprasDao obj = new ComprasDao();
         jTable1.setModel(obj.Buscar_table_compras("compras.secuencia", txt_xnumeroFactura.getText()));
         this.ocultarFIlasJtable();
+        sumartotales();
         ///
     }//GEN-LAST:event_txt_xnumeroFacturaKeyReleased
 
@@ -429,6 +534,7 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
         ComprasDao obj = new ComprasDao();
         jTable1.setModel(obj.Buscar_table_compras("compras.total", txt_xMonto.getText()));
         this.ocultarFIlasJtable();
+        sumartotales();
         ///
     }//GEN-LAST:event_txt_xMontoKeyReleased
 
@@ -446,7 +552,7 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
                 //Crear_Usuarios.jcb_tipo.setSelectedItem(0);
                 Crear_Productos.setItemSelectMarcas = ob;
 
-                //    System.out.println("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
+                //    Deb.consola("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
             }
 
         }
@@ -468,7 +574,7 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
                 //Crear_Usuarios.jcb_tipo.setSelectedItem(0);
                 Crear_Productos.setItemSelectModelo = ob;
 
-                //  System.out.println("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + mode.getTipo());
+                //  Deb.consola("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + mode.getTipo());
             }
 
         }
@@ -484,11 +590,11 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
         int row = jTable1.getSelectedRow();
         int col = jTable1.getSelectedColumn();
         modelo = (DefaultTableModel) jTable1.getModel();
-        System.out.println("row: " + row);
-        System.out.println("col: " + col);
-        Integer codigoSeleccionado = Integer.parseInt(modelo.getValueAt(row, 0).toString());
-        System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()codiggo>:" + modelo.getValueAt(row, 0));
-        System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()codigo seleccionado: " + codigoSeleccionado);
+        Deb.consola("row: " + row);
+        Deb.consola("col: " + col);
+        codigoSeleccionado = Integer.parseInt(modelo.getValueAt(row, 0).toString());
+        Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()codiggo>:" + modelo.getValueAt(row, 0));
+        Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()codigo seleccionado: " + codigoSeleccionado);
         if (evt.getClickCount() == 2) {
             Compras fac = new Compras();
             ComprasDao facDao = new ComprasDao();
@@ -497,10 +603,10 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
             RetencionCDao r = new RetencionCDao();
             Boolean existe = r.Buscar_siExisteRetenciondelDocumento(compra1.getSecuencia());
 
-            if (buscaCompradesderegistrarRetencion==true && existe==false) {
-                ProveedoresDao pbDao = new ProveedoresDao();
-                Proveedores p = new Proveedores();
-                Crear_RetencionC.proveerdor = p = pbDao.buscarConID(compra1.getProveedores_codigo());
+            if (buscaCompradesderegistrarRetencion == true && existe == false) {
+                ClientesDao pbDao = new ClientesDao();
+                Clientes p = new Clientes();
+                Crear_RetencionC.proveerdor = p = pbDao.buscarConID(compra1.getProveedores_codigo(),1);
                 Crear_RetencionC.tProveedor.setText(p.getNombre());
                 Crear_RetencionC.tRUc.setText(p.getCedula());
                 Crear_RetencionC.txtSec1Compra.setText(compra1.getSecuencia());
@@ -521,27 +627,26 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
 
                 dispose();
             } else {
-                if(existe){
-                JOptionPane.showMessageDialog(null, "ya existe una retencion registrada sobre esa factura!!", "Retenicion ya Existe", 3);
+                if (existe) {
+                    JOptionPane.showMessageDialog(null, "ya existe una retencion registrada sobre esa factura!!", "Retenicion ya Existe", 3);
                 }
-                
 
             }
         }
 
         if (evt.getButton() == MouseEvent.BUTTON1) {
-            System.out.println("BOTON 1");
-            System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
+            Deb.consola("BOTON 1");
+            Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
             // operacionFacturauPDATEandAddRowrs();
         }
         if (evt.getButton() == MouseEvent.BUTTON2) {
-            System.out.println("BOTON 2");
+            Deb.consola("BOTON 2");
         }
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            System.out.println("BOTON 3");
+            Deb.consola("BOTON 3");
         }
         try {
-            System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
+            Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
             if (evt.getClickCount() == 2) {
 
                 if (jTable1.getSelectedRow() != -1) {
@@ -551,7 +656,7 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
 ////////////////                        String rutaInforme = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\FACTURA.jasper";
 ////////////////                        Map parametros = new HashMap();
 ////////////////                        parametros.put("numeroFactura", modelo.getValueAt(row, 2).toString());
-////////////////                        System.out.println("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
+////////////////                        Deb.consola("Vista.Usuarios.BuscarFacturas.jTable1MouseClicked()secuecnaia  :" + modelo.getValueAt(row, 2).toString());
 ////////////////                        //JOptionPane.showConfirmDialog(rootPane, a +"--"+b);
 ////////////////                        ImpresionDao imp = new ImpresionDao();
 ////////////////                        imp.impresionShowReport(parametros, rutaInforme);
@@ -748,7 +853,12 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
 
     private void btn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EliminarActionPerformed
         // TODO add your handling code here:
-        if (!compra1.getSecuencia().equals("")) {
+
+        if (codigoSeleccionado != null && clicJtable == 1) {
+            Compras fac = new Compras();
+            ComprasDao facDao = new ComprasDao();
+            compra1 = fac = facDao.buscarConID(codigoSeleccionado);
+
             int dialogButton = JOptionPane.YES_NO_OPTION;
             int dialogResult = JOptionPane.showConfirmDialog(this, "Confirmar la Eliminacion de la Factura numero: " + compra1.getSecuencia(), "Eliminar Factura", dialogButton);
             if (dialogResult == 0) {
@@ -756,14 +866,35 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
                 ComprasDao obj1 = new ComprasDao();
                 try {
                     if (clicJtable == 1) {
-                        obj1.eliminar(compra1);
-                        setFechayHoraActualJDChooser();
+                        DetalleComprasDao cdDao = new DetalleComprasDao();
+                        List<DetalleCompra> d;
+                        ArrayList<Kardex> kardex = new ArrayList<>();
+                        d = cdDao.buscarConIDFact(compra1.getCodigo());
+                        for (DetalleCompra dc : d) {
+                            Kardex k = new Kardex();
+                            k.setBodega(Principal.bodegaPredeterminadaenCOmpra.subSequence(0, 1).toString());
+                            k.setDetalle("EGRESO ELIMINACION -- " + compra1.getTipo_documento() + " DE COMPRA " + compra1.getSecuencia());
+                            k.setOutcantidad(dc.getCantidad());
+                            k.setOutpvp(dc.getValorUnitario());
+                            k.setOutcosto(dc.getValorUnitario());
+                            k.setIncantidad("0");
+                            k.setIncosto("0");
+                            k.setInpvp("0");
+                            k.setProductos_Codigo(dc.getProductos_codigo());
+                            kardex.add(k);
+                        }
+
+                        ComitsAll c = new ComitsAll();
+                        c.ElimiarCompras(codigoSeleccionado, d, kardex);
+
+                        codigoSeleccionado = null;
+                        //setFechayHoraActualJDChooser();
                         ComprasDao obj = new ComprasDao();
                         String fechaInicio = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserdesde.getDate().toString());
                         String fechaFIn = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserhasta.getDate().toString());
                         jTable1.setModel(obj.listarComprasTbModelok(fechaInicio, fechaFIn));
                         this.ocultarFIlasJtable();
-
+                        sumartotales();
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(Buscar_usuarios.class.getName()).log(Level.SEVERE, null, ex);
@@ -787,6 +918,7 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
         String fechaFIn = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserhasta.getDate().toString());
         jTable1.setModel(obj.listarComprasTbModelok(fechaInicio, fechaFIn));
         this.ocultarFIlasJtable();
+        sumartotales();
 
     }//GEN-LAST:event_btn_hoyActionPerformed
 
@@ -804,6 +936,7 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
             String fechaFIn = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserhasta.getDate().toString());
             jTable1.setModel(obj.listarComprasTbModelok(fechaInicio, fechaFIn));
             this.ocultarFIlasJtable();
+            sumartotales();
         } else {
             msg.setProgressBar(3000, "Ranngo Errado!! Fecha de Inicio es Mayor a la del Final...");
         }
@@ -825,8 +958,28 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
         ComprasDao obj = new ComprasDao();
         jTable1.setModel(obj.Buscar_table_compras("compras.formaPago", evt.getItem().toString()));
         this.ocultarFIlasJtable();///
+        sumartotales();
+        
+        
 
     }//GEN-LAST:event_jcb_formaPagoItemStateChanged
+
+    private void jdchoserdesdeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jdchoserdesdeKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyChar()==KeyEvent.VK_ENTER){
+        if (jdchoserdesde.getDate().before(jdchoserhasta.getDate())) {
+
+            ComprasDao obj = new ComprasDao();
+            String fechaInicio = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserdesde.getDate().toString());
+            String fechaFIn = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdchoserhasta.getDate().toString());
+            jTable1.setModel(obj.listarComprasTbModelok(fechaInicio, fechaFIn));
+            this.ocultarFIlasJtable();
+            sumartotales();
+        } else {
+            msg.setProgressBar(3000, "Ranngo Errado!! Fecha de Inicio es Mayor a la del Final...");
+        }
+        }
+    }//GEN-LAST:event_jdchoserdesdeKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -843,6 +996,7 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -852,6 +1006,7 @@ public class BuscarCompras extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> jcb_formaPago;
     private com.toedter.calendar.JDateChooser jdchoserdesde;
     private com.toedter.calendar.JDateChooser jdchoserhasta;
+    private javax.swing.JTextField txt_total;
     private javax.swing.JTextField txt_xMonto;
     private javax.swing.JTextField txt_xcliente;
     private javax.swing.JTextField txt_xnumeroFactura;

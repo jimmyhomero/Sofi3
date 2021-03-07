@@ -8,7 +8,10 @@ package Vista.Dialogs;
 import Controlador.Usuarios.HoraFecha;
 import Controlador.cheques.BancosDao;
 import Modelo.Bancos;
+import ClasesAuxiliares.debug.Deb;
+import Modelo.Cheques;
 import Modelo.Clientes;
+import Modelo.Pagos;
 import Vista.Principal;
 import Vista.Usuarios.Buscar_Clientes;
 import Vista.Usuarios.Crear_Clientes;
@@ -30,22 +33,24 @@ public class PagoConCheque extends javax.swing.JDialog {
      */
     public static String formaPago = " ";
     public static Clientes cliente = new Clientes();
+    Cheques cheque= new Cheques();
+    Pagos pagos = new  Pagos();
 
     public PagoConCheque(java.awt.Frame parent, boolean modal) {
         super(parent, false);
         initComponents();
-        System.out.println(".run()asdasdadsadadasdadsadsasdasdsasdadsasdasdasdadas");
+        Deb.consola(".run()asdasdadsadadasdadsadsasdasdsasdadsasdasdasdadas");
         BancosDao bancoDao = new BancosDao();
         HoraFecha ob2 = new HoraFecha();
         jDateChooser1.setDate(ob2.obtenerFecha());
         if (formaPago.equalsIgnoreCase("CHEQUE")) {
-            txtCantidad.setEditable(false);
+            txt_Valor.setEditable(false);
             txtCliente.setEditable(false);
         }
         for (Bancos b : bancoDao.listar()) {
             jcbBanco.addItem(b.getNombre());
         }
-        System.out.println("ffffffffffffffffffffffffffffff");
+        Deb.consola("ffffffffffffffffffffffffffffff");
     }
 
     /**
@@ -64,7 +69,7 @@ public class PagoConCheque extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtCantidad = new javax.swing.JTextField();
+        txt_Valor = new javax.swing.JTextField();
         txtNumCheque = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
@@ -94,13 +99,18 @@ public class PagoConCheque extends javax.swing.JDialog {
 
         jLabel1.setText("Nombre Enidad Bancaria");
 
-        jLabel2.setText("Cantidad");
+        jLabel2.setText("Valor");
 
         jLabel3.setText("Numero  Cheque");
 
-        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+        txt_Valor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_ValorActionPerformed(evt);
+            }
+        });
+        txt_Valor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtCantidadKeyReleased(evt);
+                txt_ValorKeyReleased(evt);
             }
         });
 
@@ -119,13 +129,13 @@ public class PagoConCheque extends javax.swing.JDialog {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(94, 94, 94)
-                        .addComponent(jLabel2)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jcbBanco, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_Valor, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtNumCheque, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(29, 29, 29))
@@ -140,7 +150,7 @@ public class PagoConCheque extends javax.swing.JDialog {
                 .addGap(5, 5, 5)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jcbBanco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_Valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNumCheque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
@@ -351,16 +361,20 @@ public class PagoConCheque extends javax.swing.JDialog {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
+        
+        
+       
         if (formaPago.equalsIgnoreCase("CHEQUE")) {
-            if (Double.parseDouble(txtCantidad.getText()) >= 0.0) {
+            if (Double.parseDouble(txt_Valor.getText()) >= 0.0) {
                 Modal_CrearFacturas.RegistrodeChequeExitoso = true;
+                
             }
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
-    private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
+    private void txt_ValorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_ValorKeyReleased
         // TODO add your handling code here:
-        if (ValidaNUmeros.isOnlyDouble(txtCantidad.getText())) {
+        if (ValidaNUmeros.isOnlyDouble(txt_Valor.getText())) {
 
 //            if (Double.valueOf(txt_total.getText()) > Double.valueOf(txt_entrada.getText())) {
 //
@@ -374,7 +388,7 @@ public class PagoConCheque extends javax.swing.JDialog {
 //                saldo = total - abono;
 //                txt_saldo.setText(String.valueOf(saldo));
 //            } else {
-//                //  System.out.println("Vista.Usuarios.PagoCredito.txt_entradaKeyReleased()auuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+//                //  Deb.consola("Vista.Usuarios.PagoCredito.txt_entradaKeyReleased()auuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
 //                JOptionPane.showMessageDialog(null, "El valor de Entrada del Credito no puede ser Mayor al Total de la Venta");
 //                txt_entrada.requestFocus();
 //                txt_entrada.setText("0.0");
@@ -382,10 +396,10 @@ public class PagoConCheque extends javax.swing.JDialog {
 //
 //            }
         } else {
-            txtCantidad.setText("0.0");
-            txtCantidad.selectAll();
+            txt_Valor.setText("0.0");
+            txt_Valor.selectAll();
         }
-    }//GEN-LAST:event_txtCantidadKeyReleased
+    }//GEN-LAST:event_txt_ValorKeyReleased
 
     private void txtNumChequeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumChequeKeyReleased
         // TODO add your handling code here:
@@ -396,6 +410,10 @@ public class PagoConCheque extends javax.swing.JDialog {
             txtNumCheque.selectAll();
         }
     }//GEN-LAST:event_txtNumChequeKeyReleased
+
+    private void txt_ValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_ValorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_ValorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -464,12 +482,12 @@ public class PagoConCheque extends javax.swing.JDialog {
     public static javax.swing.JPanel jPanel3;
     public static javax.swing.JPanel jPanel4;
     public static javax.swing.JComboBox<String> jcbBanco;
-    public static javax.swing.JTextField txtCantidad;
     public static javax.swing.JTextField txtCliente;
     public static javax.swing.JTextField txtLugarEmision;
     public static javax.swing.JTextField txtNumCheque;
     public static javax.swing.JTextField txtPagueseAlaOrdenDe;
     public static javax.swing.JTextField txtREferencia;
     public static javax.swing.JTextField txtTitulardeLaCuenta;
+    public static javax.swing.JTextField txt_Valor;
     // End of variables declaration//GEN-END:variables
 }

@@ -41,7 +41,6 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
     /**
      * Creates new form NuevaFormaPago
      */
-    
     boolean _FormaPagoSelected = false;
     String _tipo_forma_pago = "";
     boolean _afectaaCaja = false;
@@ -50,6 +49,7 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
     boolean _pvpaUsarselected = false;
     boolean _peridoCobranzaselected = false;
     boolean _sustentoTributarioSelected = false;
+    public static String comprasoVentas="";
 
     private List<SriFormaPago> listaFormasPagoSri = new ArrayList();
     private ArrayList<Precios> listaPrecios = new ArrayList();
@@ -61,12 +61,12 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
     Precios precioseleccionado = new Precios();
     SriFormaPago sriformaPagoSeleccionada = new SriFormaPago();
 
-    public NuevaFormaPago() {
-        initComponents();
+    public NuevaFormaPago(){
+        initComponents();        
         /////////////INICIALIZAR JTEXFIELD Y jTEXTaREA
         OperacionesForms.inicializarJtextFieldMyusculas(jTextArea1);
         OperacionesForms.inicializarJtextFieldMyusculas(txt_nombreFormaPago);
-        
+
         /////////INICIALIZA COMBOCBOX
         OperacionesForms.Inicializar_Combobox_Seleccione(jcb_tipoPVPUsar);
         OperacionesForms.Inicializar_Combobox_Seleccione(jcb_cobranza);
@@ -74,11 +74,14 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
         OperacionesForms.Inicializar_Combobox_Seleccione(jcb_sustentoTributario);
         jcb_formaPago.addItem(OperacionesForms._EFECTIVO_TEXT);
         jcb_formaPago.addItem(OperacionesForms._CREDITO_TEXT);
-        jcb_formaPago.addItem(OperacionesForms._PLAN_ACUMULATIVO_TEXT);
+        jcb_formaPago.addItem(OperacionesForms._PLAN_ACUMULATIVO_TEXT);        
+        jcb_formaPago.addItem(OperacionesForms._CHEQUE_TEXT);
+        OperacionesForms.Inicializar_Combobox_TamanoCero(jcb_tipoPVPUsar);
         OperacionesForms.inicializadPeriodosCObranza(jcb_cobranza);
+        
 ////////////tamanos
-        dimensiooCredito.setSize(1010, 308);
-        dimensiooOriginal.setSize(814, 308);
+        dimensiooCredito.setSize(1153, 304);
+        dimensiooOriginal.setSize(948, 304);
         dimensionJCBTipopvpv.setSize(165, 26);
         dimensionlabelTipopvpv.setSize(119, 16);
 
@@ -108,6 +111,11 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
         Deb.consola(jLabel7.getPreferredSize().toString() + "   -jcbx1");
 
         Deb.consola("SELECTED ITEM: " + jcb_tipoPVPUsar.getSelectedItem().toString());
+          Deb.consola("SELECTED ITEMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxaSDDDDDDDDDDDDDDDDDDDD: "+this.getTitle());
+        if(this.getTitle().equalsIgnoreCase(OperacionesForms._FORMA_PAGO_CXP_TEXT)){
+              
+        jcb_tipoPVPUsar.setVisible(false);
+        }
     }
 
     ////////////////////encerarVaraibles
@@ -151,15 +159,19 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jLabel8 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         txt_nombreFormaPago = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jcb_sustentoTributario = new javax.swing.JComboBox<>();
         jPanel12 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
 
         setClosable(true);
         setResizable(true);
@@ -258,7 +270,7 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txt_diasCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Opciones en Formas de Pago"));
@@ -322,10 +334,10 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
         );
+
+        jLabel8.setText("PAGO ");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -338,8 +350,10 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
                         .addComponent(jLabel7)
                         .addGap(18, 18, 18)
                         .addComponent(jrb_afectaCaja))
-                    .addComponent(jcb_tipoPVPUsar, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jcb_formaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jcb_formaPago, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jcb_tipoPVPUsar, javax.swing.GroupLayout.Alignment.LEADING, 0, 241, Short.MAX_VALUE))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -347,6 +361,7 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(5, 5, 5)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -354,10 +369,11 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
                             .addComponent(jrb_afectaCaja))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jcb_tipoPVPUsar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
-                        .addComponent(jcb_formaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jcb_formaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Nueva Forma de Pago"));
@@ -423,13 +439,14 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jcb_sustentoTributario, 0, 432, Short.MAX_VALUE)
+            .addComponent(jcb_sustentoTributario, 0, 388, Short.MAX_VALUE)
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jcb_sustentoTributario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder("Accionese"));
@@ -452,7 +469,7 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -463,6 +480,43 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE", "CHEQUE", "TRANSFERENCIA", "VOUCHER" }));
+
+        jLabel9.setText("subclase");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox1, 0, 175, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(19, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -471,19 +525,13 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(787, 787, 787)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(207, 207, 207)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -491,23 +539,15 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -521,7 +561,7 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -532,9 +572,7 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 8, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -546,19 +584,21 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
         FormasPagoCV fpc = new FormasPagoCV();
         if (!txt_nombreFormaPago.getText().isEmpty()) {
             PLANC cuenta = new PLANC();
-            if (_FormaPagoSelected && _pvpaUsarselected && _sustentoTributarioSelected ) {
+            if (_FormaPagoSelected && _sustentoTributarioSelected) {
                 try {
                     fpc.setDescripcion(jTextArea1.getText());
                     fpc.setFormaPago(txt_nombreFormaPago.getText());
                     if (_afectaaCaja) {
                         fpc.setAfectaACaja(1);
-                         fpc.setNumeroCuotas(0);
-                         fpc.setPorcentajeEntrada(0.0);
-                         fpc.setPeridoCobranza("");
+                        fpc.setNumeroCuotas(0);
+                        fpc.setPorcentajeEntrada(0.0);
+                        fpc.setPeridoCobranza("");
+                        fpc.setDias_credito(0);
                     } else {
                         fpc.setAfectaACaja(0);
-                        fpc.setNumeroCuotas(Integer.parseInt(txt_cuotas.getText()));                        
-                            fpc.setPorcentajeEntrada(Double.valueOf(txt_entrada.getText()));
+                        fpc.setNumeroCuotas(Integer.parseInt(txt_cuotas.getText()));
+                        fpc.setPorcentajeEntrada(Double.valueOf(txt_entrada.getText()));
+                        fpc.setDias_credito(Integer.valueOf(txt_diasCredito.getText()));
                         if (jcb_cobranza.getSelectedItem().equals(OperacionesForms._COMBO_SELECCIONE_TEXT)) {
                             error = "DEBE SELECCIONAR PERIDO DE COBRANZA";
                         } else {
@@ -566,7 +606,7 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
                             error = "";
                         }
                     }
-                    fpc.setEsCxcCxp("VENTAS");
+                    fpc.setEsCxcCxp(comprasoVentas);
                     fpc.setPlanCodigo(OperacionesForms._ID_CODIGO_PLAN_CUENTA_0);
                     fpc.setSriFormaPagoCodigo(sriformaPagoSeleccionada.getCodigo());
                     fpc.setTipoPago(jcb_formaPago.getSelectedItem().toString());
@@ -575,7 +615,7 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
                     if (fpcompracontroller.guardarFormaPagook(fpc) != null && error.equalsIgnoreCase("")) {
                         ProgressBar.mostrarMensajeAzul("Forma de Pago " + txt_nombreFormaPago.getText() + " se registro correctamente..!");
                     } else {
-                        ProgressBar.mostrarMensajeAzul("Error: " + error);
+                        ProgressBar.mostrarMensajeAzul("Errorx: " + error);
                     }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -585,7 +625,7 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
                 }
             } else {
 
-                ProgressBar.mostrarMensajeAzul("DEBE SELECCIONAR LAS OPCIONES BASICAS : _FormaPagoSelected:: " + _FormaPagoSelected + "   _pvpaUsarselected :: " + _pvpaUsarselected + " _sustentoTributarioSelected:  " + _sustentoTributarioSelected );
+                ProgressBar.mostrarMensajeAzul("DEBE SELECCIONAR LAS OPCIONES BASICAS : _FormaPagoSelected:: " + _FormaPagoSelected + "   _pvpaUsarselected :: " + _pvpaUsarselected + " _sustentoTributarioSelected:  " + _sustentoTributarioSelected);
             }
 
         } else {
@@ -635,18 +675,17 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
         if (!jcb_formaPago.getSelectedItem().toString().equals(OperacionesForms._COMBO_SELECCIONE_TEXT)) {
             _FormaPagoSelected = true;
             if (jcb_formaPago.getSelectedItem().toString().equals(OperacionesForms._EFECTIVO_TEXT)) {
-                    jrb_afectaCaja.setSelected(true);
-                    _afectaaCaja = true;
-                } else {
-                    jrb_afectaCaja.setSelected(false);
-                    _afectaaCaja = false;
-                }
-            
+                jrb_afectaCaja.setSelected(true);
+                _afectaaCaja = true;
+            } else {
+                jrb_afectaCaja.setSelected(false);
+                _afectaaCaja = false;
+            }
 
-            if (jcb_formaPago.getSelectedItem().toString().equals(OperacionesForms._EFECTIVO_TEXT)) {                
+            if (jcb_formaPago.getSelectedItem().toString().equals(OperacionesForms._EFECTIVO_TEXT)) {
                 this.setSize(dimensiooOriginal);
             } else {
-                
+
                 this.setSize(dimensiooCredito);
                 txt_cuotas.setText("1");
                 txt_diasCredito.setText("30");
@@ -752,6 +791,7 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -759,10 +799,13 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;

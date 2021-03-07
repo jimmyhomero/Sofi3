@@ -9,6 +9,7 @@ import ClasesAuxiliares.Exporter;
 import Controlador.Usuarios.ClientesDao;
 import Modelo.Clientes;
 import Vista.Principal;
+import ClasesAuxiliares.debug.Deb;
 import Vlidaciones.ValidaNUmeros;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -303,7 +304,7 @@ public class Buscar_Clientes_botones extends javax.swing.JInternalFrame {
 //                //Crear_Usuarios.jcb_tipo.setSelectedItem(0);
 //                Crear_Usuarios.setItemSelect = o;
 //                
-//                System.out.println("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
+//                Deb.consola("Vista.Usuarios.Buscar_usuarios.llenarjcbSelectedItem()" + tipo_Usuario.getTipo());
 //            }
 //
 //        }
@@ -329,7 +330,7 @@ public class Buscar_Clientes_botones extends javax.swing.JInternalFrame {
         usuario1 = usuario;
         //lleno el fomulario 
         obj_crea.txt_codigo.setText(String.valueOf(usuario.getCodigo()));
-        System.out.println("CODIGOOO:  "+obj_crea.txt_codigo.getText());
+        Deb.consola("CODIGOOO:  "+obj_crea.txt_codigo.getText());
        // JOptionPane.showMessageDialog(null, "codigo: "+usuario.getCodigo());
         obj_crea.txt_cedulax.setText(usuario.getCedula());
         obj_crea.txt_nombres.setText(usuario.getNombre());

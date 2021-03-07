@@ -5,6 +5,7 @@
  */
 package ClasesAuxiliares;
 
+import ClasesAuxiliares.debug.Deb;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +28,7 @@ public class SshUpdate {
             ssh.authPublickey("userId");
             Session session = ssh.startSession();
             Command cmd = session.exec("yourCommand");
-            System.out.println(cmd.getOutputStream());
+            Deb.consola(cmd.getOutputStream().toString());
             session.close();
             ssh.disconnect();
         } catch (IOException ex) {

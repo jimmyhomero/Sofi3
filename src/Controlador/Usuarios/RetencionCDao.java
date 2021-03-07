@@ -24,6 +24,8 @@ import ecx.unomas.retencion.Impuesto;
 import ecx.unomas.retencion.Retencion;
 import ecx.unomas.service.Comprobante;
 import ecx.unomas.service.Config;
+import ClasesAuxiliares.debug.Deb;
+import Modelo.Clientes;
 import login.login;
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +56,7 @@ private String retstring="";
     private DefaultListModel modeloListadetalle = new DefaultListModel();
     private DefaultListModel modeloListacantidad = new DefaultListModel();
     public ArrayList<sri_tipocomprobante> listaTipoComporabante = new ArrayList<sri_tipocomprobante>();
+    public ArrayList<Retencion_> listaFacNoAutorizadas = new ArrayList<Retencion_>();
 
     public ArrayList<sri_tipocomprobante> getlistaTipoComprobate() {
 
@@ -78,7 +81,7 @@ private String retstring="";
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -109,7 +112,7 @@ private String retstring="";
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -142,7 +145,7 @@ private String retstring="";
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -155,7 +158,7 @@ private String retstring="";
         String anio = "";
         mes = claveAcceso.substring(2, 4);
         anio = claveAcceso.substring(4, 8);
-        System.out.println("periodo: " + mes + "/" + anio);
+        Deb.consola("periodo: " + mes + "/" + anio);
         return mes + "/" + anio;
     }
 
@@ -165,21 +168,21 @@ private String retstring="";
 //        try {
 //            long ddo = getFechaNowTImestampServer().getTime();
 //        java.sql.Date fecha = new java.sql.Date(ddo);
-//        System.out.println("SsssssssssssssssssssssssssssÑ     : " + fecha.toString());
+//        Deb.consola("SsssssssssssssssssssssssssssÑ     : " + fecha.toString());
 //         periodo = HoraFecha.fecha_mmaaConSlash(fecha.toString());
 //        } catch (Exception e) {
-//            System.out.println("Controlador.Usuarios.RetencionCDao.creaxmlRetencionElectronica()cvb: "+e);
+//            Deb.consola("Controlador.Usuarios.RetencionCDao.creaxmlRetencionElectronica()cvb: "+e);
 //        }
 
         Retencion_ ret = new Retencion_();
         Compras com = new Compras();
         ComprasDao comDao = new ComprasDao();
-        Proveedores pro = new Proveedores();
-        ProveedoresDao proDao = new ProveedoresDao();
+        Clientes pro = new Clientes();
+        ClientesDao proDao = new ClientesDao();
         try {
             ret = this.buscarConID(codigoRet);
         } catch (Exception e) {
-            System.out.println("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()sssd" + e);
+            Deb.consola("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()sssd" + e);
         }
         try {
             com = comDao.buscarConID(ret.getCompras_codigo());
@@ -209,7 +212,7 @@ private String retstring="";
 
             f.setObligadoContabilidad(login.ObligadoSiNOEmpresa);
 
-            pro = proDao.buscarConID(ret.getProveedor_codigo());
+            pro = proDao.buscarConID(ret.getProveedor_codigo(),1);
 
             if (pro.getCedula().length() == 10) {
                 f.setTipoIdentificacionSujetoRetenido(Variables.FE_TIPO_IDENTIFICACION_CEDULA);
@@ -248,7 +251,7 @@ private String retstring="";
             
             InfoAdicional infadd2 = new InfoAdicional();
             infadd2.setNombre("PAGO");
-            infadd2.setValor(pro.getPagoPredeterminado());                      
+            infadd2.setValor(pro.getPagoPredeterminado().toString());                      
             InfoAdicional mail = new InfoAdicional();
             mail.setNombre("E-MAIL");
             mail.setValor(pro.getMail());            
@@ -256,7 +259,7 @@ private String retstring="";
             f.setInfAdicional(infadd2);            
             retstring = f.getXML();
 //////            ArchivoUtil.stringToFile(Config.GENERADOS_DIR + ret.getAutorizacion() + ".xml", s);
-//////            System.out.println("RUTA DE GENERADOS: " + Config.GENERADOS_DIR + ret.getAutorizacion() + ".xml");
+//////            Deb.consola("RUTA DE GENERADOS: " + Config.GENERADOS_DIR + ret.getAutorizacion() + ".xml");
 //////            File xml_file = new File(Config.GENERADOS_DIR + ret.getAutorizacion() + ".xml");
 //////            byte[] archivoBytes = null;
 //////            try {
@@ -283,7 +286,7 @@ private String retstring="";
             this.conectar();
             PreparedStatement st;
             st = this.getCnx().prepareCall("select b" + bodega + " , producto from productos where  producto like '%" + value + "%' order BY productos.producto LIMIT 0, 50");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -303,7 +306,48 @@ private String retstring="";
     public DefaultListModel Buscar_productos_stock() {
         return modeloListacantidad;
     }
+public ArrayList<Retencion_> buscarFacturasNoAutorizadas() {
+        ResultSet rs;
+        Retencion_ u = new Retencion_();
+        try {
 
+            this.conectar();
+            PreparedStatement st;
+
+            st = this.getCnx().prepareCall("select * from retencion where autorizado =0 ");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Retencion_ per = new Retencion_();
+                per.setCodig(rs.getInt("Codigo"));
+                per.setAutorizacion(rs.getString("Autorizacion"));
+                per.setCaducidad(rs.getDate("caducidad"));
+                per.setCompra_seceuncia(rs.getString("Compra_seceuncia"));
+                per.setCompras_codigo(rs.getInt("Compras_codigo"));
+                per.setConcepto(rs.getString("Concepto"));
+                per.setFecha(rs.getDate("fecha"));
+                per.setEstado(rs.getInt("estado"));
+                per.setProveedor_codigo(rs.getInt("Proveedor_codigo"));
+                per.setSec1(rs.getString("sec1"));
+                per.setSec2(rs.getString("sec2"));
+                per.setSec3(rs.getString("sec3"));
+                per.setSecuencia(rs.getString("Secuencia"));
+                per.setTipo_comprobante(rs.getString("Tipo_comprobante"));
+                per.setTotal(rs.getDouble("total"));
+                per.setUsuario_codigo(rs.getInt("Usuarios_Codigo"));
+                per.setAutorizado(rs.getInt("Autorizado"));
+                
+                u = per;
+                listaFacNoAutorizadas.add(u);
+            }
+
+        } catch (Exception ex) {
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
+        } finally {
+            this.cerrar();
+        }
+
+        return listaFacNoAutorizadas;
+    }
     public Date obtenerFecha() {
         Date fecha = null;
         ResultSet rs;
@@ -336,7 +380,7 @@ private String retstring="";
             PreparedStatement st;
             st = this.getCnx().prepareCall("select compra_secuencia from retencion where compra_secuencia ='" + secuencial + "'");
             //  JOptionPane.showMessageDialog(null,"sssssddeerere"+ st.toString());
-            System.out.println("Controlador.CUsuarios.Buscar_takkkkkkkkkkkkkkble()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_takkkkkkkkkkkkkkble()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -363,7 +407,7 @@ private String retstring="";
             PreparedStatement st;
             st = this.getCnx().prepareCall("select Productos.*, modelos.Modelo from productos inner join modelos on modelos.Codigo=productos.Modelos_Codigo where producto  like '%" + value + "%' order BY productos.producto LIMIT 0, 50");
             //  JOptionPane.showMessageDialog(null,"sssssddeerere"+ st.toString());
-            //    System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            //    Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -378,7 +422,7 @@ private String retstring="";
                 registros[8] = "0";
                 registros[9] = rs.getString("b" + bodega);
 
-//                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+//                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
             }
 
         } catch (Exception ex) {
@@ -405,7 +449,7 @@ private String retstring="";
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()xxx: " + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()xxx: " + ex);
         } finally {
             this.cerrar();
 
@@ -444,11 +488,11 @@ private String retstring="";
             ResultSet rs = consulta.getGeneratedKeys();
             if (rs.next()) {
                 codigoThisFactura = rs.getInt(1);
-                System.out.println("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
+                Deb.consola("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
             }
         } catch (SQLException ex) {
             //msg.setProgressBar_mensajae(ex.toString());
-            System.out.println("Controlador.CUsuarios.guardar()" + ex);
+            Deb.consola("Controlador.CUsuarios.guardar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -485,7 +529,7 @@ private String retstring="";
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -518,7 +562,7 @@ private String retstring="";
             PreparedStatement st;
 
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -538,7 +582,7 @@ private String retstring="";
                 }
 
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
 
             }
 

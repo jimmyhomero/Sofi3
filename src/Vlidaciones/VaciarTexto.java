@@ -23,13 +23,13 @@ public class VaciarTexto {
             if(panel.getComponents()[i] instanceof JTextField){
                 ((JTextField)panel.getComponents()[i]).setText("");
                 Deb.consola("Limpia: JTextField" );
-//                                System.out.println("Vlidaciones.VaciarTexto.limpiar_texto() aaaaaaaaaaaaaa");
+//                                Deb.consola("Vlidaciones.VaciarTexto.limpiar_texto() aaaaaaaaaaaaaa");
 
             }
              if(panel.getComponents()[i] instanceof JPasswordField){
                 ((JPasswordField)panel.getComponents()[i]).setText("");
                 Deb.consola("Limpia: JPasswordField" );
-  //                              System.out.println("Vlidaciones.VaciarTexto.limpiar_texto() bbbbbbbbbbbbbb");
+  //                              Deb.consola("Vlidaciones.VaciarTexto.limpiar_texto() bbbbbbbbbbbbbb");
 
             }
             if(panel.getComponents()[i] instanceof JTextArea){

@@ -8,7 +8,7 @@ package Vlidaciones;
 import static com.sun.javafx.tk.Toolkit.getToolkit;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
-
+import ClasesAuxiliares.debug.Deb;
 /**
  *
  * @author USUARIO
@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 public class ValidaNUmeros {
 
     public static boolean keyTyped(KeyEvent ke) {
-        System.out.println("Vlidaciones.ValidaNUmeros.keyTyped():" + ke.getKeyChar());
+        Deb.consola("Vlidaciones.ValidaNUmeros.keyTyped():" + ke.getKeyChar());
          boolean a = false;
         char c = ke.getKeyChar();    
         if (Character.isDigit(c)) {

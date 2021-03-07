@@ -74,13 +74,13 @@ public class ClientPreemptiveBasicAuthentication {
 
             HttpGet httpget = new HttpGet("http://httpbin.org/hidden-basic-auth/user/passwd");
 
-            System.out.println("Executing request " + httpget.getRequestLine() + " to target " + target);
+            Deb.consola("Executing request " + httpget.getRequestLine() + " to target " + target);
             for (int i = 0; i < 3; i++) {
                 CloseableHttpResponse response = httpclient.execute(target, httpget, localContext);
                 try {
-                    System.out.println("----------------------------------------");
-                    System.out.println(response.getStatusLine());
-                    System.out.println(EntityUtils.toString(response.getEntity()));
+                    Deb.consola("----------------------------------------");
+                    Deb.consola(response.getStatusLine());
+                    Deb.consola(EntityUtils.toString(response.getEntity()));
                 } finally {
                     response.close();
                 }

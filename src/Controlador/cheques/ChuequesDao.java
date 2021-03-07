@@ -242,7 +242,7 @@ public class ChuequesDao extends Coneccion {
 ////////////
 ////////////        } catch (Exception ex) {
 ////////////            msg.setMensaje(ex.toString());
-////////////            System.out.println("Controlador.CUsuarios.listar() listar cajassss " + ex);
+////////////            Deb.consola("Controlador.CUsuarios.listar() listar cajassss " + ex);
 ////////////        } finally {
 ////////////            this.cerrar();
 ////////////        }

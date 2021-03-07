@@ -44,7 +44,7 @@ public class ClientChunkEncodedPost {
 
     public static void main(String[] args) throws Exception {
         if (args.length != 1)  {
-            System.out.println("File path not given");
+            Deb.consola("File path not given");
             System.exit(1);
         }
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -64,12 +64,12 @@ public class ClientChunkEncodedPost {
 
             httppost.setEntity(reqEntity);
 
-            System.out.println("Executing request: " + httppost.getRequestLine());
+            Deb.consola("Executing request: " + httppost.getRequestLine());
             CloseableHttpResponse response = httpclient.execute(httppost);
             try {
-                System.out.println("----------------------------------------");
-                System.out.println(response.getStatusLine());
-                System.out.println(EntityUtils.toString(response.getEntity()));
+                Deb.consola("----------------------------------------");
+                Deb.consola(response.getStatusLine());
+                Deb.consola(EntityUtils.toString(response.getEntity()));
             } finally {
                 response.close();
             }

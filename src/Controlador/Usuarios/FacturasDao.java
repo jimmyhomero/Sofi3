@@ -15,16 +15,21 @@ import Modelo.Clientes;
 import Modelo.DetalleFactura;
 import Modelo.Facturas;
 import Vista.Principal;
+import static Vista.Usuarios.Modal_CrearNC.idFacturaSeleccionadaDesdeListadeFacturasParaNotaCredito;
 import Vlidaciones.ProgressBar;
-import com.ws.electro.cliente.Response;
-import com.ws.electro.cliente.Respuesta;
-import com.ws.electro.cliente.WSElectro_Service;
+import com.ws.localhost.Respuesta;
+import com.ws.localhost.WSElectro_Service;
+
 import ecx.unomas.elements.ArchivoUtil;
 import ecx.unomas.factura.Detalle;
 import ecx.unomas.factura.Factura;
 import ecx.unomas.factura.Impuesto;
 import ecx.unomas.factura.InfoAdicional;
 import ecx.unomas.factura.TotalImpuesto;
+import ecx.unomas.notacredito.DetImpuestos;
+import ecx.unomas.notacredito.Detalles;
+import ecx.unomas.notacredito.NotaCredito;
+import ecx.unomas.notacredito.TotalConImpuestos;
 import ecx.unomas.service.Comprobante;
 import ecx.unomas.service.Config;
 import login.login;
@@ -90,7 +95,7 @@ public class FacturasDao extends Coneccion {
 
         //
         Integer codigoFac = fac.getCodigo();
-        System.out.println("TIPO AMBIENTE EEEEEEEEEEEEEEEEEEEE: " + Variables.FE_TIPO_AMBIENTE);
+        Deb.consola("TIPO AMBIENTE EEEEEEEEEEEEEEEEEEEE: " + Variables.FE_TIPO_AMBIENTE);
         try {
 
             Factura f = new Factura();
@@ -109,7 +114,7 @@ public class FacturasDao extends Coneccion {
             f.setSecuencia(fac.getSecfactura());
             f.setDirMatriz(login.direccionEmpresa);
             String fecha = fac.getFecha().toString();
-            String a = HoraFecha.fecha_ddmmaaa_conslash_facElectronica(fecha);
+            String a = HoraFecha.fecha_aaaa_mm_dd_cambiamos_a_ddmmaaaa_conslash_facElectronica(fecha);
             f.setFechaEmision(a);
             f.setDirEstablecimiento(login.direccionEmpresa);
             if (login.contribuyenteEspecialNUmero.equalsIgnoreCase("00")) {
@@ -134,10 +139,10 @@ public class FacturasDao extends Coneccion {
             f.setRazonSocialComprador(cliente.getNombre());
             f.setIdentificacionComprador(cliente.getCedula());
             f.setDireccionComprador(cliente.getDireccion());
-            Double tot1=Double.parseDouble(fac.getSubtotaI_con_iva()) ;
-            Double tot2 =Double.parseDouble(fac.getSubtotal_sin_iva());
-            Double total=tot1+tot2;
-            String stirngtot=String.format("%.2f", total).replace(",", ".");
+            Double tot1 = Double.parseDouble(fac.getSubtotaI_con_iva());
+            Double tot2 = Double.parseDouble(fac.getSubtotal_sin_iva());
+            Double total = tot1 + tot2;
+            String stirngtot = String.format("%.2f", total).replace(",", ".");
             f.setTotalSinImpuestos(Double.parseDouble(stirngtot));
             f.setTotalDescuento(Double.parseDouble(fac.getDescuento()));
 
@@ -159,7 +164,7 @@ public class FacturasDao extends Coneccion {
 
 /////////////
             f.setImporteTotal(Double.parseDouble(fac.getTotal()));
-            System.out.println("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()ccccxcxc:" + fac.getTotal());
+            Deb.consola("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()ccccxcxc:" + fac.getTotal());
             //DetalleFactura df = new DetalleFactura();
             List<DetalleFactura> lista = new ArrayList<DetalleFactura>();
             DetalleFacturaDao dfDao = new DetalleFacturaDao();
@@ -168,7 +173,7 @@ public class FacturasDao extends Coneccion {
 
                 Detalle d = new Detalle();
 
-                d.setCodigoPrincipal(String.valueOf(df.getProductos_codigo()));
+                d.setCodigoPrincipal(String.valueOf(df.getProductos_codigoAlterno()));
                 d.setCodigoSecundario(String.valueOf(df.getProductos_codigo()));
                 d.setDescripcion(df.getDetalle());
                 d.setCantidad(Double.parseDouble(df.getCantidad()));
@@ -229,7 +234,7 @@ public class FacturasDao extends Coneccion {
 
             String s2 = xmltoStringFormat(s);
             facxx = s2;
-            System.out.println("XMLLLL: " + facxx);
+            Deb.consola("XMLLLL: " + facxx);
 //////            WSElectro_Service Ws = new WSElectro_Service();
 //////            Response r = new Response();
 //////            r = Ws.getWSElectroPort().receiptXMLIn(facxx, "admin", "admin", cliente.getMail());
@@ -237,11 +242,204 @@ public class FacturasDao extends Coneccion {
 //////            
 //////            if (r.getResponse().equalsIgnoreCase("0")) {
 //////                this.UpdateEstadoAutorizado(fac.getCodigo(), 1, "");
-//////                System.out.println("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()xxxs: recibida x ws RESPUESTA WS>>: " + r.getResponse());
+//////                Deb.consola("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()xxxs: recibida x ws RESPUESTA WS>>: " + r.getResponse());
 //////            } else {
-//////                System.out.println("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()xxxs: ERROR RESPUESTA WS>>: " + r.getResponse());
+//////                Deb.consola("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()xxxs: ERROR RESPUESTA WS>>: " + r.getResponse());
 //////            }
-            //     System.out.println("xmls" + s);
+            //     Deb.consola("xmls" + s);
+            //JOptionPane.showMessageDialog(null,Config.GENERADOS_DIR);
+
+////                Config.GENERADOS_DIR = Config.GENERADOS_DIR + "\\";
+////                Config.FIRMADOS_DIR = Config.FIRMADOS_DIR + "\\";
+////                Config.SUBIDOS_DIR = Config.SUBIDOS_DIR + "\\";
+////                Config.AUTORIZADOS_DIR = Config.AUTORIZADOS_DIR + "\\";
+////                Config.NO_AUTORIZADOS_DIR = Config.NO_AUTORIZADOS_DIR + "\\";
+////
+////                ArchivoUtil.stringToFile(Config.GENERADOS_DIR + fac.getCalveAcceso() + ".xml", s);
+////                File xml_file = new File(Config.GENERADOS_DIR + fac.getCalveAcceso() + ".xml");
+////                byte[] archivoBytes = null;
+////                try {
+////
+////                    archivoBytes = ArchivoUtil.convertirArchivoAByteArray(xml_file);
+////                } catch (IOException ex) {
+////                    Logger.getLogger(FacturasDao.class.getName()).log(Level.SEVERE, null, ex);
+////                }
+////                String clave = fac.getCalveAcceso();
+        } catch (Exception e) {
+            System.err.println("erroro : " + e);
+        }
+
+        //a.sendDoc(claveAcceso,"homer_loading@hotmail.com"," Jimmy carri");
+        //      a.download(claveAcceso, ext);
+        return facxx;
+    }
+
+    public String creaxmlNOTACREDITOElectronica(Facturas fac) {
+        String facxx = "";
+
+        //
+        Integer codigoFac = fac.getCodigo();
+        Deb.consola("TIPO AMBIENTE EEEEEEEEEEEEEEEEEEEE: " + Variables.FE_TIPO_AMBIENTE);
+        try {
+
+            NotaCredito f = new NotaCredito();
+
+            f.setTipoEmision(Integer.parseInt(Variables.FE_TIPO_EMISION));
+            f.setAmbiente(Integer.parseInt(Variables.FE_TIPO_AMBIENTE));
+            //f.setAmbienteName();
+            f.setNombreComercial(login.nombreEmpresa);
+            f.setRazonSocial(login.nombreEmpresa);
+            f.setRUC(login.rucEmpresa);
+
+            f.setClaveAcceso(fac.getCalveAcceso());
+            f.setCodDoc(Variables.FE_NOTA_CREDITO);
+            f.setEstab(fac.getEstablecimiento());
+            f.setPtoEmi(fac.getPtoEmision());
+            f.setSecuencia(fac.getSecfactura());
+            f.setDirMatriz(login.direccionEmpresa);
+            String fecha = fac.getFecha().toString();
+            String a = HoraFecha.fecha_aaaa_mm_dd_cambiamos_a_ddmmaaaa_conslash_facElectronica(fecha);
+            f.setFechaEmision(a);
+            f.setDirEstablecimiento(login.direccionEmpresa);
+            if (login.contribuyenteEspecialNUmero.equalsIgnoreCase("00")) {
+                ///000 significa que no es contribuyente especial
+                f.setContribuyenteEspecial(login.contribuyenteEspecialNUmero);
+            } else {
+
+            }
+
+            f.setObligadoContabilidad(login.ObligadoSiNOEmpresa);
+            ClientesDao clienteDao = new ClientesDao();
+            Clientes cliente = new Clientes();
+
+            cliente = clienteDao.buscarConID(fac.getClientes_codigo(), 0);
+
+            if (cliente.getCedula().length() == 10) {
+                f.setTipoIdentificacionComprador(Variables.FE_TIPO_IDENTIFICACION_CEDULA);
+            } else if (cliente.getCedula().length() == 13) {
+                f.setTipoIdentificacionComprador(Variables.FE_TIPO_IDENTIFICACION_RUC);
+            }
+            // f.setGuiaRemision("001-001-00000002");
+            f.setRazonSocialComprador(cliente.getNombre());
+            f.setIdentificacionComprador(cliente.getCedula());
+            ///
+            f.setNumDocModificado(fac.getSecuencia_doc_afectado_nc());
+            f.setCodDocModificado(Variables.FE_FACTURA);
+            f.setFechaEmisionDocSustento(HoraFecha.fecha_aaaa_mm_dd_cambiamos_a_ddmmaaaa_conslash_facElectronica(fac.getFecha_doc_afectado_nc()));
+            f.setMotivo("DEVOLUVION");
+
+            //  f.setID(0);
+            /////
+            Double tot1 = Double.parseDouble(fac.getSubtotaI_con_iva());
+            Double tot2 = Double.parseDouble(fac.getSubtotal_sin_iva());
+            Double total = tot1 + tot2;
+            String stirngtot = String.format("%.2f", total).replace(",", ".");
+            f.setTotalSinImpuestos(Double.parseDouble(stirngtot));
+            f.setTotalDescuento(Double.parseDouble(fac.getDescuento()));
+            f.setValorModificacion(Double.parseDouble(fac.getTotal()));
+
+//// totatal con impuesto ya esta en xml     
+            /////
+            TotalConImpuestos totimp = new TotalConImpuestos();
+            totimp.setBaseImponible(Double.parseDouble(fac.getSubtotaI_con_iva()));
+            totimp.setCodigo(2);
+            totimp.setCodigoPorcentaje(2);
+            totimp.setValor(Double.parseDouble(fac.getIva_valor()));
+            f.setTotalConImpuesto(totimp);
+            // f.setTotalImpuestos(totimp);
+///////////////////iva cero
+            TotalConImpuestos totimpiva0 = new TotalConImpuestos();
+            totimpiva0.setBaseImponible(Double.parseDouble(fac.getSubtotal_sin_iva()));
+            totimpiva0.setCodigo(2);
+            totimpiva0.setCodigoPorcentaje(0);
+            totimpiva0.setValor(Double.parseDouble("0.0"));
+            f.setTotalConImpuesto(totimpiva0);
+
+/////////////
+            f.setImporteTotal(Double.parseDouble(fac.getTotal()));
+            Deb.consola("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()ccccxcxc:" + fac.getTotal());
+            //DetalleFactura df = new DetalleFactura();
+            List<DetalleFactura> lista = new ArrayList<DetalleFactura>();
+            DetalleFacturaDao dfDao = new DetalleFacturaDao();
+            lista = dfDao.buscarConIDFact(fac.getCodigo());
+            for (DetalleFactura df : lista) {
+
+                Detalles d = new Detalles();
+
+                d.setCodigoInterno(String.valueOf(df.getProductos_codigoAlterno()));
+                d.setCodigoAdicional(String.valueOf(df.getProductos_codigo()));
+                d.setDescripcion(df.getDetalle());
+                d.setCantidad(Double.parseDouble(df.getCantidad()));
+                d.setPrecioUnitario(Double.parseDouble(df.getValorUnitario()));
+                d.setDescuento(Double.parseDouble(df.getDescuento()));
+                d.setPrecioTotalSinImpuesto(Double.parseDouble(df.getValorTotal()));
+                //if(df.getIva().ev)
+                DetImpuestos i = new DetImpuestos();
+                Vector<DetImpuestos> ivec = new Vector<DetImpuestos>();
+                if (df.getTineIva().equalsIgnoreCase("si")) {
+                    i.setCodigo(2);
+                    i.setCodigoPorcentaje(2);
+                    i.setTarifa(Double.parseDouble(Principal.iva));
+                    //Double bi = Double.parseDouble(df.getValorTotal()) - Double.parseDouble(df.getIva());
+                    i.setBaseImponible(Double.parseDouble(df.getValorTotal()));
+                    i.setValor(Double.parseDouble(df.getIva()));
+
+                }
+                if (df.getTineIva().equalsIgnoreCase("no")) {
+                    i.setCodigo(2);
+                    i.setCodigoPorcentaje(0);
+                    i.setTarifa(0.0);
+                    //Double bi = Double.parseDouble(df.getValorTotal()) - Double.parseDouble(df.getIva());
+                    i.setBaseImponible(Double.parseDouble(df.getValorTotal()));
+                    i.setValor(0.0);
+
+                }
+                ivec.add(i);
+                d.setImpuesto(ivec);
+
+                f.setDetalle(d);
+            }
+            ecx.unomas.notacredito.InfoAdicional infadd = new ecx.unomas.notacredito.InfoAdicional();
+            ecx.unomas.notacredito.InfoAdicional infadd1 = new ecx.unomas.notacredito.InfoAdicional();
+            ecx.unomas.notacredito.InfoAdicional infadd2 = new ecx.unomas.notacredito.InfoAdicional();
+            ecx.unomas.notacredito.InfoAdicional infadd3 = new ecx.unomas.notacredito.InfoAdicional();
+            ecx.unomas.notacredito.InfoAdicional mail = new ecx.unomas.notacredito.InfoAdicional();
+            mail.setNombre("E-MAIL");
+            mail.setValor(cliente.getMail());
+            infadd.setNombre("FORMA DE PAGO");
+            infadd.setValor(fac.getFormaPago());
+            infadd1.setNombre("DIENRO EN EFECTIVO");
+            infadd1.setValor(String.valueOf(fac.getEfectivo()));
+            infadd3.setNombre("CAMBIO");
+            infadd3.setValor(String.valueOf(fac.getCambio()));
+            infadd2.setNombre("EQUIPO");
+            infadd2.setValor(fac.getEquipo());
+//                if (mail.getValor().contains("@")) {
+//                    f.setInfAdicional(mail);
+//                }
+
+            f.setInfAdicional(infadd3);
+            f.setInfAdicional(infadd2);
+
+            f.setInfAdicional(infadd1);
+            f.setInfAdicional(infadd);
+            String s = f.getXML();
+
+            String s2 = xmltoStringFormat(s);
+            facxx = s2;
+            Deb.consola("XMLLLL: " + facxx);
+//////            WSElectro_Service Ws = new WSElectro_Service();
+//////            Response r = new Response();
+//////            r = Ws.getWSElectroPort().receiptXMLIn(facxx, "admin", "admin", cliente.getMail());
+//////            JOptionPane.showMessageDialog(null,"estado" +r.getResponse());
+//////            
+//////            if (r.getResponse().equalsIgnoreCase("0")) {
+//////                this.UpdateEstadoAutorizado(fac.getCodigo(), 1, "");
+//////                Deb.consola("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()xxxs: recibida x ws RESPUESTA WS>>: " + r.getResponse());
+//////            } else {
+//////                Deb.consola("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()xxxs: ERROR RESPUESTA WS>>: " + r.getResponse());
+//////            }
+            //     Deb.consola("xmls" + s);
             //JOptionPane.showMessageDialog(null,Config.GENERADOS_DIR);
 
 ////                Config.GENERADOS_DIR = Config.GENERADOS_DIR + "\\";
@@ -308,7 +506,7 @@ public class FacturasDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
         }
@@ -340,7 +538,7 @@ public class FacturasDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarCogtyrtynCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarCogtyrtynCedula()sss" + ex);
         } finally {
             this.cerrar();
         }
@@ -360,7 +558,8 @@ public class FacturasDao extends Coneccion {
             PreparedStatement st1;
             //SELECT establecimiento , ptoEmision, MAX(secfactura) FROM facturas WHERE   equipos_Codigo=20
             //SELECT establecimiento , ptoEmision, secfactura FROM facturas WHERE  codigo  = ( SELECT MAX(Codigo)  FROM facturas  ) AND equipos_Codigo=
-            st1 = this.getCnx().prepareCall("SELECT establecimiento , ptoEmision, MAX(secfactura) as secfactura FROM facturas WHERE tipo_documento='factura' and equipos_Codigo=" + idEcquipo);
+            //st1 = this.getCnx().prepareCall("SELECT establecimiento , ptoEmision, MAX(secfactura) as secfactura FROM facturas WHERE tipo_documento='factura' and equipos_Codigo=" + idEcquipo);
+            st1 = this.getCnx().prepareCall("SELECT establecimiento , ptoEmision, MAX(secfactura) as secfactura FROM facturas WHERE tipo_documento= 'factura' ");// and equipos_Codigo=" + idEcquipo);
             rs1 = st1.executeQuery();
 
             //this.lista= new ArrayList();
@@ -382,13 +581,14 @@ public class FacturasDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarioqweqs.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarioqweqs.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
         }
         return numfactura;
     }
-public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
+
+    public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
         ArrayList<String> numfactura = new ArrayList<String>();
 
         ResultSet rs1;
@@ -398,13 +598,12 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
         try {
             this.conectar();
             PreparedStatement st1;
-            //SELECT establecimiento , ptoEmision, MAX(secfactura) FROM facturas WHERE   equipos_Codigo=20
-            //SELECT establecimiento , ptoEmision, secfactura FROM facturas WHERE  codigo  = ( SELECT MAX(Codigo)  FROM facturas  ) AND equipos_Codigo=
-            st1 = this.getCnx().prepareCall("SELECT establecimiento , ptoEmision, MAX(secfactura) as secfactura FROM facturas WHERE tipo_documento='NC' and equipos_Codigo=" + idEcquipo);
+            //st1 = this.getCnx().prepareCall("SELECT establecimiento , ptoEmision, MAX(secfactura) as secfactura FROM facturas WHERE tipo_documento='NC' and equipos_Codigo=" + idEcquipo);
+            st1 = this.getCnx().prepareCall("SELECT establecimiento , ptoEmision, MAX(secfactura) as secfactura FROM facturas WHERE tipo_documento='NC' ");// and equipos_Codigo=" + idEcquipo);
             rs1 = st1.executeQuery();
 
             //this.lista= new ArrayList();
-            if(rs1.first()){
+            //  if (rs1.first()) {
             while (rs1.next()) {
                 if (rs1.getString("establecimiento").equals("") || rs1.getString("ptoEmision").equals("")) {
                     numfactura.add("001");
@@ -419,30 +618,30 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
                     numfactura.add(maxnumeroOrden2);
                     numfactura.add(maxnumeroOrden3);
                 }
-                Deb.consola("secuancia notascredito: "+maxnumeroOrden1+"-"+maxnumeroOrden2+"-"+maxnumeroOrden1+" :----dsdfsfsdf");
+                Deb.consola("secuancia notascredito: " + maxnumeroOrden1 + "-" + maxnumeroOrden2 + "-" + maxnumeroOrden3 + " :----dsdfsfsdf");
             }
-            }else{
-                    numfactura.add(maxnumeroOrden1);
-                    numfactura.add(maxnumeroOrden2);
-                    numfactura.add(maxnumeroOrden3);
+            if (numfactura.size() == 0) {
+                numfactura.add(maxnumeroOrden1);
+                numfactura.add(maxnumeroOrden2);
+                numfactura.add(maxnumeroOrden3);
             }
-            
-           
+
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuariertwos.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuariertwos.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
         }
         return numfactura;
     }
-    public String getNextumeroDeFacturaByEstablecimientoyPuntoEmision(String sec1, String sec2, Integer idEcquipo) {
+
+    public String getNextumeroDeFacturaByEstablecimientoyPuntoEmision(String sec1, String sec2, String tipoDocumento) {
 
         ResultSet rs;
         String maxnumeroOrden = "1";
         try {
             this.conectar();
             PreparedStatement st;
-            st = this.getCnx().prepareCall("SELECT MAX(secfactura) AS numero FROM facturas WHERE tipo_documento='factura' and establecimiento=" + sec1 + " AND ptoEmision=" + sec2 + " AND equipos_Codigo=" + idEcquipo);
+            st = this.getCnx().prepareCall("SELECT MAX(secfactura) AS numero FROM facturas WHERE tipo_documento='" + tipoDocumento + "' and establecimiento=" + sec1 + " AND ptoEmision=" + sec2);
             rs = st.executeQuery();
 
             //this.lista= new ArrayList();
@@ -459,7 +658,7 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuariotyrtys.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuariotyrtys.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
         }
@@ -491,7 +690,7 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.ertetBuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.ertetBuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
         }
@@ -506,11 +705,48 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
         try {
             this.conectar();
             PreparedStatement st = null;
-            if (estado.equals(1)) {
-                st = this.getCnx().prepareCall("UPDATE facturas SET autorizado=" + estado + " WHERE codigo = " + id);
+            MenSRI = MenSRI.replace("'", "*");
+            String sql = "UPDATE facturas SET DescripcionElectronica='" + MenSRI + "' , autorizado=" + estado + " WHERE codigo = " + id;
+            st = this.getCnx().prepareCall(sql);
+            st.executeUpdate();
+
+            //this.lista= new ArrayList();
+        } catch (Exception ex) {
+            Deb.consola("Contrdfsfolador.CUsuarios.BuscarConCedula()sss" + ex);
+        } finally {
+            this.cerrar();
+        }
+
+        return maxnumeroOrden;
+    }
+
+    public Respuesta ConsultaEstadoDeDocumentoWS(String claveAcceso) {
+
+        ResultSet rs;
+        Respuesta estado = null;
+
+        try {
+            //  SSS
+            com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
+            com.ws.localhost.Respuesta resp = new com.ws.localhost.Respuesta();
+            //resp = wslocal.getWSElectroPort().getEstadoDocumento(facturas.getCalveAcceso());
+
+            //com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
+            ///com.ws.localhost.Respuesta resp = new com.ws.localhost.Respuesta();
+            estado = wslocal.getWSElectroPort().getEstadoDocumento(claveAcceso);
+
+        } catch (Exception e) {
+            Deb.consola("erro al enviar al WS: " + e);
+        }
+
+        try {
+            this.conectar();
+            PreparedStatement st = null;
+            if (estado.equals("A")) {
+                st = this.getCnx().prepareCall("UPDATE facturas SET autorizado=10 , DescripcionElectronica='autorizado'  WHERE calveAcceso = " + claveAcceso);
             }
-            if (estado.equals(2)) {
-                st = this.getCnx().prepareCall("UPDATE facturas SET DescripcionElectronica='" + MenSRI + "' , autorizado=" + estado + " WHERE codigo = " + id);
+            if (estado.equals("R")) {
+                st = this.getCnx().prepareCall("UPDATE facturas SET autorizado=10 , DescripcionElectronica='NO AUTORIZADO'  WHERE calveAcceso = " + claveAcceso);
                 //            st = this.getCnx().prepareCall("UPDATE facturas SET hora='"+fechaAut+"' , autorizado=" + estado + " WHERE codigo = " + id);
             }
 
@@ -518,12 +754,12 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
 
             //this.lista= new ArrayList();
         } catch (Exception ex) {
-            System.out.println("Contrdfsfolador.CUsuarios.BuscarConCedula()sss" + ex);
+            Deb.consola("Contrdfsfolador.CUsuarios.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
         }
 
-        return maxnumeroOrden;
+        return estado;
     }
 
     public boolean UpdateAnuladoComprobantedeVenta(Integer id) {
@@ -539,7 +775,7 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
             //this.lista= new ArrayList();
             return true;
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCsdfsdfedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCsdfsdfedula()sss" + ex);
             return false;
 
         } finally {
@@ -555,7 +791,7 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
             this.conectar();
             PreparedStatement st;
             st = this.getCnx().prepareCall("select b" + bodega + " , producto from productos where  producto like '%" + value + "%' order BY productos.producto LIMIT 0, 50");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -599,7 +835,8 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
     }
 
     public String[] Buscar_registros(String value, String bodega) {
-        String[] registros = new String[11];
+
+        String[] registros = new String[12];
         //    JOptionPane.showMessageDialog(null, "entroooooo");
         ResultSet rs;
         String tabla = "productos";
@@ -609,11 +846,12 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
             //st = this.getCnx().prepareCall("select Productos.*, modelos.Modelo from productos inner join modelos on modelos.Codigo=productos.Modelos_Codigo where producto  like '%" + value + "%' order BY productos.producto LIMIT 0, 50");
             st = this.getCnx().prepareCall("select * from productos where producto  like '%" + value + "%' order BY producto LIMIT 0, 50");
             //  JOptionPane.showMessageDialog(null,"sssssddeerere"+ st.toString());
-            //    System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            //    Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
 
             while (rs.next()) {
+
                 registros[0] = rs.getString("costo");
                 registros[1] = String.valueOf(1);
                 registros[2] = String.valueOf(rs.getInt("Codigo"));
@@ -625,11 +863,51 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
                 registros[8] = "0";
                 registros[9] = rs.getString("b" + bodega);
                 registros[10] = rs.getString("IMPUESTO");
+                registros[11] = rs.getString("codigoAlterno");
+
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex + "lllxxxcxcxxxhhdahh");
+        } finally {
+            this.cerrar();
+        }
+
+        return registros;
+    }
+
+    public String[] Buscar_registrosparaNC(DetalleFactura value, String bodega) {
+        String[] registros = new String[12];
+        //    JOptionPane.showMessageDialog(null, "entroooooo");
+        ResultSet rs;
+        String tabla = "productos";
+        try {
+            this.conectar();
+            PreparedStatement st;
+            //st = this.getCnx().prepareCall("select Productos.*, modelos.Modelo from productos inner join modelos on modelos.Codigo=productos.Modelos_Codigo where producto  like '%" + value + "%' order BY productos.producto LIMIT 0, 50");
+            st = this.getCnx().prepareCall("select * from productos p INNER JOIN detallefactura df ON(p.codigo=df.Productos_Codigo)where p.codigo  =" + value.getProductos_codigo() + " order BY producto LIMIT 0, 50");
+           
+            rs = st.executeQuery();
+            while (rs.next()) {
+                registros[0] = String.valueOf(value.getCosto());//rs.getString("costo");
+                registros[1] = String.valueOf(1);
+                registros[2] = String.valueOf(rs.getInt("Codigo"));
+                registros[3] = rs.getString("Producto");
+                registros[4] = value.getCantidad();
+                registros[5] = value.getDescuento();
+                registros[6] = bodega;
+               // Double imp =Double.parseDouble(rs.getString("IMPUESTO"));
+                registros[8] = value.getValorTotal();
+                registros[7] = rs.getString("precio");                                                
+                registros[9] = rs.getString("b" + bodega);
+                registros[10] = rs.getString("IMPUESTO");
+                registros[11] = rs.getString("codigoAlterno");
+                Deb.consola("*ww"+registros.toString());
                 //  JOptionPane.showMessageDialog(null, registros[3] + "----" + registros[10]);
             }
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex + "lllxxxcxcxxxhhhh");
+            JOptionPane.showMessageDialog(null, ex + "lllxxxcxcxxxhhdahh");
         } finally {
             this.cerrar();
         }
@@ -670,18 +948,19 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
             consulta.setString(19, tarea.getFormaPago());
             consulta.setDouble(20, tarea.getEfectivo());
             consulta.setDouble(21, tarea.getCambio());
-            System.out.println("Controlador.CUsuarios.guardar()" + consulta);
+
+            Deb.consola("Controlador.CUsuarios.guardar()" + consulta);
             consulta.executeUpdate();
             ResultSet rs = consulta.getGeneratedKeys();
             if (rs.next()) {
                 codigoThisFactura = rs.getInt(1);
-                System.out.println("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
+                Deb.consola("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
             }
             //  this.con.commit();
             //  this.con.rollback();
         } catch (SQLException ex) {
             //msg.setProgressBar_mensajae(ex.toString());
-            System.out.println("Controlador.CUsuarios.guardar()" + ex);
+            Deb.consola("Controlador.CUsuarios.guardar()" + ex);
         } finally {
 
         }
@@ -721,17 +1000,17 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
             consulta.setString(19, tarea.getFormaPago());
             consulta.setDouble(20, tarea.getEfectivo());
             consulta.setDouble(21, tarea.getCambio());
-            System.out.println("Controlador.CUsuarios.guardar()" + consulta);
+            Deb.consola("Controlador.CUsuarios.guardar()" + consulta);
 ////            consulta.executeUpdate();
 ////            ResultSet rs = consulta.getGeneratedKeys();
 ////            if (rs.next()) {
 ////                codigoThisFactura = rs.getInt(1);
-////                System.out.println("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
+////                Deb.consola("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
 ////            }
 
         } catch (SQLException ex) {
             //msg.setProgressBar_mensajae(ex.toString());
-            System.out.println("Controlador.CUsuarios.guardar()" + ex);
+            Deb.consola("Controlador.CUsuarios.guardar()" + ex);
         } finally {
 
         }
@@ -748,41 +1027,124 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
 
             st = this.getCnx().prepareCall("select * from facturas where codigo =" + id);
             rs = st.executeQuery();
+            u = getFacturas(rs);
+        } catch (Exception ex) {
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
+        } finally {
+            this.cerrar();
+        }
+
+        return u;
+    }
+    public Facturas buscarConIDFacurasParagenerarNC(Integer id) {
+        ResultSet rs;
+        Facturas u = new Facturas();
+        try {
+
+            this.conectar();
+            PreparedStatement st;
+
+            st = this.getCnx().prepareCall("select * from facturas where codigo =" + id +" and anulada=0 and tipo_documento='FACTURA' ");
+            rs = st.executeQuery();
+            u = getFacturas(rs);
+        } catch (Exception ex) {
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
+        } finally {
+            this.cerrar();
+        }
+
+        return u;
+    }
+
+    public Facturas buscarXSecuancia(String secuancia) {
+        ResultSet rs;
+        Facturas u = new Facturas();
+        try {
+
+            this.conectar();
+            PreparedStatement st;
+
+            st = this.getCnx().prepareCall("select * from facturas where secuencia ='" + secuancia + "' and tipo_documento = 'FACTURA'");
+            rs = st.executeQuery();
+            u = getFacturas(rs);
+        } catch (Exception ex) {
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
+        } finally {
+            this.cerrar();
+        }
+
+        return u;
+    }
+
+    public Facturas getFacturas(ResultSet rs) {
+
+        Facturas u = new Facturas();
+        try {
             while (rs.next()) {
                 Facturas per = new Facturas();
                 per.setCodigo(rs.getInt("Codigo"));
-                per.setAnulada(rs.getBoolean("anulada"));
-                per.setClientes_codigo(rs.getInt("Clientes_codigo"));
-                per.setDescuento(rs.getString("descuento"));
-                per.setEquipo(rs.getString("equipo"));
-                per.setUtilidad(rs.getString("utilidad"));
                 per.setFecha(rs.getDate("fecha"));
                 per.setHora(rs.getTimestamp("Hora"));
                 per.setIva(rs.getString("iva"));
                 per.setIva_valor(rs.getString("iva_valor"));
-                per.setSecuencia(rs.getString("secuencia"));
                 per.setSubtotaI_con_iva(rs.getString("subtotaI_con_iva"));
                 per.setSubtotal_sin_iva(rs.getString("subtotal_sin_iva"));
-                per.setTipo_documento(rs.getString("tipo_documento"));
                 per.setTotal(rs.getString("total"));
-                per.setUsuarios_Codigo(rs.getInt("Usuarios_Codigo"));
+                per.setUtilidad(rs.getString("utilidad"));
+                per.setTipo_documento(rs.getString("tipo_documento"));
+                per.setDescuento(rs.getString("descuento"));
+                per.setClientes_codigo(rs.getInt("Clientes_codigo"));
+                per.setUsuarios_Codigo(rs.getInt("Usuarios_Codigo"));                                
+                per.setEquipo(rs.getString("Equipo"));
+                per.setSecuencia(rs.getString("secuencia"));
+                per.setAnulada(rs.getBoolean("anulada"));
+                per.setFechain(rs.getString("fechain"));
                 per.setCalveAcceso(rs.getString("calveAcceso"));
+                per.setEstado(rs.getInt("estado"));
+                per.setDescripcionElectronica(rs.getString("DescripcionElectronica"));
+                per.setAutorizado(rs.getInt("autorizado"));
                 per.setEstablecimiento(rs.getString("establecimiento"));
                 per.setPtoEmision(rs.getString("ptoEmision"));
                 per.setSecfactura(rs.getString("secfactura"));
                 per.setFormaPago(rs.getString("formaPago"));
                 per.setEfectivo(rs.getDouble("efectivo"));
                 per.setCambio(rs.getDouble("cambio"));
+                per.setEquipos_codigo(rs.getInt("equipos_codigo"));
+                per.setCodigo_doc_afectado_nc(rs.getInt("Codigo_doc_afectado_nc"));
+                per.setSecuencia_doc_afectado_nc(rs.getString("Secuencia_doc_afectado_nc"));
+                per.setFecha_doc_afectado_nc(rs.getString("Fecha_doc_afectado_nc"));
+                per.setValorAfectadoxNCenFactura(rs.getString("ValorAfectadoxNCenFactura"));                
+                Deb.consola(per.toString());
                 u = per;
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
+        } finally {
+
+        }
+
+        return u;
+    }
+
+    public ArrayList<Facturas> getlistatotalFacturas() {
+        ResultSet rs;
+        ArrayList<Facturas> lista = new ArrayList<>();
+        try {
+
+            this.conectar();
+            PreparedStatement st;
+
+            st = this.getCnx().prepareCall("select * from facturas where tipo_documento = 'FACTURA'");
+            rs = st.executeQuery();
+            lista.add(getFacturas(rs));
+        } catch (Exception ex) {
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
 
-        return u;
+        return lista;
     }
 
     public ArrayList<Facturas> buscarFacturasNoAutorizadas() {
@@ -793,7 +1155,7 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
             this.conectar();
             PreparedStatement st;
 
-            st = this.getCnx().prepareCall("select * from facturas where autorizado =0 and tipo_documento='factura'");
+            st = this.getCnx().prepareCall("select * from facturas where autorizado =0 and (tipo_documento='factura' or tipo_documento='NC' )");
             rs = st.executeQuery();
             while (rs.next()) {
                 Facturas per = new Facturas();
@@ -820,17 +1182,106 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
                 per.setFormaPago(rs.getString("formaPago"));
                 per.setEfectivo(rs.getDouble("efectivo"));
                 per.setCambio(rs.getDouble("cambio"));
+                per.setCodigo_doc_afectado_nc(rs.getInt("Codigo_doc_afectado_nc"));
+                per.setSecuencia_doc_afectado_nc(rs.getString("Secuencia_doc_afectado_nc"));
+                per.setFecha_doc_afectado_nc(rs.getString("Fecha_doc_afectado_nc"));
+                per.setValorAfectadoxNCenFactura(rs.getString("ValorAfectadoxNCenFactura"));
                 u = per;
                 listaFacNoAutorizadas.add(u);
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
 
         return listaFacNoAutorizadas;
+    }
+
+    public void update(Facturas tarea) {
+        ResultSet rs;
+        Facturas u = new Facturas();
+        PreparedStatement st = null;
+        try {
+            this.conectar();
+            
+
+            st = this.getCnx().prepareCall("UPDATE facturas SET "
+                    + "fecha=?,"
+                    + "iva=?,"
+                    + "Iva_valor=?,"
+                    + "subtotaI_con_iva=?,"
+                    + "subtotal_sin_iva=?,"
+                    + "total=?,"
+                    + "utilidad=?,"
+                    + "tipo_documento=?,"
+                    + "descuento=?,"
+                    + "Clientes_codigo=?,"
+                    + "Usuarios_Codigo=?,"
+                    + "Equipo=?,"
+                    + "secuencia=?,"
+                    + "anulada=?,"
+                    + "fechain=?,"
+                    + "calveAcceso=?,"
+                    + "estado=?,"
+                    + "DescripcionElectronica=?,"
+                    + "autorizado=?,"
+                    + "establecimiento=?,"
+                    + "ptoEmision=?,"
+                    + "secfactura=?,"
+                    + "formaPago=?,"
+                    + "efectivo=?,"
+                    + "cambio=?,"
+                    + "equipos_codigo=?,"
+                    + "codigo_doc_afectado_nc=?,"
+                    + "secuencia_doc_afectado_nc=?,"
+                    + "Fecha_doc_afectado_nc=?,"
+                    + "ValorAfectadoxNCenFactura=? WHERE Codigo=?");
+
+            long d = tarea.getFecha().getTime();
+            java.sql.Date fecha = new java.sql.Date(d);
+            st.setDate(1, fecha);
+            st.setString(2, tarea.getIva());
+            st.setString(3, tarea.getIva_valor());
+            st.setString(4, tarea.getSubtotaI_con_iva());
+            st.setString(5, tarea.getSubtotal_sin_iva());
+            st.setString(6, tarea.getTotal());
+            st.setString(7, tarea.getUtilidad());
+            st.setString(8, tarea.getTipo_documento());
+            st.setString(9, tarea.getDescuento());
+            st.setInt(10, tarea.getClientes_codigo());
+            st.setInt(11, tarea.getUsuarios_Codigo());
+            st.setString(12, tarea.getEquipo());
+            st.setString(13, tarea.getSecuencia());
+            st.setBoolean(14, tarea.isAnulada());
+            st.setString(15, tarea.getFechain());
+            st.setString(16, tarea.getCalveAcceso());
+            st.setInt(17, tarea.getEstado());
+            st.setString(18, tarea.getDescripcionElectronica());
+            st.setInt(19, tarea.getAutorizado());
+            st.setString(20, tarea.getEstablecimiento());
+            st.setString(21, tarea.getPtoEmision());
+            st.setString(22, tarea.getSecfactura());
+            st.setString(23, tarea.getFormaPago());
+            st.setDouble(24, tarea.getEfectivo());
+            st.setDouble(25, tarea.getCambio());
+            st.setDouble(26, tarea.getEquipos_codigo());
+            st.setInt(27, tarea.getCodigo_doc_afectado_nc());
+            st.setString(28, tarea.getSecuencia_doc_afectado_nc());
+            st.setString(29, tarea.getFecha_doc_afectado_nc());
+            st.setString(30, tarea.getValorAfectadoxNCenFactura());
+            st.setInt(31, tarea.getCodigo());
+            Deb.consola("rrrrrrrrrrrrrrrrr: "+ st.toString());
+           st.execute();
+            Deb.consola(st.toString());
+
+        } catch (Exception ex) {
+            Deb.consola(st.toString());
+            Deb.consola("Errrorororo actualizando factura o NC xxxa : " + ex);
+        } finally {
+            this.cerrar();
+        }
     }
 
     public ArrayList<Facturas> ListaFacturasEnviadasalWS_SinEstadoAutorizado() {
@@ -841,7 +1292,7 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
             this.conectar();
             PreparedStatement st;
 
-            st = this.getCnx().prepareCall("select * from facturas where autorizado =1 and tipo_documento='factura'");
+            st = this.getCnx().prepareCall("select * from facturas where autorizado =1 and( tipo_documento='factura' or tipo_documento='nc') ");
             rs = st.executeQuery();
             while (rs.next()) {
                 Facturas per = new Facturas();
@@ -868,12 +1319,16 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
                 per.setFormaPago(rs.getString("formaPago"));
                 per.setEfectivo(rs.getDouble("efectivo"));
                 per.setCambio(rs.getDouble("cambio"));
+                per.setCodigo_doc_afectado_nc(rs.getInt("Codigo_doc_afectado_nc"));
+                per.setSecuencia_doc_afectado_nc(rs.getString("Secuencia_doc_afectado_nc"));
+                per.setFecha_doc_afectado_nc(rs.getString("Fecha_doc_afectado_nc"));
+                per.setValorAfectadoxNCenFactura(rs.getString("ValorAfectadoxNCenFactura"));
                 u = per;
                 listaFacEnviadaslawssinestadoAutorizadas.add(u);
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -906,7 +1361,7 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -926,7 +1381,7 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
                 }
 
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
 
             }
 
@@ -963,7 +1418,7 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -982,7 +1437,7 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
                 }
                 registros[6] = rs.getString("DescripcionElectronica");
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
 
             }
 
@@ -1002,7 +1457,7 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
             st.setInt(1, obj.getCodigo());
             st.executeUpdate();
         } catch (SQLException e) {
-            msg.setProgressBar_mensajae("Error..!! " + e);
+            msg.setProgressBar_mensajae("Error..asd!! " + e);
         } finally {
             this.cerrar();
         }
@@ -1018,7 +1473,7 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
             this.conectar();
             PreparedStatement st;
             String sql = "SELECT *  FROM  facturas f INNER JOIN CLIENTES c ON( f.Clientes_codigo=c.codigo) WHERE  f.hora BETWEEN '" + Fecha1 + "'  AND '" + Fecha2 + "'";
-            System.out.println("Controlador.Usuarios.FacturasDao.ListaVentasportipoyFacha(): " + sql);
+            Deb.consola("Controlador.Usuarios.FacturasDao.ListaVentasportipoyFacha(): " + sql);
             st = this.getCnx().prepareCall(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -1046,11 +1501,15 @@ public ArrayList<String> getNextumeroDeNOtaCreditobyEquipo(Integer idEcquipo) {
                 per.setFormaPago(rs.getString("formaPago"));
                 per.setEfectivo(rs.getDouble("efectivo"));
                 per.setCambio(rs.getDouble("cambio"));
+                per.setCodigo_doc_afectado_nc(rs.getInt("Codigo_doc_afectado_nc"));
+                per.setSecuencia_doc_afectado_nc(rs.getString("Secuencia_doc_afectado_nc"));
+                per.setFecha_doc_afectado_nc(rs.getString("Fecha_doc_afectado_nc"));
+                per.setValorAfectadoxNCenFactura(rs.getString("ValorAfectadoxNCenFactura"));
                 lista.add(per);
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }

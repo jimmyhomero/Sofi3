@@ -9,6 +9,7 @@ package Controlador;
  *
  * @author USUARIO
  */
+import ClasesAuxiliares.debug.Deb;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -108,7 +109,7 @@ public static String dirIMGtempgoogleSearch = null;
                 prop.load(new FileInputStream(configFile));
                 val = prop.getProperty(property);
             } catch (Exception e) {
-                System.out.println(e.toString());
+                Deb.consola(e.toString());
                 val = "error";
             }
 
@@ -129,7 +130,7 @@ public static String dirIMGtempgoogleSearch = null;
             //prop.store(new FileOutputStream(new File(url.toURI())), null);
             prop.store(new FileWriter(configFile), "Actualizado At");
         } catch (IOException e) {
-            System.out.println(e.toString());
+            Deb.consola(e.toString());
         }
         return val;
     }
@@ -139,7 +140,7 @@ public static String dirIMGtempgoogleSearch = null;
         //System.getProperty("path.separator");
         String dir = System.getProperty("user.dir");
         String dir2 = System.getProperty("user.home");
-        System.out.println("Controlador.Ejemplo.main()" + System.getProperties());
+        Deb.consola("Controlador.Ejemplo.main()" + System.getProperties());
         JOptionPane.showMessageDialog(null, dir);
         JOptionPane.showMessageDialog(null, dir2);
         try {
@@ -147,26 +148,26 @@ public static String dirIMGtempgoogleSearch = null;
             prop.load(propertiesStream);
             propertiesStream.close();
         } catch (IOException e) {
-            System.out.println(e.toString());
+            Deb.consola(e.toString());
         }
 
         // Acceder a las propiedades por su nombre
-        System.out.println("Propiedades por nombre:");
-        System.out.println("-----------------------");
-        System.out.println(prop.getProperty("servidor.nombre"));
-        System.out.println(prop.getProperty("servidor.password"));
-        System.out.println(prop.getProperty("servidor.usuario"));
+        Deb.consola("Propiedades por nombre:");
+        Deb.consola("-----------------------");
+        Deb.consola(prop.getProperty("servidor.nombre"));
+        Deb.consola(prop.getProperty("servidor.password"));
+        Deb.consola(prop.getProperty("servidor.usuario"));
         prop.setProperty("servidor.nombre", "192.168.1.5");
-        System.out.println(prop.getProperty("servidor.nombre"));
+        Deb.consola(prop.getProperty("servidor.nombre"));
         // Recorrer todas sin conocer los nombres de las propiedades
-        System.out.println("Recorrer todas las propiedades:");
-        System.out.println("-------------------------------");
+        Deb.consola("Recorrer todas las propiedades:");
+        Deb.consola("-------------------------------");
         prop.store(new FileWriter("C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Controlador\\config.properties"), "Actualizado At");
 
         for (Enumeration e = prop.keys(); e.hasMoreElements();) {
             // Obtenemos el objeto
             Object obj = e.nextElement();
-            System.out.println(obj + ": " + prop.getProperty(obj.toString()));
+            Deb.consola(obj + ": " + prop.getProperty(obj.toString()));
         }
     }
 }

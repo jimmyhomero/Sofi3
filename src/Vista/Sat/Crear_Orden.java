@@ -5,6 +5,7 @@
  */
 package Vista.Sat;
 
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Ejemplo;
 import Controlador.Sat.SatAparatoDao;
 import Controlador.Sat.SatOrdenDao;
@@ -84,7 +85,7 @@ public class Crear_Orden extends javax.swing.JInternalFrame {
                     txtMarca.transferFocus();
 
                 } else {
-                    System.out.println("El item es de un tipo desconocido");
+                    Deb.consola("El item es de un tipo desconocido");
                 }
 
             }
@@ -552,7 +553,7 @@ public class Crear_Orden extends javax.swing.JInternalFrame {
 
                 SatAparato aparato = new SatAparato();
                 SatAparatoDao aparatoDao = new SatAparatoDao();
-                System.out.println("Vista.Sat.Crear_Orden.txtRUCKeyPressed() : " + jcbAparatos.getItemCount());
+                Deb.consola("Vista.Sat.Crear_Orden.txtRUCKeyPressed() : " + jcbAparatos.getItemCount());
                 //if(jcbAparatos.getItemCount()>0){
                 jcbAparatos.removeAllItems();
                 // }                
@@ -565,13 +566,13 @@ public class Crear_Orden extends javax.swing.JInternalFrame {
                 c.buscarOCrearNuevoCLiente(txtRUC.getText());
                 Principal.desktopPane.add(c);
                 c.setVisible(true);
-//                System.out.println("LLL: " + newCliente.getNombre());
+//                Deb.consola("LLL: " + newCliente.getNombre());
                 if (newCliente != null) {
                     txtNombres.setText(newCliente.getNombre());
 
                     SatAparato aparato = new SatAparato();
                     SatAparatoDao aparatoDao = new SatAparatoDao();
-                    System.out.println("Vista.Sat.Crear_Orden.txtRUCKeyPreHHHHHHHHHssed() : " + jcbAparatos.getItemCount());
+                    Deb.consola("Vista.Sat.Crear_Orden.txtRUCKeyPreHHHHHHHHHssed() : " + jcbAparatos.getItemCount());
                     //if(jcbAparatos.getItemCount()>0){
                     jcbAparatos.removeAllItems();
                     // }                

@@ -15,6 +15,7 @@ import javax.swing.*;
 import java.awt.datatransfer.*;
 import java.util.*;
 import java.io.IOException;
+import ClasesAuxiliares.debug.Deb;
 
 public class PegarExcelIntoJtable implements ActionListener {
 
@@ -96,9 +97,9 @@ public class PegarExcelIntoJtable implements ActionListener {
                 rowCount++;
             }
         } catch (UnsupportedFlavorException uf) {
-            System.out.println("uf=" + uf.getMessage());
+            Deb.consola("uf=" + uf.getMessage());
         } catch (IOException io) {
-            System.out.println("io=" + io.getMessage());
+            Deb.consola("io=" + io.getMessage());
         }
 
     }

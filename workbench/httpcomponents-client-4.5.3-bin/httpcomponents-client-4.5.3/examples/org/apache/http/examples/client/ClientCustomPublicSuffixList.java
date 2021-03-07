@@ -75,14 +75,14 @@ public class ClientCustomPublicSuffixList {
 
             HttpGet httpget = new HttpGet("https://httpbin.org/");
 
-            System.out.println("executing request " + httpget.getRequestLine());
+            Deb.consola("executing request " + httpget.getRequestLine());
 
             CloseableHttpResponse response = httpclient.execute(httpget);
             try {
                 HttpEntity entity = response.getEntity();
 
-                System.out.println("----------------------------------------");
-                System.out.println(response.getStatusLine());
+                Deb.consola("----------------------------------------");
+                Deb.consola(response.getStatusLine());
                 EntityUtils.consume(entity);
             } finally {
                 response.close();

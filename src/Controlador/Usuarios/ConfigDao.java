@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -74,7 +75,7 @@ public class ConfigDao extends Coneccion {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
-            //System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            //Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -124,7 +125,7 @@ public class ConfigDao extends Coneccion {
             PreparedStatement st;
             
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -171,12 +172,12 @@ public class ConfigDao extends Coneccion {
             st.setString(6, persona.getValor6());
             st.setString(7, persona.getNombre());
             String sql = st.toString();
-            
+               Deb.consola("dsdewe: "+sql);
             st.executeUpdate();
 
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
         } catch (SQLException e) {
-            System.out.println("Controlador.Usuarios.ConfigDao.modificar(): "+e);
+            Deb.consola("Controlador.Usuarios.ConfigDao.modificar(): "+e);
             //msg.setProgressBar_mensajae(e.toString());
         } finally {
             this.cerrar();
@@ -208,7 +209,7 @@ public class ConfigDao extends Coneccion {
             
         } catch (Exception ex) {
             msg.setMensaje(ex.toString());
-            //System.out.println("Controlador.CUsuarios.listar()" + ex);
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -239,7 +240,7 @@ public class ConfigDao extends Coneccion {
             
         } catch (Exception ex) {
             msg.setMensaje(ex.toString());
-            //System.out.println("Controlador.CUsuarios.listar()" + ex);
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }

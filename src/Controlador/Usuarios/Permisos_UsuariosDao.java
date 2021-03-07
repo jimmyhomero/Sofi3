@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -34,13 +35,13 @@ public class Permisos_UsuariosDao  extends Coneccion{
             consulta.setInt(5, tarea.getOrden());            
             consulta.executeUpdate();
              ResultSet rs = consulta.getGeneratedKeys();
-               System.out.println("Controlador.CUsuarios.guardar()xxxx:  " + consulta);
+               Deb.consola("Controlador.CUsuarios.guardar()xxxx:  " + consulta);
             if (rs.next()) {
                 codigo = rs.getInt(1);
-                System.out.println("Controlador.Usuarios.Tipo_UsuariosDao.guardar(): "+ codigo);                
+                Deb.consola("Controlador.Usuarios.Tipo_UsuariosDao.guardar(): "+ codigo);                
             }
         } catch (SQLException ex) {
-            System.out.println("Controlador.Usuarios.Permisos_UsuariosDao.guardar(): "+ex);
+            Deb.consola("Controlador.Usuarios.Permisos_UsuariosDao.guardar(): "+ex);
            // msg.setProgressBar_mensajae("Error..!! " + ex);
         } finally {
             this.cerrar();

@@ -9,6 +9,7 @@ package ClasesAuxiliares.http;
  *
  * @author USUARIO
  */
+import ClasesAuxiliares.debug.Deb;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,9 @@ public class getUrlFromGoogle {
     //    getImagesFromGoogle();
         //Taking search term input from console
 //		Scanner scanner = new Scanner(System.in);
-//		System.out.println("Please enter the search term.");
+//		Deb.consola("Please enter the search term.");
 //		String searchTerm = scanner.nextLine();
-//		System.out.println("Please enter the number of results. Example: 5 10 20");
+//		Deb.consola("Please enter the number of results. Example: 5 10 20");
 //		int num = scanner.nextInt();
 //		scanner.close();
 //               Integer num=20;
@@ -45,7 +46,7 @@ public class getUrlFromGoogle {
 //		Document doc = Jsoup.connect(searchURL).userAgent("Mozilla/5.0").get();
 //		
 //		//below will print HTML data, save it to a file and open in browser to compare
-//		//System.out.println(doc.html());
+//		//Deb.consola(doc.html());
 //		
 //		//If google search results HTML change the <h3 class="r" to <h3 class="r1"
 //		//we need to change below accordingly
@@ -55,8 +56,8 @@ public class getUrlFromGoogle {
 //			String linkHref = result.attr("href");
 //			String linkText = result.text();
 //                       // String a= result.
-//			//System.out.println("Text::" + linkText + ", URL::" + linkHref.substring(6, linkHref.indexOf("&")));
-//                        System.out.println("Text::" + linkText + ", URL::" + linkHref);
+//			//Deb.consola("Text::" + linkText + ", URL::" + linkHref.substring(6, linkHref.indexOf("&")));
+//                        Deb.consola("Text::" + linkText + ", URL::" + linkHref);
 //		}
     }
 public static String getimages(String url,String busqueda) {
@@ -103,11 +104,11 @@ public static String getimages(String url,String busqueda) {
                 }
             }
 
-            System.out.println("number of results: " + resultUrls.size());
+            Deb.consola("number of results: " + resultUrls.size());
 
             for (String imageUrl : resultUrls) {
 
-                System.out.println(imageUrl);
+                Deb.consola(imageUrl);
             }
 
         } catch (IOException | ParseException e) {

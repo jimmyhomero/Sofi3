@@ -217,7 +217,7 @@ public class SelectPorcentajesRetencion extends javax.swing.JDialog {
 
             if (isOpenfromCrearFacturaSelectAir) {
 
-                Modal_Crear_compras.jTable1.setValueAt(id, Crear_Compras.filacliked, Crear_Compras.columnacliked);
+                Modal_Crear_compras.jTable1.setValueAt(id, Modal_Crear_compras.filacliked, Modal_Crear_compras.columnacliked);
                 this.dispose();
             }
         }

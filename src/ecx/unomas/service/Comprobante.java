@@ -1,7 +1,14 @@
 package ecx.unomas.service;
 
 import ClasesAuxiliares.Leertxt;
+import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
 import ClasesAuxiliares.debug.Deb;
+import Controlador.Usuarios.ComprasDao;
+import Controlador.Usuarios.DetalleComprasDao;
+import Controlador.Usuarios.KardexDao;
+import Modelo.Compras;
+import Modelo.DetalleCompra;
+import Modelo.Kardex;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -47,6 +54,10 @@ import ecx.unomas.notacredito.NotaCredito;
 import ecx.unomas.notadebito.NotaDebito;
 import ecx.unomas.retencion.Retencion;
 import ecx.unomas.sign.XAdESBESSignature;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,6 +70,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.xml.sax.InputSource;
 
 public class Comprobante {
 
@@ -76,7 +88,7 @@ public class Comprobante {
             CertificadosSSL.instalarCertificados();
 
             // GUARDAR ARCHIVO XML EN EL EQUIPO
-            FileOutputStream fos = new FileOutputStream(Config.SUBIDOS_DIR  + claveAcceso + ".xml");
+            FileOutputStream fos = new FileOutputStream(Config.SUBIDOS_DIR + claveAcceso + ".xml");
             BufferedOutputStream outputStream = new BufferedOutputStream(fos);
             outputStream.write(xmlBytes);
             outputStream.close();
@@ -110,10 +122,10 @@ public class Comprobante {
             // FIRMAR XML
             if (Config.FE_SOLO_FIRMA_DOC) {
                 //// SOLO FIRMA EL XML GENERADO PREVIAMENE SOLO PARA SHEYLA 
-              Config.FE_DOCUMENTO_FIRMADO=  XAdESBESSignature.sign(Config.SUBIDOS_DIR  + claveAcceso + ".xml", claveAcceso);
+                Config.FE_DOCUMENTO_FIRMADO = XAdESBESSignature.sign(Config.SUBIDOS_DIR + claveAcceso + ".xml", claveAcceso);
             } else {
                 // FIRMA ENVIA AUTORIZA, DESCARGA, GENERA PDF Y ENVIA AL EMAIL
-                 Config.FE_DOCUMENTO_FIRMADO=XAdESBESSignature.sign(Config.SUBIDOS_DIR   + claveAcceso + ".xml", claveAcceso);
+                Config.FE_DOCUMENTO_FIRMADO = XAdESBESSignature.sign(Config.SUBIDOS_DIR + claveAcceso + ".xml", claveAcceso);
                 // VERIFICAR SI EXISTE CONEXION
                 boolean a = CheckConnection.existeConexion(RECEPCION_WSDL);
                 // System.err.println(a);
@@ -125,9 +137,9 @@ public class Comprobante {
                     RespuestaSolicitud response = ec.enviarComprobante(xml_file);
                     //JOptionPane.showMessageDialog(null, response.getEstado() + " -- " + response.getComprobantes().toString());
                     if (response.getEstado().equals("RECIBIDA")) {
-                        Config.FE_DOCUMENTO_AUTORIZADO=true;
+                        Config.FE_DOCUMENTO_AUTORIZADO = true;
                         // SE BORRA SI ES QUE ANTES NO FUE AUTORIZADO, PARA QUE COJA LA VERIFICACION
-                        File aut_file = new File(Config.NO_AUTORIZADOS_DIR   + claveAcceso + ".xml");
+                        File aut_file = new File(Config.NO_AUTORIZADOS_DIR + claveAcceso + ".xml");
                         if (aut_file.exists()) {
                             aut_file.delete();
                         }
@@ -142,7 +154,7 @@ public class Comprobante {
                         formatter.setTimeZone(TimeZone.getTimeZone("America/Guayaquil"));
                         String fecha = formatter.format(date);
                         ReadXML reader = new ReadXML();
-                        File pdf_file = new File(Config.AUTORIZADOS_DIR  + claveAcceso + ".pdf");
+                        File pdf_file = new File(Config.AUTORIZADOS_DIR + claveAcceso + ".pdf");
                         if (doc.getDocumentElement().getNodeName().equals("factura")) {
                             Factura factura = reader.readFactura(doc);
                             factura.setNroAutorizacion(claveAcceso);
@@ -222,12 +234,12 @@ public class Comprobante {
                         // ENVIAR POR CORREO
                         if (hasEmail) {
                             if (!pdf_file.exists()) {
-                                pdf_file = new File(Config.AUTORIZADOS_DIR  + claveAcceso + ".pdf");
+                                pdf_file = new File(Config.AUTORIZADOS_DIR + claveAcceso + ".pdf");
                             }
                             //if (Mailgun.send(email, cc, name, asunto, xml_file, pdf_file, false)) {}
                             SendMail mail = new SendMail();
-                                if (mail.send(email, cc, name, asunto, xml_file, pdf_file)) {
-                                 Config.FE_DOCUMENTO_ENVIADO=true;
+                            if (mail.send(email, cc, name, asunto, xml_file, pdf_file)) {
+                                Config.FE_DOCUMENTO_ENVIADO = true;
                                 respuesta = "{\"status\":\"OK\", \"emailed\":\"SI\"}";
                             } else {
                                 respuesta = "{\"status\":\"OK\", \"emailed\":\"NO\"}";
@@ -279,8 +291,9 @@ public class Comprobante {
         }
         return respuesta;
     }
-    
+
     public String getxmlFromSriWS2(String claveAcceso) throws MalformedURLException, Exception {
+        CertificadosSSL.instalarCertificados();
         String c = "";
         CertificadosSSL.instalarCertificados();
         String respuesta = "{\"status\":\"fail\", \"error\":\"UNKNOW\"}";
@@ -288,25 +301,31 @@ public class Comprobante {
         String AUTORIZACION_WSDL;
         if (ambienteValue.equals("1")) {
             AUTORIZACION_WSDL = Config.AUTORIZACION_WSDL_PRUEBAS;
-            System.out.println("PRUEBAS");
+            Deb.consola("PRUEBAS");
         } else {
             AUTORIZACION_WSDL = Config.AUTORIZACION_WSDL_PRODUCCION;
-            System.out.println("PRODUCCION=");
+            Deb.consola("PRODUCCION=");
         }
-        System.out.println("AUTORIZACION_WSDL: "+AUTORIZACION_WSDL);
+        Deb.consola("AUTORIZACION_WSDL: " + AUTORIZACION_WSDL);
         boolean is_autorize = false;
         String nroAuth = "";
         Date fechaAuth = null;
         String fecha = "";
         String xxmmll = "";
         AutorizacionComprobantesWs auto;
+
+        //   if (CheckConnection.existeConexion(AUTORIZACION_WSDL)) {
         auto = new AutorizacionComprobantesWs(AUTORIZACION_WSDL);
         xxmmll = auto.getAComprobanteAutorizado(claveAcceso);
-          System.out.println("Clave Accesox:" + claveAcceso);
-          System.out.println("*****\n\n\n" + xxmmll);
+        Deb.consola("Clave Accesox:" + claveAcceso);
+        Deb.consola("*****\n\n\n" + xxmmll);
+        //} else {
+        //    xxmmll = "ERROR CONECCION SRI";
+        //}
+
         return xxmmll;
     }
-    
+
     public String getxmlFromSriWSx(String claveAcceso) throws MalformedURLException, Exception {
         String c = "";
         CertificadosSSL.instalarCertificados();
@@ -328,7 +347,7 @@ public class Comprobante {
         AutorizacionComprobantesWs auto;
         auto = new AutorizacionComprobantesWs(AUTORIZACION_WSDL);
         ////aqui verifica si esta o no autorizado, y escribe al final del archvo "AUTORIZADO" O "NO AUTORIZADO"
-        List<Autorizacion> listaAutorizaciones = auto.autorizarComprobante(claveAcceso, Config.GENERADOS_DIR + claveAcceso + ".xml", Config.GENERADOS_DIR  + claveAcceso + ".xml");
+        List<Autorizacion> listaAutorizaciones = auto.autorizarComprobante(claveAcceso, Config.GENERADOS_DIR + claveAcceso + ".xml", Config.GENERADOS_DIR + claveAcceso + ".xml");
 
         if (listaAutorizaciones.isEmpty()) {
             respuesta = "{\"status\":\"fail\", \"error\":\"DOCUMENTO AUN NO AUTORIZADO\"}";
@@ -338,9 +357,9 @@ public class Comprobante {
                 String estado = autorizacion.getEstado();
                 String fechax = autorizacion.getFechaAutorizacion().toGregorianCalendar().getTime().toString();
                 String NumAutx = autorizacion.getNumeroAutorizacion();
-           //     JOptionPane.showMessageDialog(null, "estado: " + estado + " fechaautor: " + fechax + " numAutoriza: " + NumAutx);
+                //     JOptionPane.showMessageDialog(null, "estado: " + estado + " fechaautor: " + fechax + " numAutoriza: " + NumAutx);
 
-                System.out.println("@###############3: " + "estado: " + estado + " fechaautor: " + fechax + " numAutoriza: " + NumAutx);
+                Deb.consola("@###############3: " + "estado: " + estado + " fechaautor: " + fechax + " numAutoriza: " + NumAutx);
                 //  String estadox = autorizacion.getNumeroAutorizacion();
                 if (estado.toUpperCase().compareTo("AUTORIZADO") == 0) {
                     is_autorize = true;
@@ -356,34 +375,43 @@ public class Comprobante {
     }
 
     public static boolean VerificasiExisteConecionconWSdelSRI(String claveAcceso) {
-         
+
         CertificadosSSL.instalarCertificados();
         String RECEPCION_WSDL;
-        
-        String ambienteValue=claveAcceso.substring(23, 24);
-         System.out.println("ec.unomas.service.Comprobante.VerificasiExisteConecionconWSdelSRI()kkkkkkkkkkkkkkkkkkkkk"+ambienteValue);
-            if (ambienteValue.equals("1")) {
-                RECEPCION_WSDL = Config.RECEPCION_WSDL_PRUEBAS;
-            } else {
-                RECEPCION_WSDL = Config.RECEPCION_WSDL_PRODUCCION;
-            }
-               if (CheckConnection.existeConexion(RECEPCION_WSDL)) {
-                   return true; 
-               }else{
-               return false;
-               }
-         
-     }
-    public String xmlToPDF(String claveAcceso, byte[] xmlBytes,String dirXML,String dirPDF) {
+
+        String ambienteValue = claveAcceso.substring(23, 24);
+        Deb.consola("ec.unomas.service.Comprobante.VerificasiExisteConecionconWSdelSRI()kkkkkkkkkkkkkkkkkkkkk" + ambienteValue);
+        if (ambienteValue.equals("1")) {
+            RECEPCION_WSDL = Config.RECEPCION_WSDL_PRUEBAS;
+        } else {
+            RECEPCION_WSDL = Config.RECEPCION_WSDL_PRODUCCION;
+        }
+        if (CheckConnection.existeConexion(RECEPCION_WSDL)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public String xmlToPDF(String claveAcceso, byte[] xmlBytes, String dirXML, String dirPDF) {
         String debug = "";
         String respuesta = "{\"status\":\"OK\"}";
         try {
-    
+
             // LEER EL XML SUBIDO
-            File uploaded_file = new File(dirXML +claveAcceso + ".xml");
+            File uploaded_file = new File(dirXML + claveAcceso + ".xml");
+
+            //////jc
+            InputStream inputStream = new FileInputStream(uploaded_file);
+            Reader readerx = new InputStreamReader(inputStream, "UTF-8");
+            InputSource is = new InputSource(readerx);
+            is.setEncoding("UTF-8");
+            //////
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(uploaded_file);
+            //Document doc = db.parse(uploaded_file);
+            Document doc = db.parse(is);
             doc.getDocumentElement().normalize();
 
             NodeList firstTag = doc.getElementsByTagName(doc.getDocumentElement().getNodeName());
@@ -405,21 +433,21 @@ public class Comprobante {
 //                RECEPCION_WSDL = Config.RECEPCION_WSDL_PRODUCCION;
 //            }
 //            // FIRMAR XML
-            if (1==1){
+            if (1 == 1) {
                 // FIRMA ENVIA AUTORIZA, DESCARGA, GENERA PDF Y ENVIA AL EMAIL
-              //   Config.FE_DOCUMENTO_FIRMADO=XAdESBESSignature.sign(Config.SUBIDOS_DIR   + claveAcceso + ".xml", claveAcceso);
+                //   Config.FE_DOCUMENTO_FIRMADO=XAdESBESSignature.sign(Config.SUBIDOS_DIR   + claveAcceso + ".xml", claveAcceso);
                 // VERIFICAR SI EXISTE CONEXION
-   //             boolean a = CheckConnection.existeConexion(RECEPCION_WSDL);
+                //             boolean a = CheckConnection.existeConexion(RECEPCION_WSDL);
                 // System.err.println(a);
-             //   if (CheckConnection.existeConexion(true)) {
-             if(1==1){
+                //   if (CheckConnection.existeConexion(true)) {
+                if (1 == 1) {
 
 //                    File xml_file = new File(Config.FIRMADOS_DIR + claveAcceso + ".xml");
 //                    // Validate XML with the SRI WebService
 //                    EnvioComprobantesWs ec = new EnvioComprobantesWs(RECEPCION_WSDL);
 //                    RespuestaSolicitud response = ec.enviarComprobante(xml_file);
                     //JOptionPane.showMessageDialog(null, response.getEstado() + " -- " + response.getComprobantes().toString());
-                    if (0==0) {
+                    if (0 == 0) {
 //                        Config.FE_DOCUMENTO_AUTORIZADO=true;
                         // SE BORRA SI ES QUE ANTES NO FUE AUTORIZADO, PARA QUE COJA LA VERIFICACION
 //                        File aut_file = new File(Config.NO_AUTORIZADOS_DIR   + claveAcceso + ".xml");
@@ -437,47 +465,69 @@ public class Comprobante {
                         formatter.setTimeZone(TimeZone.getTimeZone("America/Guayaquil"));
                         String fecha = formatter.format(date);
                         ReadXML reader = new ReadXML();
+                        OperacionesForms.rutadocPDFgeneradook = dirPDF + claveAcceso + ".pdf";
+                        ////////////////////////////////////////////////////JOptionPane.showMessageDialog(null, "rutaxx: " + OperacionesForms.rutadocPDFgeneradook);
                         File pdf_file = new File(dirPDF + claveAcceso + ".pdf");
                         if (doc.getDocumentElement().getNodeName().equals("factura")) {
-                            System.out.println("DucumentoDescargado es: "+doc.getDocumentElement().getNodeName());
+                            Deb.consola("DucumentoDescargado es: " + doc.getDocumentElement().getNodeName());
                             Factura factura = reader.readFactura(doc);
+
                             factura.setNroAutorizacion(claveAcceso);
                             factura.setFechaAutorizacion(fecha);
+                            Leertxt.facturaElectronica = factura;
                             Leertxt.listaFacturasGenaradas.add(factura);
-                            if (!pdf_file.exists()) {
-                                ecx.unomas.pdf.Factura factura_pdf = new ecx.unomas.pdf.Factura();
-                                factura_pdf.generatePDF(factura, null);
+
+                            if (OperacionesForms.solocrearFacturaNOgenerrarPDF) {
+                                if (!pdf_file.exists()) {
+                                    ecx.unomas.pdf.Factura factura_pdf = new ecx.unomas.pdf.Factura();
+                                    factura_pdf.generatePDF(factura, null);
+                                }
+                                if (factura.hasEmail()) {
+                                    hasEmail = true;
+                                    email = factura.getInfoAdicionalEmail();
+                                    cc = factura.getInfoAdicionalEmailCC();
+                                    name = factura.getRazonSocialComprador();
+                                    asunto = "FACTURA ELECTRONICA";
+                                }
+                                boolean ingresarcompraxml = false;
+                                if (ingresarcompraxml) {
+                                    Compras compra = new Compras();
+                                    ComprasDao compraDao = new ComprasDao();
+                                    DetalleCompra detalleCompra = new DetalleCompra();
+                                    DetalleComprasDao detalleCompraDao = new DetalleComprasDao();
+                                    Kardex kardex = new Kardex();
+                                    KardexDao kdao = new KardexDao();
+                                }
+                            } else {
+                                //no genera pdF
                             }
-                            if (factura.hasEmail()) {
-                                hasEmail = true;
-                                email = factura.getInfoAdicionalEmail();
-                                cc = factura.getInfoAdicionalEmailCC();
-                                name = factura.getRazonSocialComprador();
-                                asunto = "FACTURA ELECTRONICA";
-                            }
+
                         } else if (doc.getDocumentElement().getNodeName().equals("notaDebito")) {
-                            System.out.println("DucumentoDescargado es: "+doc.getDocumentElement().getNodeName());
+                            Deb.consola("DucumentoDescargado es: " + doc.getDocumentElement().getNodeName());
                             NotaDebito notaDebito = reader.readNotaDebito(doc);
                             notaDebito.setAuthNumber(claveAcceso);
                             notaDebito.setAuthDate(fecha);
                             Leertxt.listaNotaDebitoGenaradas.add(notaDebito);
-                            if (!pdf_file.exists()) {
-                                ecx.unomas.pdf.NotaDebito notaDebito_pdf = new ecx.unomas.pdf.NotaDebito();
-                                notaDebito_pdf.generatePDF(notaDebito, null);
+                            if (OperacionesForms.solocrearFacturaNOgenerrarPDF) {
+                                if (!pdf_file.exists()) {
+                                    ecx.unomas.pdf.NotaDebito notaDebito_pdf = new ecx.unomas.pdf.NotaDebito();
+                                    notaDebito_pdf.generatePDF(notaDebito, null);
+                                }
+                                if (notaDebito.hasEmail()) {
+                                    hasEmail = true;
+                                    email = notaDebito.getInfoAdicionalEmail();
+                                    cc = notaDebito.getInfoAdicionalEmailCC();
+                                    name = notaDebito.getRazonSocialComprador();
+                                    asunto = "NOTA DE DEBITO";
+                                }
                             }
-                            if (notaDebito.hasEmail()) {
-                                hasEmail = true;
-                                email = notaDebito.getInfoAdicionalEmail();
-                                cc = notaDebito.getInfoAdicionalEmailCC();
-                                name = notaDebito.getRazonSocialComprador();
-                                asunto = "NOTA DE DEBITO";
-                            }
+
                         } else if (doc.getDocumentElement().getNodeName().equals("notaCredito")) {
-                            System.out.println("DucumentoDescargado es: "+doc.getDocumentElement().getNodeName());
+                            Deb.consola("DucumentoDescargado es: " + doc.getDocumentElement().getNodeName());
                             NotaCredito notaCredito = reader.readNotaCredito(doc);
                             notaCredito.setAuthNumber(claveAcceso);
                             notaCredito.setAuthDate(fecha);
-                           Leertxt.listaNotaCreditoGenaradas.add(notaCredito);
+                            Leertxt.listaNotaCreditoGenaradas.add(notaCredito);
                             if (!pdf_file.exists()) {
                                 ecx.unomas.pdf.NotaCredito notaCredito_pdf = new ecx.unomas.pdf.NotaCredito();
                                 notaCredito_pdf.generatePDF(notaCredito, null);
@@ -490,7 +540,7 @@ public class Comprobante {
                                 asunto = "NOTA DE CREDITO";
                             }
                         } else if (doc.getDocumentElement().getNodeName().equals("guiaRemision")) {
-                            System.out.println("DucumentoDescargado es: "+doc.getDocumentElement().getNodeName());
+                            Deb.consola("DucumentoDescargado es: " + doc.getDocumentElement().getNodeName());
                             GuiaRemision guiaRemision = reader.readGuiaRemision(doc);
                             guiaRemision.setAuthNumber(claveAcceso);
                             guiaRemision.setAuthDate(fecha);
@@ -506,7 +556,7 @@ public class Comprobante {
                                 asunto = "GUIA DE REMISION";
                             }
                         } else if (doc.getDocumentElement().getNodeName().equals("comprobanteRetencion")) {
-                            System.out.println("DucumentoDescargado es: "+doc.getDocumentElement().getNodeName());
+                            Deb.consola("DucumentoDescargado es: " + doc.getDocumentElement().getNodeName());
                             Retencion retencion = reader.readRetencion(doc);
                             retencion.setAuthNumber(claveAcceso);
                             retencion.setAuthDate(fecha);
@@ -540,8 +590,8 @@ public class Comprobante {
 //                            respuesta = "{\"status\":\"OK\", \"emailed\":\"NO\"}";
 //                        }
                     }
-                
-            }
+
+                }
             }
         } catch (IOException e) {
             respuesta = "{\"status\":\"fail\", \"error\":\"" + String.valueOf(e.getMessage()).replace("\"", "") + "\", \"debug\":\"" + debug + "\"}";
@@ -572,7 +622,7 @@ public class Comprobante {
                 e.printStackTrace();
             }
         } else {
-            file = new File(Config.NO_AUTORIZADOS_DIR  + claveAcceso + "." + ext.toLowerCase());
+            file = new File(Config.NO_AUTORIZADOS_DIR + claveAcceso + "." + ext.toLowerCase());
             if (file.exists()) {
                 try {
                     file_bytes = ArchivoUtil.convertirArchivoAByteArray(file);
@@ -621,19 +671,17 @@ public class Comprobante {
         return respuesta;
     }
 
-    
-   
     /**/
     public String sendDoc(String claveAcceso, String email, String name) {
         String respuesta = "{\"status\":\"OK\", \"emailed\":\"NO\"}";
         File xml_file = new File(Config.AUTORIZADOS_DIR + claveAcceso + ".xml");
-        File pdf_file = new File(Config.AUTORIZADOS_DIR  + claveAcceso + ".pdf");
+        File pdf_file = new File(Config.AUTORIZADOS_DIR + claveAcceso + ".pdf");
         if (xml_file.exists() && pdf_file.exists()) {
-           // if (Mailgun.send(email, "", name, "COMPROBANTE ELECTRONICO", xml_file, pdf_file, true)) {
-             SendMail mail = new SendMail();
+            // if (Mailgun.send(email, "", name, "COMPROBANTE ELECTRONICO", xml_file, pdf_file, true)) {
+            SendMail mail = new SendMail();
             try {
                 if (mail.send(email, "", name, "COMPROBANTE ELECTRONICO", xml_file, pdf_file)) {
-                    
+
                     respuesta = "{\"status\":\"OK\", \"emailed\":\"SI\"}";
                 } else {
                     respuesta = "{\"status\":\"OK\", \"emailed\":\"NO\"}";
@@ -681,7 +729,7 @@ public class Comprobante {
         CertificadosSSL.instalarCertificados();
         String respuesta = "{\"status\":\"fail\", \"error\":\"UNKNOW\"}";
         // LEER EL XML
-        File xml_file = new File(Config.AUTORIZADOS_DIR  + claveAcceso + ".xml");
+        File xml_file = new File(Config.AUTORIZADOS_DIR + claveAcceso + ".xml");
         if (xml_file.exists()) {
             respuesta = "{\"status\":\"OK\", \"emailed\":\"NO\"}";
         } else {
@@ -741,8 +789,8 @@ public class Comprobante {
             } else {
                 try {
                     ////jc// LEER EL XML
-                    xml_file = new File(Config.FIRMADOS_DIR  + claveAcceso + ".xml");
-                    System.out.println("leeerxml:  " + Config.FIRMADOS_DIR  + claveAcceso + ".xml");
+                    xml_file = new File(Config.FIRMADOS_DIR + claveAcceso + ".xml");
+                    Deb.consola("leeerxml:  " + Config.FIRMADOS_DIR + claveAcceso + ".xml");
                     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                     DocumentBuilder db = dbf.newDocumentBuilder();
                     Document doc = db.parse(xml_file);
@@ -776,7 +824,7 @@ public class Comprobante {
                     ///////jcjc
                     AutorizacionComprobantesWs auto;
                     auto = new AutorizacionComprobantesWs(AUTORIZACION_WSDL);
-                  List<Autorizacion> listaAutorizaciones = auto.autorizarComprobante(claveAcceso, Config.AUTORIZADOS_DIR + claveAcceso + ".xml", Config.NO_AUTORIZADOS_DIR + claveAcceso + ".xml");
+                    List<Autorizacion> listaAutorizaciones = auto.autorizarComprobante(claveAcceso, Config.AUTORIZADOS_DIR + claveAcceso + ".xml", Config.NO_AUTORIZADOS_DIR + claveAcceso + ".xml");
                     if (listaAutorizaciones.isEmpty()) {
                         respuesta = "{\"status\":\"fail\", \"error\":\"DOCUMENTO AUN NO AUTORIZADO\"}";
                     } else {
@@ -795,7 +843,7 @@ public class Comprobante {
                             String cc = "";
                             String name = "";
                             String asunto = "";
-                            File pdf_file = new File(Config.AUTORIZADOS_DIR  + claveAcceso + ".pdf");
+                            File pdf_file = new File(Config.AUTORIZADOS_DIR + claveAcceso + ".pdf");
 
                             ReadXML reader = new ReadXML();
                             if (doc.getDocumentElement().getNodeName().equals("factura")) {
@@ -878,12 +926,12 @@ public class Comprobante {
                             // ENVIAR AL CLIENTE EL COMPROBANTE AUTORIZADO
                             if (hasEmail) {
                                 if (!pdf_file.exists()) {
-                                    pdf_file = new File(Config.AUTORIZADOS_DIR  + claveAcceso + ".pdf");
+                                    pdf_file = new File(Config.AUTORIZADOS_DIR + claveAcceso + ".pdf");
                                 }
-                               // if (Mailgun.send(email, cc, name, asunto, xml_file, pdf_file, true)) {
-                                 SendMail mail = new SendMail();
+                                // if (Mailgun.send(email, cc, name, asunto, xml_file, pdf_file, true)) {
+                                SendMail mail = new SendMail();
                                 if (mail.send(email, cc, name, asunto, xml_file, pdf_file)) {
-                          
+
                                     respuesta = "{\"status\":\"OK\", \"emailed\":\"SI\"}";
                                 } else {
                                     respuesta = "{\"status\":\"OK\", \"emailed\":\"NO\"}";

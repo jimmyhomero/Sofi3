@@ -7,10 +7,13 @@ package Controlador.Usuarios;
 
 import ClasesAuxiliares.FeCodigoNUmerico;
 import ClasesAuxiliares.Variables;
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Coneccion;
 import Modelo.Clientes;
 import Modelo.Compras;
 import Modelo.DetalleCompra;
+import Modelo.Productos;
+import Modelo.ProductosTemp;
 import Modelo.sri_sustentocomprobante;
 import Modelo.sri_tipocomprobante;
 import Vista.Principal;
@@ -23,6 +26,7 @@ import ecx.unomas.factura.InfoAdicional;
 import ecx.unomas.factura.TotalImpuesto;
 import ecx.unomas.service.Comprobante;
 import ecx.unomas.service.Config;
+import java.awt.Color;
 import login.login;
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +41,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -75,7 +80,7 @@ public class ComprasDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -106,7 +111,7 @@ public class ComprasDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -119,8 +124,8 @@ public class ComprasDao extends Coneccion {
 
         String[] titulos
                 = {"Codigo", "Fecha", "Numero de Factura", "Total",
-                    "Vendedor", "Terminal",
-                    "Cliente", "Ruc", "Estado"};
+                    "Usuario", "Terminal",
+                    "Proveedor", "Ruc", "Estado"};
         String[] registros = new String[9];
         modelo = new DefaultTableModel(null, titulos) {
             @Override
@@ -132,7 +137,7 @@ public class ComprasDao extends Coneccion {
         };
 
         ResultSet rs;
-        String sql = "SELECT compras.* ,usuarios.Nombres AS usuario, proveedores.Nombres AS cliente, proveedores.Cedula AS ruc FROM compras INNER JOIN proveedores ON proveedores.Codigo=compras.Proveedores_codigo INNER JOIN usuarios ON usuarios.codigo= compras.Usuarios_Codigo WHERE hora BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' ORDER BY compras.secuencia";
+        String sql = "SELECT compras.* ,usuarios.Nombres AS usuario, clientes.Nombres AS cliente, clientes.Cedula AS ruc FROM compras INNER JOIN clientes ON clientes.Codigo=compras.Proveedores_codigo INNER JOIN usuarios ON usuarios.codigo= compras.Usuarios_Codigo WHERE hora BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' ORDER BY compras.secuencia";
         //String sql = "SELECT compras.* ,usuarios.Nombres as usuario, proveedores.Nombres as cliente, clientes.Cedula as ruc from compras inner join clientes on clientes.Codigo=compras.Proveedor_codigo inner JOIN usuarios on usuarios.codigo= facturas.Usuarios_Codigo where hora BETWEEN '" + fecha1 + "' and '" + fecha2 + "' order BY facturas.secuencia ";
         //String sql="SELECT facturas.* ,usuarios.Nombres as usuario, clientes.Nombres as cliente, clientes.Cedula as ruc from facturas inner join clientes on clientes.Codigo=facturas.Clientes_codigo inner JOIN usuarios on usuarios.codigo= facturas.Usuarios_Codigo order BY facturas.secuencia LIMIT 0, 50";
         try {
@@ -140,7 +145,7 @@ public class ComprasDao extends Coneccion {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -160,7 +165,7 @@ public class ComprasDao extends Coneccion {
                 }
 
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
 
             }
 
@@ -178,7 +183,7 @@ public class ComprasDao extends Coneccion {
         String[] titulos
                 = {"Codigo", "Fecha", "Numero de Factura", "Total",
                     "Documento", "Terminal",
-                    "Provvedor", "Ruc", "Forma Pago"};
+                    "Proveedor", "Ruc", "Forma Pago"};
         String[] registros = new String[9];
         modelo = new DefaultTableModel(null, titulos) {
             @Override
@@ -193,8 +198,8 @@ public class ComprasDao extends Coneccion {
         try {
             this.conectar();
             PreparedStatement st;
-            st = this.getCnx().prepareCall("SELECT proveedores.nombres AS proveedor, proveedores.Cedula AS ruc, compras.*, usuarios.nombres AS usuario, usuarios.codigo AS ucodigo FROM proveedores INNER JOIN compras ON proveedores.Codigo=compras.Proveedores_codigo  INNER JOIN usuarios ON usuarios.codigo= compras.Usuarios_Codigo  WHERE " + columna + " LIKE '%" + value + "%' ORDER BY compras.hora ");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            st = this.getCnx().prepareCall("SELECT CLIENTES.nombres AS proveedor, CLIENTES.Cedula AS ruc, compras.*, usuarios.nombres AS usuario, usuarios.codigo AS ucodigo FROM CLIENTES INNER JOIN compras ON CLIENTES.Codigo=compras.Proveedores_codigo  INNER JOIN usuarios ON usuarios.codigo= compras.Usuarios_Codigo  WHERE " + columna + " LIKE '%" + value + "%' ORDER BY compras.hora ");
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -210,11 +215,11 @@ public class ComprasDao extends Coneccion {
                 registros[8] = rs.getString("formaPago");
 
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
             }
 
         } catch (Exception ex) {
@@ -232,7 +237,7 @@ public class ComprasDao extends Coneccion {
         try {
             fac = this.buscarConID(codigo);
         } catch (Exception e) {
-            System.out.println("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()sssd" + e);
+            Deb.consola("Controlador.Usuarios.FacturasDao.creaxmlFacturaElectronica()sssd" + e);
         }
         try {
 
@@ -259,7 +264,7 @@ public class ComprasDao extends Coneccion {
             ClientesDao clienteDao = new ClientesDao();
             Clientes cliente = new Clientes();
 
-            cliente = clienteDao.buscarConID(fac.getProveedores_codigo(),1);
+            cliente = clienteDao.buscarConID(fac.getProveedores_codigo(), 1);
 
             if (cliente.getCedula().length() == 10) {
                 f.setTipoIdentificacionComprador(Variables.FE_TIPO_IDENTIFICACION_CEDULA);
@@ -333,7 +338,7 @@ public class ComprasDao extends Coneccion {
             f.setInfAdicional(infadd1);
             f.setInfAdicional(infadd);
             String s = f.getXML();
-            //     System.out.println("xmls" + s);
+            //     Deb.consola("xmls" + s);
             // TODO code application logic here
             //byte[] xmlBytes=  readBytesFromFile("D:\\comprobantes\\generados\\fac3.xml");
             ArchivoUtil.stringToFile(Config.GENERADOS_DIR + fac.getCalveAcceso() + ".xml", s);
@@ -352,13 +357,13 @@ public class ComprasDao extends Coneccion {
 
 ////////////            upload = a.upload(clave, archivoBytes);            
 ////////////            if (upload.contains("OK")) {  
-////////////                System.out.println("FIRMADO, AUTORIZADO Y ENVIADO CON EXITO..");
+////////////                Deb.consola("FIRMADO, AUTORIZADO Y ENVIADO CON EXITO..");
 ////////////            } else {
-////////////                System.out.println("ERROR DE ENVIO: " + upload);
+////////////                Deb.consola("ERROR DE ENVIO: " + upload);
 ////////////            }
 //
-//            System.out.println("VALIDATE: " + a.validate(fac.getCalveAcceso()));
-//            System.out.println("DOWNLOAD: " + a.download(fac.getCalveAcceso(), "xml"));
+//            Deb.consola("VALIDATE: " + a.validate(fac.getCalveAcceso()));
+//            Deb.consola("DOWNLOAD: " + a.download(fac.getCalveAcceso(), "xml"));
         } catch (Exception e) {
             System.err.println("erroro : " + e);
         }
@@ -374,7 +379,7 @@ public class ComprasDao extends Coneccion {
             this.conectar();
             PreparedStatement st;
             st = this.getCnx().prepareCall("select b" + bodega + " , producto from productos where  producto like '%" + value + "%' order BY productos.producto LIMIT 0, 50");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -443,8 +448,9 @@ public class ComprasDao extends Coneccion {
         return exiteId;
     }
 
-    public String[] Buscar_registros(String value, String bodega) {
-        String[] registros = new String[11];
+    public Object[] Buscar_registros(String value, String bodega) {
+        //String[] registros = new String[12];
+        Object[] registros = new Object[12];
 
         ResultSet rs;
         String tabla = "productos";
@@ -453,13 +459,13 @@ public class ComprasDao extends Coneccion {
             PreparedStatement st;
             st = this.getCnx().prepareCall("select Productos.*, modelos.Modelo from productos inner join modelos on modelos.Codigo=productos.Modelos_Codigo where producto  like '%" + value + "%' order BY productos.producto LIMIT 0, 50");
             //  JOptionPane.showMessageDialog(null,"sssssddeerere"+ st.toString());
-            //    System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            //    Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
                 registros[0] = rs.getString("costo");
-                registros[1] = String.valueOf(1);
-                registros[2] = String.valueOf(rs.getInt("Codigo"));
+                registros[1] = rs.getString("impuesto");
+                registros[2] = rs.getString("CodigoALTERNO");
                 registros[3] = rs.getString("Producto");
                 registros[4] = "1";
                 registros[5] = "0";
@@ -468,14 +474,129 @@ public class ComprasDao extends Coneccion {
                 registros[8] = "0";
                 registros[9] = rs.getString("b" + bodega);
                 registros[10] = "332";
+                registros[11] = new JButton("Clic aquí");
 
-//                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+//                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
             }
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex + "lllhhhh");
         } finally {
             this.cerrar();
+        }
+
+        return registros;
+    }
+
+    public Object[] Buscar_registrosfacxml(Detalle f, String bodega) {
+        Object[] registros = new Object[12];
+
+        try {
+
+            Double pu = f.getPrecioUnitario();
+            Double desu = f.getDescuento() / f.getCantidad();
+            pu = pu - desu;
+            registros[0] = pu.toString();
+            for (Impuesto impuesto : f.getImpuestos()) {
+                registros[1] = impuesto.getTarifa().toString();
+            }
+            registros[2] = String.valueOf(f.getCodigoPrincipal()+f.getCodigoSecundario());
+            registros[3] = f.getDescripcion();
+            registros[4] = f.getCantidad().toString();
+            registros[5] = "0";
+            registros[6] = bodega;
+            registros[7] = pu.toString();//rs.getString("costo");
+            registros[8] = "0";
+            registros[9] = "b" + bodega;
+            registros[10] = "332";
+            registros[11] = new JButton("buscar");
+
+//                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex + "lllhhhh");
+        } finally {
+
+        }
+
+        return registros;
+    }
+
+    public Object[] Buscar_registrosfacxml_prodInternos(Detalle d, String bodega, Integer codigoProveedor) {
+        Object[] registros = new Object[12];
+
+        try {
+            ProductosTemp pt = new ProductosTemp();
+            ProductosTempDao ptdao = new ProductosTempDao();
+            pt = ptdao.getProductoTemp(codigoProveedor, d.getCodigoPrincipal()+d.getCodigoSecundario());
+            //comsutoStoken la bodega
+            Productos p= new Productos();
+            ProductosDao pDao= new ProductosDao();
+            p=pDao.buscarPorCodigoAlternoPdoductoStockenBodegaEspecifica(pt.getCodigoProductoI(),bodega);
+            ////////
+            Double pu = d.getPrecioUnitario();
+            Double desu = d.getDescuento() / d.getCantidad();
+            pu = pu - desu;
+            registros[0] = pu.toString();
+            for (Impuesto impuesto : d.getImpuestos()) {
+                registros[1] = impuesto.getTarifa().toString();
+            }
+          //  registros[1]="1";
+            registros[2] = String.valueOf(pt.getCodigoProductoI());
+            registros[3] = pt.getNombreI();
+            registros[4] = d.getCantidad().toString();
+            registros[5] = "0";
+            registros[6] = bodega;
+            registros[7] = pu.toString();//rs.getString("costo");
+            registros[8] = "0";
+            registros[9] = p.getCantidad();
+            registros[10] = "332";
+            registros[11] = new JButton("buscar");
+
+//                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex + "lllhhhh");
+        } finally {
+
+        }
+
+        return registros;
+    }
+
+    public Object[] Buscar_registrosfacxml_comprarX1(Detalle f, Integer codigoProveedor) {
+
+        Object[] registros = new Object[8];
+
+        try {
+
+            Double pu = f.getPrecioUnitario();
+            Double desu = f.getDescuento() / f.getCantidad();
+            pu = pu - desu;
+            registros[0] = "1";//pu.toString();
+//            for (Impuesto impuesto : f.getImpuestos()) {
+//                registros[1] = impuesto.getTarifa().toString();
+//            }
+            registros[1] = pu.toString();
+            registros[2] = String.valueOf(f.getCodigoPrincipal()+f.getCodigoSecundario());
+            registros[3] = f.getDescripcion();
+            ProductosTempDao ptdao = new ProductosTempDao();
+            ProductosTemp pt = new ProductosTemp();
+            pt = ptdao.getProductoTemp(codigoProveedor, f.getCodigoPrincipal()+f.getCodigoSecundario());
+            if (pt.getCodigoProductoI().equalsIgnoreCase("xx") && pt.getCodigoProductoE().equalsIgnoreCase("xx")) {
+                registros[4] = "NA";
+                registros[5] = "NA";
+            } else {
+                registros[4] = pt.getCodigoProductoI();
+                registros[5] = pt.getNombreI();
+                registros[7] = pt.getCodigo();
+            }
+
+            registros[6] = new JButton("buscar");
+
+//                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex + "lllhhhh");
+        } finally {
+
         }
 
         return registros;
@@ -492,15 +613,16 @@ public class ComprasDao extends Coneccion {
             //           java.sql.Timestamp sqlTimeStamp = new java.sql.Timestamp(tarea.getFecha());
             long d = tarea.getFecha().getTime();
             java.sql.Date fecha = new java.sql.Date(d);
+           
             consulta.setDate(1, fecha);
-            consulta.setString(2, tarea.getIva().toUpperCase());
-            consulta.setString(3, tarea.getSubtotaI_con_iva().toUpperCase());
+            consulta.setString(2, tarea.getIva());
+            consulta.setString(3, tarea.getSubtotaI_con_iva());
             consulta.setString(4, tarea.getSubtotal_sin_iva());
             consulta.setString(5, tarea.getTotal());
             consulta.setString(6, tarea.getUtilidad());
             consulta.setString(7, tarea.getTipo_documentoID());
             consulta.setString(8, tarea.getTipo_documento());
-            consulta.setString(9, tarea.getDescuento().toUpperCase());
+            consulta.setString(9, tarea.getDescuento());
             consulta.setInt(10, tarea.getProveedores_codigo());
             consulta.setInt(11, tarea.getUsuarios_Codigo());
             consulta.setString(12, tarea.getEquipo());
@@ -521,26 +643,67 @@ public class ComprasDao extends Coneccion {
             }
             consulta.setString(23, tarea.getSustento());
             consulta.setString(24, tarea.getSustentoID());
-            System.out.println("Controlador.CUsuarios.guardar()" + consulta);
+            Deb.consola("Controlador.CUsuarios.guardar()" + consulta);
+            // Deb.consola(bdd);
             //// cream
             consulta.executeUpdate();
             ResultSet rs = consulta.getGeneratedKeys();
             if (rs.next()) {
                 codigoThisFactura = rs.getInt(1);
-                System.out.println("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
+                Deb.consola("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
             }
         } catch (SQLException ex) {
             //msg.setProgressBar_mensajae(ex.toString());
-            System.out.println("Controlador.CUsuarios.guardar()" + ex);
+            Deb.consola("Controlador.CUsuarios.guardar()" + ex);
         } finally {
             this.cerrar();
         }
         return codigoThisFactura;
     }
 
-    public Compras buscarConID(Integer id) {
-        ResultSet rs;
+    public Compras getCompra(ResultSet rs) {
         Compras u = new Compras();
+        try {
+
+            Compras per = new Compras();
+            per.setCodigo(rs.getInt("Codigo"));
+            per.setAnulada(rs.getBoolean("anulada"));
+            per.setProveedores_codigo(rs.getInt("Proveedores_codigo"));
+            per.setDescuento(rs.getString("descuento"));
+            per.setEquipo(rs.getString("equipo"));
+            per.setUtilidad(rs.getString("utilidad"));
+            per.setFecha(rs.getDate("fecha"));
+            per.setHora(rs.getTimestamp("Hora"));
+            per.setIva(rs.getString("iva"));
+            per.setIva_valor(rs.getString("iva_valor"));
+            per.setSecuencia(rs.getString("secuencia"));
+            per.setSubtotaI_con_iva(rs.getString("subtotaI_con_iva"));
+            per.setSubtotal_sin_iva(rs.getString("subtotal_sin_iva"));
+            per.setTipo_documentoID(rs.getString("tipo_documentoID"));
+            per.setTipo_documento(rs.getString("tipo_documento"));
+            per.setTotal(rs.getString("total"));
+            per.setUsuarios_Codigo(rs.getInt("Usuarios_Codigo"));
+            per.setCalveAcceso(rs.getString("calveAcceso"));
+            per.setEstablecimiento(rs.getString("establecimiento"));
+            per.setPtoEmision(rs.getString("ptoEmision"));
+            per.setSecfactura(rs.getString("secfactura"));
+            per.setFormaPago(rs.getString("formaPago"));
+            per.setEfectivo(rs.getDouble("efectivo"));
+            per.setCambio(rs.getDouble("cambio"));
+            per.setNota_Codigo(rs.getInt("nota_codigo"));
+            per.setSustento(rs.getString("sustento"));
+            per.setSustentoID(rs.getString("sustentoID"));
+            u = per;
+
+        } catch (Exception e) {
+            Deb.consola("Controlador.CUsuarios.BuscarConId()asdad" + e);
+        }
+        return u;
+    }
+
+    public Compras buscarConID(Integer id) {
+        Compras u = new Compras();
+        ResultSet rs;
         try {
 
             this.conectar();
@@ -549,39 +712,98 @@ public class ComprasDao extends Coneccion {
             st = this.getCnx().prepareCall("select * from compras where codigo =" + id);
             rs = st.executeQuery();
             while (rs.next()) {
-                Compras per = new Compras();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setAnulada(rs.getBoolean("anulada"));
-                per.setProveedores_codigo(rs.getInt("Proveedores_codigo"));
-                per.setDescuento(rs.getString("descuento"));
-                per.setEquipo(rs.getString("equipo"));
-                per.setUtilidad(rs.getString("utilidad"));
-                per.setFecha(rs.getDate("fecha"));
-                per.setHora(rs.getTimestamp("Hora"));
-                per.setIva(rs.getString("iva"));
-                per.setIva_valor(rs.getString("iva_valor"));
-                per.setSecuencia(rs.getString("secuencia"));
-                per.setSubtotaI_con_iva(rs.getString("subtotaI_con_iva"));
-                per.setSubtotal_sin_iva(rs.getString("subtotal_sin_iva"));
-                per.setTipo_documentoID(rs.getString("tipo_documentoID"));
-                per.setTipo_documento(rs.getString("tipo_documento"));
-                per.setTotal(rs.getString("total"));
-                per.setUsuarios_Codigo(rs.getInt("Usuarios_Codigo"));
-                per.setCalveAcceso(rs.getString("calveAcceso"));
-                per.setEstablecimiento(rs.getString("establecimiento"));
-                per.setPtoEmision(rs.getString("ptoEmision"));
-                per.setSecfactura(rs.getString("secfactura"));
-                per.setFormaPago(rs.getString("formaPago"));
-                per.setEfectivo(rs.getDouble("efectivo"));
-                per.setCambio(rs.getDouble("cambio"));
-                per.setNota_Codigo(rs.getInt("nota_codigo"));
-                per.setSustento(rs.getString("sustento"));
-                per.setSustentoID(rs.getString("sustentoID"));
-                u = per;
+                u = getCompra(rs);
+
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+
+        } finally {
+            this.cerrar();
+        }
+
+        return u;
+    }
+
+    public ArrayList<Compras> listadecompras() {
+        ArrayList<Compras> lista = new ArrayList<>();
+
+        ResultSet rs;
+        try {
+
+            this.conectar();
+            PreparedStatement st;
+
+            st = this.getCnx().prepareCall("select * from compras");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                lista.add(getCompra(rs));
+            }
+
+        } catch (Exception ex) {
+
+        } finally {
+            this.cerrar();
+        }
+
+        return lista;
+    }
+
+    public Compras buscarbyCLaveAcceso(String id) {
+        ResultSet rs;
+        Compras u = new Compras();
+        try {
+
+            this.conectar();
+            PreparedStatement st;
+
+            st = this.getCnx().prepareCall("select * from compras where calveAcceso = '" + id+ "'");
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                rs.beforeFirst();
+                while (rs.next()) {
+
+                    Compras per = new Compras();
+                    per.setCodigo(rs.getInt("Codigo"));
+                    per.setAnulada(rs.getBoolean("anulada"));
+                    per.setProveedores_codigo(rs.getInt("Proveedores_codigo"));
+                    per.setDescuento(rs.getString("descuento"));
+                    per.setEquipo(rs.getString("equipo"));
+                    per.setUtilidad(rs.getString("utilidad"));
+                    per.setFecha(rs.getDate("fecha"));
+                    per.setHora(rs.getTimestamp("Hora"));
+                    per.setIva(rs.getString("iva"));
+                    per.setIva_valor(rs.getString("iva_valor"));
+                    per.setSecuencia(rs.getString("secuencia"));
+                    per.setSubtotaI_con_iva(rs.getString("subtotaI_con_iva"));
+                    per.setSubtotal_sin_iva(rs.getString("subtotal_sin_iva"));
+                    per.setTipo_documentoID(rs.getString("tipo_documentoID"));
+                    per.setTipo_documento(rs.getString("tipo_documento"));
+                    per.setTotal(rs.getString("total"));
+                    per.setUsuarios_Codigo(rs.getInt("Usuarios_Codigo"));
+                    per.setCalveAcceso(rs.getString("calveAcceso"));
+                    per.setEstablecimiento(rs.getString("establecimiento"));
+                    per.setPtoEmision(rs.getString("ptoEmision"));
+                    per.setSecfactura(rs.getString("secfactura"));
+                    per.setFormaPago(rs.getString("formaPago"));
+                    per.setEfectivo(rs.getDouble("efectivo"));
+                    per.setCambio(rs.getDouble("cambio"));
+                    per.setNota_Codigo(rs.getInt("nota_codigo"));
+                    per.setSustento(rs.getString("sustento"));
+                    per.setSustentoID(rs.getString("sustentoID"));
+                    u = per;
+                }
+                Deb.consola("Teneos datos");
+
+            } else {
+                Deb.consola("NOOOO Teneos datos");
+                u = null;
+
+            }
+
+        } catch (Exception ex) {
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -614,7 +836,7 @@ public class ComprasDao extends Coneccion {
             PreparedStatement st;
 
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -634,7 +856,7 @@ public class ComprasDao extends Coneccion {
                 }
 
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
 
             }
 

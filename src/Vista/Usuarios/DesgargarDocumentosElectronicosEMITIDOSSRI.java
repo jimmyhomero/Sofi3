@@ -7,16 +7,22 @@ package Vista.Usuarios;
 
 import ClasesAuxiliares.Leertxt;
 import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
+import Vista.Principal;
 import Vlidaciones.ProgressBar;
+import ecx.unomas.factura.Factura;
+import ecx.unomas.factura.InfoAdicional;
 import ecx.unomas.service.Config;
 import java.awt.Dimension;
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -35,27 +41,24 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
     public static Integer documentosProcesados = 0;
     Leertxt objller = new Leertxt();
     private String ruta = "";
-    
-  public void eliminar(){
-    modelo=  (DefaultTableModel) jTable1.getModel();
-      if(modelo!=null){
-          while (modelo.getRowCount() > 0) {
-            modelo.removeRow(0);
-        }
-          System.out.println("Vista.Usuarios.DesgargarDocumentosElectronicosSRI.eliminar()Modelosssspppppppppp");
-          jTable1.setModel(modelo);
-      }
-    
-    }
-  
 
-  
+    public void eliminar() {
+        modelo = (DefaultTableModel) jTable1.getModel();
+        if (modelo != null) {
+            while (modelo.getRowCount() > 0) {
+                modelo.removeRow(0);
+            }
+            Deb.consola("Vista.Usuarios.DesgargarDocumentosElectronicosSRI.eliminar()Modelosssspppppppppp");
+            jTable1.setModel(modelo);
+        }
+
+    }
+
     public DesgargarDocumentosElectronicosEMITIDOSSRI() {
         initComponents();
-        
+
         llamarJfieldCooser();
-        
-        
+
     }
 
     /**
@@ -83,6 +86,8 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
         jPanel9 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -238,6 +243,20 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
                 .addContainerGap())
         );
 
+        jButton2.setText("REPORTE CXC");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("jButton4");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -248,6 +267,10 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -261,6 +284,12 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton4))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Docuemntos"));
@@ -297,7 +326,7 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -378,18 +407,26 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
             segenerolosXML = false;
             nombrearchivoseleccionado = "";
             archivo = ventana.jFileChooser1.getSelectedFile();
+            Deb.consola("archivo: " + archivo);
             ruta = ventana.jFileChooser1.getSelectedFile().getPath();
+            Deb.consola("Ruta: " + ruta);
             nombrearchivoseleccionado = ventana.jFileChooser1.getSelectedFile().getName();
+            Deb.consola("archivoseleccionado: " + nombrearchivoseleccionado);
             jLabel1.setText("Archivo Seleccionado: " + nombrearchivoseleccionado);
-            txtTotalDOcs.setText(Leertxt.getNumerComprobanteseneltxt(ruta).toString());
-            objller.getListaComprobantes(ruta);
-        //    jTable1.setModel(modelo);
-           // eliminar(); ASDA
-           
-            Leertxt leer =new Leertxt();
-            modelo=leer.listarFacturasEmitidasTbModel();
+            ruta = ruta.replace(nombrearchivoseleccionado, "");
+            Deb.consola("rutade carpeta: " + ruta);
+            //txtTotalDOcs.setText(Leertxt.getNumerComprobanteseneltxt(ruta).toString());
+            Integer total=Leertxt.listaficehros(ruta);
+            ProgressBar.jpb_maxvalue=total;
+            txtTotalDOcs.setText(total.toString());
+            //objller.getListaComprobantes(ruta);
+            Leertxt leer = new Leertxt();
+           // ProgressBar.fillx();
+            modelo = leer.listarFacturasEmitidasTbModel();
+             
             jTable1.setModel(modelo);
-
+            ProgressBar.jpb_maxvalue=0;
+            ProgressBar.jpb_incremental=0;
             try {
 
             } catch (Exception ex) {
@@ -403,9 +440,9 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
         // TODO add your handling code here:
         //DefaultTableModel tb = (DefaultTableModel) jTable1.getModel();
         //eliminar(tb);
-         while (modelo.getRowCount() > 0) {
+        while (modelo.getRowCount() > 0) {
             modelo.removeRow(0);
-             System.err.println("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+            System.err.println("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
         }
         llamarJfieldCooser();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -413,14 +450,22 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         if (!nombrearchivoseleccionado.isEmpty()) {
-          //   Config.AUTORIZADOS_DIR = Config.EMITIDOS_DIR + "XML" + Config.SEPARADOR;
-             Config.AUTORIZADOS_DIR = Config.EMITIDOS_DIR + "PDF" + Config.SEPARADOR;
-         Leertxt.descargarXMLformSRItoFileXMLandPFDenUnSoloPasoEMITIDOS(ruta);
-            System.out.println("RRRRRRRRRRRRRRRRR_: "+Config.AUTORIZADOS_DIR);
-         String file=Config.AUTORIZADOS_DIR+"Excel.xlsx";
-         
-        //Leertxt.exportxml();
-        Leertxt.exportxmlexcelFacturas();
+            OperacionesForms.solocrearFacturaNOgenerrarPDF = false;
+            //   Config.AUTORIZADOS_DIR = Config.EMITIDOS_DIR + "XML" + Config.SEPARADOR;
+            Config.AUTORIZADOS_DIR = Config.EMITIDOS_DIR + "PDF" + Config.SEPARADOR;
+            String claveacceso = "";
+            
+            for (int i = 0; i < Leertxt.listaComprobantesRecibidos.size(); i++) {
+                claveacceso = Leertxt.listaComprobantesRecibidos.get(i).getRAZON_SOCIAL_EMISOR();
+               // JOptionPane.showMessageDialog(null, claveacceso);
+                Leertxt.descargarXMLformSRItoFileXMLandPFDenUnSoloPasoEMITIDOSlista(claveacceso);
+            }
+
+            Deb.consola("RRRRRRRRRRRRRRRRR_: " + Config.AUTORIZADOS_DIR);
+         //   String file = Config.AUTORIZADOS_DIR + "Excel.xlsx";
+
+            //Leertxt.exportxml();
+            Leertxt.exportxmlexcelFacturasCXCJC();
         } else {
             ProgressBar.mostrarMensajeAzul("Seleccione Un archivo Valido");
         }
@@ -430,7 +475,7 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
     private void txt_numDocPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txt_numDocPropertyChange
         // TODO add your handling code here:
         txt_numDoc.setText(documentosProcesados.toString());
-        System.out.println("Vista.Usuarios.DesgargarDocumentosElectronicosSRI.txt_numDocPropertyChange()");
+        Deb.consola("Vista.Usuarios.DesgargarDocumentosElectronicosSRI.txt_numDocPropertyChange()");
     }//GEN-LAST:event_txt_numDocPropertyChange
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -439,7 +484,7 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
         if (evt.getClickCount() == 2) {
             Integer row = jTable1.getSelectedRow();
             String claveAcceso = jTable1.getValueAt(row, colClaveAcceso).toString();
-              Config.AUTORIZADOS_DIR = Config.EMITIDOS_DIR + "PDF" + Config.SEPARADOR;
+            Config.AUTORIZADOS_DIR = Config.EMITIDOS_DIR + "PDF" + Config.SEPARADOR;
             Leertxt.descargarXMLformSRItoFileXMLandPFDenUnSoloPasoclickjtableEMITIDOS(claveAcceso);
 
             String file = Config.AUTORIZADOS_DIR + claveAcceso + ".pdf";
@@ -448,9 +493,8 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
             try {
                 Runtime.getRuntime().exec("cmd /c start " + file);
             } catch (Exception e) {
-            ProgressBar.mostrarMensajeRojo("Error al abrir el PDF :"+e.toString());
+                ProgressBar.mostrarMensajeRojo("Error al abrir el PDF :" + e.toString());
             }
-            
 
         }
     }//GEN-LAST:event_jTable1MouseClicked
@@ -460,10 +504,32 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
         OperacionesForms.filtro(jTextField1.getText().toUpperCase(), jTable1);
     }//GEN-LAST:event_jTextField1KeyReleased
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+
+        for (Factura f :  Leertxt.listaFacturasGenaradas) {
+            for (InfoAdicional i : f.getInfoAdicional()) {
+                if(i.getValor().contains("CREDITO")){
+                
+                }
+            }
+        }
+        Leertxt.exportxmlexcelFacturasCXCJC();
+
+         
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+                //ProgressBar.fillx();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -486,7 +552,7 @@ public class DesgargarDocumentosElectronicosEMITIDOSSRI extends javax.swing.JInt
 
     @Override
     public void run() {
-        System.out.println("Vista.Usuarios.DesgargarDocumentosElectronicosSRI.run()");
+        Deb.consola("Vista.Usuarios.DesgargarDocumentosElectronicosSRI.run()");
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
     }

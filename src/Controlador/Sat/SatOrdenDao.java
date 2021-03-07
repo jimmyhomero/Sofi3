@@ -5,6 +5,7 @@
  */
 package Controlador.Sat;
 
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Usuarios.*;
 import Controlador.Coneccion;
 import Modelo.Clientes;
@@ -47,24 +48,24 @@ public class SatOrdenDao extends Coneccion {
             PreparedStatement consulta;
 
             consulta = this.con.prepareStatement("INSERT INTO SatOrden (numero,usuarios_codigo,clientes_codigo,descripcion) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            System.out.println("Controlador.satAparato.guardar()" + consulta);
+            Deb.consola("Controlador.satAparato.guardar()" + consulta);
             consulta.setString(1, tarea.getNumero());
             consulta.setInt(2, tarea.getUsuarios_codigo());
             consulta.setInt(3, tarea.getClientes_codigo());
             consulta.setString(4, tarea.getDescripcion());
-            System.out.println("Controlador.satAparato.guardar()" + consulta);
-            System.out.println("Controlador.Sat.SatAparatoDao.guardar():  " + consulta);
+            Deb.consola("Controlador.satAparato.guardar()" + consulta);
+            Deb.consola("Controlador.Sat.SatAparatoDao.guardar():  " + consulta);
             consulta.executeUpdate();
             ResultSet rs = consulta.getGeneratedKeys();
             if (rs.next()) {
                 codigoThisFactura = rs.getInt(1);
-                System.out.println("Controlador.Usuarios.SatOrden.guardar()>: " + codigoThisFactura);
+                Deb.consola("Controlador.Usuarios.SatOrden.guardar()>: " + codigoThisFactura);
             }
         } catch (SQLException ex) {
 
-            System.out.println("Controlador.Sat.SatAparatoDao.guardar():  " + ex);
+            Deb.consola("Controlador.Sat.SatAparatoDao.guardar():  " + ex);
             msg.setProgressBar_mensajae(ex.toString());
-            System.out.println("Controlador.satAparato.guardar() : " + ex);
+            Deb.consola("Controlador.satAparato.guardar() : " + ex);
         } finally {
             this.cerrar();
         }
@@ -104,13 +105,13 @@ public class SatOrdenDao extends Coneccion {
 //            st.setString(13, "obsercvaciones");
 //            st.setInt(14, persona.getCodigo());
 //             String sql = st.toString();
-//            System.out.println("Controlador.Usuarios.CUsuarios.modificar()"+ sql);
+//            Deb.consola("Controlador.Usuarios.CUsuarios.modificar()"+ sql);
 //            st.executeUpdate();
 //            Principal.jProgressBar2.setString("eeeeeeeeeeeee");
 //            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
 //        } catch (SQLException e) {
 //            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error" + e + sql, "Error al modificar Registro" + e.toString()));
-//System.out.println("Controlador.CUsuarios.guardar()" + e);
+//Deb.consola("Controlador.CUsuarios.guardar()" + e);
 //        } finally {
 //            this.cerrar();
 //        }
@@ -137,7 +138,7 @@ public class SatOrdenDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.listar()" + ex);
+            Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -172,7 +173,7 @@ public class SatOrdenDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -205,7 +206,7 @@ public class SatOrdenDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
 //             if(){
@@ -242,7 +243,7 @@ public class SatOrdenDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
 //             if(){
@@ -278,7 +279,7 @@ public class SatOrdenDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()sss" + ex);
         } finally {
             this.cerrar();
         }
@@ -322,7 +323,7 @@ public class SatOrdenDao extends Coneccion {
             st = this.getCnx().prepareCall("select * from SatAparato where " + columna + "  like '%" + value + "%' order BY descripcion");
 
             //  st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -342,11 +343,11 @@ public class SatOrdenDao extends Coneccion {
                 registros[0] = String.valueOf(rs.getInt("usuarios_codigo"));
                 registros[0] = String.valueOf(rs.getInt("clientes_codigo"));
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
             }
 
         } catch (Exception ex) {

@@ -9,6 +9,7 @@ import Controlador.Usuarios.Tipo_UsuariosDao;
 import Modelo.Tipo_Usuario;
 import Vista.Principal;
 import Vlidaciones.VaciarTexto;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -144,7 +145,7 @@ public class Crear_Tipo_Usuarios extends javax.swing.JInternalFrame {
         u.setDescripcion(txt_descripcion.getText());
         
         if (evt.getActionCommand().equals("Actualizar")) {
-            System.out.println("Vista.Usuarios.CrearUsuarios.jButton1ActionPerformed(): " + evt.getActionCommand());
+            Deb.consola("Vista.Usuarios.CrearUsuarios.jButton1ActionPerformed(): " + evt.getActionCommand());
             u.setCodigo(Integer.parseInt(txt_codigo.getText()));
             obj.modificar(u);
             this.dispose();

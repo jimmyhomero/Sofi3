@@ -16,12 +16,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import ClasesAuxiliares.debug.Deb;
 
 /**
  *
@@ -35,12 +37,13 @@ public class ProveedoresDao extends Coneccion {
     //private Conec mysql = new conexion(); //Instanciando la clase conexion
     //private Connection cn = mysql.conectar();
 
-    public void guardar(Proveedores tarea) {
+    public Integer guardar(Proveedores tarea) {
+        Integer cod=null;
         try {
             this.conectar();
             PreparedStatement consulta;
 
-            consulta = this.con.prepareStatement("INSERT INTO " + this.tabla + " (Cedula, nombres, telefono, celular, mail, direccion, Provincia, Ciudad,Nacionalidad,NombreComercial,Vendedor,Observaciones,extension,PagoPredeterminado,credito,tiempoCredito) VALUES(?,?,?,?,?,?,?, ?, ?,?, ?, ?,?,?,?,?)");
+            consulta = this.con.prepareStatement("INSERT INTO " + this.tabla + " (Cedula, nombres, telefono, celular, mail, direccion, Provincia, Ciudad,Nacionalidad,NombreComercial,Vendedor,Observaciones,extension,PagoPredeterminado,credito,tiempoCredito) VALUES(?,?,?,?,?,?,?, ?, ?,?, ?, ?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             consulta.setString(1, tarea.getCedula());
             consulta.setString(2, tarea.getNombre().toUpperCase());
             consulta.setString(3, tarea.getTelefono());
@@ -57,14 +60,21 @@ public class ProveedoresDao extends Coneccion {
             consulta.setString(14, tarea.getPagoPredeterminado());
             consulta.setInt(15, tarea.getCredito());
             consulta.setString(16, tarea.getTiempoCredito());
-            System.out.println("Controlador.CUsuarios.guardar()" + consulta);
+            Deb.consola("Controlador.CUsuarios.guardar()" + consulta);
             consulta.executeUpdate();
+             ResultSet rs = consulta.getGeneratedKeys();
+                if (rs.next()) {
+                    cod = rs.getInt(1);
+                    //Deb.consola("Controlador.Usuarios.FacturasDao.guardar()>: " + codigoThisFactura);
+                }
+                
         } catch (SQLException ex) {
             msg.setProgressBar_mensajae(ex.toString());
-            System.out.println("Controlador.ProveedoresDao.guardar()" + ex);
+            Deb.consola("Controlador.ProveedoresDao.guardar()" + ex);
         } finally {
             this.cerrar();
         }
+        return cod;
     }
 
     public void modificar(Proveedores persona) {
@@ -106,13 +116,13 @@ public class ProveedoresDao extends Coneccion {
             st.setString(16, persona.getTiempoCredito());
             st.setInt(17, persona.getCodigo());
             String sql = st.toString();
-            System.out.println("Controlador.Provvedores.CUsuarios.modificar()" + sql);
+            Deb.consola("Controlador.Provvedores.CUsuarios.modificar()" + sql);
             st.executeUpdate();
             Principal.jProgressBar2.setString("eeeeeeeeproveedoreseeeee");
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
         } catch (SQLException e) {
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error" + e + sql, "Error al modificar Registro" + e.toString()));
-            System.out.println("Controlador.Proveedores.guardar()" + e);
+            Deb.consola("Controlador.Proveedores.guardar()" + e);
         } finally {
             this.cerrar();
         }
@@ -151,12 +161,12 @@ public class ProveedoresDao extends Coneccion {
                 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
                 this.lista.add(per);
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.listar()" + ex);
+            Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -196,12 +206,12 @@ public class ProveedoresDao extends Coneccion {
                 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
                 this.lista.add(per);
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.listar()" + ex);
+            Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
             this.cerrar();
         }
@@ -248,7 +258,7 @@ public class ProveedoresDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
         } finally {
             this.cerrar();
         }
@@ -275,7 +285,7 @@ public class ProveedoresDao extends Coneccion {
                 per.setCelular(rs.getString("celular"));
                 per.setMail(rs.getString("Mail"));
                 per.setDireccion(rs.getString("Direccion"));
-                per.setProvincia(rs.getString("Provinvia"));
+                per.setProvincia(rs.getString("Provincia"));
                 per.setCiudad(rs.getString("Ciudad"));
                 per.setNacionalidad(rs.getString("Nacionalidad"));
 
@@ -290,7 +300,7 @@ public class ProveedoresDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
         } finally {
             this.cerrar();
         }
@@ -335,7 +345,7 @@ public class ProveedoresDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
         } finally {
             this.cerrar();
 //             if(){
@@ -384,7 +394,7 @@ public class ProveedoresDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConCedula()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
         } finally {
             this.cerrar();
 //             if(){
@@ -434,7 +444,7 @@ public class ProveedoresDao extends Coneccion {
             st = this.getCnx().prepareCall("select * from Proveedores where " + columna + "  like '%" + value + "%' order BY Nombres");
 
             //  st = this.getCnx().prepareCall("Select * from " + tabla + " where " + columna + " like '%" + value + "%'");
-            System.out.println("Controlador.CUsuarios.Buscar_table()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -450,11 +460,11 @@ public class ProveedoresDao extends Coneccion {
                 registros[8] = rs.getString("Ciudad");
                 
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
 
                 //per.setObservaciones(rs.getString("PersonaObservaciones"));
                 //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //System.out.println("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
+                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
             }
 
         } catch (Exception ex) {
@@ -489,7 +499,7 @@ public class ProveedoresDao extends Coneccion {
             PreparedStatement st;
             String sql = "select * from Proveedores  order BY Nombres";
             st = this.getCnx().prepareCall(sql);
-            System.out.println("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
+            Deb.consola("Controlador.CUsuarios.Buscar_table_Only()" + st.toString());
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
@@ -504,7 +514,7 @@ public class ProveedoresDao extends Coneccion {
                 registros[7] = rs.getString("Provincia");
                 registros[8] = rs.getString("Ciudad");
                 modelo.addRow(registros);
-                System.out.println("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
+                Deb.consola("Controlador.CUsuarios.Buscar_table_only()" + registros[1]);
 
             }
 

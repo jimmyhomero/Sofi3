@@ -62,7 +62,7 @@ public class ProxyTunnelDemo {
                     new InputStreamReader(socket.getInputStream(), HTTP.DEF_CONTENT_CHARSET));
             String line = null;
             while ((line = in.readLine()) != null) {
-                System.out.println(line);
+                Deb.consola(line);
             }
         } finally {
             socket.close();

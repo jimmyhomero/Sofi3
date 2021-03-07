@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import ClasesAuxiliares.debug.Deb;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -35,7 +36,7 @@ public class NewMain {
         String hora = s.substring(11, 13);
         String minuto = s.substring(14, 16);
         String segundo = s.substring(17, 19);
-        System.out.println("NewMain.fecha()fechA; " + ano + "-" + mes + "-" + dia + " " + hora + ":" + minuto + ":" + segundo);
+        Deb.consola("NewMain.fecha()fechA; " + ano + "-" + mes + "-" + dia + " " + hora + ":" + minuto + ":" + segundo);
         String typeOfDay;
         switch (dia) {
             case "Mon":
@@ -99,7 +100,7 @@ public class NewMain {
                 mes = "12";
                 break;
         }
-System.out.println("NewMain.fecha()fechA; " + ano + "-" + mes + "-" + dia + " " + hora + ":" + minuto + ":" + segundo);
+Deb.consola("NewMain.fecha()fechA; " + ano + "-" + mes + "-" + dia + " " + hora + ":" + minuto + ":" + segundo);
     }
 
   

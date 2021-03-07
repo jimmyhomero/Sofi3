@@ -121,18 +121,18 @@ try {
     CacheResponseStatus responseStatus = context.getCacheResponseStatus();
     switch (responseStatus) {
         case CACHE_HIT:
-            System.out.println("A response was generated from the cache with " +
+            Deb.consola("A response was generated from the cache with " +
                     "no requests sent upstream");
             break;
         case CACHE_MODULE_RESPONSE:
-            System.out.println("The response was generated directly by the " +
+            Deb.consola("The response was generated directly by the " +
                     "caching module");
             break;
         case CACHE_MISS:
-            System.out.println("The response came from an upstream server");
+            Deb.consola("The response came from an upstream server");
             break;
         case VALIDATED:
-            System.out.println("The response was generated from the cache " +
+            Deb.consola("The response was generated from the cache " +
                     "after validating the entry with the origin server");
             break;
     }

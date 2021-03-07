@@ -5,7 +5,10 @@
  */
 package Vista;
 
+import AA_MainPruebas.Download;
 import ClasesAuxiliares.BackupBaseDatos.BackupMysql;
+import ClasesAuxiliares.Leertxt;
+import ClasesAuxiliares.debug.Deb;
 import ClasesAuxiliares.MaquinaDao;
 import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
 import ClasesAuxiliares.NewSql.updataesBDD;
@@ -17,15 +20,20 @@ import Controlador.Coneccion;
 import Controlador.Electronica;
 import Controlador.GUIUtils;
 import Controlador.UnActionListener;
+import Controlador.Usuarios.ClientesDao;
 import Controlador.Usuarios.ConfigDao;
 import Controlador.Usuarios.Config_EquiposDao;
 import Controlador.Usuarios.Config_UsuariosDao;
 import Controlador.Usuarios.EquiposDao;
+import Controlador.Usuarios.FacturasDao;
+import Controlador.Usuarios.RetencionCDao;
 import Modelo.Clientes;
 import Modelo.ConfigSofia;
 import Modelo.Config_Equipos;
 import Modelo.Config_Usuarios;
 import Modelo.Equipos;
+import Modelo.Facturas;
+import Modelo.Retencion_;
 import Modelo.Tipo_Usuario;
 import Vista.Backup.Crear_Backup;
 import Vista.Usuarios.BuscarFacturas;
@@ -42,9 +50,25 @@ import Vista.Usuarios.Buscar_electronicas;
 import Vista.Usuarios.Crear_Usuarios;
 import Vista.Usuarios.Buscar_usuarios;
 import Vista.Usuarios.Configuracion;
+import static Vista.Usuarios.Configuracion.check_activarfacElectronica;
+import static Vista.Usuarios.Configuracion.check_preubas;
+import static Vista.Usuarios.Configuracion.check_producciona;
+import static Vista.Usuarios.Configuracion.jcb_METODOVALORACIONINVENTARIO;
+import static Vista.Usuarios.Configuracion.jcb_PermitirFacturarSinStock;
+import static Vista.Usuarios.Configuracion.jcb_documentopredeterminado;
+import static Vista.Usuarios.Configuracion.jl_METODOVALORACIONINVENTARIO;
+import static Vista.Usuarios.Configuracion.txt_PERMITIRFACTURARSINSTOCK;
+import static Vista.Usuarios.Configuracion.txt_documentopredeterminado;
+import static Vista.Usuarios.Configuracion.txt_iva;
+import static Vista.Usuarios.Configuracion.txt_iva_;
+import static Vista.Usuarios.Configuracion.txt_moneda;
+import static Vista.Usuarios.Configuracion.txt_moneda_;
+import static Vista.Usuarios.Configuracion.txt_utilidad;
+import static Vista.Usuarios.Configuracion.txt_utilidad_;
+import static Vista.Usuarios.Configuracion.txt_vecesImpreFac;
+import static Vista.Usuarios.Configuracion.txt_vecesImpreFac_;
 import Vista.Usuarios.CrearBodegas;
 import Vista.Usuarios.Crear_Clientes;
-import Vista.Usuarios.Crear_Compras;
 import Vista.Usuarios.Crear_Productos;
 import Vista.Usuarios.Crear_Proveedores;
 import Vista.Usuarios.Crear_RetencionC;
@@ -57,17 +81,21 @@ import Vista.caja.EgresoCaja;
 import Vista.Usuarios.ImprtarInventario;
 import Vista.Usuarios.Modal;
 import Vista.Usuarios.Modal_BucarUsuarios;
+import Vista.Usuarios.Modal_BuscarElectronica;
 import Vista.Usuarios.Modal_CrearFacturas;
-import Vista.Usuarios.Modal_CrearNotaCredito;
+import Vista.Usuarios.Modal_CrearNC;
 import Vista.Usuarios.Modal_Crear_Pvps;
 import Vista.Usuarios.Modal_Crear_compras;
 import Vista.Usuarios.Modal_buscarCilentes;
 import Vista.Usuarios.Modal_buscarProveedores;
 import Vista.Usuarios.NuevaFormaPago;
 import Vista.Usuarios.PLANC;
+import Vista.Usuarios.RegistraComprasMasivamaente;
+import Vista.Usuarios.Regstrar_RetencionVenta;
 import Vista.caja.IngresoCaja;
 import Vista.Usuarios.prueba1;
 import Vista.dasboard.dash;
+import Vlidaciones.ProgressBar;
 import ecx.unomas.service.Config;
 import login.login;
 import java.awt.Dimension;
@@ -77,14 +105,21 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.jespxml.pruebas.PruebaXML;
@@ -99,7 +134,7 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form Main
      */
     public static Integer controlareduccionPrincilapParamenusuperior = 0;
-     public static Integer NumerodeBotonesAbiertos = 0;
+    public static Integer NumerodeBotonesAbiertos = 0;
     int numVentana = 0;/// si es cero, significa que no se ha encontrado un frmulario de tipo que ya ecista 
     public static boolean IsOpenFormNuevoUsuario = false;
     ConfigSofia conf = new ConfigSofia();
@@ -110,7 +145,8 @@ public class Principal extends javax.swing.JFrame {
     ArrayList<Config_Equipos> listConfigdeEquipo = new ArrayList<Config_Equipos>();
     ArrayList<Config_Usuarios> listConfigdeUsuarios = new ArrayList<Config_Usuarios>();
     public static ArrayList<Integer> posisionButonToolbar = new ArrayList<Integer>();
-    public static boolean isllamadoDesdeProveedorOCliente=false; ///false cliente, true proveedor;
+    public static boolean isllamadoDesdeProveedorOCliente = false; ///false cliente, true proveedor;
+    public static ArrayList<JButton> listaDeBotones = new ArrayList<>();
 
     //JInternalFrame obj = new JInternalFrame();
     public static Integer X;
@@ -128,8 +164,10 @@ public class Principal extends javax.swing.JFrame {
     public static String numerovecseimpresionFactura = "1";
     public static String documentoPredeterminadoFacturacion;
     public static boolean activarfacturacionelectronica;
+    public static boolean existeConeccionSRI = false;
     public static String documentoPredeterminadoFacturacionCodigo;
-    public static String formadepagopredeterminada;
+    public static String formadepagopredeterminadaCompra;
+    public static String formadepagopredeterminadaVenta;
     public static String bodegaPredeterminadaenCOmpra;
     public static String bodegaPredeterminadaenCOmpraNOmbre;
     public static String bodegaPredeterminadaenVenta;
@@ -138,21 +176,26 @@ public class Principal extends javax.swing.JFrame {
     public static String editarDetalle_item_en_Facturacion;
     public static String soloFacturacionElectronica;
     public static Integer metodoValoracionInventario; //UEPS =1,PROMEDIO=2
+    public static Integer modoDesarrollo=1;    
     public static String facturatiriiasoGrande;
     public static String tickettiriiasoGrande;
     public static String proformatiriiasoFacturaGrande;
+    public static String anchoimpresionticket;
     public static String ItemRepetidoEnFacturacionSumarCantidad;
     public static String VerImagenEnFacturacion;
+    public static String EquipoServidordefacturacionELectronica;
 
     public static String obligaoSINO;
     public static String controlCambioEfectivoSINO;
     public static boolean FE_SOLO_FIRMA_DOC;
 
+    public static JTabbedPane tpane = new JTabbedPane();
+
     public Principal() {
 
         initComponents();
 
-//        jc j = new jc();
+        //jc j = new jc();
         //      j.setVisible(true);
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
@@ -161,35 +204,248 @@ public class Principal extends javax.swing.JFrame {
         Variables.trial();
         //  Variables v = new Variables();
 
-        // System.out.println("Vista.Principal.<init>() usuario: " + login.nombresUsuario);
+        // Deb.consola("Vista.Principal.<init>() usuario: " + login.nombresUsuario);
         this.setTitle("   SOFI SOFTWARE    " + login.nombreEmpresa + "    Usuario :  " + login.nombresUsuario + "    Equipo :  " + login.nombreDelEquipo);
         configuracionsistemageneral();
         this.setExtendedState(MAXIMIZED_BOTH);
-
-        System.out.println("Vista.Principal.<init>()siiiiiiiiiiiiiiiiiiiiiiiiii : " + soloFacturacionElectronica);
-        if (soloFacturacionElectronica.equals("SI")) {
-            this.menuBar.setEnabled(false);
-            this.menuBar.setVisible(false);
-            System.out.println("Vista.Principal.<init>()siiiiiiiiiiiiiiiiiiiiiiiiii : " + soloFacturacionElectronica);
-            Buscar_electronicas be = new Buscar_electronicas();
-            desktopPane.add(be);
-            be.setVisible(true);
+        if (soloFacturacionElectronica.equals("SI") && EquipoServidordefacturacionELectronica.equalsIgnoreCase(login.nombreDelEquipo)) {
+            Modal_BuscarElectronica obj = new Modal_BuscarElectronica();
+            OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
         }
+
+        //while (Principal.activarfacturacionelectronica) {
+        Deb.consola("Vista.Principal.<init>()siiiiiiiiiiiiiiiiiiiiiiiiii : " + soloFacturacionElectronica);
+        if (soloFacturacionElectronica.equals("SI") && EquipoServidordefacturacionELectronica.equalsIgnoreCase(login.nombreDelEquipo)) {
+            // this.menuBar.setEnabled(false);
+            // this.menuBar.setVisible(false);
+            //public static void descargarXMLformSRItoFileXMLandPFDenUnSoloPasoconHilo(String ruta) {
+
+            Thread t = new Thread() {
+
+                public void run() {
+                    while (Principal.activarfacturacionelectronica) {
+                        //    descargarXMLformSRItoFileXMLandPFDenUnSoloPaso(ruta);
+
+                        if (soloFacturacionElectronica.equals("SI") && EquipoServidordefacturacionELectronica.equalsIgnoreCase(login.nombreDelEquipo)) {
+                            ArrayList<Facturas> lista = new ArrayList<>();
+                            ArrayList<Facturas> lista2 = new ArrayList<>();
+                            Deb.consola("Vista.Principal.<init>()siiiiiiiiiiiiiiiiiiiiiiiiii : " + soloFacturacionElectronica);
+
+                            // FacturasDao uDao = new FacturasDao();
+                            Deb.consola("Activar facturacion elelctronica: " + Principal.activarfacturacionelectronica);
+
+                            FacturasDao uDao = new FacturasDao();
+
+                            lista = uDao.buscarFacturasNoAutorizadas();
+                            if (lista.size() > 0) {
+                                for (Facturas u : lista) {
+                                    Deb.consola("Documento en la Lista : " + u.getCalveAcceso());
+
+                                    try {
+                                        String fa = "";
+                                        FacturasDao fs = new FacturasDao();
+                                        if (u.getTipo_documento().equalsIgnoreCase("FACTURA")) {
+                                            fa = fs.creaxmlFacturaElectronica(u);
+                                        }
+                                        if (u.getTipo_documento().equalsIgnoreCase("NC")) {
+                                            fa = fs.creaxmlNOTACREDITOElectronica(u);
+                                        }
+
+                                        Clientes c = new Clientes();
+                                        ClientesDao cdao = new ClientesDao();
+                                        c = cdao.buscarConID(u.getClientes_codigo(), 0);
+                                        com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
+                                        com.ws.localhost.Response resp = new com.ws.localhost.Response();
+
+                                        resp = wslocal.getWSElectroPort().receiptXMLIn(fa, "admin", "admin", "homer_loading@hotmail.com;" + c.getMail());
+                                        if (resp.getResponse().equals("0")) {
+                                            FacturasDao uDaoupdate = new FacturasDao();
+                                            uDaoupdate.UpdateEstadoAutorizado(u.getCodigo(), 1, "PTA: " + resp.getResponse() + "RECIBIDA OK EN WS");
+                                        } else {
+                                            FacturasDao uDaoupdate = new FacturasDao();
+                                            uDaoupdate.UpdateEstadoAutorizado(u.getCodigo(), 2, "PTA: " + resp.getResponse() + "ERROR INTERNO WS / ERROE CREDENCIALES WS USER OR PASSWORD");
+                                        }
+                                    } catch (Exception e) {
+                                        Deb.consola("erro al enviar al WS: " + e);
+                                    }
+                                }
+                            } else {
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException ex) {
+                                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                Deb.consola("lista Vacia xxxxxxxxxxxxxxxxxxxxds");
+                            }
+////////////////////////////// mas codigo
+                            FacturasDao uDao2 = new FacturasDao();
+
+                            lista2 = uDao2.ListaFacturasEnviadasalWS_SinEstadoAutorizado();
+                            Deb.consola("Lista tamano: " + lista2.toString());
+                            if (lista2.size() > 0) {
+                                Deb.consola("Lista tamano: " + lista2.size());
+                                for (Facturas facturas : lista2) {
+                                    com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
+                                    com.ws.localhost.Respuesta resp = new com.ws.localhost.Respuesta();
+
+                                    resp = wslocal.getWSElectroPort().getEstadoDocumento(facturas.getCalveAcceso());
+
+                                    Deb.consola("RRRRRRRRRRRRRRRRRRRRR" + resp.getEstado() + " *** " + resp.getMensajeSri());
+                                    if (resp.getEstado().endsWith("A")) {
+                                        FacturasDao uDaoupdate = new FacturasDao();
+                                        uDaoupdate.UpdateEstadoAutorizado(facturas.getCodigo(), 10, "ESTADO: - " + resp.getEstado() + " - " + resp.getMensajeSri());
+                                    }
+                                    if (resp.getEstado().endsWith("E")) {
+                                        FacturasDao uDaoupdate = new FacturasDao();
+                                        uDaoupdate.UpdateEstadoAutorizado(facturas.getCodigo(), 5, "ESTADO: - " + resp.getEstado() + " - " + resp.getMensajeSri());
+                                    }
+                                    if (resp.getEstado().endsWith("R") && !resp.getMensajeSri().equalsIgnoreCase("")) {
+                                        FacturasDao uDaoupdate = new FacturasDao();
+                                        if (resp.getMensajeSri().contains("ERROR |")) {
+                                            uDaoupdate.UpdateEstadoAutorizado(facturas.getCodigo(), 3, "ESTADO: - " + resp.getEstado() + " - " + resp.getMensajeSri());
+                                        }
+                                        if (resp.getMensajeSri().contains("ERROR")) {
+                                            uDaoupdate.UpdateEstadoAutorizado(facturas.getCodigo(), 5, "ESTADO: - " + resp.getEstado() + " - " + resp.getMensajeSri());
+                                        }
+                                        if (resp.getMensajeSri().contains("No hay conexion con el SRI")) {
+                                            uDaoupdate.UpdateEstadoAutorizado(facturas.getCodigo(), 4, "ESTADO: - " + resp.getEstado() + " - " + resp.getMensajeSri());
+                                        }
+
+                                    }
+//                                    if (resp.getEstado().endsWith("R") && !resp.getMensajeSri().equalsIgnoreCase("")) {
+//                                        FacturasDao uDaoupdate = new FacturasDao();
+//
+//                                    }
+                                }
+                            } else {
+                                Deb.consola("Lista Vaciaoooooooooooo");
+                            }
+/////////////////////PARA RETENCIONES EL MISMO PROCESO
+
+////
+////                            ArrayList<Retencion_> listar = new ArrayList<>();
+////                            ArrayList<Retencion_> listar2 = new ArrayList<>();
+////                            Deb.consola("Vista.Principal.<init>()siiiiiiiiiiiiiiiiiiiiiiiiii : " + soloFacturacionElectronica);
+////
+////                            // FacturasDao uDao = new FacturasDao();
+////                            Deb.consola("Activar facturacion elelctronica: " + Principal.activarfacturacionelectronica);
+////
+////                            RetencionCDao uDaor = new RetencionCDao();
+////
+////                            listar = uDaor.buscarFacturasNoAutorizadas();
+////                            if (lista.size() > 0) {
+////                                for (Retencion_ u : listar) {
+////                                    Deb.consola("Documento en la Lista : " + u.getAutorizacion());
+////
+////                                    try {
+////                                        String fa = "";
+////                                        RetencionCDao  fs = new RetencionCDao();
+////                                        
+////                                            fa = fs.creaxmlRetencionElectronica(u.getCodig());
+////                                        
+////
+////                                        Clientes c = new Clientes();
+////                                        ClientesDao cdao = new ClientesDao();
+////                                        c = cdao.buscarConID(u.getProveedor_codigo(), 1);
+////                                        com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
+////                                        com.ws.localhost.Response resp = new com.ws.localhost.Response();
+////
+////                                        resp = wslocal.getWSElectroPort().receiptXMLIn(fa, "admin", "admin", "homer_loading@hotmail.com;" + c.getMail());
+////                                        if (resp.getResponse().equals("0")) {
+////                                            FacturasDao uDaoupdate = new FacturasDao();
+////                                            uDaoupdate.UpdateEstadoAutorizado(u.getCodigo(), 1, "PTA: " + resp.getResponse() + "RECIBIDA OK EN WS");
+////                                        } else {
+////                                            FacturasDao uDaoupdate = new FacturasDao();
+////                                            uDaoupdate.UpdateEstadoAutorizado(u.getCodigo(), 2, "PTA: " + resp.getResponse() + "ERROR INTERNO WS / ERROE CREDENCIALES WS USER OR PASSWORD");
+////                                        }
+////                                    } catch (Exception e) {
+////                                        Deb.consola("erro al enviar al WS: " + e);
+////                                    }
+////                                }
+////                            } else {
+////                                try {
+////                                    Thread.sleep(2000);
+////                                } catch (InterruptedException ex) {
+////                                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+////                                }
+////                                Deb.consola("lista Vacia xxxxxxxxxxxxxxxxxxxxds");
+////                            }
+////////////////////////////////// mas codigo
+////                            FacturasDao uDao2 = new FacturasDao();
+////
+////                            lista2 = uDao2.ListaFacturasEnviadasalWS_SinEstadoAutorizado();
+////                            Deb.consola("Lista tamano: " + lista2.toString());
+////                            if (lista2.size() > 0) {
+////                                Deb.consola("Lista tamano: " + lista2.size());
+////                                for (Facturas facturas : lista2) {
+////                                    com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
+////                                    com.ws.localhost.Respuesta resp = new com.ws.localhost.Respuesta();
+////
+////                                    resp = wslocal.getWSElectroPort().getEstadoDocumento(facturas.getCalveAcceso());
+////
+////                                    Deb.consola("RRRRRRRRRRRRRRRRRRRRR" + resp.getEstado() + " *** " + resp.getMensajeSri());
+////                                    if (resp.getEstado().endsWith("A")) {
+////                                        FacturasDao uDaoupdate = new FacturasDao();
+////                                        uDaoupdate.UpdateEstadoAutorizado(facturas.getCodigo(), 10, "ESTADO: - " + resp.getEstado() + " - " + resp.getMensajeSri());
+////                                    }
+////                                    if (resp.getEstado().endsWith("E")) {
+////                                        FacturasDao uDaoupdate = new FacturasDao();
+////                                        uDaoupdate.UpdateEstadoAutorizado(facturas.getCodigo(), 5, "ESTADO: - " + resp.getEstado() + " - " + resp.getMensajeSri());
+////                                    }
+////                                    if (resp.getEstado().endsWith("R") && !resp.getMensajeSri().equalsIgnoreCase("")) {
+////                                        FacturasDao uDaoupdate = new FacturasDao();
+////                                        if (resp.getMensajeSri().contains("ERROR |")) {
+////                                            uDaoupdate.UpdateEstadoAutorizado(facturas.getCodigo(), 3, "ESTADO: - " + resp.getEstado() + " - " + resp.getMensajeSri());
+////                                        }
+////                                        if (resp.getMensajeSri().contains("ERROR")) {
+////                                            uDaoupdate.UpdateEstadoAutorizado(facturas.getCodigo(), 5, "ESTADO: - " + resp.getEstado() + " - " + resp.getMensajeSri());
+////                                        }
+////                                        if (resp.getMensajeSri().contains("No hay conexion con el SRI")) {
+////                                            uDaoupdate.UpdateEstadoAutorizado(facturas.getCodigo(), 4, "ESTADO: - " + resp.getEstado() + " - " + resp.getMensajeSri());
+////                                        }
+////
+////                                    }
+//////                                    if (resp.getEstado().endsWith("R") && !resp.getMensajeSri().equalsIgnoreCase("")) {
+//////                                        FacturasDao uDaoupdate = new FacturasDao();
+//////
+//////                                    }
+////                                }
+////                            } else {
+////                                Deb.consola("Lista Vaciaoooooooooooo");
+////                            }
+///// FIN PARA RETENCIONES EL MISMO PROCESO
+                        }
+                    }
+                }
+            ;
+
+            };
+t.start();
+        }
+
         /////////////////LLAMA DASHBOARD
         //dash d = new dash();
         ///desktopPane.add(d);
         ///d.setVisible(true);
-
         ////////////////
         ////////////preubas
         //  Modal m = new Modal();
         //  desktopPane.add(m);
         // m.setVisible(true);
         ////////////
+        /////////////demonio de envioas de facturas al WS{
+        //}
+        tpane.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        //jPanel1.add(tpane);
     }
 
     public void configuracionsistemageneral() {
 
+///////inicia la venta de congivuracion en bacground 
+        Configuracion config = new Configuracion();
+        config.setVisible(false);
+        Configuracion.SetConfig();
+///////
         listConfig = confDao.listar();
         for (ConfigSofia c : listConfig) {
             switch (c.getNombre()) {
@@ -243,11 +499,24 @@ public class Principal extends javax.swing.JFrame {
                 case "FIRMA":
                     Config.PKCS12_RESOURCE = c.getValor1();
                     break;
+                case "ACTIVAR FACTURACION ELECTRONICA":
+                    if (c.getValor1().equalsIgnoreCase("1")) {
+                        this.activarfacturacionelectronica = true;
+                    } else {
+                        this.activarfacturacionelectronica = false;
+                    }
+
+                    break;
+                case "SERVIDOR ELECTRONICAS":
+                    EquipoServidordefacturacionELectronica = c.getValor1();
+                    break;
+
                 case "FIRMA_PASSWORD":
                     Config.PKCS12_PASSWORD_DIR = c.getValor1();
                     break;
                 case "METODO DE VALORACION DE INVENTARIO":
                     if (c.getValor1().equalsIgnoreCase("U.E.P.S")) {
+                        metodoValoracionInventario = 1;
                     }
                     if (c.getValor1().equalsIgnoreCase("PROMEDIO")) {
                         metodoValoracionInventario = 2;
@@ -256,6 +525,11 @@ public class Principal extends javax.swing.JFrame {
                     break;
                 case "OBLIGADO":
                     this.obligaoSINO = c.getValor1();
+                    
+                    break;
+                case "MODO DESARROLLO":
+                    this.modoDesarrollo = Integer.parseInt(c.getValor1());
+
                     break;
 
             }
@@ -272,7 +546,7 @@ public class Principal extends javax.swing.JFrame {
                     this.impresoraFactura = c.getValor1();
                     break;
                 case "FORMA DE PAGO PREDETERMINADA":
-                    this.formadepagopredeterminada = c.getValor1();
+                    this.formadepagopredeterminadaVenta = c.getValor1();
                     break;
                 case "BODEGA PREDETERMINADA EN COMPRA":
                     this.bodegaPredeterminadaenCOmpra = c.getValor1();
@@ -310,6 +584,7 @@ public class Principal extends javax.swing.JFrame {
 
         }
 //  loadconfig q = new loadconfig();
+
     }
 
     /**
@@ -348,6 +623,7 @@ public class Principal extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
+        jMenuItem16 = new javax.swing.JMenuItem();
         helpMenu1 = new javax.swing.JMenu();
         NuevoProducto = new javax.swing.JMenuItem();
         aboutMenuItem1 = new javax.swing.JMenuItem();
@@ -374,6 +650,7 @@ public class Principal extends javax.swing.JFrame {
         contentMenuItem7 = new javax.swing.JMenuItem();
         aboutMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem15 = new javax.swing.JMenuItem();
         helpMenu9 = new javax.swing.JMenu();
         contentMenuItem9 = new javax.swing.JMenuItem();
         aboutMenuItem10 = new javax.swing.JMenuItem();
@@ -460,7 +737,7 @@ public class Principal extends javax.swing.JFrame {
         desktopPaneLayout.setVerticalGroup(
             desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, desktopPaneLayout.createSequentialGroup()
-                .addGap(0, 641, Short.MAX_VALUE)
+                .addGap(0, 636, Short.MAX_VALUE)
                 .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -561,7 +838,7 @@ public class Principal extends javax.swing.JFrame {
         helpMenu.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
 
         contentMenuItem.setMnemonic('c');
-        contentMenuItem.setText("Facturar");
+        contentMenuItem.setText("NUEVA VENTA");
         contentMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 contentMenuItemActionPerformed(evt);
@@ -570,7 +847,7 @@ public class Principal extends javax.swing.JFrame {
         helpMenu.add(contentMenuItem);
 
         aboutMenuItem.setMnemonic('a');
-        aboutMenuItem.setText("Lista Facturas");
+        aboutMenuItem.setText("LISTA VENTAS");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutMenuItemActionPerformed(evt);
@@ -586,13 +863,21 @@ public class Principal extends javax.swing.JFrame {
         });
         helpMenu.add(jMenuItem7);
 
-        jMenuItem13.setText("Nota Credito");
+        jMenuItem13.setText("NOTA DE CREDITO");
         jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem13ActionPerformed(evt);
             }
         });
         helpMenu.add(jMenuItem13);
+
+        jMenuItem16.setText("REGISTRAR RETENCION");
+        jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem16ActionPerformed(evt);
+            }
+        });
+        helpMenu.add(jMenuItem16);
 
         menuBar.add(helpMenu);
 
@@ -601,7 +886,7 @@ public class Principal extends javax.swing.JFrame {
         helpMenu1.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
 
         NuevoProducto.setMnemonic('c');
-        NuevoProducto.setText("Nuevo Pruducto");
+        NuevoProducto.setText("NUEVO PRODUCTO");
         NuevoProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NuevoProductoActionPerformed(evt);
@@ -610,7 +895,7 @@ public class Principal extends javax.swing.JFrame {
         helpMenu1.add(NuevoProducto);
 
         aboutMenuItem1.setMnemonic('a');
-        aboutMenuItem1.setText("Buscar Producto");
+        aboutMenuItem1.setText("LISTA PRODUCTOS");
         aboutMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutMenuItem1ActionPerformed(evt);
@@ -619,7 +904,7 @@ public class Principal extends javax.swing.JFrame {
         helpMenu1.add(aboutMenuItem1);
 
         aboutMenuItem9.setMnemonic('a');
-        aboutMenuItem9.setText("Bodegas");
+        aboutMenuItem9.setText("LISTA BODEGAS");
         aboutMenuItem9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutMenuItem9ActionPerformed(evt);
@@ -669,7 +954,7 @@ public class Principal extends javax.swing.JFrame {
         helpMenu3.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
 
         menNUevoCLiente.setMnemonic('c');
-        menNUevoCLiente.setText("Nuevo Cliente");
+        menNUevoCLiente.setText("NUEVO CLIENTE");
         menNUevoCLiente.setToolTipText("");
         menNUevoCLiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -679,7 +964,7 @@ public class Principal extends javax.swing.JFrame {
         helpMenu3.add(menNUevoCLiente);
 
         aboutMenuItem3.setMnemonic('a');
-        aboutMenuItem3.setText("Listar Clientes");
+        aboutMenuItem3.setText("LISTA CLIENTES");
         aboutMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutMenuItem3ActionPerformed(evt);
@@ -719,10 +1004,20 @@ public class Principal extends javax.swing.JFrame {
 
         contentMenuItem5.setMnemonic('c');
         contentMenuItem5.setText("Contents");
+        contentMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contentMenuItem5ActionPerformed(evt);
+            }
+        });
         helpMenu5.add(contentMenuItem5);
 
         aboutMenuItem5.setMnemonic('a');
-        aboutMenuItem5.setText("About");
+        aboutMenuItem5.setText("Nueva Forma Pago");
+        aboutMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItem5ActionPerformed(evt);
+            }
+        });
         helpMenu5.add(aboutMenuItem5);
 
         menuBar.add(helpMenu5);
@@ -765,7 +1060,7 @@ public class Principal extends javax.swing.JFrame {
         helpMenu7.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
 
         contentMenuItem7.setMnemonic('c');
-        contentMenuItem7.setText("Registrar");
+        contentMenuItem7.setText("REGISTRAR COMPRA");
         contentMenuItem7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 contentMenuItem7ActionPerformed(evt);
@@ -774,7 +1069,7 @@ public class Principal extends javax.swing.JFrame {
         helpMenu7.add(contentMenuItem7);
 
         aboutMenuItem7.setMnemonic('a');
-        aboutMenuItem7.setText("Retencion");
+        aboutMenuItem7.setText("EMITIR RETENCION");
         aboutMenuItem7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutMenuItem7ActionPerformed(evt);
@@ -782,13 +1077,21 @@ public class Principal extends javax.swing.JFrame {
         });
         helpMenu7.add(aboutMenuItem7);
 
-        jMenuItem1.setText("Formas Pago");
+        jMenuItem1.setText("LISTA DE COMPRAS");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
             }
         });
         helpMenu7.add(jMenuItem1);
+
+        jMenuItem15.setText("REGISTRA COMPRAS SRI");
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem15ActionPerformed(evt);
+            }
+        });
+        helpMenu7.add(jMenuItem15);
 
         menuBar.add(helpMenu7);
 
@@ -923,7 +1226,7 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(desktopPane)
                 .addContainerGap())
@@ -969,7 +1272,7 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here
 
         Buscar_Tipos obj = new Buscar_Tipos();
-        
+
         OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
     }//GEN-LAST:event_deleteMenuItemActionPerformed
@@ -986,7 +1289,7 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         Modal_buscarCilentes obj = new Modal_buscarCilentes();
         obj.setTitle("Buscar CLientes");
-        Principal.isllamadoDesdeProveedorOCliente= false;
+        Principal.isllamadoDesdeProveedorOCliente = false;
         OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
     }//GEN-LAST:event_aboutMenuItem3ActionPerformed
 
@@ -1000,12 +1303,43 @@ public class Principal extends javax.swing.JFrame {
     private void aboutMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItem1ActionPerformed
         // TODO add your handling code here:
         Buscar_Productos obj = new Buscar_Productos();
-        
+
         OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
 
     }//GEN-LAST:event_aboutMenuItem1ActionPerformed
+    public static void elimiarBotonalCerrarVentanas(JInternalFrame f) {
+        for (JButton b : Principal.listaDeBotones) {
+            if (b.getName().equalsIgnoreCase(f.getName())) {
+             //   Principal.jPanel1.remove(b);
+             //   Principal.jPanel1.invalidate();
+                //   f.dispose();
+                // f.invalidate();
+            }
+        }
+    }
 
+    public static void crearBarraBotones(JInternalFrame ji) {
+
+//        JPanel pa = new JPanel();
+//        pa.setName(ji.getName().toString());
+//        tpane.addTab(ji.getName().toString(), pa);
+//        String a = ji.getTitle();
+//        JButton b = new JButton(a);
+//        b.setName(a);
+//        b.setSize(a.length() * 15, 27);
+//        //jPanel1.add(b);
+//        listaDeBotones.add(b);
+//        b.setVisible(true);
+//        jPanel1.repaint();
+//        tpane.repaint();
+//        b.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                
+//                
+//            }
+//        });
+    }
     private void contentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItemActionPerformed
 
         //        Crear_Facturas obj = new Crear_Facturas();
@@ -1017,6 +1351,7 @@ public class Principal extends javax.swing.JFrame {
         this.tananoVentanas(obj);
         desktopPane.add(obj);
         obj.setVisible(true);
+
     }//GEN-LAST:event_contentMenuItemActionPerformed
 
     public static void tananoVentanas(JInternalFrame obj) {
@@ -1027,7 +1362,7 @@ public class Principal extends javax.swing.JFrame {
         Principal.X2 = Principal.desktopPane.getBounds().width; ///anchura
         Principal.Y2 = Principal.desktopPane.getBounds().height; ///altura
         Principal.desktopPane.setBounds(X, Y, X2, Y2);
-    //    Principal.jDesktopPane1.setBounds(X, Y, X2, 75);
+        //    Principal.jDesktopPane1.setBounds(X, Y, X2, 75);
         obj.setSize(new Dimension(Principal.X2, Principal.Y2 - (Principal.jProgressBar2.getSize().height)));
 
 //        if (controlareduccionPrincilapParamenusuperior < 2) {
@@ -1043,13 +1378,12 @@ public class Principal extends javax.swing.JFrame {
 //                b.setVisible(true);
 //                
 //            }
-//            System.out.println("Vista.Principal.tananoVentanas()xxxxxxxxxxxxxxxxxxxasasas{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}");
+//            Deb.consola("Vista.Principal.tananoVentanas()xxxxxxxxxxxxxxxxxxxasasas{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}");
 //            obj.setBounds(X - 5, Y + 15, X2, Y2);
 //            obj.setSize(new Dimension(Principal.X2, Principal.Y2 - (Principal.jProgressBar2.getSize().height + 20)));
 //            controlareduccionPrincilapParamenusuperior = controlareduccionPrincilapParamenusuperior + 1;
 //
 //        }
-
     }
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
         // TODO add your handling code here:
@@ -1121,7 +1455,7 @@ public class Principal extends javax.swing.JFrame {
         obj.setTitle("Nuevo Proveedor");
         ///false valor por defeccto, para cleintes
         obj.isllamadoDesdeNuevoProveedor = true;
-        
+
         OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
     }//GEN-LAST:event_contentMenuItem2ActionPerformed
@@ -1131,7 +1465,7 @@ public class Principal extends javax.swing.JFrame {
         //Modal_buscarProveedores obj = new Modal_buscarProveedores();
         Modal_buscarCilentes obj = new Modal_buscarCilentes();
         obj.setTitle("Buscar Proveedores");
-         Principal.isllamadoDesdeProveedorOCliente= true;
+        Principal.isllamadoDesdeProveedorOCliente = true;
         OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
 
@@ -1150,9 +1484,9 @@ public class Principal extends javax.swing.JFrame {
 
     private void contentMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItem7ActionPerformed
         // TODO add your handling code here:
-       // Crear_Compras obj = new Crear_Compras();
-       Modal_Crear_compras obj = new Modal_Crear_compras();
-         OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
+        // Crear_Compras obj = new Crear_Compras();
+        Modal_Crear_compras obj = new Modal_Crear_compras();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
 
     }//GEN-LAST:event_contentMenuItem7ActionPerformed
 
@@ -1215,23 +1549,61 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_contentMenuItem4ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        String[] sentencias
-                = {
-                    "CREATE TABLE `config_asientos` (\n"
-                    + "`codigo` INT(11) NOT NULL AUTO_INCREMENT,  \n"
-                    + "`config` VARCHAR(200) DEFAULT NULL,        \n"
-                    + "`valor` VARCHAR(500) DEFAULT NULL,         \n"
-                    + "PRIMARY KEY (`codigo`)                     \n"
-                    + ") ENGINE=INNODB DEFAULT CHARSET=latin1       "
-                };
-        for (int i = 0; i < sentencias.length; i++) {
-            String sql = sentencias[i];
-            updataesBDD update = new updataesBDD();
-            update.execSql(sql);
+
+        try {
+            // ProgressBar.fill(1000000);
+            String[] sentencias
+                    = {
+                        "CREATE TABLE `preubax` (\n"
+                        + "`codigo` INT(11) NOT NULL AUTO_INCREMENT,  \n"
+                        + "`config` VARCHAR(200) DEFAULT NULL,        \n"
+                        + "`valor` VARCHAR(500) DEFAULT NULL,         \n"
+                        + "PRIMARY KEY (`codigo`)                     \n"
+                        + ") ENGINE=INNODB DEFAULT CHARSET=latin1       ",
+                        "update productos\n"
+                        + "set impuesto = \"12\"\n"
+                        + "where impuesto like '%IVA 12%'",
+                        "update productos\n"
+                        + "set impuesto = \"0\"\n"
+                        + "where impuesto like '%IVA 0%' ",
+                        "CREATE TABLE `anticipos` (                                                                    \n"
+                        + "             `codigo` INT(11) NOT NULL AUTO_INCREMENT,                                                   \n"
+                        + "             `descripcion` VARCHAR(2000) DEFAULT NULL,                                                   \n"
+                        + "             `total` DOUBLE DEFAULT '0',                                                                 \n"
+                        + "             `fecha` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,                                       \n"
+                        + "             `usado` DOUBLE DEFAULT '0',                                                                 \n"
+                        + "             `saldo` DOUBLE DEFAULT '0',                                                                 \n"
+                        + "             `clientes_codigo` INT(11) DEFAULT NULL,                                                     \n"
+                        + "             `tipo_movimeinto` VARCHAR(100) DEFAULT NULL,                                                \n"
+                        + "             `documento` VARCHAR(100) DEFAULT NULL,                                                      \n"
+                        + "             `secuencia` VARCHAR(100) DEFAULT NULL,                                                      \n"
+                        + "             `motivo` VARCHAR(1000) DEFAULT NULL,                                                        \n"
+                        + "             `documeto_codigo` INT(11) DEFAULT NULL,                                                     \n"
+                        + "             PRIMARY KEY (`codigo`),                                                                     \n"
+                        + "             KEY `FK_anticipos` (`clientes_codigo`),                                                     \n"
+                        + "             CONSTRAINT `FK_anticipos` FOREIGN KEY (`clientes_codigo`) REFERENCES `clientes` (`codigo`)  \n"
+                        + "           ) ENGINE=INNODB DEFAULT CHARSET=latin1 "
+                            ,"ALTER TABLE .`cxc` ADD COLUMN `documento` VARCHAR(50) NULL AFTER `visible`"
+                            ,"ALTER TABLE `pagos` DROP FOREIGN KEY  `fk_pagosa_cxc1` ;"
+                            ,"ALTER TABLE retencion ADD CONSTRAINT FK_retencionCompras FOREIGN KEY (compras_codigo) REFERENCES compras (Codigo);"
+                            ,"ALTER TABLE retencion ADD CONSTRAINT FK_retencionfacturas FOREIGN KEY (compras_codigo) REFERENCES facturas (Codigo);"
+                            ,"CREATE TABLE `retencionv` ( PRIMARY KEY(`codigo`),UNIQUE `NewIndex1v`( `autorizacion` ), UNIQUE `NewIndex2v`( `proveedor_codigo` , `compra_secuencia` ), KEY `FK_retencionfacturasv`( `compras_codigo` ))ENGINE=INNODB COLLATE = latin1_swedish_ci COMMENT = '' SELECT `codigo`, `proveedor_codigo`, `compras_codigo`, `usuario_codigo`, `tipo_comprobante`, `autorizacion`, `compra_secuencia`, `secuencia`, `fechaIngreso`, `fecha`, `caducidad`, `total`, `concepto`, `sec1`, `sec2`, `sec3`, `estado`, `autorizado` FROM `retencion`;"
+                            ,"ALTER TABLE `retencionv` CHANGE `fechaIngreso` `fechaIngreso` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '' ;"
+                            ,"ALTER TABLE `retencionv` ADD CONSTRAINT `FK_retencionv_clientes` FOREIGN KEY (`proveedor_codigo`) REFERENCES `clientes` (`codigo`);"
+                            ,"ALTER TABLE `retencionv` ADD CONSTRAINT `FK_retencionv_facturas` FOREIGN KEY (`compras_codigo`) REFERENCES `facturas` (`Codigo`);"
+                            ,"CREATE TABLE `detalleretencionv` ( PRIMARY KEY(`codigo`,`Retencion_codigo`),KEY `fk_detalleRetencion_Retencion1_idx`( `Retencion_codigo` ))ENGINE=INNODB COLLATE = latin1_swedish_ci COMMENT = '' SELECT `codigo`, `ejercicio`, `base`, `impuesto`, `id`, `porcentaje`, `Retencion_codigo`, `retenido` FROM `detalleretencion` WHERE 1 = 0;"
+                            ,"ALTER TABLE `detalleretencionv` ADD CONSTRAINT `FK_detalleretencionv` FOREIGN KEY (`Retencion_codigo`) REFERENCES `retencionv` (`codigo`);"    
+                    };
+            for (int i = 0; i < sentencias.length; i++) {
+                String sql = sentencias[i];
+                updataesBDD update = new updataesBDD();
+                update.execSql(sql);
+            }
+            //udate dede la nube
+            new Download(new URL("http://update1.compueconomia.com.ec/update/Sofi3.jar"), "c:/Sofi/").start();
+        } catch (Exception ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //udate dede la nube
-        Update u = new Update();
-        u.updatenow();
 
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
@@ -1245,6 +1617,8 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         NuevaFormaPago obj = new NuevaFormaPago();
+        obj.comprasoVentas = OperacionesForms._FORMA_PAGO_CXC_TEXT;
+        obj.setTitle(OperacionesForms._FORMA_PAGO_CXC_TEXT);
         OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
 
     }//GEN-LAST:event_aboutMenuItem4ActionPerformed
@@ -1262,7 +1636,7 @@ public class Principal extends javax.swing.JFrame {
 ////        Integer yy = this.getBounds().y;
 ////        Integer xx2 = this.getBounds().width; ///anchura
 ////        Integer yy2 = this.getBounds().height; ///altura
-////        System.out.println("Vista.Principal.formComponentResized()fffffffffffffff");
+////        Deb.consola("Vista.Principal.formComponentResized()fffffffffffffff");
 ////// obj.setSize(new Dimension(xx2, yy2 - 10);
 ////       
 ////        if (controlareduccionPrincilapParamenusuperior == 0) {
@@ -1289,63 +1663,64 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
         // TODO add your handling code here:
-                DesgargarDocumentosElectronicosSRI obj = new DesgargarDocumentosElectronicosSRI();
+        DesgargarDocumentosElectronicosSRI obj = new DesgargarDocumentosElectronicosSRI();
         OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
         // TODO add your handling code here:
-Modal_CrearNotaCredito obj = new Modal_CrearNotaCredito();
-obj.setTitle(OperacionesForms._TITLE_FORM_NOTA_CREDITO);
-OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);        
+        Modal_CrearNC obj = new Modal_CrearNC();
+        obj.setTitle(OperacionesForms._TITLE_FORM_NOTA_CREDITO);
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
         // TODO add your handling code here:
-                  DesgargarDocumentosElectronicosEMITIDOSSRI obj = new DesgargarDocumentosElectronicosEMITIDOSSRI();
+        DesgargarDocumentosElectronicosEMITIDOSSRI obj = new DesgargarDocumentosElectronicosEMITIDOSSRI();
         OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
     }//GEN-LAST:event_jMenuItem14ActionPerformed
+
+    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+        // TODO add your handling code here:
+        RegistraComprasMasivamaente obj = new RegistraComprasMasivamaente();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
+    }//GEN-LAST:event_jMenuItem15ActionPerformed
+
+    private void aboutMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        NuevaFormaPago obj = new NuevaFormaPago();
+        obj.comprasoVentas = OperacionesForms._FORMA_PAGO_CXP_TEXT;
+        obj.setTitle(OperacionesForms._FORMA_PAGO_CXP_TEXT);
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
+    }//GEN-LAST:event_aboutMenuItem5ActionPerformed
+
+    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+        // TODO add your handling code here:        
+        Regstrar_RetencionVenta obj = new Regstrar_RetencionVenta();
+        OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
+    }//GEN-LAST:event_jMenuItem16ActionPerformed
+
+    private void contentMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItem5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_contentMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+
         try {
-            /* Set the Nimbus look and feel */
-            //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-            /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-            * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-             */
+
+            JFrame.setDefaultLookAndFeelDecorated(true);
+            JDialog.setDefaultLookAndFeelDecorated(true);
+            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
             //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//</editor-fold>
-//</editor-fold>
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1411,6 +1786,8 @@ OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), true);
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

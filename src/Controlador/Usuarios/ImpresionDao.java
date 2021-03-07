@@ -6,17 +6,19 @@
 package Controlador.Usuarios;
 
 import ClasesAuxiliares.DaoEmpresaImpl;
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Coneccion;
 import Modelo.DetalleFactura;
 import Modelo.Facturas;
 import Modelo.Tickets;
 import Modelo.Usuarios;
 import Vista.Principal;
-import static Vista.Usuarios.Crear_Facturas.tipoDocumento;
-import static Vista.Usuarios.Crear_Facturas.txt_cedula;
-import static Vista.Usuarios.Crear_Facturas.txt_celular;
-import static Vista.Usuarios.Crear_Facturas.txt_dir;
-import static Vista.Usuarios.Crear_Facturas.txt_nombres;
+import static Vista.Usuarios.Modal_CrearFacturas.tipoDocumento;
+import static Vista.Usuarios.Modal_CrearFacturas.txt_cedula;
+import static Vista.Usuarios.Modal_CrearFacturas.txt_celular;
+import static Vista.Usuarios.Modal_CrearFacturas.txt_dir;
+import static Vista.Usuarios.Modal_CrearFacturas.txt_nombres;
+import Vista.Usuarios.Modal_CrearFacturas;
 import Vista.Usuarios.rep;
 import Vlidaciones.ProgressBar;
 import impresoras.ServicioDeImpresion;
@@ -24,6 +26,7 @@ import java.awt.BorderLayout;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,19 +91,19 @@ public class ImpresionDao extends Coneccion {
         try {
 
             this.conectar();
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()empez la impresionnnn");
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()empez la impresionnnn");
             // String rutaInforme = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\Ticket.jasper";
             // Map parametros = new HashMap();
             //parametros.put("numeroFactura", secuenciaFac);                        
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()secuencia :" + parametros);
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()rurainorme :" + rutaInforme);
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()secuencia :" + parametros);
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()rurainorme :" + rutaInforme);
 
             JasperPrint informe = JasperFillManager.fillReport(rutaInforme, parametros, this.getCnx());
             JasperViewer jv = new JasperViewer(informe, false);
             //  JasperPrintManager.printReport(informe, true);
             jv.setVisible(true);
         } catch (JRException ex) {
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()" + ex);
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()" + ex);
             //   Logger.getLogger(Crear_Facturas.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             this.cerrar();
@@ -111,23 +114,24 @@ public class ImpresionDao extends Coneccion {
         try {
 
             this.conectar();
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()empez la impresionnnn");
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()empez la impresionnnn");
             // String rutaInforme = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\Ticket.jasper";
             // Map parametros = new HashMap();
             //parametros.put("numeroFactura", secuenciaFac);                        
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()secuencia :" + parametros);
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()secuencia :" + parametros);
             JasperPrint informe = JasperFillManager.fillReport(rutaInforme, parametros, this.getCnx());
             JasperViewer jv = new JasperViewer(informe, false);
             JasperPrintManager.printReport(informe, true);
             jv.setVisible(true);
         } catch (JRException ex) {
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()" + ex);
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()" + ex);
             //   Logger.getLogger(Crear_Facturas.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             this.cerrar();
         }
     }
-public void impresionzZebra(Doc doc) {
+
+    public void impresionzZebra(Doc doc) {
         try {
             ServicioDeImpresion imprime = new ServicioDeImpresion();
             PrintService jb = imprime.getJobPrinter();
@@ -135,106 +139,157 @@ public void impresionzZebra(Doc doc) {
             job.print(doc, null);
         } catch (PrintException ex) {
             Logger.getLogger(ImpresionDao.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Controlador.Usuarios.ImpresionDao.impresionzZebra(): "+ex);
+            Deb.consola("Controlador.Usuarios.ImpresionDao.impresionzZebra(): " + ex);
         }
 
-}
-    public void impresionEnTirillasFaturas(String secuenca) {
+    }
 
-        ////////////
-        ServicioDeImpresion imprime = new ServicioDeImpresion();
-        PrintService jb = imprime.getJobPrinter();
+    public ResultSet geteresulset(String secuenca) {
+        ResultSet rs = null;
 
-        ResultSet rs;
-        Tickets u = new Tickets();
+        PreparedStatement st = null;
         try {
             this.conectar();
-            PreparedStatement st;
-//SELECT u.Nombres AS usuario, c.Cedula AS ruc, c.Nombres AS cliente ,c.Direccion,c.Telefono,c.Celular, t.*,dt.* FROM usuarios u  INNER JOIN clientes c INNER JOIN facturaS t INNER JOIN detallefactura dt ON( t.Codigo=dt.Factura_Codigo ) WHERE (t.secuencia="001-001-000000009" AND t.Usuarios_Codigo=u.codigo AND t.tipo_documento="FACTURA" ) AND t.Clientes_codigo=c.codigo
-            st = this.getCnx().prepareCall("SELECT u.Nombres AS usuario, c.Cedula AS ruc, c.Nombres AS cliente ,c.Direccion,c.Telefono,c.Celular, t.*,dt.* FROM usuarios u  INNER JOIN clientes c INNER JOIN facturaS t INNER JOIN detallefactura dt ON( t.Codigo=dt.Factura_Codigo ) WHERE (t.secuencia="+secuenca+" AND t.Usuarios_Codigo=u.codigo AND t.tipo_documento=\"FACTURA\" ) AND t.Clientes_codigo=c.codigo");
+            st = this.getCnx().prepareCall("SELECT u.Nombres AS usuario, c.Cedula AS ruc, c.Nombres AS cliente ,c.Direccion,c.Telefono,c.Celular, t.*,dt.* FROM usuarios u  INNER JOIN clientes c INNER JOIN facturaS t INNER JOIN detallefactura dt ON( t.Codigo=dt.Factura_Codigo ) WHERE (t.secuencia='" + secuenca + "' AND t.Usuarios_Codigo=u.codigo AND t.tipo_documento=\"FACTURA\" ) AND t.Clientes_codigo=c.codigo");
             rs = st.executeQuery();
-            for (int i = 0; i < Integer.parseInt(Principal.numerovecseimpresionFactura); i++) {
-                int a = 1;
-
-                while (rs.next()) {
-                    if (a == 1) {
-//////////IMPRIME ENCABEZADO//////
-                        String nombreEm = imprime.centrarTexto(login.nombreEmpresa, 40);
-                        imprime.imprimirGenerico(nombreEm, jb);
-                        String tipo = imprime.centrarTexto(rs.getString("tipo_documento"), 40);
-                        imprime.imprimirGenerico(tipo, jb);
-                        imprime.imprimirGenerico("RUC: " + login.rucEmpresa, jb);
-                        imprime.imprimirGenerico("TELEFONOS: " + login.telefonoEmpresa, jb);
-                        imprime.imprimirGenerico("DIRECCION: " + login.direccionEmpresa, jb);
-                        //imprime.imprimirGenerico("");
-                        imprime.imprimirGenerico("OBLIGADO A LLEVAR CONTABILIDAD: " + login.ObligadoSiNOEmpresa, jb);
-                        imprime.imprimirGenerico("", jb);
-
-                        imprime.imprimirGenerico(rs.getString("tipo_documento") + ": " + secuenca, jb);
-                        imprime.imprimirGenerico("FECHA: " + rs.getDate("fecha").toString(), jb);
-                        imprime.imprimirGenerico("USUARIO: " + rs.getString("usuario"), jb);
-                        imprime.imprimirGenerico("---------------------------------------", jb);
-                        imprime.imprimirGenerico("CLIENTE: " + rs.getString("cliente"), jb);
-                        imprime.imprimirGenerico("RUC: " + rs.getString("ruc"), jb);
-                        imprime.imprimirGenerico("DIRECCION: " + rs.getString("direccion"), jb);
-                        String telef = "";
-                        if (rs.getString("telefono").equalsIgnoreCase("") && rs.getString("celular").equalsIgnoreCase("")) {
-                            telef = "999999999";
-                        } else if (rs.getString("celular").equalsIgnoreCase("")) {
-                            telef = rs.getString("telefono");
-                        } else {
-                            telef = rs.getString("celular");
-                        }
-                        imprime.imprimirGenerico("TELF: " + telef, jb);
-                        imprime.imprimirGenerico("---------------------------------------", jb);
-                        //   System.out.println("numero de filas: " + jTable1.getRowCount());
-
-                        int tamano = 25;
-                        String detalle = "";
-                        ////////////                
-
-                    }
-                    a++;
-                    Integer tamano = 25;
-                    String cantidad = rs.getString("cantidad").toString();
-                    String pu = rs.getString("valorUnitario").toString();
-                    String pt = rs.getString("valortotal").toString();
-                    if ((cantidad.length() > 2 && cantidad.length() < 4) || (pu.length() > 6)) {
-                        tamano = 21;
-                    }
-                    String detalle = rs.getString("detalle").toString();
-                    while (detalle.length() < 25) {
-                        detalle = detalle.concat(" ");
-                    }
-                    imprime.imprimirGenerico(
-                            cantidad + " "
-                            + imprime.recortar(detalle, tamano) + " " + pu + "  " + pt, jb);
-                }
-                if (a == 1) {
-                    imprime.imprimirGenerico("---------------------------------------", jb);
-                    imprime.imprimirGenerico("SUBTOTAL:                      " + rs.getString("subtotal_sin_iva"), jb);
-                    imprime.imprimirGenerico("SUBTOTAL 12%:                  " + rs.getString("subtotaI_con_iva"), jb);
-                    imprime.imprimirGenerico("IVA 12%:                       " + rs.getString("iva_valor"), jb);
-                    imprime.imprimirGenerico("TOTAL A CANCELAR:              " + rs.getString("total"), jb);
-                    imprime.imprimirGenerico("", jb);
-                    imprime.imprimirGenerico("---------GRACIAS POR PREFERIRNOS-----------", jb);
-                    imprime.imprimirGenerico("", jb);
-                    imprime.imprimirGenerico("", jb);
-                    imprime.imprimirGenerico("", jb);
-                    imprime.imprimirGenerico("", jb);
-                    imprime.imprimirGenerico("", jb);
-                    imprime.imprimirGenerico("", jb);
-
-                }
-                a++;
-                rs.beforeFirst();
-            }
         } catch (Exception ex) {
-            System.out.println("Controlador.CUsuarios.BuscarConId() impresionticketssszzzdda" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId() impresionticketssxdfsdfsdfeeeeszzzdda" + ex);
         } finally {
             this.cerrar();
         }
+
+        return rs;
     }
+
+   // public void setProgressBar_mensajae(String mensaje) {
+     public void impresionEnTirillasFaturas(String secuenca) {
+        Thread t = new Thread() {
+            public void run() {
+                String subtotalsinIVA = "";
+                String subtotalConIVA = "";
+                String IVAValor = "";
+                String Total = "";
+                ////////////
+                ServicioDeImpresion imprime = new ServicioDeImpresion();
+                PrintService jb = imprime.getJobPrinter();
+
+                ResultSet rs = null;
+                Tickets u = new Tickets();
+
+                try {
+                    // this.conectar();
+                    //PreparedStatement st;
+                    //SELECT u.Nombres AS usuario, c.Cedula AS ruc, c.Nombres AS cliente ,c.Direccion,c.Telefono,c.Celular, t.*,dt.* FROM usuarios u  INNER JOIN clientes c INNER JOIN facturaS t INNER JOIN detallefactura dt ON( t.Codigo=dt.Factura_Codigo ) WHERE (t.secuencia="001-001-000000009" AND t.Usuarios_Codigo=u.codigo AND t.tipo_documento="FACTURA" ) AND t.Clientes_codigo=c.codigo
+                    //st = this.getCnx().prepareCall("SELECT u.Nombres AS usuario, c.Cedula AS ruc, c.Nombres AS cliente ,c.Direccion,c.Telefono,c.Celular, t.*,dt.* FROM usuarios u  INNER JOIN clientes c INNER JOIN facturaS t INNER JOIN detallefactura dt ON( t.Codigo=dt.Factura_Codigo ) WHERE (t.secuencia='" + secuenca + "' AND t.Usuarios_Codigo=u.codigo AND t.tipo_documento=\"FACTURA\" ) AND t.Clientes_codigo=c.codigo");
+                    rs = geteresulset(equipo);// st.executeQuery();
+                    for (int i = 0; i < Integer.parseInt(Principal.numerovecseimpresionFactura); i++) {
+                        int a = 1;
+
+                        while (rs.next()) {
+                            if (a == 1) {
+//////////IMPRIME ENCABEZADO//////
+                                String nombreEm = imprime.centrarTexto(login.nombreEmpresa, 40);
+                                imprime.imprimirGenerico(nombreEm, jb);
+                                String tipo = imprime.centrarTexto(rs.getString("tipo_documento"), 40);
+                                imprime.imprimirGenerico(tipo, jb);
+                                imprime.imprimirGenerico("RUC: " + login.rucEmpresa, jb);
+                                imprime.imprimirGenerico("TELEFONOS: " + login.telefonoEmpresa, jb);
+                                imprime.imprimirGenerico("DIRECCION: " + login.direccionEmpresa, jb);
+                                //imprime.imprimirGenerico("");
+                                imprime.imprimirGenerico("OBLIGADO A LLEVAR CONTABILIDAD: " + login.ObligadoSiNOEmpresa, jb);
+                                imprime.imprimirGenerico("", jb);
+
+                                imprime.imprimirGenerico(rs.getString("tipo_documento") + ": " + secuenca, jb);
+                                imprime.imprimirGenerico("FECHA: " + rs.getDate("fecha").toString(), jb);
+                                imprime.imprimirGenerico("USUARIO: " + rs.getString("usuario"), jb);
+                                imprime.imprimirGenerico("---------------------------------------", jb);
+                                imprime.imprimirGenerico("CLIENTE: " + rs.getString("cliente"), jb);
+                                imprime.imprimirGenerico("RUC: " + rs.getString("ruc"), jb);
+                                imprime.imprimirGenerico("DIRECCION: " + rs.getString("direccion"), jb);
+                                String telef = "";
+                                if (rs.getString("telefono").equalsIgnoreCase("") && rs.getString("celular").equalsIgnoreCase("")) {
+                                    telef = "999999999";
+                                } else if (rs.getString("celular").equalsIgnoreCase("")) {
+                                    telef = rs.getString("telefono");
+                                } else {
+                                    telef = rs.getString("celular");
+                                }
+                                imprime.imprimirGenerico("TELF: " + telef, jb);
+                                imprime.imprimirGenerico("---------------------------------------", jb);
+                                //   Deb.consola("numero de filas: " + jTable1.getRowCount());
+
+                                String detalle = "";
+                                ////////////                
+
+                            }
+                            //   a++;
+                            Integer tamano = null;
+                            try {
+                                tamano = Integer.parseInt(Principal.anchoimpresionticket);
+                            } catch (Exception e) {
+
+                                Deb.consola("Controlador.Usuarios.ImpresionDao.impresionEnTirillasFaturas()sssErrorx TAMANO IMPRESION: " + tamano);
+                                Deb.consola("Controlador.Usuarios.ImpresionDao.impresionEnTirillasFaturas()sssErrorx TAMANO IMPRESION: " + tamano);
+                            }
+
+                            String cantidad = rs.getString("cantidad").toString();
+                            String pu = rs.getString("valorUnitario").toString();
+                            String pt = rs.getString("valortotal").toString();
+                            subtotalsinIVA = rs.getString("subtotal_sin_iva");
+                            subtotalConIVA = rs.getString("subtotaI_con_iva");
+                            IVAValor = rs.getString("iva_valor");
+                            Total = rs.getString("total");
+
+                            if ((cantidad.length() > 2 && cantidad.length() < 4) || (pu.length() > 6)) {
+                                tamano = 21;
+                            }
+                            String detalle = rs.getString("detalle").toString();
+                            while (detalle.length() < 25) {
+                                detalle = detalle.concat(" ");
+                            }
+                            imprime.imprimirGenerico(
+                                    cantidad + " "
+                                    + imprime.recortar(detalle, tamano) + " " + pu + "  " + pt, jb);
+                        }
+                        if (a == 1) {
+                            imprime.imprimirGenerico("---------------------------------------", jb);
+                            imprime.imprimirGenerico("SUBTOTAL:                      " + subtotalsinIVA, jb);
+                            imprime.imprimirGenerico("SUBTOTAL "+Principal.iva +"%:                  " + subtotalConIVA, jb);
+                            imprime.imprimirGenerico("IVA "+Principal.iva +"%:                       " + IVAValor, jb);
+                            imprime.imprimirGenerico("TOTAL A CANCELAR:              " + Total, jb);
+                            imprime.imprimirGenerico("", jb);
+                            imprime.imprimirGenerico("---------GRACIAS POR PREFERIRNOS-----------", jb);
+                            imprime.imprimirGenerico("", jb);
+                            imprime.imprimirGenerico("", jb);
+                            imprime.imprimirGenerico("", jb);
+                            imprime.imprimirGenerico("", jb);
+                            imprime.imprimirGenerico("", jb);
+                            imprime.imprimirGenerico("", jb);
+
+                        }
+                        a++;
+                        rs.beforeFirst();
+                    }
+                } catch (Exception ex) {
+                    Deb.consola("Controlador.CUsuarios.BuscarConId()aaaaaaaaaaaaaaaaaaa impresionticketssszzzdda" + ex);
+                } finally {
+                    try {
+                        //this.cerrar();
+                        rs.close();
+                    } catch (SQLException ex) {
+                      Deb.consola("Controlador.CUsuarios.BuscarConId()try close resulsetx" + ex);
+                    }
+                }
+
+            }
+        ;
+        };
+t.start();
+    }
+
+//    public void impresionEnTirillasFaturas(String secuenca) {
+//
+//    }
 
     public void impresionDontShowReport(Map parametros, String rutaInforme) {
         try {
@@ -250,25 +305,27 @@ public void impresionzZebra(Doc doc) {
             PrintService jb = imprime.getJobPrinterImpresoraDefinida(impresoraConfigurada);
 
             this.conectar();
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()empez la impresionnnn");
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()empez la impresionnnn");
             // String rutaInforme = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\Ticket.jasper";
             // Map parametros = new HashMap();
             //parametros.put("numeroFactura", secuenciaFac);                        
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()secuencia :" + parametros);
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()secuencia :" + parametros);
             JasperPrint informe = JasperFillManager.fillReport(rutaInforme, parametros, this.getCnx());
             //JasperViewer jv = new JasperViewer(informe, false);
             //JasperPrintManager.printReport(informe, false);
             for (int i = 0; i < Integer.parseInt(Principal.numerovecseimpresionFactura); i++) {
-                //se manda a la impresora
+
+
+                
                 JRPrintServiceExporter jrprintServiceExporter = new JRPrintServiceExporter();
                 jrprintServiceExporter.setParameter(JRExporterParameter.JASPER_PRINT, informe);
                 jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, jb);
-                jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+                jrprintServiceExporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.TRUE);
                 jrprintServiceExporter.exportReport();
             }
 
         } catch (JRException ex) {
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()" + ex);
+            Deb.consola("Errora impresionx" + ex);
             //   Logger.getLogger(Crear_Facturas.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             this.cerrar();
@@ -279,11 +336,11 @@ public void impresionzZebra(Doc doc) {
         try {
 
             this.conectar();
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()empez la impresionnnn");
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()empez la impresionnnn");
             // String rutaInforme = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\Ticket.jasper";
             // Map parametros = new HashMap();
             //parametros.put("numeroFactura", secuenciaFac);                        
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()secuencia :" + parametros);
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()secuencia :" + parametros);
             JasperPrint informe = JasperFillManager.fillReport(rutaInforme, parametros, this.getCnx());
             JasperExportManager.exportReportToPdfFile(informe, "src/prueba.pdf");
             //JasperExportManager.exportRepor(informe, "src/prueba.html");
@@ -292,7 +349,7 @@ public void impresionzZebra(Doc doc) {
 //            JasperPrintManager.printReport(informe, false);
 //            jv.setVisible(true);
         } catch (JRException ex) {
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()" + ex);
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()" + ex);
             //   Logger.getLogger(Crear_Facturas.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             this.cerrar();
@@ -303,11 +360,11 @@ public void impresionzZebra(Doc doc) {
         try {
 
             this.conectar();
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()empez la impresionnnn");
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()empez la impresionnnn");
             // String rutaInforme = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\Ticket.jasper";
             // Map parametros = new HashMap();
             //parametros.put("numeroFactura", secuenciaFac);                        
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()secuencia :" + parametros);
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()secuencia :" + parametros);
             JasperPrint informe = JasperFillManager.fillReport(rutaInforme, parametros, this.getCnx());
             JasperExportManager.exportReportToHtmlFile(informe, "src/prueba2.html");
             //JasperExportManager.exportRepor(informe, "src/prueba.html");
@@ -316,7 +373,7 @@ public void impresionzZebra(Doc doc) {
 //            JasperPrintManager.printReport(informe, false);
 //            jv.setVisible(true);
         } catch (JRException ex) {
-            System.out.println("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()" + ex);
+            Deb.consola("Vista.Usuarios.Crear_Facturas.jButton1ActionPerformed()" + ex);
             //   Logger.getLogger(Crear_Facturas.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             this.cerrar();

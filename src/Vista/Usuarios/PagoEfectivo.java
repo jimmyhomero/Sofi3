@@ -6,6 +6,7 @@
 package Vista.Usuarios;
 
 import Controlador.Usuarios.CajasDetalleDao;
+import ClasesAuxiliares.debug.Deb;
 import Controlador.Usuarios.FacturasDao;
 import Controlador.Usuarios.HoraFecha;
 import Controlador.Usuarios.cxcDao;
@@ -269,7 +270,7 @@ public class PagoEfectivo extends javax.swing.JDialog {
         // TODO add your handling code here:
         //jDateChooser1.setDate(sumarRestarDiasFecha(fecha,Integer.valueOf(spinerDiasCredito.getValue().toString())));
         isclicked = true;
-        System.out.println("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd al opneform");
+        Deb.consola("Vista.Usuarios.PagoCredito.jPanel2FocusGained() is clikeddd al opneform");
     }//GEN-LAST:event_formWindowOpened
 
     private void bnt_siguente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnt_siguente1ActionPerformed

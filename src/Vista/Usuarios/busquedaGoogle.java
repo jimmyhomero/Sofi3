@@ -20,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.mail.Message;
+import ClasesAuxiliares.debug.Deb;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -75,7 +76,7 @@ public class busquedaGoogle extends javax.swing.JDialog {
                                }
                                 Files.copy(in, Paths.get(Ejemplo.dirIMGtempgoogleSearch+"i1.jpg"));
                                 f1 = new File(Ejemplo.dirIMGtempgoogleSearch+"i1.jpg");
-                                System.out.println("f1: "+f1.getAbsolutePath());
+                                Deb.consola("f1: "+f1.getAbsolutePath());
                             }
                             
 
@@ -90,7 +91,7 @@ public class busquedaGoogle extends javax.swing.JDialog {
                                }
                                 Files.copy(in, Paths.get(Ejemplo.dirIMGtempgoogleSearch+"i2.jpg"));
                                 f2 = new File(Ejemplo.dirIMGtempgoogleSearch+"i2.jpg");
-                                System.out.println("f2: "+f2.getAbsolutePath());
+                                Deb.consola("f2: "+f2.getAbsolutePath());
                             }
                         }
                         if (i == 3) {
@@ -103,7 +104,7 @@ public class busquedaGoogle extends javax.swing.JDialog {
                                }
                                 Files.copy(in, Paths.get(Ejemplo.dirIMGtempgoogleSearch+"i3.jpg"));
                                 f3 = new File(Ejemplo.dirIMGtempgoogleSearch+"i3.jpg");
-                                System.out.println("f3: "+f3.getAbsolutePath());
+                                Deb.consola("f3: "+f3.getAbsolutePath());
                             }
                         }
                         if (i == 4) {
@@ -116,7 +117,7 @@ public class busquedaGoogle extends javax.swing.JDialog {
                                }
                                 Files.copy(in, Paths.get(Ejemplo.dirIMGtempgoogleSearch+"i4.jpg"));
                                 f4 = new File(Ejemplo.dirIMGtempgoogleSearch+"i4.jpg");
-                                System.out.println("f4: "+f4.getAbsolutePath());
+                                Deb.consola("f4: "+f4.getAbsolutePath());
                             }
                         }
 
