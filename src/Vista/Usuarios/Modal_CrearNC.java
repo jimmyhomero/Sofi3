@@ -172,7 +172,7 @@ public class Modal_CrearNC extends javax.swing.JInternalFrame {
     Double subtotaliva12 = 0.0;
     Double subtotaliva0 = 0.0;
     Double iva = Double.valueOf(Principal.iva);
-boolean afectakardex = false;  ///e proformas no
+    boolean afectakardex = false;  ///e proformas no
     public static boolean afectacaja = false; /// en cuadno es credito no
     ProgressBar msg = new ProgressBar(3000, "Mensaje Inicial");
     public static String secuenciaFac = null;
@@ -819,8 +819,8 @@ boolean afectakardex = false;  ///e proformas no
         jLabel2 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jcbPVPs = new javax.swing.JComboBox<>();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        jrDevolucionEfectivo = new javax.swing.JRadioButton();
+        jrAnticipoCliente = new javax.swing.JRadioButton();
         jPanel5 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
@@ -855,8 +855,8 @@ boolean afectakardex = false;  ///e proformas no
 
         buttonGroup1.add(check_Fac);
 
-        buttonGroup2.add(jRadioButton1);
-        buttonGroup2.add(jRadioButton2);
+        buttonGroup2.add(jrDevolucionEfectivo);
+        buttonGroup2.add(jrAnticipoCliente);
 
         setClosable(true);
         setResizable(true);
@@ -1371,12 +1371,12 @@ boolean afectakardex = false;  ///e proformas no
                     .addComponent(jLabel14)))
         );
 
-        jRadioButton1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Efectivo");
+        jrDevolucionEfectivo.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jrDevolucionEfectivo.setSelected(true);
+        jrDevolucionEfectivo.setText("Efectivo");
 
-        jRadioButton2.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jRadioButton2.setText("Aticipo Cliente");
+        jrAnticipoCliente.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jrAnticipoCliente.setText("Aticipo Cliente");
 
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
         jPanel18.setLayout(jPanel18Layout);
@@ -1385,8 +1385,8 @@ boolean afectakardex = false;  ///e proformas no
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jrAnticipoCliente)
+                    .addComponent(jrDevolucionEfectivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1400,9 +1400,9 @@ boolean afectakardex = false;  ///e proformas no
                         .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel18Layout.createSequentialGroup()
                         .addContainerGap(12, Short.MAX_VALUE)
-                        .addComponent(jRadioButton1)
+                        .addComponent(jrDevolucionEfectivo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2)))
+                        .addComponent(jrAnticipoCliente)))
                 .addContainerGap())
         );
 
@@ -2151,8 +2151,8 @@ boolean afectakardex = false;  ///e proformas no
             boolean ingresaaCXCaseranulada = false;
 
             if (cxc.getCodigo() != null) {
-                jRadioButton1.isSelected();
-                jRadioButton2.setEnabled(false);
+                jrDevolucionEfectivo.isSelected();
+                jrAnticipoCliente.setEnabled(false);
                 Double saldo1 = Double.parseDouble(cxc.getSaldo().trim());
                 Double total1 = Double.parseDouble(txt_total_val_grande.getText().trim());
                 if (saldo1 == total1) {
@@ -2214,7 +2214,7 @@ boolean afectakardex = false;  ///e proformas no
             /////
             /////////// DETALLE DE CAJA
 
-            if (jRadioButton1.isSelected()) {
+            if (jrDevolucionEfectivo.isSelected()) {
                 if (!ingresaaCXCaseranulada) {
                     cd.setCajas_Codigo(login.codigoCaja);
                     cd.setDetalle(Variables.CAJA_EGRESO_NC + tipoDocumento + " - " + jcbFormasPago.getSelectedItem().toString() + " # " + secuenciaFac + " EN EQUIPO: " + login.nombreDelEquipo + " USUARIO: " + login.nombresUsuario);
@@ -2231,7 +2231,7 @@ boolean afectakardex = false;  ///e proformas no
                     Anticipos a = new Anticipos();
                     AnticiposDao adao = new AnticiposDao();
                     a.setClientes_codigo(codigoClienteFactura);
-                    a.setDescripcion("ANTICIPO NOTA DE CREDITO DOCUMENTO REFERENCIA " + SecuanciaFacturaSeleccionadaDesdeListadeFacturasParaNotaCredito + " - " + idFacturaSeleccionadaDesdeListadeFacturasParaNotaCredito);
+                    a.setDescripcion("ANTICIPO POR: NOTA DE CREDITO DOCUMENTO REFERENCIA " + SecuanciaFacturaSeleccionadaDesdeListadeFacturasParaNotaCredito + " - " + idFacturaSeleccionadaDesdeListadeFacturasParaNotaCredito);
                     a.setDocumento(tipoDocumento);
                     a.setDocumeto_codigo(idFacturaSeleccionadaDesdeListadeFacturasParaNotaCredito);
                     a.setMotivo(txt_motivo.getText().trim());
@@ -2276,27 +2276,15 @@ boolean afectakardex = false;  ///e proformas no
                          */
                         u.setEfectivo(0.00);
                         u.setCambio(0.00);
-                        if (Principal.controlCambioEfectivoSINO.equalsIgnoreCase("SI")) {
-//                        if (!check_proformas.isSelected()) {
-//                            Frame ff = JOptionPane.getFrameForComponent(this);
-//                            PagoEfectivo dialog = new PagoEfectivo(ff, true);
-//                            dialog.txt_total.setText(txt_total_val_grande.getText());
-//                            dialog.txt_entrada.setText("0.0");
-//                            dialog.txt_entrada.selectAll();
-//                            dialog.setLocationRelativeTo(ff);
-//                            dialog.setVisible(true);
-//                            u.setEfectivo(Double.parseDouble(dialog.txt_entrada.getText()));
-//                            u.setCambio(Double.parseDouble(dialog.txt_cambio.getText()));
-//                            // procedeVentaExitosa = true;
-//                            Deb.consola("Vista.Usuarios.Modal_CrearFacturas.jButton1ActionPerformed()_: " + procedeVentaExitosa);
+                         procedeVentaExitosa = true;
+//                        if (Principal.controlCambioEfectivoSINO.equalsIgnoreCase("SI")) {
+//                        } else {
+//
+//                            u.setEfectivo(0.0);
+//                            u.setCambio(0.0);
+//                            // RegistrodeEfectivoyCambioExitoso = true;
+//                           
 //                        }
-                        } else {
-
-                            u.setEfectivo(0.0);
-                            u.setCambio(0.0);
-                            // RegistrodeEfectivoyCambioExitoso = true;
-                            procedeVentaExitosa = true;
-                        }
 
                         break;
 
@@ -2367,14 +2355,14 @@ boolean afectakardex = false;  ///e proformas no
                     }
                     //////////////////////////
                     /////////////facturao
-                    if (jRadioButton2.isSelected()) {
+                    if (jrAnticipoCliente.isSelected()) {
 
                     }
 
-    //                    boolean afectacajaykardex = false;
+                    //                    boolean afectacajaykardex = false;
                     if (!tipoDocumento.equalsIgnoreCase("PROFORMA")) {
-                         afectakardex = true;  ///e proformas no
-                             afectacaja = true; /// en cuadno es credito no
+                        afectakardex = true;  ///e proformas no
+                        afectacaja = true; /// en cuadno es credito no
                     }
                     ComitsAll cm = new ComitsAll();
                     Integer cofigFacok = 0;
@@ -2385,17 +2373,13 @@ boolean afectakardex = false;  ///e proformas no
 //                        cofigFacok = cm.facturar(u, cd, listaDetalleFactura, listaKardex, afectacajaykardex);
 //                    }
                     /// *ingresaaCXCaseranulada* ingresa a NC pero tiene cxc, se anula pero no genra nada en caja solo anticipo
-
+                    afectakardex = true;
                     if (ingresaaCXCaseranulada) {
-                        afectakardex = true;  ///e proformas no
-                             afectacaja = false; /// en cuadno es credito no
-                        cofigFacok = cm.facturar(u, cd, listaDetalleFactura, listaKardex, afectacaja,afectakardex);
+                        afectacaja = false; /// en cuadno es credito no
                     } else {
-                        //genera anticipo pero tambien efecto en cja
-                        afectakardex = true;  ///e proformas no
-                             afectacaja = true; /// en cuadno es credito no
-                        cofigFacok = cm.facturar(u, cd, listaDetalleFactura, listaKardex, afectacaja,afectakardex);
+                        afectacaja = true; /// en cuadno es credito no
                     }
+                    cofigFacok = cm.facturar(u, cd, listaDetalleFactura, listaKardex, afectacaja, afectakardex);
 
                     if (cofigFacok == 0) {
 
@@ -2890,15 +2874,14 @@ boolean afectakardex = false;  ///e proformas no
             Cxc cxc = new Cxc();
             cxcDao cxcDao = new cxcDao();
             cxc = cxcDao.listarBuscarConCodigoFactura(fac.getCodigo());
-            
-            /// FIN VERIFICAR CXC
 
+            /// FIN VERIFICAR CXC
             if (valafecnc < totalfac) {
                 if (cxc.getCodigo() != null) {
-                txt_saldocxc.setText(totalfac.toString());
-                jRadioButton2.setSelected(true);
-                jRadioButton1.setEnabled(false);
-            }
+                    txt_saldocxc.setText(totalfac.toString());
+                    jrAnticipoCliente.setSelected(true);
+                    jrDevolucionEfectivo.setEnabled(false);
+                }
                 cli = cliDao.buscarConID(fac.getClientes_codigo(), 0);
                 txt_cedula.setText(cli.getCedula());
                 txt_celular.setText(cli.getCelular());
@@ -2989,14 +2972,14 @@ boolean afectakardex = false;  ///e proformas no
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPopupMenu jPopupMenu1;
-    private static javax.swing.JRadioButton jRadioButton1;
-    private static javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public static javax.swing.JTable jTable1;
     public static javax.swing.JComboBox<String> jcbFormasPago;
     private javax.swing.JComboBox<String> jcbPVPs;
     private com.toedter.calendar.JDateChooser jdfecha;
+    private static javax.swing.JRadioButton jrAnticipoCliente;
+    private static javax.swing.JRadioButton jrDevolucionEfectivo;
     private javax.swing.JPanel lateral1;
     private javax.swing.JLabel lbl_Iva;
     private javax.swing.JLabel lbl_subTotalIva;

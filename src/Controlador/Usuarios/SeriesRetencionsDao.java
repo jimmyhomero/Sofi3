@@ -29,6 +29,9 @@ public class SeriesRetencionsDao extends Coneccion {
     String tabla = "SeriesRetencion";
     private ArrayList<SeriesRetencion> lista = new ArrayList<SeriesRetencion>();
 
+    
+
+        
     public void guardar(SeriesRetencion tarea) {
         try {
             this.conectar();

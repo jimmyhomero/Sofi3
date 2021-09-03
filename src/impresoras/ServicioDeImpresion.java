@@ -190,7 +190,7 @@ public class ServicioDeImpresion {
         try {
             job.print(doc, null);
         } catch (PrintException ex) {
-            Deb.consola("probel : "+ex);
+            Deb.consola("problema de impresion en tickets : "+ex);
         }
     }
 

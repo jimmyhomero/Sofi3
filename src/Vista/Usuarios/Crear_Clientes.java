@@ -764,13 +764,7 @@ public class Crear_Clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_cedulaxKeyPressed
 
     private void txt_cedulaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_cedulaxActionPerformed
-        try {
-            // TODO add your handling code here:
-            //  ConsultaCedulas.getInfoSheylaGetokok(txt_cedula.getText());
 
-        } catch (Exception ex) {
-            Logger.getLogger(Crear_Clientes.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }//GEN-LAST:event_txt_cedulaxActionPerformed
 
     private void txt_cedulaxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_cedulaxFocusGained

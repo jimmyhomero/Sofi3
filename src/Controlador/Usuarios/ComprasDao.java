@@ -46,10 +46,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author USUARIO
- */
 public class ComprasDao extends Coneccion {
 
     private String tabla = "compras";
@@ -473,7 +469,7 @@ public class ComprasDao extends Coneccion {
                 registros[7] = rs.getString("costo");
                 registros[8] = "0";
                 registros[9] = rs.getString("b" + bodega);
-                registros[10] = "332";
+                registros[10] = rs.getString("airCodigo");
                 registros[11] = new JButton("Clic aquí");
 
 //                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
@@ -487,39 +483,39 @@ public class ComprasDao extends Coneccion {
 
         return registros;
     }
-
-    public Object[] Buscar_registrosfacxml(Detalle f, String bodega) {
-        Object[] registros = new Object[12];
-
-        try {
-
-            Double pu = f.getPrecioUnitario();
-            Double desu = f.getDescuento() / f.getCantidad();
-            pu = pu - desu;
-            registros[0] = pu.toString();
-            for (Impuesto impuesto : f.getImpuestos()) {
-                registros[1] = impuesto.getTarifa().toString();
-            }
-            registros[2] = String.valueOf(f.getCodigoPrincipal()+f.getCodigoSecundario());
-            registros[3] = f.getDescripcion();
-            registros[4] = f.getCantidad().toString();
-            registros[5] = "0";
-            registros[6] = bodega;
-            registros[7] = pu.toString();//rs.getString("costo");
-            registros[8] = "0";
-            registros[9] = "b" + bodega;
-            registros[10] = "332";
-            registros[11] = new JButton("buscar");
-
-//                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex + "lllhhhh");
-        } finally {
-
-        }
-
-        return registros;
-    }
+//
+//    public Object[] Buscar_registrosfacxml(Detalle f, String bodega) {
+//        Object[] registros = new Object[12];
+//
+//        try {
+//
+//            Double pu = f.getPrecioUnitario();
+//            Double desu = f.getDescuento() / f.getCantidad();
+//            pu = pu - desu;
+//            registros[0] = pu.toString();
+//            for (Impuesto impuesto : f.getImpuestos()) {
+//                registros[1] = impuesto.getTarifa().toString();
+//            }
+//            registros[2] = String.valueOf(f.getCodigoPrincipal() + f.getCodigoSecundario());
+//            registros[3] = f.getDescripcion();
+//            registros[4] = f.getCantidad().toString();
+//            registros[5] = "0";
+//            registros[6] = bodega;
+//            registros[7] = pu.toString();//rs.getString("costo");
+//            registros[8] = "0";
+//            registros[9] = "b" + bodega;
+//            registros[10] = "";
+//            registros[11] = new JButton("buscar");
+//
+////                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
+//        } catch (Exception ex) {
+//            JOptionPane.showMessageDialog(null, ex + "lllhhhh");
+//        } finally {
+//
+//        }
+//
+//        return registros;
+//    }
 
     public Object[] Buscar_registrosfacxml_prodInternos(Detalle d, String bodega, Integer codigoProveedor) {
         Object[] registros = new Object[12];
@@ -527,11 +523,11 @@ public class ComprasDao extends Coneccion {
         try {
             ProductosTemp pt = new ProductosTemp();
             ProductosTempDao ptdao = new ProductosTempDao();
-            pt = ptdao.getProductoTemp(codigoProveedor, d.getCodigoPrincipal()+d.getCodigoSecundario());
+            pt = ptdao.getProductoTemp(codigoProveedor, d.getCodigoPrincipal() + d.getCodigoSecundario());
             //comsutoStoken la bodega
-            Productos p= new Productos();
-            ProductosDao pDao= new ProductosDao();
-            p=pDao.buscarPorCodigoAlternoPdoductoStockenBodegaEspecifica(pt.getCodigoProductoI(),bodega);
+            Productos p = new Productos();
+            ProductosDao pDao = new ProductosDao();
+            p = pDao.buscarPorCodigoAlternoPdoductoStockenBodegaEspecifica(pt.getCodigoProductoI(), bodega);
             ////////
             Double pu = d.getPrecioUnitario();
             Double desu = d.getDescuento() / d.getCantidad();
@@ -540,7 +536,7 @@ public class ComprasDao extends Coneccion {
             for (Impuesto impuesto : d.getImpuestos()) {
                 registros[1] = impuesto.getTarifa().toString();
             }
-          //  registros[1]="1";
+            //  registros[1]="1";
             registros[2] = String.valueOf(pt.getCodigoProductoI());
             registros[3] = pt.getNombreI();
             registros[4] = d.getCantidad().toString();
@@ -549,7 +545,7 @@ public class ComprasDao extends Coneccion {
             registros[7] = pu.toString();//rs.getString("costo");
             registros[8] = "0";
             registros[9] = p.getCantidad();
-            registros[10] = "332";
+            registros[10] = p.getAirCodigo();
             registros[11] = new JButton("buscar");
 
 //                Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
@@ -576,11 +572,11 @@ public class ComprasDao extends Coneccion {
 //                registros[1] = impuesto.getTarifa().toString();
 //            }
             registros[1] = pu.toString();
-            registros[2] = String.valueOf(f.getCodigoPrincipal()+f.getCodigoSecundario());
+            registros[2] = String.valueOf(f.getCodigoPrincipal() + f.getCodigoSecundario());
             registros[3] = f.getDescripcion();
             ProductosTempDao ptdao = new ProductosTempDao();
             ProductosTemp pt = new ProductosTemp();
-            pt = ptdao.getProductoTemp(codigoProveedor, f.getCodigoPrincipal()+f.getCodigoSecundario());
+            pt = ptdao.getProductoTemp(codigoProveedor, f.getCodigoPrincipal() + f.getCodigoSecundario());
             if (pt.getCodigoProductoI().equalsIgnoreCase("xx") && pt.getCodigoProductoE().equalsIgnoreCase("xx")) {
                 registros[4] = "NA";
                 registros[5] = "NA";
@@ -613,7 +609,7 @@ public class ComprasDao extends Coneccion {
             //           java.sql.Timestamp sqlTimeStamp = new java.sql.Timestamp(tarea.getFecha());
             long d = tarea.getFecha().getTime();
             java.sql.Date fecha = new java.sql.Date(d);
-           
+
             consulta.setDate(1, fecha);
             consulta.setString(2, tarea.getIva());
             consulta.setString(3, tarea.getSubtotaI_con_iva());
@@ -757,7 +753,7 @@ public class ComprasDao extends Coneccion {
             this.conectar();
             PreparedStatement st;
 
-            st = this.getCnx().prepareCall("select * from compras where calveAcceso = '" + id+ "'");
+            st = this.getCnx().prepareCall("select * from compras where calveAcceso = '" + id + "'");
             rs = st.executeQuery();
 
             if (rs.next()) {

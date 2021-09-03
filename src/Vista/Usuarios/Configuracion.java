@@ -19,6 +19,7 @@ import Controlador.Usuarios.Config_UsuariosDao;
 import Controlador.Usuarios.EquiposDao;
 import Controlador.Usuarios.FormasPagoCVDao;
 import Controlador.Usuarios.FormasPagoVDao;
+import Controlador.Usuarios.PreciosDao;
 import Modelo.Bodegas;
 import Modelo.Cajas;
 import Modelo.Config2;
@@ -28,9 +29,11 @@ import Modelo.Config_Usuarios;
 import Modelo.Equipos;
 import Modelo.FormasPagoCV;
 import Modelo.FormasPagoV;
+import Modelo.Precios;
 import Vista.Principal;
 import static Vista.Principal.EquipoServidordefacturacionELectronica;
 import Vista.alertas.alerta;
+import Vlidaciones.ProgressBar;
 import login.login;
 import static login.login.codigoCaja;
 import impresoras.ServicioDeImpresion;
@@ -38,12 +41,15 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import static java.lang.System.exit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -73,8 +79,8 @@ public class Configuracion extends javax.swing.JInternalFrame {
     Config_EquiposDao confEquipoDao = new Config_EquiposDao();
     Config_UsuariosDao confUsuarioDao = new Config_UsuariosDao();
     private static ArrayList<ConfigSofia> listConfig = new ArrayList<ConfigSofia>();
-    ArrayList<Bodegas> listBodegas = new ArrayList<Bodegas>();
-    ArrayList<Config_Equipos> listConfigdeEquipo = new ArrayList<Config_Equipos>();
+    private static ArrayList<Bodegas> listBodegas = new ArrayList<Bodegas>();
+    public static ArrayList<Config_Equipos> listConfigdeEquipo = new ArrayList<Config_Equipos>();
     ArrayList<Config_Usuarios> listConfigdeUsuarios = new ArrayList<Config_Usuarios>();
     public static List<String> listImpresoras = new ArrayList<String>();
     List<Map<String, String>> mapList = new ArrayList<Map<String, String>>();
@@ -87,20 +93,20 @@ public class Configuracion extends javax.swing.JInternalFrame {
     ArrayList<Cajas> lista = new ArrayList<Cajas>();
     public static String cajaNombre = null;
     public static Integer cajaCodigo = null;
-    private Integer codigoConfig2 = -1;
+    private static Integer codigoConfig2 = -1;
     Equipos obj = new Equipos();
     EquiposDao objDao = new EquiposDao();
     MaquinaDao maquina = new MaquinaDao();
     //  ArrayList<Bodegas> listBodegasx = new ArrayList<Bodegas>();
-    ArrayList<Config2> listConfig2 = new ArrayList<Config2>();
+    private static ArrayList<Config2> listConfig2 = new ArrayList<Config2>();
     boolean isClickedinJCBCompra = false;
     boolean isClickedinJCBVenta = false;
     Config_Equipos cofigracionEquipoNuevo = new Config_Equipos();
     Config_Equipos objConfigEquiposcompra = new Config_Equipos();
     Config_Equipos objConfigEquiposventa = new Config_Equipos();
-    Integer codigoNewEquipo = null;
-    DefaultListModel model2 = new DefaultListModel();
-    private String val;
+    private static Integer codigoNewEquipo = null;
+    private static DefaultListModel model2 = new DefaultListModel();
+    private static String val;
 
     //////////////
     //public static List<Map<String,String>>   = new ArrayList<Map<String,String>>();
@@ -121,6 +127,18 @@ public class Configuracion extends javax.swing.JInternalFrame {
             jcb_impfacturas.addItem(listImpresora);
             jcb_imptickets.addItem(listImpresora);
         }
+        /*PRECIOS DE VENTA*/
+
+        PreciosDao PDao = new PreciosDao();
+
+        for (Precios p : PDao.listar()) {
+            jcbprecioprederminadoventa.addItem(p.getNombre());
+            if (p.getNombre().equalsIgnoreCase(Principal.precioPredeterminadoenVenta)) {
+                jcbprecioprederminadoventa.setSelectedItem(p.getNombre());
+
+            }
+        }
+        /*FIN PRECIOS DE VENTA*/
         BodegasDao bDao = new BodegasDao();
         listBodegas = bDao.listar();
         for (Bodegas b : listBodegas) {
@@ -142,7 +160,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
 
         SetConfig();
         SetConfigDeUsuario();
-        SetConfigEquipo();
+        CargarConfigxEquipo();
         // new loadconfig();
 
 /////////////////////tab6///////////////
@@ -198,11 +216,10 @@ public class Configuracion extends javax.swing.JInternalFrame {
 
         //////
 ////////////////////////fin tab 6
-        llenarJTree();
-        //configPorEquipook();
+        //  llenarJTree();
     }
 
-    private void SetConfigEquipo() {
+    public static void CargarConfigxEquipo() {
         //// fin formas dpago
 
         for (Config_Equipos c : listConfigdeEquipo) {
@@ -281,66 +298,15 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     }
                     Principal.proformatiriiasoFacturaGrande = c.getValor1();
                     break;
+                case "FORMA DE PAGO PREDETERMINADA EN COMPRA":
+                    Principal.formadepagopredeterminadaCompra = c.getValor1();
+                    break;
 
             }
 
             Deb.consola("BBBBBBBBB: " + c.getNombre() + " = " + c.getValor1());
         }
 
-    }
-
-    public void llenarJTree() {
-        DefaultMutableTreeNode raiz = new DefaultMutableTreeNode(jlnombrereal.getText());
-        for (Config2 config2 : listConfig2) {
-            DefaultMutableTreeNode nodo = new DefaultMutableTreeNode(config2.getNombre());
-            raiz.add(nodo);
-
-            switch (config2.getNombre()) {
-                case "IMPRESORA TICKETS":
-                    List<String> listaimpresoras;
-                    listaimpresoras = ServicioDeImpresion.getListadeImpresoras();
-                    for (String listaimpresora : listaimpresoras) {
-                        DefaultMutableTreeNode nodox = new DefaultMutableTreeNode(listaimpresora);
-                        nodo.add(nodox);
-                    }
-                    break;
-                case "IMPRESORA FACTURAS":
-                    List<String> listaimpresoras2;
-                    listaimpresoras2 = ServicioDeImpresion.getListadeImpresoras();
-                    for (String listaimpresora : listaimpresoras2) {
-                        DefaultMutableTreeNode nodox = new DefaultMutableTreeNode(listaimpresora);
-                        nodo.add(nodox);
-                    }
-
-                    break;
-                case "FORMA DE PAGO PREDETERMINADA":
-
-                    break;
-                case "BODEGA PREDETERMINADA EN COMPRA":
-                    break;
-                case "BODEGA PREDETERMINADA EN VENTA":
-                    break;
-                case "VER IMAAGEN":
-                    break;
-                case "FACTURA TIRILLAS O CON FORMATO":
-                    break;
-                case "TICKET TIRILLAS O CON FORMATO":
-                    break;
-
-                case "PROFORMA TIRILLAS O CON FORMATO":
-                    break;
-                case "ACTIVAR CONTROL EFECTIVO":
-                    break;
-                case "FORMATO FACTURA":
-                    break;
-                case "FORMATO TICKET":
-                    break;
-                case "FORMATO PROFORMA ":
-                    break;
-
-            }
-        }
-        DefaultTreeModel model = new DefaultTreeModel(raiz);
     }
 
     public static void SetConfig() {
@@ -370,6 +336,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     txt_documentopredeterminado.setText(c.getNombre());
                     jcb_documentopredeterminado.setSelectedItem(c.getValor1());
                     break;
+
                 case "PERMITIR FACTURAR SIN STCOCK":
                     txt_PERMITIRFACTURARSINSTOCK.setText(c.getNombre());
                     jcb_PermitirFacturarSinStock.setSelectedItem(c.getValor1());
@@ -434,6 +401,24 @@ public class Configuracion extends javax.swing.JInternalFrame {
                     }
 
                     break;
+
+                case "OBLIGADO A LLEVAR CONTABILIDAD":
+                    Principal.obligaoSINO = c.getValor1();
+                    txt_EquipoServidorFacturacionElectronica.setText("OBLIGADO A LLEVAR CONTABILIDAD");
+                    if (c.getValor1().equalsIgnoreCase("SI")) {
+                        jcheckobligado.setSelected(true);
+                    }
+                    if (c.getValor1().equalsIgnoreCase("NO")) {
+                        jcheckobligado.setSelected(false);
+                    }
+
+                    break;
+                case "PRECIO PREDETERMINADO VENTA":
+                   
+                    TXT_precioprederminadoventa.setText("PRECIO PREDETERMINADO VENTA");
+                    Principal.precioPredeterminadoenVenta = c.getValor1();
+                    break;
+
             }
 
         }
@@ -508,6 +493,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
         txt_anchoticket = new javax.swing.JLabel();
         txt_tamanoanchoTiketvalor = new javax.swing.JTextField();
         chek_modoDesarrollo = new javax.swing.JCheckBox();
+        jcheckobligado = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         txt_iva = new javax.swing.JLabel();
@@ -528,6 +514,8 @@ public class Configuracion extends javax.swing.JInternalFrame {
         jcb_editarDetalle_item_en_Facturacion = new javax.swing.JComboBox<>();
         txt_EquipoServidorFacturacionElectronica = new javax.swing.JLabel();
         jcb_Equipos = new javax.swing.JComboBox<>();
+        jcbprecioprederminadoventa = new javax.swing.JComboBox<>();
+        TXT_precioprederminadoventa = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -564,6 +552,8 @@ public class Configuracion extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txt_NumEq = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
 
         bgfacturas.add(CHECFACGRANDE);
         bgfacturas.add(CHECFACROLLO);
@@ -755,7 +745,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
             }
         });
 
-        TXT_CONTROL_EFECTIVO_CAJA_SI_NO.setText("PROFORMAS TIRILLAS O CON FORMATO");
+        TXT_CONTROL_EFECTIVO_CAJA_SI_NO.setText("ACTIVAR CONTROL EFECTIVO");
 
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -808,6 +798,13 @@ public class Configuracion extends javax.swing.JInternalFrame {
         chek_modoDesarrollo.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 chek_modoDesarrolloItemStateChanged(evt);
+            }
+        });
+
+        jcheckobligado.setText("OBLIGADO A LLEVAR CONTABILIDAD");
+        jcheckobligado.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcheckobligadoItemStateChanged(evt);
             }
         });
 
@@ -884,7 +881,10 @@ public class Configuracion extends javax.swing.JInternalFrame {
                                 .addComponent(txt_tamanoanchoTiketvalor, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(chek_modoDesarrollo)))
+                                .addComponent(chek_modoDesarrollo))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jcheckobligado)))
                         .addGap(46, 46, 46)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(187, Short.MAX_VALUE))
@@ -946,7 +946,9 @@ public class Configuracion extends javax.swing.JInternalFrame {
                             .addComponent(txt_anchoticket)
                             .addComponent(txt_tamanoanchoTiketvalor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chek_modoDesarrollo))
+                        .addComponent(chek_modoDesarrollo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jcheckobligado))
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1087,6 +1089,14 @@ public class Configuracion extends javax.swing.JInternalFrame {
             }
         });
 
+        jcbprecioprederminadoventa.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbprecioprederminadoventaItemStateChanged(evt);
+            }
+        });
+
+        TXT_precioprederminadoventa.setText("PRECIO PREDETERMINADO VENTA");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -1103,7 +1113,8 @@ public class Configuracion extends javax.swing.JInternalFrame {
                         .addComponent(txt_documentopredeterminado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jl_METODOVALORACIONINVENTARIO, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_editarDetalle_item_en_Facturacion, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_EquipoServidorFacturacionElectronica, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_EquipoServidorFacturacionElectronica, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TXT_precioprederminadoventa, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -1116,6 +1127,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                         .addGap(509, 509, 509))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jcbprecioprederminadoventa, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jcb_Equipos, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jcb_editarDetalle_item_en_Facturacion, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jcb_PermitirFacturarSinStock, javax.swing.GroupLayout.Alignment.LEADING, 0, 218, Short.MAX_VALUE)
@@ -1161,7 +1173,11 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_EquipoServidorFacturacionElectronica)
                     .addComponent(jcb_Equipos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(344, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jcbprecioprederminadoventa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TXT_precioprederminadoventa))
+                .addContainerGap(317, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Configuracin Genereal", jPanel3);
@@ -1477,38 +1493,57 @@ public class Configuracion extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Equipo: ");
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
+
+        jLabel7.setText("BUSCAR: ");
+
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 840, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(txt_NumEq, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(239, 239, 239))
+                        .addContainerGap()
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 840, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel12Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(txt_NumEq, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(239, 239, 239))
+                            .addGroup(jPanel12Layout.createSequentialGroup()
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(89, 89, 89)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(3, 3, 3)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txt_NumEq))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
@@ -1528,7 +1563,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(150, Short.MAX_VALUE))
+                .addContainerGap(158, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("CONFIGURACIONPOR EQUIPO", jPanel9);
@@ -1798,7 +1833,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
             objconfig.setNombre(jl_METODOVALORACIONINVENTARIO.getText());
             ConfigDao objDao = new ConfigDao();
             objDao.modificar(objconfig);
-            if (jcb_METODOVALORACIONINVENTARIO.getSelectedItem().toString().equalsIgnoreCase("U.E.P.S")) {
+            if (jcb_METODOVALORACIONINVENTARIO.getSelectedItem().toString().equalsIgnoreCase(OperacionesForms._METODO_VALORACION_INVENTARIO_TEXT)) {
                 Principal.metodoValoracionInventario = 1;
             } else {
                 Principal.metodoValoracionInventario = 2;
@@ -2138,236 +2173,298 @@ public class Configuracion extends javax.swing.JInternalFrame {
         jList2.setSelectionBackground(Color.ORANGE);
     }//GEN-LAST:event_jList2MouseClicked
 
-    public void configPorEquipook() {
+    public static void configPorEquipook() {
         val = jList1.getSelectedValue();
-
+        String nombreConfiguracion = "";
         Integer index = -1;
         Integer i = 0;
         for (Config2 config2 : listConfig2) {
             if (config2.getNombre().equalsIgnoreCase(jList1.getSelectedValue())) {
                 Deb.consola("Nombre Coonfig2 sleeccionado: " + jList1.getSelectedValue());
                 codigoConfig2 = config2.getCodigo();
+                nombreConfiguracion = config2.getNombre();
                 Deb.consola("Codigo Coonfig2 sleeccionado: " + codigoConfig2);
             }
         }
-        
+
         Config_Equipos csofi = new Config_Equipos();
         Config_EquiposDao cdao = new Config_EquiposDao();
         csofi = cdao.buscarConfiguracionesdeEquipos(codigoNewEquipo, codigoConfig2);
-        model2.clear();
-        switch (jList1.getSelectedValue()) {
-            case "IMPRESORA TICKETS":
 
-                List<String> listaimpresoras;
-                listaimpresoras = ServicioDeImpresion.getListadeImpresoras();
-                for (String listaimpresora : listaimpresoras) {
-                    model2.add(i, listaimpresora);
-                    if (csofi.getValor1().equalsIgnoreCase(listaimpresora)) {
-                        index = i;
-                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
-                        Principal.impresoraTicket = csofi.getValor1();
+        {
+
+            model2.clear();
+            switch (jList1.getSelectedValue()) {
+                case "IMPRESORA TICKETS":
+
+                    List<String> listaimpresoras;
+                    listaimpresoras = ServicioDeImpresion.getListadeImpresoras();
+                    for (String listaimpresora : listaimpresoras) {
+                        model2.add(i, listaimpresora);
+                        if (csofi.getNombre() != null) {
+                            if (csofi.getValor1().equalsIgnoreCase(listaimpresora)) {
+                                index = i;
+                                val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                                Principal.impresoraTicket = csofi.getValor1();
+                            }
+
+                        } else {
+                            ProgressBar.mostrarMensajeAzul("NO EXISTE CONFIGURADO PARA ESTE EQUIPO ::: " + nombreConfiguracion);
+
+                        }
+                        i++;
                     }
-                    i++;
-                }
+                    jList2.setModel(model2);
+                    jList2.setSelectedIndex(index);
+                    break;
 
-                jList2.setModel(model2);
-                jList2.setSelectedIndex(index);
-                break;
+                case "IMPRESORA FACTURAS":
+                    List<String> listaimpresoras2;
+                    listaimpresoras2 = ServicioDeImpresion.getListadeImpresoras();
+                    for (String listaimpresora : listaimpresoras2) {
+                        model2.add(i, listaimpresora);
+                        if (csofi.getNombre() != null) {
+                            if (csofi.getValor1().equalsIgnoreCase(listaimpresora)) {
+                                index = i;
+                                val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                                Principal.impresoraFactura = csofi.getValor1();
+                            }
 
-            case "IMPRESORA FACTURAS":
-                List<String> listaimpresoras2;
-                listaimpresoras2 = ServicioDeImpresion.getListadeImpresoras();
-                for (String listaimpresora : listaimpresoras2) {
-                    model2.add(i, listaimpresora);
-                    if (csofi.getValor1().equalsIgnoreCase(listaimpresora)) {
-                        index = i;
-                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
-                        Principal.impresoraFactura = csofi.getValor1();
+                        } else {
+                            ProgressBar.mostrarMensajeAzul("NO EXISTE CONFIGURADO PARA ESTE EQUIPO ::: " + nombreConfiguracion);
+
+                        }
+                        i++;
                     }
-                    i++;
-                }
-                jList2.setModel(model2);
-                jList2.setSelectedIndex(index);
+                    jList2.setModel(model2);
+                    jList2.setSelectedIndex(index);
 
-                //      jcb_configoptions.setPopupVisible(true);
-                break;
-            ////
-            case "FORMA DE PAGO PREDETERMINADA EN COMPRA":
+                    //      jcb_configoptions.setPopupVisible(true);
+                    break;
+                ////
+                case "FORMA DE PAGO PREDETERMINADA EN COMPRA":
 
-                //////////////
-                FormasPagoCVDao objFdPDao = new FormasPagoCVDao();
-                for (FormasPagoCV f : objFdPDao.listar()) {
-                    if (OperacionesForms._FORMA_PAGO_CXP_TEXT.equalsIgnoreCase(f.getEsCxcCxp())) {
-                        model2.add(i, f.getFormaPago());
+                    //////////////
+                    FormasPagoCVDao objFdPDao = new FormasPagoCVDao();
+                    for (FormasPagoCV f : objFdPDao.listar()) {
+                        if (OperacionesForms._FORMA_PAGO_CXP_TEXT.equalsIgnoreCase(f.getEsCxcCxp())) {
+                            model2.add(i, f.getFormaPago());
+                            if (csofi.getNombre() != null) {
+                                if (csofi.getValor1().equalsIgnoreCase(f.getFormaPago())) {
+                                    index = i;
+                                    val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                                    Principal.formadepagopredeterminadaCompra = csofi.getValor1();
+                                }
+                            } else {
+                                ProgressBar.mostrarMensajeAzul("NO EXISTE CONFIGURADO PARA ESTE EQUIPO ::: " + nombreConfiguracion);
 
-                        if (csofi.getValor1().equalsIgnoreCase(f.getFormaPago())) {
-                            index = i;
-                            val = csofi.getNombre() + " --> " + (csofi.getValor1());
-                            Principal.formadepagopredeterminadaCompra = csofi.getValor1();
+                            }
+                            i++;
+                        }
+
+                    }
+                    jList2.setModel(model2);
+                    jList2.setSelectedIndex(index);
+                    break;
+                case "FORMA DE PAGO PREDETERMINADA EN VENTA":
+
+                    //////////////
+                    FormasPagoCVDao objFdPDao2 = new FormasPagoCVDao();
+                    for (FormasPagoCV f : objFdPDao2.listar()) {
+
+                        if (OperacionesForms._FORMA_PAGO_CXC_TEXT.equalsIgnoreCase(f.getEsCxcCxp())) {
+                            model2.add(i, f.getFormaPago());
+                            if (csofi.getNombre() != null) {
+                                if (csofi.getValor1().equalsIgnoreCase(f.getFormaPago())) {
+                                    index = i;
+                                    val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                                    Principal.formadepagopredeterminadaVenta = csofi.getValor1();
+                                }
+                            } else {
+                                ProgressBar.mostrarMensajeAzul("NO EXISTE CONFIGURADO PARA ESTE EQUIPO ::: " + nombreConfiguracion);
+
+                            }
+                            i++;
+                        }
+
+                    }
+
+                    jList2.setModel(model2);
+                    jList2.setSelectedIndex(index);
+                    break;
+                case "BODEGA PREDETERMINADA EN COMPRA":
+                    BodegasDao bDao = new BodegasDao();
+                    listBodegas = bDao.listar();
+
+                    for (Bodegas b : listBodegas) {
+
+                        model2.add(i, b.getBodegaID() + "-" + b.getBodega());
+                        if (csofi.getNombre() != null) {
+                            if (csofi.getValor1().equalsIgnoreCase(b.getBodegaID() + "-" + b.getBodega())) {
+                                index = i;
+                                val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                                Principal.bodegaPredeterminadaenCOmpraNOmbre = csofi.getValor1();
+                                Principal.bodegaPredeterminadaenCOmpra = b.getBodegaID() + "-" + b.getBodega();
+                            }
+                        } else {
+                            ProgressBar.mostrarMensajeAzul("NO EXISTE CONFIGURADO PARA ESTE EQUIPO ::: " + nombreConfiguracion);
+
+                        }
+                        i++;
+                    }
+                    jList2.setModel(model2);
+                    jList2.setSelectedIndex(index);
+                    break;
+                case "BODEGA PREDETERMINADA EN VENTA":
+                    BodegasDao bDao2 = new BodegasDao();
+                    listBodegas = bDao2.listar();
+
+                    for (Bodegas b : listBodegas) {
+                        model2.add(i, b.getBodegaID() + "-" + b.getBodega());
+                        if (csofi.getNombre() != null) {
+                            if (csofi.getValor1().equalsIgnoreCase(b.getBodegaID() + "-" + b.getBodega())) {
+                                index = i;
+                                val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                                Principal.bodegaPredeterminadaenVentaNombre = csofi.getValor1();
+                                Principal.bodegaPredeterminadaenVenta = b.getBodegaID() + "-" + b.getBodega();
+                            }
+                        } else {
+                            ProgressBar.mostrarMensajeAzul("NO EXISTE CONFIGURADO PARA ESTE EQUIPO ::: " + nombreConfiguracion);
+
+                        }
+                        i++;
+                    }
+                    jList2.setModel(model2);
+                    jList2.setSelectedIndex(index);
+                    break;
+                case "VER IMAAGEN":
+                    break;
+                case "FACTURA TIRILLAS O CON FORMATO":
+                    model2.add(0, "GRANDE");
+                    model2.add(1, "ROLLO");
+                    for (Object object : model2.toArray()) {
+                        if (csofi.getNombre() != null) {
+                            if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
+                                index = i;
+                                val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                                Principal.facturatiriiasoGrande = csofi.getValor1();
+                            }
+                        } else {
+                            ProgressBar.mostrarMensajeAzul("NO EXISTE CONFIGURADO PARA ESTE EQUIPO ::: " + nombreConfiguracion);
+
+                        }
+                        i++;
+                    }
+                    jList2.setModel(model2);
+                    jList2.setSelectedIndex(index);
+                    break;
+                case "TICKET TIRILLAS O CON FORMATO":
+                    model2.add(0, "GRANDE");
+                    model2.add(1, "ROLLO");
+                    for (Object object : model2.toArray()) {
+                        if (csofi.getNombre() != null) {
+                            if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
+                                index = i;
+                                val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                                Principal.tickettiriiasoGrande = csofi.getValor1();
+                            }
+                        } else {
+                            ProgressBar.mostrarMensajeAzul("NO EXISTE CONFIGURADO PARA ESTE EQUIPO ::: " + nombreConfiguracion);
+
+                        }
+                        i++;
+                    }
+                    jList2.setModel(model2);
+                    jList2.setSelectedIndex(index);
+                    break;
+
+                case "PROFORMA TIRILLAS O CON FORMATO":
+                    model2.add(0, "GRANDE");
+                    model2.add(1, "ROLLO");
+                    for (Object object : model2.toArray()) {
+                        if (csofi.getNombre() != null) {
+                            if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
+                                index = i;
+                                val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                                Principal.proformatiriiasoFacturaGrande = csofi.getValor1();
+                            }
+                        } else {
+                            ProgressBar.mostrarMensajeAzul("NO EXISTE CONFIGURADO PARA ESTE EQUIPO ::: " + nombreConfiguracion);
+
+                        }
+                        i++;
+                    }
+                    jList2.setModel(model2);
+                    jList2.setSelectedIndex(index);
+                    break;
+                case "ACTIVAR CONTROL EFECTIVO":
+                    model2.add(0, "SI");
+                    model2.add(1, "NO");
+                    for (Object object : model2.toArray()) {
+                        if (csofi.getNombre() != null) {
+                            if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
+                                index = i;
+                                val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                                loadconfig.controlElefectivoSiNO = csofi.getValor1();
+                            }
+                        } else {
+                            ProgressBar.mostrarMensajeAzul("NO EXISTE CONFIGURADO PARA ESTE EQUIPO ::: " + nombreConfiguracion);
+
                         }
 
                         i++;
                     }
+                    jList2.setModel(model2);
+                    jList2.setSelectedIndex(index);
+                    break;
+                case "FORMATO FACTURA":
+                    break;
+                case "FORMATO TICKET":
+                    break;
+                case "FORMATO PROFORMA ":
+                    break;
+                case "VER IMAGEN":
+                    model2.add(0, "SI");
+                    model2.add(1, "NO");
+                    for (Object object : model2.toArray()) {
+                        if (csofi.getNombre() != null) {
+                            if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
+                                index = i;
+                                val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                                Principal.VerImagenEnFacturacion = csofi.getValor1();
 
-                }
-                jList2.setModel(model2);
-                jList2.setSelectedIndex(index);
-                break;
-            case "FORMA DE PAGO PREDETERMINADA EN VENTA":
+                            }
+                        } else {
+                            ProgressBar.mostrarMensajeAzul("NO EXISTE CONFIGURADO PARA ESTE EQUIPO ::: " + nombreConfiguracion);
 
-                //////////////
-                FormasPagoCVDao objFdPDao2 = new FormasPagoCVDao();
-                for (FormasPagoCV f : objFdPDao2.listar()) {
-
-                    if (OperacionesForms._FORMA_PAGO_CXC_TEXT.equalsIgnoreCase(f.getEsCxcCxp())) {
-                        model2.add(i, f.getFormaPago());
-                        if (csofi.getValor1().equalsIgnoreCase(f.getFormaPago())) {
-                            index = i;
-                            val = csofi.getNombre() + " --> " + (csofi.getValor1());
-                            Principal.formadepagopredeterminadaVenta = csofi.getValor1();
                         }
-
                         i++;
                     }
+                    jList2.setModel(model2);
+                    jList2.setSelectedIndex(index);
+                    break;
+                case "ITEM REPETIDO SUMAR CANTIDAD EN FACTURACION":
+                    model2.add(0, "SI");
+                    model2.add(1, "NO");
+                    for (Object object : model2.toArray()) {
+                        if (csofi.getNombre() != null) {
+                            if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
+                                index = i;
+                                val = csofi.getNombre() + " --> " + (csofi.getValor1());
+                                Principal.ItemRepetidoEnFacturacionSumarCantidad = csofi.getValor1();
 
-                }
+                            }
+                        } else {
+                            ProgressBar.mostrarMensajeAzul("NO EXISTE CONFIGURADO PARA ESTE EQUIPO ::: " + nombreConfiguracion);
 
-                jList2.setModel(model2);
-                jList2.setSelectedIndex(index);
-                break;
-            case "BODEGA PREDETERMINADA EN COMPRA":
-                BodegasDao bDao = new BodegasDao();
-                listBodegas = bDao.listar();
-
-                for (Bodegas b : listBodegas) {
-
-                    model2.add(i, b.getBodegaID() + "-" + b.getBodega());
-                    if (csofi.getValor1().equalsIgnoreCase(b.getBodegaID() + "-" + b.getBodega())) {
-                        index = i;
-                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
-                        Principal.bodegaPredeterminadaenCOmpraNOmbre = csofi.getValor1();
-                        Principal.bodegaPredeterminadaenCOmpra = b.getBodegaID() + "-" + b.getBodega();
+                        }
+                        i++;
                     }
+                    jList2.setModel(model2);
+                    jList2.setSelectedIndex(index);
+                    break;
 
-                    i++;
-                }
-                jList2.setModel(model2);
-                jList2.setSelectedIndex(index);
-                break;
-            case "BODEGA PREDETERMINADA EN VENTA":
-                BodegasDao bDao2 = new BodegasDao();
-                listBodegas = bDao2.listar();
-
-                for (Bodegas b : listBodegas) {
-                    model2.add(i, b.getBodegaID() + "-" + b.getBodega());
-                    if (csofi.getValor1().equalsIgnoreCase(b.getBodegaID() + "-" + b.getBodega())) {
-                        index = i;
-                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
-                        Principal.bodegaPredeterminadaenVentaNombre = csofi.getValor1();
-                        Principal.bodegaPredeterminadaenVenta = b.getBodegaID() + "-" + b.getBodega();
-                    }
-
-                    i++;
-                }
-                jList2.setModel(model2);
-                jList2.setSelectedIndex(index);
-                break;
-            case "VER IMAAGEN":
-                break;
-            case "FACTURA TIRILLAS O CON FORMATO":
-                model2.add(0, "GRANDE");
-                model2.add(1, "ROLLO");
-                for (Object object : model2.toArray()) {
-                    if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
-                        index = i;
-                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
-                        Principal.facturatiriiasoGrande = csofi.getValor1();
-                    }
-                    i++;
-                }
-                jList2.setModel(model2);
-                jList2.setSelectedIndex(index);
-                break;
-            case "TICKET TIRILLAS O CON FORMATO":
-                model2.add(0, "GRANDE");
-                model2.add(1, "ROLLO");
-                for (Object object : model2.toArray()) {
-                    if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
-                        index = i;
-                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
-                        Principal.tickettiriiasoGrande = csofi.getValor1();
-                    }
-                    i++;
-                }
-                jList2.setModel(model2);
-                jList2.setSelectedIndex(index);
-                break;
-
-            case "PROFORMA TIRILLAS O CON FORMATO":
-                model2.add(0, "GRANDE");
-                model2.add(1, "ROLLO");
-                for (Object object : model2.toArray()) {
-                    if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
-                        index = i;
-                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
-                        Principal.proformatiriiasoFacturaGrande = csofi.getValor1();
-                    }
-                    i++;
-                }
-                jList2.setModel(model2);
-                jList2.setSelectedIndex(index);
-                break;
-            case "ACTIVAR CONTROL EFECTIVO":
-                model2.add(0, "SI");
-                model2.add(1, "NO");
-                for (Object object : model2.toArray()) {
-                    if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
-                        index = i;
-                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
-                        loadconfig.controlElefectivoSiNO = csofi.getValor1();
-                    }
-                    i++;
-                }
-                jList2.setModel(model2);
-                jList2.setSelectedIndex(index);
-                break;
-            case "FORMATO FACTURA":
-                break;
-            case "FORMATO TICKET":
-                break;
-            case "FORMATO PROFORMA ":
-                break;
-            case "VER IMAGEN":
-                model2.add(0, "SI");
-                model2.add(1, "NO");
-                for (Object object : model2.toArray()) {
-                    if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
-                        index = i;
-                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
-                        Principal.VerImagenEnFacturacion = csofi.getValor1();
-
-                    }
-                    i++;
-                }
-                jList2.setModel(model2);
-                jList2.setSelectedIndex(index);
-                break;
-            case "ITEM REPETIDO SUMAR CANTIDAD EN FACTURACION":
-                model2.add(0, "SI");
-                model2.add(1, "NO");
-                for (Object object : model2.toArray()) {
-                    if (csofi.getValor1().equalsIgnoreCase(object.toString())) {
-                        index = i;
-                        val = csofi.getNombre() + " --> " + (csofi.getValor1());
-                        Principal.ItemRepetidoEnFacturacionSumarCantidad = csofi.getValor1();
-
-                    }
-                    i++;
-                }
-                jList2.setModel(model2);
-                jList2.setSelectedIndex(index);
-                break;
-
+            }
         }
     }
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
@@ -2436,6 +2533,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
 
     private void chek_modoDesarrolloItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chek_modoDesarrolloItemStateChanged
         // TODO add your handling code here:
+        
         if (chek_modoDesarrollo.isSelected()) {
             objconfig.setValor1("1");
             ConfigDao objDao = new ConfigDao();
@@ -2451,6 +2549,40 @@ public class Configuracion extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_chek_modoDesarrolloItemStateChanged
 
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jcheckobligadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcheckobligadoItemStateChanged
+        // TODO add your handling code here:
+        if (jcheckobligado.isSelected()) {
+            objconfig.setValor1("SI");
+            ConfigDao objDao = new ConfigDao();
+            objconfig.setNombre(jcheckobligado.getText());
+            objDao.modificar(objconfig);
+            Principal.obligaoSINO = "SI";
+        } else {
+            objconfig.setValor1("NO");
+            ConfigDao objDao = new ConfigDao();
+            objconfig.setNombre(jcheckobligado.getText());
+            objDao.modificar(objconfig);
+            Principal.obligaoSINO = "NO";
+        }
+    }//GEN-LAST:event_jcheckobligadoItemStateChanged
+
+    private void jcbprecioprederminadoventaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbprecioprederminadoventaItemStateChanged
+        // TODO add your handling code here:
+
+        if (jcbprecioprederminadoventa.getItemCount() > 1) {
+            objconfig.setValor1(jcbprecioprederminadoventa.getSelectedItem().toString());
+            objconfig.setNombre(TXT_precioprederminadoventa.getText());
+            ConfigDao objDao = new ConfigDao();
+            objDao.modificar(objconfig);
+            Principal.precioPredeterminadoenVenta = jcbprecioprederminadoventa.getSelectedItem().toString();
+
+        }
+    }//GEN-LAST:event_jcbprecioprederminadoventaItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JCheckBox CHECFACGRANDE;
@@ -2464,6 +2596,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
     public static javax.swing.JLabel TXT_FACTURASDEROOLO;
     public static javax.swing.JLabel TXT_PROFORMASDEROOLO2;
     public static javax.swing.JLabel TXT_TICKETSDEROOLO;
+    public static javax.swing.JLabel TXT_precioprederminadoventa;
     private javax.swing.ButtonGroup bgfacturas;
     private javax.swing.ButtonGroup bgproformas;
     private javax.swing.ButtonGroup bgtickets;
@@ -2480,8 +2613,9 @@ public class Configuracion extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
+    private javax.swing.JLabel jLabel7;
+    private static javax.swing.JList<String> jList1;
+    private static javax.swing.JList<String> jList2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -2502,6 +2636,7 @@ public class Configuracion extends javax.swing.JInternalFrame {
     private javax.swing.JTabbedPane jTabbedPane2;
     public static javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JToolBar jToolBar1;
     public static javax.swing.JComboBox<String> jcb_BodegaPredeterminadCOmpra;
     private javax.swing.JComboBox<String> jcb_BodegaPredeterminadCOmpra1;
@@ -2516,6 +2651,8 @@ public class Configuracion extends javax.swing.JInternalFrame {
     public static javax.swing.JComboBox<String> jcb_formadePagoPredeterminada;
     public static javax.swing.JComboBox<String> jcb_impfacturas;
     public static javax.swing.JComboBox<String> jcb_imptickets;
+    public static javax.swing.JComboBox<String> jcbprecioprederminadoventa;
+    public static javax.swing.JCheckBox jcheckobligado;
     public static javax.swing.JLabel jl_METODOVALORACIONINVENTARIO;
     private javax.swing.JLabel jlnombrereal;
     private javax.swing.JTextField txtSec1;

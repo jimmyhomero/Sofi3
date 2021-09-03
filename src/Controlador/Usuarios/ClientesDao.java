@@ -294,7 +294,7 @@ public class ClientesDao extends Coneccion {
             String sql = null;
             if (val == 1) {
                 ///provedores
-                sql = "select * from Clientes where codigo= " + id + " and proveedor=1 order BY Nombres LIMIT 0, 50";
+                sql = "select * from Clientes where codigo= " + id + " order BY Nombres LIMIT 0, 50";
             } else if (val == 0) {
                 ///clientes
                 sql = "select * from Clientes where codigo= " + id + " order BY Nombres LIMIT 0, 50";

@@ -36,6 +36,8 @@ import javax.swing.table.TableColumnModel;
 public class Modal_fac_electronica_relacionarProductos extends javax.swing.JInternalFrame {
 
     private static DefaultTableModel modelo = null;
+    private static boolean esllamadodesdeasiganartodoslositemAUnMismoProducto = false;
+    private static boolean seSeleccionolatablacondobleclick = false;
     public static Integer codigoProducto = null;
     private static Integer codigoProveedor = null;
     public static String codigoAlternoProducto = null;
@@ -107,7 +109,7 @@ public class Modal_fac_electronica_relacionarProductos extends javax.swing.JInte
                         Clientes c = new Clientes();
                         ClientesDao cdao = new ClientesDao();
                         c = cdao.buscarConCedulaRUC(f.getRUC(), 1);
-                        //FacturasDao facDao = new FacturasDao();
+                        //FacturasDao facDao = new FactuisOpenfromCrearFacturaSelectAirrasDao();
                         if (!c.getCedula().equalsIgnoreCase("XX")) {
                             codigoProveedor = c.getCodigo();
                             for (Detalle d : f.getDetalles()) {
@@ -183,6 +185,7 @@ public class Modal_fac_electronica_relacionarProductos extends javax.swing.JInte
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
+        jrproductoallinvoice = new javax.swing.JRadioButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -411,15 +414,28 @@ public class Modal_fac_electronica_relacionarProductos extends javax.swing.JInte
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jrproductoallinvoice.setText("ASIGANR TODA LA FACTURA A UN SOLO PRODUCTO?");
+        jrproductoallinvoice.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jrproductoallinvoiceItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jrproductoallinvoice)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 46, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jrproductoallinvoice)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -460,11 +476,10 @@ public static void lanzarBuscarProducto() {
     }
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:   Frame framec = JOptionPane.getFrameForComponent(Modal_fac_electronica_relacionarProductos);
-        Integer fila = jTable1.getSelectedRow();
-        Integer colcodgoAlterno = 4;
-        Integer colnombreProducto = 5;
 
         for (int i = 0; i < jTable1.getRowCount(); i++) {
+            System.out.println("X:" + jTable1.getValueAt(i, 4).toString() + ":X");
+            System.out.println("X:" + jTable1.getValueAt(i, 5).toString() + ":X");
             if (jTable1.getValueAt(i, 4).toString().trim().equals("") || jTable1.getValueAt(i, 5).toString().trim().equalsIgnoreCase("")) {
                 jTable1.setValueAt("NA", i, 4);
                 jTable1.setValueAt("NA", i, 5);
@@ -476,68 +491,11 @@ public static void lanzarBuscarProducto() {
                 // remove selected row from the model
                 if (jTable1.getRowCount() > 0) {
                     if (jTable1.getSelectedColumn() == 6) {
-                        Frame framec = JOptionPane.getFrameForComponent(this);
-                        BuscarProductosDialog pcd = new BuscarProductosDialog(framec, true);
-                        pcd.setLocationRelativeTo(null);
-                        pcd.setVisible(true);
-                        for (int i = 0; i < jTable1.getRowCount(); i++) {
-                            if (jTable1.getValueAt(i, 4).toString().equals("") || jTable1.getValueAt(i, 5).toString().equalsIgnoreCase("")) {
-                                jTable1.setValueAt("NA", i, 4);
-                                jTable1.setValueAt("NA", i, 5);
-                                Deb.consola("::::::::::::::::::::::::::::YYYYYYYYYYYYYYYYYY:::::::::::::::::::::::::::::::::");
-                            }
-                        }
-                        if ((jTable1.getValueAt(fila, colcodgoAlterno).equals("NA") && jTable1.getValueAt(fila, colnombreProducto).equals("NA")) || (jTable1.getValueAt(fila, colcodgoAlterno).equals("") && jTable1.getValueAt(fila, colnombreProducto).equals(""))) {
-                            if (codigoAlternoProducto != "NA") {
-                                jTable1.setValueAt(codigoAlternoProducto, fila, colcodgoAlterno);
-                                jTable1.setValueAt(NombreProducto, fila, colnombreProducto);
-                                ProductosTemp pt = new ProductosTemp();
-                                ProductosTempDao ptDao = new ProductosTempDao();
-                                pt.setCodigoProductoI(jTable1.getValueAt(fila, 4).toString());
-                                pt.setNombreI(jTable1.getValueAt(fila, 5).toString());
-                                pt.setCodigoProductoE(jTable1.getValueAt(fila, 2).toString());
-                                pt.setNombreE(jTable1.getValueAt(fila, 3).toString());
-                                pcd.txt_NombreProducto.setText(jTable1.getValueAt(fila, 3).toString());
-                                pt.setCodigoProveedor(codigoProveedor);
-                                Double costo = Double.parseDouble(jTable1.getValueAt(fila, 1).toString().replace(",", "."));
-                                pt.setCosto(Double.parseDouble(String.format("%.3f", costo).replace(",", ".")));
-                                //modelo.setValueAt(String.valueOf(String.format("%.3f", Ptotal)).replace(",", "."), i, 8);
-                                pt.setFechaCompra(txtFecahaEmision.getText());
-
-                                ptDao.guardar(pt);
-                            }
-
-                        } else {
-                            if (codigoAlternoProducto != "NA") {
-                                jTable1.setValueAt(codigoAlternoProducto, fila, colcodgoAlterno);
-                                jTable1.setValueAt(NombreProducto, fila, colnombreProducto);
-                                ProductosTemp pt = new ProductosTemp();
-                                ProductosTempDao ptDao = new ProductosTempDao();
-                                pt.setCodigoProductoI(jTable1.getValueAt(fila, 4).toString());
-                                pt.setNombreI(jTable1.getValueAt(fila, 5).toString());
-                                pt.setCodigoProductoE(jTable1.getValueAt(fila, 2).toString());
-                                pt.setNombreE(jTable1.getValueAt(fila, 3).toString());
-                                pt.setCodigoProveedor(codigoProveedor);
-                                Double costo = Double.parseDouble(jTable1.getValueAt(fila, 1).toString().replace(",", "."));
-                                pt.setCosto(Double.parseDouble(String.format("%.3f", costo).replace(",", ".")));
-                                pt.setFechaCompra(txtFecahaEmision.getText());
-                                Deb.consola("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTÑ : " + jTable1.getValueAt(fila, 7).toString());
-                                pt.setCodigo(Integer.parseInt(jTable1.getValueAt(fila, 7).toString()));
-
-                                ptDao.modificar(pt);
-                            }
-
-                        }
-                            for (int i = 0; i < jTable1.getRowCount(); i++) {
-                            if (jTable1.getValueAt(i, 4).toString().equals("") || jTable1.getValueAt(i, 5).toString().equalsIgnoreCase("")) {
-                                jTable1.setValueAt("NA", i, 4);
-                                jTable1.setValueAt("NA", i, 5);
-                                Deb.consola("::::::::::::::::::::::::::::YYYYYYYYYYYYYYYYYY:::::::::::::::::::::::::::::::::");
-                            }
-                        }
-                        ////pinta de color la fila que este el codigo repetido
-                        
-                        jTable1.setDefaultRenderer(Object.class, rendcxc);
+                        ///////////////
+                        seSeleccionolatablacondobleclick = true;
+                        selctprodutoscodigoalterno();
+                        seSeleccionolatablacondobleclick = false;
+                        /////////////
                     }
 
                 }
@@ -547,15 +505,149 @@ public static void lanzarBuscarProducto() {
 
     }//GEN-LAST:event_jTable1MouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    public void selctprodutoscodigoalterno() {
+
+        
+        if (seSeleccionolatablacondobleclick) {
+            Integer colcodgoAlterno = 4;
+            Integer colnombreProducto = 5;
+            String filaselec = "";
+            Integer fila = jTable1.getSelectedRow();
+            if (jTable1.getSelectedRow() != -1) {
+                codigoAlternoProducto = jTable1.getValueAt(fila, colcodgoAlterno).toString().trim();
+                NombreProducto = jTable1.getValueAt(fila, colnombreProducto).toString().trim();
+                filaselec = jTable1.getValueAt(fila, 3).toString();
+            } else {
+                if (jTable1.getRowCount() >= 0) {
+                    filaselec = jTable1.getValueAt(0, 3).toString();
+                    codigoAlternoProducto = jTable1.getValueAt(0, colcodgoAlterno).toString().trim();
+                    NombreProducto = jTable1.getValueAt(0, colnombreProducto).toString().trim();
+                    fila = 0;
+                }
+            }
+            // codigoProducto="NA";
+            Frame framec = JOptionPane.getFrameForComponent(this);
+            BuscarProductosDialog pcd = new BuscarProductosDialog(framec, true);
+            pcd.setTitle("**  " + jTable1.getValueAt(fila, 3).toString() + "**  ");
+            pcd.txt_productoNombre.setText(jTable1.getValueAt(fila, 3).toString());
+            pcd.setLocationRelativeTo(null);
+            pcd.setVisible(true);
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                if (jTable1.getValueAt(i, 4).toString().equals("") || jTable1.getValueAt(i, 5).toString().equalsIgnoreCase("")) {
+                    jTable1.setValueAt("NA", i, 4);
+                    jTable1.setValueAt("NA", i, 5);
+                    Deb.consola("::::::::::::::::::::::::::::YYYYYYYYYYYYYYYYYY:::::::::::::::::::::::::::::::::");
+                }
+            }
+            if ((jTable1.getValueAt(fila, colcodgoAlterno).equals("NA") && jTable1.getValueAt(fila, colnombreProducto).equals("NA")) || (jTable1.getValueAt(fila, colcodgoAlterno).toString().trim().equals("") && jTable1.getValueAt(fila, colnombreProducto).toString().trim().equals(""))) {
+                if (codigoAlternoProducto != "NA") {
+                    if (esllamadodesdeasiganartodoslositemAUnMismoProducto) {
                         for (int i = 0; i < jTable1.getRowCount(); i++) {
-                            if (jTable1.getValueAt(i, 4).toString().trim().equals("") || jTable1.getValueAt(i, 5).toString().trim().equals("")) {
-                                jTable1.setValueAt("NA", i, 4);
-                                jTable1.setValueAt("NA", i, 5);
-                                Deb.consola("::::::::::::::::::::::::::::YYYYYYYYYYYYYYYYYY:::::::::::::::::::::::::::::::::");
-                            }
+                            fila = i;
+                            jTable1.setValueAt(codigoAlternoProducto, fila, colcodgoAlterno);
+                            jTable1.setValueAt(NombreProducto, fila, colnombreProducto);
+                            ProductosTemp pt = new ProductosTemp();
+                            ProductosTempDao ptDao = new ProductosTempDao();
+                            pt.setCodigoProductoI(jTable1.getValueAt(fila, 4).toString());
+                            pt.setNombreI(jTable1.getValueAt(fila, 5).toString());
+                            pt.setCodigoProductoE(jTable1.getValueAt(fila, 2).toString());
+                            pt.setNombreE(jTable1.getValueAt(fila, 3).toString());
+                            pcd.txt_productoNombre.setText(jTable1.getValueAt(fila, 3).toString());
+                            pt.setCodigoProveedor(codigoProveedor);
+                            Double costo = Double.parseDouble(jTable1.getValueAt(fila, 1).toString().replace(",", "."));
+                            pt.setCosto(Double.parseDouble(String.format("%.3f", costo).replace(",", ".")));
+                            //modelo.setValueAt(String.valueOf(String.format("%.3f", Ptotal)).replace(",", "."), i, 8);
+                            pt.setFechaCompra(txtFecahaEmision.getText());
+                            ptDao.guardar(pt);
+
+                        }
+                    } else {
+
+                        ProductosTemp pt = new ProductosTemp();
+                        ProductosTempDao ptDao = new ProductosTempDao();
+
+                        pt.setCodigoProductoI(jTable1.getValueAt(fila, 4).toString());
+                        pt.setNombreI(jTable1.getValueAt(fila, 5).toString());
+                        pt.setCodigoProductoE(jTable1.getValueAt(fila, 2).toString());
+                        pt.setNombreE(jTable1.getValueAt(fila, 3).toString());
+                        pcd.txt_productoNombre.setText(jTable1.getValueAt(fila, 3).toString());
+                        pt.setCodigoProveedor(codigoProveedor);
+                        Double costo = Double.parseDouble(jTable1.getValueAt(fila, 1).toString().replace(",", "."));
+                        pt.setCosto(Double.parseDouble(String.format("%.3f", costo).replace(",", ".")));
+                        //modelo.setValueAt(String.valueOf(String.format("%.3f", Ptotal)).replace(",", "."), i, 8);
+                        pt.setFechaCompra(txtFecahaEmision.getText());
+
+                        ptDao.guardar(pt);
+                    }
+
+                }
+
+            } else {
+                if (codigoAlternoProducto != "NA") {
+
+                    if (esllamadodesdeasiganartodoslositemAUnMismoProducto) {
+                        for (int i = 0; i < jTable1.getRowCount(); i++) {
+                            fila = i;
+                            jTable1.setValueAt(codigoAlternoProducto, fila, colcodgoAlterno);
+                            jTable1.setValueAt(NombreProducto, fila, colnombreProducto);
+                            ProductosTemp pt = new ProductosTemp();
+                            ProductosTempDao ptDao = new ProductosTempDao();
+                            pt.setCodigoProductoI(jTable1.getValueAt(fila, 4).toString());
+                            pt.setNombreI(jTable1.getValueAt(fila, 5).toString());
+                            pt.setCodigoProductoE(jTable1.getValueAt(fila, 2).toString());
+                            pt.setNombreE(jTable1.getValueAt(fila, 3).toString());
+                            pt.setCodigoProveedor(codigoProveedor);
+                            Double costo = Double.parseDouble(jTable1.getValueAt(fila, 1).toString().replace(",", "."));
+                            pt.setCosto(Double.parseDouble(String.format("%.3f", costo).replace(",", ".")));
+                            pt.setFechaCompra(txtFecahaEmision.getText());
+                            //       Deb.consola("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTÑ : " + jTable1.getValueAt(fila, 7).toString());
+                            pt.setCodigo(Integer.parseInt(jTable1.getValueAt(fila, 7).toString()));
+
+                            ptDao.modificar(pt);
+                        }
+                    } else {
+                        jTable1.setValueAt(codigoAlternoProducto, fila, colcodgoAlterno);
+                        jTable1.setValueAt(NombreProducto, fila, colnombreProducto);
+                        ProductosTemp pt = new ProductosTemp();
+                        ProductosTempDao ptDao = new ProductosTempDao();
+                        pt.setCodigoProductoI(jTable1.getValueAt(fila, 4).toString());
+                        pt.setNombreI(jTable1.getValueAt(fila, 5).toString());
+                        pt.setCodigoProductoE(jTable1.getValueAt(fila, 2).toString());
+                        pt.setNombreE(jTable1.getValueAt(fila, 3).toString());
+                        pt.setCodigoProveedor(codigoProveedor);
+                        Double costo = Double.parseDouble(jTable1.getValueAt(fila, 1).toString().replace(",", "."));
+                        pt.setCosto(Double.parseDouble(String.format("%.3f", costo).replace(",", ".")));
+                        pt.setFechaCompra(txtFecahaEmision.getText());
+                        //       Deb.consola("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTÑ : " + jTable1.getValueAt(fila, 7).toString());
+                        pt.setCodigo(Integer.parseInt(jTable1.getValueAt(fila, 7).toString()));
+
+                        ptDao.modificar(pt);
+                    }
+                }
+
+            }
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                if (jTable1.getValueAt(i, 4).toString().equals("") || jTable1.getValueAt(i, 5).toString().equalsIgnoreCase("")) {
+                    jTable1.setValueAt("NA", i, 4);
+                    jTable1.setValueAt("NA", i, 5);
+                    Deb.consola("::::::::::::::::::::::::::::YYYYYYYYYYYYYYYYYY:::::::::::::::::::::::::::::::::");
+                }
+            }
+            esllamadodesdeasiganartodoslositemAUnMismoProducto = false;
+            ////pinta de color la fila que este el codigo repetido
+
+            jTable1.setDefaultRenderer(Object.class, rendcxc);
         }
-                
+    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            if (jTable1.getValueAt(i, 4).toString().trim().equals("") || jTable1.getValueAt(i, 5).toString().trim().equals("")) {
+                jTable1.setValueAt("NA", i, 4);
+                jTable1.setValueAt("NA", i, 5);
+                Deb.consola("::::::::::::::::::::::::::::YYYYYYYYYYYYYYYYYY:::::::::::::::::::::::::::::::::");
+            }
+        }
+        
         Integer fallas = 0;
         for (int i = 0; i < jTable1.getRowCount(); i++) {
 
@@ -600,6 +692,35 @@ public static void lanzarBuscarProducto() {
         OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jrproductoallinvoiceItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jrproductoallinvoiceItemStateChanged
+        // TODO add your handling code here:
+        seSeleccionolatablacondobleclick = true;
+        String filaselec = "";
+        if (jrproductoallinvoice.isSelected()) {
+            esllamadodesdeasiganartodoslositemAUnMismoProducto = true;
+            if (jTable1.getSelectedRow() != -1) {
+                filaselec = jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString();
+            } else {
+
+                if (jTable1.getRowCount() >= 0) {
+                    filaselec = jTable1.getValueAt(0, 3).toString();
+                }
+            }
+//            Integer fila = jTable1.getSelectedRow();
+//            Integer colcodgoAlterno = 4;
+//            Integer colnombreProducto = 5;
+//            Frame framec = JOptionPane.getFrameForComponent(this);
+//            BuscarProductosDialog pcd = new BuscarProductosDialog(framec, true);
+//         //   JOptionPane.showMessageDialog(null, filaselec);
+//            pcd.txt_productoNombre.setText(filaselec);
+//            pcd.setLocationRelativeTo(null);
+//            pcd.setTitle("**  " + filaselec + "**  ");
+//            pcd.setVisible(true);
+            selctprodutoscodigoalterno();
+
+        }
+    }//GEN-LAST:event_jrproductoallinvoiceItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -621,6 +742,7 @@ public static void lanzarBuscarProducto() {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable jTable1;
+    public static javax.swing.JRadioButton jrproductoallinvoice;
     public static javax.swing.JLabel total_fac;
     public static javax.swing.JLabel txtDireccion;
     public static javax.swing.JLabel txtFecahaEmision;

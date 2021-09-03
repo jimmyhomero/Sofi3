@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
 import ClasesAuxiliares.debug.Deb;
+import static Vista.Usuarios.Modal_CrearFacturas.codigoProductoSeleccionadoClickonJTable;
 import javax.swing.JOptionPane;
 
 /**
@@ -29,7 +30,6 @@ public class PreciosProductos extends javax.swing.JDialog {
     TableColumnModel columnModel;
     public static Integer _codigoProductoSeleccionadoClickonJTable;
     public static Double _precioProducto;
-    
 
     public PreciosProductos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -38,8 +38,8 @@ public class PreciosProductos extends javax.swing.JDialog {
         PreciosDao pDao = new PreciosDao();
         Precios precio = new Precios();
 
-      // JOptionPane.showMessageDialog(null, _codigoProductoSeleccionadoClickonJTable);
-        jTable1.setModel(pDao.getAllPreciosParaFacturar(_codigoProductoSeleccionadoClickonJTable));
+        // JOptionPane.showMessageDialog(null, _codigoProductoSeleccionadoClickonJTable);
+        jTable1.setModel(pDao.getAllPreciosParaFacturar(codigoProductoSeleccionadoClickonJTable));
         setModeloColumnas(jTable1);
         txt_precio.grabFocus();
         txt_precio.selectAll();
@@ -194,7 +194,7 @@ public class PreciosProductos extends javax.swing.JDialog {
         // TODO add your handling code here:
         Double val = Double.parseDouble(txt_precio.getText());
         Deb.consola("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + val);
-       _precioProducto = Double.parseDouble(String.format("%.4f", val).replace(",", "."));
+        _precioProducto = Double.parseDouble(String.format("%.4f", val).replace(",", "."));
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -231,9 +231,9 @@ public class PreciosProductos extends javax.swing.JDialog {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-        
+
         if (evt.getButton() == MouseEvent.BUTTON3 || evt.getButton() == MouseEvent.BUTTON1) {
-            int colPrecio = 1;            
+            int colPrecio = 1;
             Deb.consola("CLICK COUNT: " + evt.getClickCount());
             Deb.consola("SELECTED ROW : " + jTable1.getSelectedRow());
             int x = MouseInfo.getPointerInfo().getLocation().x;
@@ -241,23 +241,18 @@ public class PreciosProductos extends javax.swing.JDialog {
             Deb.consola("X  AND Y : " + x + " - " + y);
             int Rowclik = jTable1.getSelectedRow();
             int columclik = jTable1.getSelectedColumn();
-            if (evt.getClickCount() == 1 ) {
-               if (jTable1.getSelectedRow() != -1) {
-                   
-                   txt_precio.setText(jTable1.getValueAt(Rowclik, colPrecio).toString().replace(",", "."));
-                   txt_precio.grabFocus();
-//                codigoProductoSeleccionadoClickonJTable = Integer.parseInt(jTable1.getValueAt(Rowclik, colCodigoProducto).toString());
-//                   Deb.consola("Vista.Usuarios.Crear_Facturas.jTable1MouseClicked()codigo prducto seleccionado L: "+codigoProductoSeleccionadoClickonJTable);
-//                Frame frame = JOptionPane.getFrameForComponent(this);
-//                PreciosProductos pcdialog = new PreciosProductos(frame, true);
-//                pcdialog.codigoProducto = codigoProductoSeleccionadoClickonJTable;
-//                pcdialog.txt_precio.setText(jTable1.getValueAt(Rowclik, colValUnitario).toString());
-//                Deb.consola("X  AND Y : " + x + " - " + y);
-//                pcdialog.setLocation(x, y);
-//                // pcdialog.setLocationRelativeTo(frame);
-//                pcdialog.setVisible(true);
-//                jTable1.setValueAt(PrecioSeleccionado, Rowclik, colValUnitario);
+            if (evt.getClickCount() == 1) {
+                if (jTable1.getSelectedRow() != -1) {
+
+                    txt_precio.setText(jTable1.getValueAt(Rowclik, colPrecio).toString().replace(",", "."));
+                    txt_precio.grabFocus();
+
                 }
+            } else if (evt.getClickCount() == 2) {
+                Double val = Double.parseDouble(txt_precio.getText());
+                Deb.consola("Vista.Dialogs.PreciosProductos.txt_precioActionPerformed()valllll:  " + val);
+                _precioProducto = Double.parseDouble(String.format("%.4f", val).replace(",", "."));
+                this.dispose();
             }
 
         }
@@ -265,30 +260,29 @@ public class PreciosProductos extends javax.swing.JDialog {
 
     private void txt_precioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_precioKeyPressed
         // TODO add your handling code here:
-        if(KeyEvent.VK_DOWN==evt.getKeyCode()||KeyEvent.VK_UP==evt.getKeyCode()){
-        jTable1.grabFocus();
+        if (KeyEvent.VK_DOWN == evt.getKeyCode() || KeyEvent.VK_UP == evt.getKeyCode()) {
+            jTable1.grabFocus();
         }
-        
-            //jInt =    jTable1.getSelectedRow();
-        
+     
+        //jInt =    jTable1.getSelectedRow();
+
     }//GEN-LAST:event_txt_precioKeyPressed
 
     private void jTable1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyPressed
         // TODO add your handling code here:
-        if(KeyEvent.VK_ENTER==evt.getKeyCode()){
-            
-            int row= jTable1.getSelectedRow();
-           txt_precio.setText( jTable1.getValueAt(row, 1).toString().replace(",", "."));
+        if (KeyEvent.VK_ENTER == evt.getKeyCode()) {
+
+            int row = jTable1.getSelectedRow();
+            txt_precio.setText(jTable1.getValueAt(row, 1).toString().replace(",", "."));
             txt_precio.grabFocus();
             txt_precio.selectAll();
         }
     }//GEN-LAST:event_jTable1KeyPressed
 
-    
     private void setModeloColumnas(JTable tb) {
         this.columnModel = tb.getColumnModel();
-       // this.columnModel.getColumn(0).setPreferredWidth(0);
-       // this.columnModel.getColumn(0).setWidth(0);
+        // this.columnModel.getColumn(0).setPreferredWidth(0);
+        // this.columnModel.getColumn(0).setWidth(0);
         this.columnModel.getColumn(0).setPreferredWidth(10);
         this.columnModel.getColumn(1).setPreferredWidth(10);
         this.columnModel.getColumn(2).setPreferredWidth(10);

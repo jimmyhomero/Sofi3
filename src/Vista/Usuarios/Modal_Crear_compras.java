@@ -38,6 +38,7 @@ import Controlador.Usuarios.KardexDao;
 import Controlador.Usuarios.ProductosDao;
 import Controlador.Usuarios.cxcDao;
 import Controlador.Usuarios.ProformasDao;
+import Controlador.Usuarios.RetencionCDao;
 import Controlador.Usuarios.SeriesFacturasDao;
 import Controlador.Usuarios.TicketsDao;
 import Controlador.Usuarios.cxpDao;
@@ -119,6 +120,7 @@ import persistencia.modelos.Formaspagoc;
  */
 public class Modal_Crear_compras extends javax.swing.JInternalFrame {
 
+    public static boolean esLlamdoDesdeAsisgnarNuevoAIRalRegistrarCompra = false;
     TextAutoCompleter proveedorAutoCompleter;
     TextAutoCompleter productosAutoCompleter;
     public static boolean isOpenfromCrearFacturaSelectAir = false;
@@ -367,10 +369,17 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
             formaPagomap.put(f.getTipoPago(), f.getFormaPago());
             if (f.getEsCxcCxp().equalsIgnoreCase(OperacionesForms._FORMA_PAGO_CXP_TEXT)) {
                 jcbFormasPago.addItem(f.getFormaPago());
+                Deb.consola("fp: "+Principal.formadepagopredeterminadaCompra);
+                Deb.consola("xxxx : "+f.getFormaPago());
+                if (f.getFormaPago().equalsIgnoreCase(Principal.formadepagopredeterminadaCompra)) {
+                    jcbFormasPago.setSelectedItem(f.getFormaPago());
+                    codigFormaPagoSeleccionada = f.getCodigo();
+                }
+
             }
         }
-        jcbFormasPago.setSelectedItem(Principal.formadepagopredeterminadaCompra);
-        //codigFormaPagoSeleccionada=
+        //  jcbFormasPago.setSelectedItem(Principal.formadepagopredeterminadaCompra);
+
     }
 
     public void addProductosfromautomplete(Productos c) {
@@ -461,6 +470,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jchek_hacer_retencion = new javax.swing.JCheckBox();
         jPanel5 = new javax.swing.JPanel();
 
         txt_utilidad.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -954,6 +964,11 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                 txt_descuentoGenralFocusGained(evt);
             }
         });
+        txt_descuentoGenral.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_descuentoGenralMouseClicked(evt);
+            }
+        });
         txt_descuentoGenral.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_descuentoGenralKeyPressed(evt);
@@ -1087,7 +1102,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(jButton5)
                 .addContainerGap())
         );
@@ -1100,6 +1115,8 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                 jButton6ActionPerformed(evt);
             }
         });
+
+        jchek_hacer_retencion.setText("Hacer Retención");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -1123,7 +1140,8 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jcbFormasPago, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jchek_hacer_retencion)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1)
@@ -1154,13 +1172,15 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(77, 77, 77)
-                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(13, 13, 13)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jcbFormasPago, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(47, 47, 47)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jchek_hacer_retencion)
+                        .addGap(17, 17, 17)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1309,27 +1329,6 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
 
                         }
                         ///col 10 es la col del air
-                        if (col == 10) {
-                            if (ValidaNUmeros.isOnlyNumbers(jTable1.getValueAt(fila, col).toString())) {
-                                ComprasDao cdao = new ComprasDao();
-                                if (!cdao.getTrueifCodigoAIRisCorrect(jTable1.getValueAt(fila, col).toString())) {
-                                    JOptionPane.showMessageDialog(null, "EL codiogo AIR es Incorrecto");
-                                    isOpenfromCrearFacturaSelectAir = true;
-                                    columnacliked = col;
-                                    filacliked = fila;
-                                    Frame f = JOptionPane.getFrameForComponent(Modal_Crear_compras.this);
-                                    SelectPorcentajesRetencion dialog = new SelectPorcentajesRetencion(f, true);
-                                    dialog.isCheckrenta = true;
-                                    dialog.jTable11.setModel(Crear_RetencionC.llenartableRENTA());
-                                    dialog.setLocationRelativeTo(null);
-                                    dialog.setVisible(true);
-
-                                }
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Algo Anda muy mal");
-                                jTable1.setValueAt("332", fila, col);
-                            }
-                        }
 
 //                        
 //                        for (int i = 0; i < jTable1.getModel().getRowCount(); i++) {
@@ -1743,7 +1742,6 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
             if (jcb_sustentoComprobante.getSelectedItem().toString().contains(t.getSustento())) {
                 IdsustentoComprabanteSeleccionado = t.getId();
                 ultimoIndexSeleccionadojcbSustento = 10;
-
             }
 
         }
@@ -1754,6 +1752,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         int Rowclik = jTable1.getSelectedRow();
         int columclik = jTable1.getSelectedColumn();
         int colpvpTotalrow = 8;
+        int colAIR = 11;
         int colcantidad = 4;
         int x = MouseInfo.getPointerInfo().getLocation().x;
         int y = MouseInfo.getPointerInfo().getLocation().y;
@@ -1761,12 +1760,49 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         if (evt.getButton() == MouseEvent.BUTTON1) {
             Deb.consola("BOTON 1");
             // operacionFacturauPDATEandAddRowrs();
+            if ((colAIR == columclik) && (evt.getClickCount() == 2)) {
+                if (ValidaNUmeros.isOnlyNumbers(jTable1.getValueAt(Rowclik, colAIR - 1).toString())) {
+                    ComprasDao cdao = new ComprasDao();
+                    //   if (!cdao.getTrueifCodigoAIRisCorrect(jTable1.getValueAt(Rowclik, colAIR).toString())) {
+                    // JOptionPane.showMessageDialog(null, "EL codiogo AIR es Incorrecto");
+                    isOpenfromCrearFacturaSelectAir = true;
+                    columnacliked = colAIR;
+                    filacliked = Rowclik;
+                    Frame f = JOptionPane.getFrameForComponent(Modal_Crear_compras.this);
+                    SelectPorcentajesRetencion dialog = new SelectPorcentajesRetencion(f, true);
+                    dialog.isCheckrenta = true;
+                    dialog.jTable11.setModel(Crear_RetencionC.llenartableRENTA());
+                    dialog.setLocationRelativeTo(null);
+                    dialog.setVisible(true);
+
+                    // }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Algo Anda muy mal");
+                    jTable1.setValueAt("0", Rowclik, colAIR);
+                }
+            }
         }
         if (evt.getButton() == MouseEvent.BUTTON2) {
             Deb.consola("BOTON 2");
         }
         if (evt.getButton() == MouseEvent.BUTTON3) {
             Deb.consola("BOTON 3");
+
+//            if (evt.getClickCount() == 1 && columclik == colAIRrow) {
+//                if (jTable1.getSelectedRow() != -1) {
+//                    // remove selected row from the model
+//                    if (jTable1.getRowCount() > 0) {
+//                        Deb.consola("asdasdasdasdasdasdassssssssssssssssssssssssssssss");
+//                        Frame f = JOptionPane.getFrameForComponent(this);
+//                        //isOpenfromCrearRetencion = true;
+//                        SelectPorcentajesRetencion dialog2 = new SelectPorcentajesRetencion(f, true);
+//                        dialog2.isCheckrenta = true;
+//                        dialog2.jTable11.setModel(Crear_RetencionC.llenartableRENTA());
+//                        dialog2.setLocationRelativeTo(null);
+//                        dialog2.setVisible(true);
+//                    }
+//                }
+//            }
         }
         if (evt.getButton() == MouseEvent.BUTTON3 || evt.getButton() == MouseEvent.BUTTON1) {
             try {
@@ -1929,7 +1965,8 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
         FormasPagoCV f = new FormasPagoCV();
         FormasPagoCVDao objFdPDao = new FormasPagoCVDao();
         f = objFdPDao.buscarConFormaPagobynombre(evt.getItem().toString());
-        this.formaPagoSeelccionada = f.getCodigo().toString();
+        this.formaPagoSeelccionada = f.getFormaPago();
+        codigFormaPagoSeleccionada = f.getCodigo();
 
     }//GEN-LAST:event_jcbFormasPagoItemStateChanged
     private void llenarcompraDesdeXML() {
@@ -2028,9 +2065,27 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                         if (jcbFormasPago.getSelectedItem().toString().equalsIgnoreCase(f.getFormaPago())) {
                             tipoFormaPago = f.getTipoPago();
                             // f.getEsCxcCxp().equalsIgnoreCase(OperacionesForms._FORMA_PAGO_CXP_TEXT;
+                        } else {
+
                         }
                     }
 
+                    /*VALIDA LOS CODIGOS AIR EN CADA ITEM DE PRODUCTOS DE LA FACTURA*/
+                    boolean valida = true;
+                    if (Principal.obligaoSINO.equalsIgnoreCase("si")) {
+                        for (int i = 0; i < jTable1.getRowCount(); i++) {
+                            if (jTable1.getValueAt(i, 10).toString().equals("0") || jTable1.getValueAt(i, 10).toString().trim().equals("")) {
+                                // jTable1.setValueAt("NA", i, 4);
+                                ProgressBar.mostrarMensajeAzul("DEBE ASIGANAR CODIGO DE RETENCION AL PRODUCTO: " + jTable1.getValueAt(i, 3).toString());
+                                Deb.consola("::::::::::::::::::::::::::::YYYYYYYYYYYYYYYYYY:::::::::::::::::::::::::::::::::");
+                                i = jTable1.getRowCount();
+                                valida = false;
+                            }
+                        }
+
+                    }
+
+                    /*---------------------*/
                     switch (tipoFormaPago) {
 
                         case "EFECTIVO":
@@ -2127,7 +2182,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                                     listaProductos.add(pro);
 
                                 }
-
+                                boolean mostrarError = true;
                                 ///IMPRESION DEL DOCUMENTO
                                 //                                rutaInforme = "C:\\Users\\USUARIO\\OneDrive\\NetBeansProjects\\Sofi\\src\\Reportes\\FACTURA.jasper";
                                 //                                parametros.put("numeroFactura", secuenciaFac);
@@ -2140,12 +2195,71 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                                 //                            FacturasDao fad = new FacturasDao();
                                 //                            fad.creaxmlFacturaElectronica(codigoFactura);
                                 /* fincreacion facura electronica*/
-                                ComitsAll c = new ComitsAll();
-                                Integer cod = c.compraEfectivo(u, cd, listadetallecompras, listakardesk, afectacaja, afectakardex, listaProductos);
+ /*SI ES OBLIGADO A LLEEVAR CONTABILIDAD Y TODOS LOS ITEMS TIENE EL CODIGOA AIR SE REGISTRA SIN PROBLEMA*/
+                                Integer cod = 0;
+
+                                if (Principal.obligaoSINO.equalsIgnoreCase("si") && valida) {
+                                    /*REGISTRO COMPRA EN EFECTIVO*/
+                                    ComitsAll c = new ComitsAll();
+                                    cod = c.compraEfectivo(u, cd, listadetallecompras, listakardesk, afectacaja, afectakardex, listaProductos);
+
+                                    /**
+                                     * ****************************
+                                     */
+                                    Crear_RetencionC obj = new Crear_RetencionC();
+                                    Compras compra1 = new Compras();
+                                    ComprasDao facDao = new ComprasDao();
+                                    compra1 = facDao.buscarConID(cod);
+
+                                    RetencionCDao r = new RetencionCDao();
+                                    Boolean existe = r.Buscar_siExisteRetenciondelDocumento(compra1.getSecuencia());
+
+                                    ClientesDao pbDao = new ClientesDao();
+                                    Clientes p = new Clientes();
+                                    Crear_RetencionC.proveerdor = p = pbDao.buscarConID(compra1.getProveedores_codigo(), 1);
+                                    Crear_RetencionC.tProveedor.setText(p.getNombre());
+                                    Crear_RetencionC.tRUc.setText(p.getCedula());
+                                    Crear_RetencionC.txtSec1Compra.setText(compra1.getSecuencia());
+                                    Crear_RetencionC.jdfechacaducidadFac.setDate(compra1.getFecha());
+                                    Crear_RetencionC.compra = compra1;
+                                    Double base = Double.parseDouble(compra1.getSubtotaI_con_iva()) + Double.parseDouble(compra1.getSubtotal_sin_iva());
+                                    Crear_RetencionC.txtBaseFac.setText(String.valueOf(base));
+                                    Crear_RetencionC.txtIvaFac.setText(compra1.getIva_valor());
+                                    //   buscaCompradesderegistrarRetencion = false;
+                                    Crear_RetencionC.jButton1.setEnabled(false);
+//                                            Crear_RetencionC.tsec1.setEnabled(false);
+//                                            Crear_RetencionC.tsec2.setEnabled(false);
+//                                            Crear_RetencionC.tsec3.setEnabled(false);
+                                    Crear_RetencionC.jdfechacaducidadFac.setEnabled(false);
+                                    Crear_RetencionC.txtSec1Compra.setEnabled(false);
+                                    Crear_RetencionC.jcbtipoDocumento.setSelectedItem(compra1.getTipo_documento());
+                                    //     buscaCompradesderegistrarRetencion = false;
+
+                                    //                         dispose();
+                                    OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
+
+                                } else if (Principal.obligaoSINO.equalsIgnoreCase("si") && !valida) {
+
+                                    mostrarError = false;
+                                } else if (Principal.obligaoSINO.equalsIgnoreCase("no")) {
+                                    /*REGISTRO COMPRA EN EFECTIVO*/
+                                    ComitsAll c = new ComitsAll();
+                                    cod = c.compraEfectivo(u, cd, listadetallecompras, listakardesk, afectacaja, afectakardex, listaProductos);
+
+                                    /**
+                                     * ****************************
+                                     */
+                                }
+
+
+                                /*----------------------------------------------*/
                                 if (cod > 0) {
                                     limpiarIntefazVentas();
                                 } else {
-                                    ProgressBar.mostrarMensajeAzul("ERROR AL REGISTRA COMPRA EN EFECTIVO");
+                                    if (mostrarError) {
+                                        ProgressBar.mostrarMensajeAzul("ERROR AL REGISTRA COMPRA EN EFECTIVO");
+                                    }
+
                                 }
 
                             }
@@ -2248,6 +2362,47 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
                                     Integer cod = c.compraCreditoconcxp(u, cd, listadetallecompras, listakardesk, afectacaja, afectakardex, listaProductos, cxp);
                                     if (cod > 0) {
                                         limpiarIntefazVentas();
+                                        if (jchek_hacer_retencion.isSelected()) {
+                                            Crear_RetencionC obj = new Crear_RetencionC();
+                                            Compras compra1 = new Compras();
+                                            ComprasDao facDao = new ComprasDao();
+                                            compra1 = facDao.buscarConID(cod);
+
+                                            RetencionCDao r = new RetencionCDao();
+                                            Boolean existe = r.Buscar_siExisteRetenciondelDocumento(compra1.getSecuencia());
+
+                                            if (existe == false) {
+                                                ClientesDao pbDao = new ClientesDao();
+                                                Clientes p = new Clientes();
+                                                Crear_RetencionC.proveerdor = p = pbDao.buscarConID(compra1.getProveedores_codigo(), 1);
+                                                Crear_RetencionC.tProveedor.setText(p.getNombre());
+                                                Crear_RetencionC.tRUc.setText(p.getCedula());
+                                                Crear_RetencionC.txtSec1Compra.setText(compra1.getSecuencia());
+                                                Crear_RetencionC.jdfechacaducidadFac.setDate(compra1.getFecha());
+                                                Crear_RetencionC.compra = compra1;
+                                                Double base = Double.parseDouble(compra1.getSubtotaI_con_iva()) + Double.parseDouble(compra1.getSubtotal_sin_iva());
+                                                Crear_RetencionC.txtBaseFac.setText(String.valueOf(base));
+                                                Crear_RetencionC.txtIvaFac.setText(compra1.getIva_valor());
+                                                //   buscaCompradesderegistrarRetencion = false;
+                                                Crear_RetencionC.jButton1.setEnabled(false);
+//                                                Crear_RetencionC.tsec1.setEnabled(false);
+//                                                Crear_RetencionC.tsec2.setEnabled(false);
+//                                                Crear_RetencionC.tsec3.setEnabled(false);
+                                                Crear_RetencionC.jdfechacaducidadFac.setEnabled(false);
+                                                Crear_RetencionC.txtSec1Compra.setEnabled(false);
+                                                Crear_RetencionC.jcbtipoDocumento.setSelectedItem(compra1.getTipo_documento());
+                                                //     buscaCompradesderegistrarRetencion = false;
+
+                                                dispose();
+                                                OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
+                                            } else {
+                                                if (existe) {
+                                                    JOptionPane.showMessageDialog(null, "ya existe una retencion registrada sobre esa factura!!", "Retenicion ya Existe", 3);
+                                                }
+
+                                            }
+
+                                        }
                                     } else {
                                         ProgressBar.mostrarMensajeAzul("ERROR AL REGISTRA COMPRA  CREDITO");
                                     }
@@ -2538,6 +2693,11 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void txt_descuentoGenralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_descuentoGenralMouseClicked
+        // TODO add your handling code here:
+        txt_descuentoGenral.selectAll();
+    }//GEN-LAST:event_txt_descuentoGenralMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JLabel foto;
@@ -2577,6 +2737,7 @@ public class Modal_Crear_compras extends javax.swing.JInternalFrame {
     public static javax.swing.JComboBox<String> jcbFormasPago;
     private static javax.swing.JComboBox<String> jcb_sustentoComprobante;
     private static javax.swing.JComboBox<String> jcb_tipoComprobante;
+    private javax.swing.JCheckBox jchek_hacer_retencion;
     private static com.toedter.calendar.JDateChooser jdfecha;
     private static javax.swing.JLabel lbl_Iva;
     private static javax.swing.JLabel lbl_subTotalIva;

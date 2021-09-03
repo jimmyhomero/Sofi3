@@ -6,6 +6,7 @@
 package Controlador.Usuarios;
 
 import ClasesAuxiliares.FeCodigoNUmerico;
+import ClasesAuxiliares.ObtenerFecha;
 import ClasesAuxiliares.Variables;
 import Controlador.Coneccion;
 import Modelo.Proveedores;
@@ -89,6 +90,48 @@ private String retstring="";
         return listaTipoComporabante;
     }
 
+            public ArrayList<String> getNextumeroDeRetencionbyEquipo(Integer idEcquipo) {
+        ArrayList<String> numfactura = new ArrayList<String>();
+
+        ResultSet rs1;
+        String maxnumeroOrden1 = "001";
+        String maxnumeroOrden2 = "001";
+        String maxnumeroOrden3 = "1";
+        try {
+            this.conectar();
+            PreparedStatement st1;
+            //SELECT establecimiento , ptoEmision, MAX(secfactura) FROM facturas WHERE   equipos_Codigo=20
+            //SELECT establecimiento , ptoEmision, secfactura FROM facturas WHERE  codigo  = ( SELECT MAX(Codigo)  FROM facturas  ) AND equipos_Codigo=
+            //st1 = this.getCnx().prepareCall("SELECT establecimiento , ptoEmision, MAX(secfactura) as secfactura FROM facturas WHERE tipo_documento='factura' and equipos_Codigo=" + idEcquipo);
+            st1 = this.getCnx().prepareCall("SELECT sec1, sec2 , MAX(sec3) as sec3 FROM retencion WHERE equipo_codigo= "+idEcquipo);// and equipos_Codigo=" + idEcquipo);
+            rs1 = st1.executeQuery();
+
+            //this.lista= new ArrayList();
+            while (rs1.next()) {
+                if (rs1.getString("sec1").equals("") || rs1.getString("sec2").equals("")) {
+                    numfactura.add("001");
+                    numfactura.add("001");
+                    numfactura.add("1");
+
+                } else {
+                    maxnumeroOrden1 = rs1.getString("sec1");
+                    maxnumeroOrden2 = rs1.getString("sec2");
+                    maxnumeroOrden3 = rs1.getString("sec3");
+                    numfactura.add(maxnumeroOrden1);
+                    numfactura.add(maxnumeroOrden2);
+                    numfactura.add(maxnumeroOrden3);
+                }
+
+            }
+
+        } catch (Exception ex) {
+            Deb.consola("SeriesRetencion numer retencion" + ex);
+        } finally {
+            this.cerrar();
+        }
+        return numfactura;
+    }
+            
     public ArrayList<sri_sustentocomprobante> getlistasustentoComprobate() {
 
         ArrayList<sri_sustentocomprobante> listasustentoComporabante = new ArrayList<sri_sustentocomprobante>();
@@ -163,8 +206,11 @@ private String retstring="";
     }
 
     public String creaxmlRetencionElectronica(Integer codigoRet) {
+       HoraFecha hf = new HoraFecha();
+       String fecha =hf.getFechaNowDateServer();
+       
+        String periodo = HoraFecha.fecha_mmaaConSlash(fecha);
         
-        String periodo = "02/2018";
 //        try {
 //            long ddo = getFechaNowTImestampServer().getTime();
 //        java.sql.Date fecha = new java.sql.Date(ddo);
@@ -335,6 +381,7 @@ public ArrayList<Retencion_> buscarFacturasNoAutorizadas() {
                 per.setTotal(rs.getDouble("total"));
                 per.setUsuario_codigo(rs.getInt("Usuarios_Codigo"));
                 per.setAutorizado(rs.getInt("Autorizado"));
+                per.setEquipo_codigo(rs.getInt("equipo_codigo"));
                 
                 u = per;
                 listaFacNoAutorizadas.add(u);
@@ -465,7 +512,7 @@ public ArrayList<Retencion_> buscarFacturasNoAutorizadas() {
             PreparedStatement consulta;
             consulta = this.con.prepareStatement("INSERT INTO " + this.tabla
                     + " (proveedor_codigo,compras_codigo,usuario_codigo,tipo_comprobante,autorizacion,"
-                    + "compra_secuencia,secuencia,fecha,caducidad,total,concepto,sec1,sec2,sec3) VALUES(?,?,?,?,?,?,?, ?, ?,?,?,?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                    + "compra_secuencia,secuencia,fecha,caducidad,total,concepto,sec1,sec2,sec3,equipo_codigo) VALUES(?,?,?,?,?,?,?,?, ?, ?,?,?,?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             //java.sql.Timestamp sqlTimeStamp = new java.sql.Timestamp(tarea.getFecha());
 //            long d = tarea.getFechaEmision().getTime();
 //            java.sql.Date fecha = new java.sql.Date(d);
@@ -483,6 +530,7 @@ public ArrayList<Retencion_> buscarFacturasNoAutorizadas() {
             consulta.setString(12, tarea.getSec1());
             consulta.setString(13, tarea.getSec2());
             consulta.setString(14, tarea.getSec3());
+            consulta.setInt(15, tarea.getEquipo_codigo());
 
             consulta.executeUpdate();
             ResultSet rs = consulta.getGeneratedKeys();
@@ -525,6 +573,7 @@ public ArrayList<Retencion_> buscarFacturasNoAutorizadas() {
                 per.setSec1(rs.getString("sec1"));
                 per.setSec2(rs.getString("sec2"));
                 per.setSec3(rs.getString("sec3"));
+                per.setEquipo_codigo(rs.getInt("equipo_codigo"));
                 u = per;
             }
 

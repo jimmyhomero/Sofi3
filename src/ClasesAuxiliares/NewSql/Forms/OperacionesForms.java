@@ -9,6 +9,11 @@ import ClasesAuxiliares.KeysEnventos;
 import Modelo.Clientes;
 import Vista.Principal;
 import ClasesAuxiliares.debug.Deb;
+import Controlador.Usuarios.FormasPagoCVDao;
+import Controlador.Usuarios.PreciosDao;
+import Modelo.FormasPagoCV;
+import Modelo.Precios;
+import Vista.Usuarios.Modal_CrearFacturas;
 import Vlidaciones.ProgressBar;
 import Vlidaciones.ValidaNUmeros;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addComponentListener;
@@ -16,9 +21,17 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -45,7 +58,8 @@ public class OperacionesForms {
 
     public static ecx.unomas.factura.Factura factura = new ecx.unomas.factura.Factura();
     public static String rutadocPDFgeneradook;
-    
+    private static ArrayList<Precios> listaFormasDePago = new ArrayList<Precios>();
+
     public static boolean solocrearFacturaNOgenerrarPDF = false;
     public static String _CONSUMIDIR_FINAL = "CONSUMIDORFINAL";
     public static String _CONSUMIDOR_FINAL_RUC = "9999999999";
@@ -54,6 +68,8 @@ public class OperacionesForms {
     public static DefaultTableModel dm;
     public static Integer _ID_CODIGO_PLAN_CUENTA_0 = 0;
     //////////////FORMAS DE PAGO POR DEFECTO
+
+    public static String _METODO_VALORACION_INVENTARIO_TEXT = "U.E.P.S";
     public static String _EFECTIVO_TEXT = "EFECTIVO";
     public static String _CREDITO_TEXT = "CREDITO";
     public static String _CHEQUE_TEXT = "CHEQUE";
@@ -66,7 +82,7 @@ public class OperacionesForms {
     public static String _ANUAL_TEXT = "ANUAL";
     public static String _FORMA_PAGO_CXC_TEXT = "CXC";
     public static String _FORMA_PAGO_CXP_TEXT = "CXP";
-
+    public static String _RETENCION_TEXT = "RETENCION";
     public static String _BOTON_ACEPTAR_TEXT = "ACEPTAR";
     public static String _COMBO_SELECCIONE_TEXT = "SELECCIONE";
     public static Color _BOTON_COLOR_PRIMARY = new Color(2, 117, 216);
@@ -83,14 +99,130 @@ public class OperacionesForms {
     public static Clientes _OBJ_CONSUMIDOR_FINAL = new Clientes();
 
     //////////////////////////////
-    
-    
     ///////////////////
-    
-    public static void jtableVentascolumnas(JTable tb, int valorClumnas,boolean modoDesarrollo){
-    
-    
+    public static Date getFechaCaducidadDocumentoElectronico() {
+        Calendar ca = new GregorianCalendar();
+        String day = ca.get(Calendar.DAY_OF_MONTH) + "";
+        String month = ca.get(Calendar.MONTH) + 1 + "";
+        String year = ca.get(Calendar.YEAR) + "";
+
+        if (day.length() == 1) {
+            day = "0" + day;
+        }
+        if (month.length() == 1) {
+            month = "0" + month;
+        }
+
+        String dd = day + "-" + month + "-" + "2200";
+
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("dd-MM-yyyy").parse(dd);
+        } catch (ParseException ex) {
+            Deb.consola("fecha caducidad 2220");
+        }
+        return date;
     }
+
+    public static void jtableVentascolumnas(JTable tb, int valorClumnas, boolean modoDesarrollo) {
+
+    }
+
+    /*FORMAS DE PAGO */
+    public static void seleccionarFormasDePago(JComboBox obj) {
+        obj.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Deb.consola("Evento : " + e.getActionCommand());
+                Deb.consola("Nombre JCBOX : " + obj.getSelectedItem().toString());
+            }
+        });
+    }
+
+    public static void seleccionarPVPS(JComboBox obj) {
+        obj.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                PreciosDao pd = new PreciosDao();
+                for (Precios precios : pd.listar()) {
+                    if (obj.getSelectedItem().toString().equalsIgnoreCase(precios.getNombre())) {
+                        Modal_CrearFacturas.precioSeleccionadoenJcb = precios;
+                        Deb.consola("Nombre del PRecio : " + obj.getName());
+                    }
+                }
+            }
+        });
+    }
+
+    public static Double getNumeroenDoublecon2decimales(Double obj) {
+        return Double.parseDouble(String.valueOf(String.format("%.2f", obj)).replace(",", "."));
+    }
+
+    public static Double getNumeroenDoublecon3decimales(Double obj) {
+        return Double.parseDouble(String.valueOf(String.format("%.3f", obj)).replace(",", "."));
+    }
+
+    public static Double getNumeroenDoublecon4decimales(Double obj) {
+        return Double.parseDouble(String.valueOf(String.format("%.4f", obj)).replace(",", "."));
+    }
+
+    public static String getNumeroenString2decimales(Double obj) {
+        return String.valueOf(String.format("%.2f", obj)).replace(",", ".");
+    }
+
+    public static String getNumeroenString3decimales(Double obj) {
+        return String.valueOf(String.format("%.3f", obj)).replace(",", ".");
+    }
+
+    public static String getNumeroenString4decimales(Double obj) {
+        return String.valueOf(String.format("%.4f", obj)).replace(",", ".");
+    }
+
+    public static Double getNumeroenDoublecon2decimales(String obj) {
+        Double num = Double.parseDouble(obj);
+        return Double.parseDouble(String.valueOf(String.format("%.2f", num)).replace(",", "."));
+    }
+
+    public static Double getNumeroenDoublecon3decimales(String obj) {
+        Double num;
+        num = Double.parseDouble(obj);
+        return Double.parseDouble(String.valueOf(String.format("%.3f", num)).replace(",", "."));
+    }
+
+    public static Double getNumeroenDoublecon4decimales(String obj) {
+        Double num;
+        num = Double.parseDouble(obj);
+        return Double.parseDouble(String.valueOf(String.format("%.4f", num)).replace(",", "."));
+    }
+
+    public static String getNumeroenString2decimales(String obj) {
+        Double num;
+        num = Double.parseDouble(obj);
+        return String.valueOf(String.format("%.2f", num)).replace(",", ".");
+    }
+
+    public static String getNumeroenString3decimales(String obj) {
+        Double num;
+        num = Double.parseDouble(obj);
+        return String.valueOf(String.format("%.3f", num)).replace(",", ".");
+    }
+
+    public static String getNumeroenString4decimales(String obj) {
+        Double num;
+        num = Double.parseDouble(obj);
+        return String.valueOf(String.format("%.4f", num)).replace(",", ".");
+    }
+
+    ///////////
+    public static void Cargainsdasdad(JComboBox obj) {
+        obj.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Deb.consola("Eventoggggg : " + e.getActionCommand());
+                Deb.consola("Nombre JCBOXgggg : " + obj.getName());
+
+            }
+        });
+    }
+
+    /*FIN FORMAS DE PAGO*/
     /////////////////////
 ///////////////////////combobox
     public static void inicializarJtextFieldMyusculas(JTextField j) {
@@ -102,7 +234,7 @@ public class OperacionesForms {
                         || evt.getKeyCode() == KeyEvent.VK_LEFT || evt.getKeyCode() == KeyEvent.VK_RIGHT
                         || evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_DOWN) {
                 } else {
-                    j.setText(j.getText().toUpperCase());
+                j.setText(j.getText().toUpperCase());
                 }
             }
         });
@@ -221,6 +353,7 @@ public class OperacionesForms {
                         || evt.getKeyCode() == KeyEvent.VK_LEFT || evt.getKeyCode() == KeyEvent.VK_RIGHT
                         || evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_DOWN) {
                 } else {
+                    
                     j.setText(j.getText().toUpperCase());
                 }
             }
@@ -235,9 +368,9 @@ public class OperacionesForms {
             }
         });
     }
-    
-        public static void Inicializar_Combobox_TamanoCero(JComboBox j) {
-            j.setSize(0, 0);       
+
+    public static void Inicializar_Combobox_TamanoCero(JComboBox j) {
+        j.setSize(0, 0);
     }
 
     //
@@ -336,7 +469,9 @@ public class OperacionesForms {
                         Principal.crearBarraBotones(val);
                     } catch (PropertyVetoException ex) {
                         ProgressBar.mostrarMensajeRojo("123a" + ex.toString());
-                        Logger.getLogger(OperacionesForms.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger
+                                .getLogger(OperacionesForms.class
+                                        .getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             });
@@ -351,8 +486,10 @@ public class OperacionesForms {
                         numVentana = 100;
                         try {
                             v[i].setSelected(true);
+
                         } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(Principal.class
+                                    .getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
                         Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()dispose");
@@ -371,7 +508,9 @@ public class OperacionesForms {
                             val.setVisible(true);
                         } catch (PropertyVetoException ex) {
                             ProgressBar.mostrarMensajeRojo(ex.toString());
-                            Logger.getLogger(OperacionesForms.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger
+                                    .getLogger(OperacionesForms.class
+                                            .getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 }
@@ -391,7 +530,9 @@ public class OperacionesForms {
 
             } catch (PropertyVetoException ex) {
                 ProgressBar.mostrarMensajeRojo(ex.toString());
-                Logger.getLogger(OperacionesForms.class.getName()).log(Level.SEVERE, null, ex);
+                Logger
+                        .getLogger(OperacionesForms.class
+                                .getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -442,7 +583,7 @@ public class OperacionesForms {
 
         ///////////
         if (v.length >= 1) {
-        
+
         }
     }
 
@@ -462,8 +603,10 @@ public class OperacionesForms {
                         numVentana = 100;
                         try {
                             v[i].setSelected(true);
+
                         } catch (PropertyVetoException ex) {
-                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(Principal.class
+                                    .getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
                         Deb.consola("ClasesAuxiliares.NewSql.Forms.OperacionesForms.nuevaVentanaInternalForm()dispose");

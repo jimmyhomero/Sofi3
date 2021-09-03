@@ -373,7 +373,7 @@ public class login extends javax.swing.JFrame {
                             this.setVisible(false);
                             
                         } else {
-                            this.setVisible(false);
+                      //      this.setVisible(false);
 
                             JOptionPane.showMessageDialog(null, "Este equipo ** " + nombreDelEquipo + " ** no esta registrado");
                             Configuracion.esteesequipoNuevo = 1;
@@ -403,8 +403,9 @@ public class login extends javax.swing.JFrame {
             }
 
         } catch (Exception ex) {
-            System.out.print(ex + "*-EN Login");
-            JOptionPane.showMessageDialog(null, ex + "sdasdassdasvvvvv");
+            Deb.consola(ex + "  :  ssssssssssssa*asd-EN Lodasdgin");
+            Deb.consola(ex+" loguin kakc");
+           // JOptionPane.showMessageDialog(null, ex + "sdasdassdasvvvvv");
         }
     }//GEN-LAST:event_btn_loginActionPerformed
 
@@ -531,9 +532,7 @@ public class login extends javax.swing.JFrame {
 
             }
         });
-
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_login;
     private javax.swing.JButton btn_login1;

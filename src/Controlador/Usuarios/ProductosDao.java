@@ -48,6 +48,91 @@ public class ProductosDao extends Coneccion {
     //private Conec mysql = new conexion(); //Instanciando la clase conexion
     //private Connection cn = mysql.conectar();
 
+    private Productos getProductoFromResulset(ResultSet rs) {
+        Productos per = new Productos();
+        String bpv = Principal.bodegaPredeterminadaenVenta.substring(0, 1);
+        String bpc = Principal.bodegaPredeterminadaenCOmpra.substring(0, 1);
+        try {
+            per.setBodegaPredVenta(rs.getString("b" + bpv));
+            per.setBodegaPredCompra(rs.getString("b" + bpc));
+            per.setCodigo(rs.getInt("Codigo"));
+            per.setProducto(rs.getString("producto"));
+            per.setCodigoAlterno(rs.getString("codigoAlterno"));
+            per.setCodigoBarras(rs.getString("codigoBarras"));
+            per.setBase(rs.getDouble("base"));
+            per.setCosto(rs.getString("costo"));
+            per.setImpuesto(rs.getString("impuesto"));
+
+            per.setIva12(rs.getDouble("iva12"));
+            per.setIva14(rs.getDouble("iva14"));
+            per.setIva0(rs.getDouble("iva0"));
+            per.setIce(rs.getDouble("ice"));
+            per.setProductoOServicio(rs.getInt("ProductoOServicio"));
+            per.setCostoconIVA(rs.getDouble("costoConIVA"));
+
+            per.setUtilidad(rs.getString("utilidad"));
+            per.setPvp(rs.getString("pvp"));
+            per.setCantidad(Integer.parseInt(rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1))));
+            per.setUnidades(rs.getString("unidades"));
+            per.setUbicacion(rs.getString("ubicacion"));
+            per.setObservacion(rs.getString("observacion"));
+            per.setMinimo(rs.getString("minimo"));
+            per.setMaximo(rs.getString("maximo"));
+            per.setSerie(rs.getString("serie"));
+            per.setGarantia(rs.getString("garantia"));
+            if (rs.getBlob("imagen") != null) {
+                Blob blob = rs.getBlob("imagen");
+
+                byte[] data = blob.getBytes(1, (int) blob.length());
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(new ByteArrayInputStream(data));
+                } catch (IOException ex) {
+                    Logger.getLogger(ProductosDao.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                per.setImagen(img);
+            }
+
+            per.setModelo_codigo(rs.getInt("Modelos_Codigo"));
+            per.setModelos_marcas_codigo(rs.getInt("Modelos_Marcas_Codigo"));
+            per.setP1(rs.getDouble("p1"));
+            per.setP2(rs.getDouble("p2"));
+            per.setP3(rs.getDouble("p3"));
+            per.setP4(rs.getDouble("p4"));
+            per.setP5(rs.getDouble("p5"));
+            per.setP6(rs.getDouble("p6"));
+            per.setP7(rs.getDouble("p7"));
+            per.setP8(rs.getDouble("p8"));
+            per.setP9(rs.getDouble("p9"));
+            per.setP10(rs.getDouble("p10"));
+            per.setB1(rs.getString("b1"));
+            per.setB2(rs.getString("b2"));
+            per.setB3(rs.getString("b3"));
+            per.setB4(rs.getString("b4"));
+            per.setB5(rs.getString("b5"));
+            per.setB6(rs.getString("b6"));
+            per.setB7(rs.getString("b7"));
+            per.setB8(rs.getString("b8"));
+            per.setB9(rs.getString("b9"));
+            per.setB10(rs.getString("b10"));
+            per.setB11(rs.getString("b11"));
+            per.setB12(rs.getString("b12"));
+            per.setB13(rs.getString("b13"));
+            per.setB14(rs.getString("b14"));
+            per.setB15(rs.getString("b15"));
+            per.setB16(rs.getString("b16"));
+            per.setB17(rs.getString("b17"));
+            per.setB18(rs.getString("b18"));
+            per.setB19(rs.getString("b19"));
+            per.setB20(rs.getString("b20"));
+            per.setAirCodigo(rs.getInt("airCodigo"));
+        } catch (SQLException ex) {
+            Deb.consola(ex.toString());
+            Logger.getLogger(AnticiposDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return per;
+    }
+
     public Integer guardar(Productos tarea) {
         Integer codigoThisProducto = 0;
         try {
@@ -368,38 +453,7 @@ public class ProductosDao extends Coneccion {
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
-                Productos per = new Productos();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setProducto(rs.getString("producto"));
-                per.setCodigoAlterno(rs.getString("codigoAlterno"));
-                per.setCodigoBarras(rs.getString("codigoBarras"));
-                per.setCosto(rs.getString("costo"));
-                per.setUtilidad(rs.getString("utilidad"));
-                per.setPvp(rs.getString("pvp"));
-                per.setCantidad(Integer.parseInt(rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1))));
-                per.setUnidades(rs.getString("unidades"));
-                per.setUbicacion(rs.getString("ubicacion"));
-                per.setObservacion(rs.getString("observacion"));
-                per.setMinimo(rs.getString("minimo"));
-                if (rs.getBlob("imagen") != null) {
-                    Blob blob = rs.getBlob("imagen");
-
-                    byte[] data = blob.getBytes(1, (int) blob.length());
-                    BufferedImage img = null;
-                    try {
-                        img = ImageIO.read(new ByteArrayInputStream(data));
-                    } catch (IOException ex) {
-                        Logger.getLogger(ProductosDao.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    per.setImagen(img);
-                }
-                per.setMaximo(rs.getString("maximo"));
-                per.setGarantia(rs.getString("garantia"));
-                per.setModelo_codigo(rs.getInt("Modelos_Codigo"));
-                per.setModelos_marcas_codigo(rs.getInt("Modelos_Marcas_Codigo"));
-                //            JOptionPane.showMessageDialog(null, "--  "+rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1))+"  --");
-                per.setBodegaPredVenta(rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1)));
-                this.lista.add(per);
+                this.lista.add(getProductoFromResulset(rs));
             }
 
         } catch (Exception ex) {
@@ -415,7 +469,7 @@ public class ProductosDao extends Coneccion {
         String sql = "";
         switch (cad.length) {
             case 1:
-                sql = "SELECT * FROM `productos` WHERE `producto` LIKE '%" + cad[0] + "%'";
+                sql = "SELECT * FROM `productos` WHERE `producto` LIKE '%" + cad[0] + "%'";// or  codigoBarras = "+cad[0]+"";
                 break;
             case 2:
                 sql = "SELECT * FROM `productos` WHERE `producto` LIKE '%" + cad[0] + "%' and `producto` LIKE '%" + cad[1] + "%'";
@@ -442,40 +496,8 @@ public class ProductosDao extends Coneccion {
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
-                Productos per = new Productos();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setProducto(rs.getString("producto"));
-                per.setCodigoAlterno(rs.getString("codigoAlterno"));
-                per.setCodigoBarras(rs.getString("codigoBarras"));
-                per.setCosto(rs.getString("costo"));
-                per.setUtilidad(rs.getString("utilidad"));
-                per.setPvp(rs.getString("pvp"));
-                per.setCantidad(Integer.parseInt(rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1))));
-                per.setUnidades(rs.getString("unidades"));
-                per.setUbicacion(rs.getString("ubicacion"));
-                per.setObservacion(rs.getString("observacion"));
-                per.setMinimo(rs.getString("minimo"));
-                if (rs.getBlob("imagen") != null) {
-                    Blob blob = rs.getBlob("imagen");
-
-                    byte[] data = blob.getBytes(1, (int) blob.length());
-                    BufferedImage img = null;
-                    try {
-                        img = ImageIO.read(new ByteArrayInputStream(data));
-                    } catch (IOException ex) {
-                        Logger.getLogger(ProductosDao.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    per.setImagen(img);
-                }
-                per.setMaximo(rs.getString("maximo"));
-                per.setGarantia(rs.getString("garantia"));
-                per.setModelo_codigo(rs.getInt("Modelos_Codigo"));
-                per.setModelos_marcas_codigo(rs.getInt("Modelos_Marcas_Codigo"));
-                //            JOptionPane.showMessageDialog(null, "--  "+rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1))+"  --");
-                per.setBodegaPredVenta(rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1)));
-                this.lista.add(per);
+                this.lista.add(getProductoFromResulset(rs));
             }
-
         } catch (Exception ex) {
             Deb.consola("Controlador.CUsuarios.listar()" + ex);
         } finally {
@@ -497,38 +519,7 @@ public class ProductosDao extends Coneccion {
             rs = st.executeQuery();
             //this.lista= new ArrayList();
             while (rs.next()) {
-                Productos per = new Productos();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setProducto(rs.getString("producto"));
-                per.setCodigoAlterno(rs.getString("codigoAlterno"));
-                per.setCodigoBarras(rs.getString("codigoBarras"));
-                per.setCosto(rs.getString("costo"));
-                per.setUtilidad(rs.getString("utilidad"));
-                per.setPvp(rs.getString("pvp"));
-                 per.setCantidad(Integer.parseInt(rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1))));
-                per.setUnidades(rs.getString("unidades"));
-                per.setUbicacion(rs.getString("ubicacion"));
-                per.setObservacion(rs.getString("observacion"));
-                per.setMinimo(rs.getString("minimo"));
-                if (rs.getBlob("imagen") != null) {
-                    Blob blob = rs.getBlob("imagen");
-
-                    byte[] data = blob.getBytes(1, (int) blob.length());
-                    BufferedImage img = null;
-                    try {
-                        img = ImageIO.read(new ByteArrayInputStream(data));
-                    } catch (IOException ex) {
-                        Logger.getLogger(ProductosDao.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    per.setImagen(img);
-                }
-                per.setMaximo(rs.getString("maximo"));
-                per.setGarantia(rs.getString("garantia"));
-                per.setModelo_codigo(rs.getInt("Modelos_Codigo"));
-                per.setModelos_marcas_codigo(rs.getInt("Modelos_Marcas_Codigo"));
-                //            JOptionPane.showMessageDialog(null, "--  "+rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1))+"  --");
-                per.setBodegaPredVenta(rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1)));
-                this.lista.add(per);
+                this.lista.add(getProductoFromResulset(rs));
             }
 
         } catch (Exception ex) {
@@ -546,61 +537,13 @@ public class ProductosDao extends Coneccion {
         try {
             this.conectar();
             PreparedStatement st;
-//            select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
-//            select usuarios.*, tipos_usuarios.codigo,tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo where usuarios.codigo = 1
-
             st = this.getCnx().prepareCall("select Productos.*, modelos.Modelo from productos inner join modelos on modelos.Codigo=productos.Modelos_Codigo where productos.codigo =" + id + " order BY productos.producto");
-            //select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
-
             rs = st.executeQuery();
             Deb.consola("Controlador.Usuarios.ProductosDao.buscarConID() : " + st);
             Deb.consola("Controlador.Usuarios.ProductosDao.buscarConID()222 : " + rs);
             //this.lista= new ArrayList();
             while (rs.next()) {
-                Productos per = new Productos();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setProducto(rs.getString("producto"));
-                per.setCodigoAlterno(rs.getString("codigoAlterno"));
-                per.setCodigoBarras(rs.getString("codigoBarras"));
-                per.setCosto(rs.getString("costo"));
-                per.setUtilidad(rs.getString("utilidad"));
-                per.setPvp(rs.getString("pvp"));
-                per.setCantidad(Integer.parseInt(rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1))));
-                per.setUnidades(rs.getString("unidades"));
-                per.setUbicacion(rs.getString("ubicacion"));
-                per.setObservacion(rs.getString("observacion"));
-                per.setMinimo(rs.getString("minimo"));
-                per.setMaximo(rs.getString("maximo"));
-                per.setGarantia(rs.getString("garantia"));
-                if (rs.getBlob("imagen") != null) {
-                    Blob blob = rs.getBlob("imagen");
-
-                    byte[] data = blob.getBytes(1, (int) blob.length());
-                    BufferedImage img = null;
-                    try {
-                        img = ImageIO.read(new ByteArrayInputStream(data));
-                    } catch (IOException ex) {
-                        Logger.getLogger(ProductosDao.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    per.setImagen(img);
-                }
-
-                per.setModelo_codigo(rs.getInt("Modelos_Codigo"));
-                per.setModelos_marcas_codigo(rs.getInt("Modelos_Marcas_Codigo"));
-                per.setP1(rs.getDouble("p1"));
-                per.setP2(rs.getDouble("p2"));
-                per.setP3(rs.getDouble("p3"));
-                per.setBase(rs.getDouble("base"));
-                per.setImpuesto(rs.getString("impuesto"));
-                per.setIva12(rs.getDouble("iva12"));
-                //per.setIva0(rs.getDouble("iva0"));
-                per.setProductoOServicio(rs.getInt("ProductoOServicio"));
-                per.setCostoconIVA(rs.getDouble("costoConIVA"));
-
-                //per.setObservaciones(rs.getString("PersonaObservaciones"));
-                //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
-                u = per;
+                u = getProductoFromResulset(rs);
             }
 
         } catch (Exception ex) {
@@ -612,79 +555,31 @@ public class ProductosDao extends Coneccion {
         return u;
     }
 
-        public Productos buscarPorNombre(String producto) {
+    public Productos buscarPorNombre(String producto) {
         ResultSet rs;
         Productos u = new Productos();
         try {
             this.conectar();
             PreparedStatement st;
-//            select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
-//            select usuarios.*, tipos_usuarios.codigo,tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo where usuarios.codigo = 1
-
             st = this.getCnx().prepareCall("select Productos.*, modelos.Modelo from productos inner join modelos on modelos.Codigo=productos.Modelos_Codigo where productos.producto ='" + producto + "' order BY productos.producto");
-            //select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
-
             rs = st.executeQuery();
             Deb.consola("Controlador.Usuarios.ProductosDao.buscarConID() : " + st);
             Deb.consola("Controlador.Usuarios.ProductosDao.buscarConID()222 : " + rs);
             //this.lista= new ArrayList();
             while (rs.next()) {
-                Productos per = new Productos();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setProducto(rs.getString("producto"));
-                per.setCodigoAlterno(rs.getString("codigoAlterno"));
-                per.setCodigoBarras(rs.getString("codigoBarras"));
-                per.setCosto(rs.getString("costo"));
-                per.setUtilidad(rs.getString("utilidad"));
-                per.setPvp(rs.getString("pvp"));
-                 per.setCantidad(Integer.parseInt(rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1))));
-                per.setUnidades(rs.getString("unidades"));
-                per.setUbicacion(rs.getString("ubicacion"));
-                per.setObservacion(rs.getString("observacion"));
-                per.setMinimo(rs.getString("minimo"));
-                per.setMaximo(rs.getString("maximo"));
-                per.setGarantia(rs.getString("garantia"));
-                if (rs.getBlob("imagen") != null) {
-                    Blob blob = rs.getBlob("imagen");
-
-                    byte[] data = blob.getBytes(1, (int) blob.length());
-                    BufferedImage img = null;
-                    try {
-                        img = ImageIO.read(new ByteArrayInputStream(data));
-                    } catch (IOException ex) {
-                        Logger.getLogger(ProductosDao.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    per.setImagen(img);
-                }
-
-                per.setModelo_codigo(rs.getInt("Modelos_Codigo"));
-                per.setModelos_marcas_codigo(rs.getInt("Modelos_Marcas_Codigo"));
-                per.setP1(rs.getDouble("p1"));
-                per.setP2(rs.getDouble("p2"));
-                per.setP3(rs.getDouble("p3"));
-                per.setBase(rs.getDouble("base"));
-                per.setImpuesto(rs.getString("impuesto"));
-                per.setIva12(rs.getDouble("iva12"));
-                //per.setIva0(rs.getDouble("iva0"));
-                per.setProductoOServicio(rs.getInt("ProductoOServicio"));
-                per.setCostoconIVA(rs.getDouble("costoConIVA"));
-
-                //per.setObservaciones(rs.getString("PersonaObservaciones"));
-                //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
-                u = per;
+                u = getProductoFromResulset(rs);
             }
 
         } catch (Exception ex) {
             Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
-            u=null;
+            u = null;
         } finally {
             this.cerrar();
         }
 
         return u;
     }
-        
+
     public Productos buscarPorCodigoAlterno(String codigoAlteno) {
         ResultSet rs;
         Productos u = new Productos();
@@ -702,50 +597,7 @@ public class ProductosDao extends Coneccion {
             Deb.consola("Controlador.Usuarios.ProductosDao.buscarConID()222 : " + rs);
             //this.lista= new ArrayList();
             while (rs.next()) {
-                Productos per = new Productos();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setProducto(rs.getString("producto"));
-                per.setCodigoAlterno(rs.getString("codigoAlterno"));
-                per.setCodigoBarras(rs.getString("codigoBarras"));
-                per.setCosto(rs.getString("costo"));
-                per.setUtilidad(rs.getString("utilidad"));
-                per.setPvp(rs.getString("pvp"));
-                 per.setCantidad(Integer.parseInt(rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1))));
-                per.setUnidades(rs.getString("unidades"));
-                per.setUbicacion(rs.getString("ubicacion"));
-                per.setObservacion(rs.getString("observacion"));
-                per.setMinimo(rs.getString("minimo"));
-                per.setMaximo(rs.getString("maximo"));
-                per.setGarantia(rs.getString("garantia"));
-                if (rs.getBlob("imagen") != null) {
-                    Blob blob = rs.getBlob("imagen");
-
-                    byte[] data = blob.getBytes(1, (int) blob.length());
-                    BufferedImage img = null;
-                    try {
-                        img = ImageIO.read(new ByteArrayInputStream(data));
-                    } catch (IOException ex) {
-                        Logger.getLogger(ProductosDao.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    per.setImagen(img);
-                }
-
-                per.setModelo_codigo(rs.getInt("Modelos_Codigo"));
-                per.setModelos_marcas_codigo(rs.getInt("Modelos_Marcas_Codigo"));
-                per.setP1(rs.getDouble("p1"));
-                per.setP2(rs.getDouble("p2"));
-                per.setP3(rs.getDouble("p3"));
-                per.setBase(rs.getDouble("base"));
-                per.setImpuesto(rs.getString("impuesto"));
-                per.setIva12(rs.getDouble("iva12"));
-                //per.setIva0(rs.getDouble("iva0"));
-                per.setProductoOServicio(rs.getInt("ProductoOServicio"));
-                per.setCostoconIVA(rs.getDouble("costoConIVA"));
-
-                //per.setObservaciones(rs.getString("PersonaObservaciones"));
-                //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
-                u = per;
+                u = getProductoFromResulset(rs);
             }
 
         } catch (Exception ex) {
@@ -756,71 +608,26 @@ public class ProductosDao extends Coneccion {
 
         return u;
     }
-    
-    public Productos buscarPorCodigoAlternoPdoductoStockenBodegaEspecifica(String codigoAlteno,String bodega) {
+
+    public Productos buscarPorCodigoAlternoPdoductoStockenBodegaEspecifica(String codigoAlteno, String bodega) {
         ResultSet rs;
+
         Productos u = new Productos();
         try {
             this.conectar();
             PreparedStatement st;
-//            select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
-//            select usuarios.*, tipos_usuarios.codigo,tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo where usuarios.codigo = 1
-
             st = this.getCnx().prepareCall("select Productos.*, modelos.Modelo from productos inner join modelos on modelos.Codigo=productos.Modelos_Codigo where productos.codigoAlterno ='" + codigoAlteno + "' order BY productos.producto");
-            //select usuarios.*, tipos_usuarios.tipo from usuarios inner join tipos_usuarios on tipos_usuarios.codigo=usuarios.Tipo_Usuario_codigo
-
             rs = st.executeQuery();
             Deb.consola("Controlador.Usuarios.ProductosDao.buscarConID() : " + st);
             Deb.consola("Controlador.Usuarios.ProductosDao.buscarConID()222 : " + rs);
             //this.lista= new ArrayList();
             while (rs.next()) {
-                Productos per = new Productos();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setProducto(rs.getString("producto"));
-                per.setCodigoAlterno(rs.getString("codigoAlterno"));
-                per.setCodigoBarras(rs.getString("codigoBarras"));
-                per.setCosto(rs.getString("costo"));
-                per.setUtilidad(rs.getString("utilidad"));
-                per.setPvp(rs.getString("pvp"));
-                 per.setCantidad(Integer.parseInt(rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1))));
-                per.setUnidades(rs.getString("unidades"));
-                per.setUbicacion(rs.getString("ubicacion"));
-                per.setObservacion(rs.getString("observacion"));
-                per.setMinimo(rs.getString("minimo"));
-                per.setMaximo(rs.getString("maximo"));
-                per.setGarantia(rs.getString("garantia"));
-                if (rs.getBlob("imagen") != null) {
-                    Blob blob = rs.getBlob("imagen");
-
-                    byte[] data = blob.getBytes(1, (int) blob.length());
-                    BufferedImage img = null;
-                    try {
-                        img = ImageIO.read(new ByteArrayInputStream(data));
-                    } catch (IOException ex) {
-                        Logger.getLogger(ProductosDao.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    per.setImagen(img);
-                }
-
-                per.setModelo_codigo(rs.getInt("Modelos_Codigo"));
-                per.setModelos_marcas_codigo(rs.getInt("Modelos_Marcas_Codigo"));
-                per.setP1(rs.getDouble("p1"));
-                per.setP2(rs.getDouble("p2"));
-                per.setP3(rs.getDouble("p3"));
-                per.setBase(rs.getDouble("base"));
-                per.setImpuesto(rs.getString("impuesto"));
-                per.setIva12(rs.getDouble("iva12"));
-                //per.setIva0(rs.getDouble("iva0"));
-                per.setProductoOServicio(rs.getInt("ProductoOServicio"));
-                per.setCostoconIVA(rs.getDouble("costoConIVA"));
-                
-                per.setCantidad(rs.getInt("b"+bodega));
-
-                u = per;
+                u = getProductoFromResulset(rs);
+                u.setCantidad(rs.getInt("b" + bodega));
             }
 
         } catch (Exception ex) {
-            Deb.consola("Controlador.CUsuarios.BuscarConId()" + ex);
+            Deb.consola("Controlador.CUsuarios.BuscarConId()busqueda por bodega especifica" + ex);
         } finally {
             this.cerrar();
         }
@@ -838,25 +645,8 @@ public class ProductosDao extends Coneccion {
             st = this.getCnx().prepareCall("select Productos.*, modelos.Modelo from productos inner join modelos on modelos.Codigo=productos.Modelos_Codigo where " + tabla + "." + columna + " like '%" + value + "%' order BY productos.producto");
             rs = st.executeQuery();
             //this.lista= new ArrayList();
-            while (rs.next()) {
-                Productos per = new Productos();
-                per.setCodigo(rs.getInt("Codigo"));
-                per.setProducto(rs.getString("producto"));
-                per.setCodigoAlterno(rs.getString("codigoAlterno"));
-                per.setCodigoBarras(rs.getString("codigoBarras"));
-                per.setCosto(rs.getString("costo"));
-                per.setUtilidad(rs.getString("utilidad"));
-                per.setPvp(rs.getString("pvp"));
-                 per.setCantidad(Integer.parseInt(rs.getString("b" + Principal.bodegaPredeterminadaenVenta.substring(0, 1))));
-                per.setUnidades(rs.getString("unidades"));
-                per.setUbicacion(rs.getString("ubicacion"));
-                per.setObservacion(rs.getString("observacion"));
-                per.setMinimo(rs.getString("minimo"));
-                per.setMaximo(rs.getString("maximo"));
-                per.setGarantia(rs.getString("garantia"));
-                per.setModelo_codigo(rs.getInt("Modelos_Codigo"));
-                per.setModelos_marcas_codigo(rs.getInt("Modelos_Marcas_Codigo"));
-                u = per;
+            while (rs.next()) {                
+               u = getProductoFromResulset(rs);
             }
 
         } catch (Exception ex) {
@@ -927,10 +717,6 @@ public class ProductosDao extends Coneccion {
 
                 modelo.addRow(registros);
                 Deb.consola("Controlador.CUsuarios.Buscar_table()" + registros[1]);
-
-                //per.setObservaciones(rs.getString("PersonaObservaciones"));
-                //per.setFechaN(rs.getDate("PersonaFN").toString());
-                //Deb.consola("Controlador.CUsuarios.listar()"+rs.getString("Nombres")); 
             }
 
         } catch (Exception ex) {
@@ -1032,7 +818,7 @@ public class ProductosDao extends Coneccion {
         }
         return modelo;
     }
-    
+
     public DefaultTableModel Buscar_Productos_Dialog(List<Productos> l) {
         DefaultTableModel modelo = null;
         String[] titulos
@@ -1047,13 +833,11 @@ public class ProductosDao extends Coneccion {
             }
         };
 
-       
         try {
-            
+
             //this.lista= new ArrayList();
             for (Productos productos : l) {
-                
-            
+
                 registros[0] = String.valueOf(productos.getCodigo());
                 registros[1] = String.valueOf(productos.getCodigoAlterno());
                 registros[2] = String.valueOf(productos.getCodigoBarras());

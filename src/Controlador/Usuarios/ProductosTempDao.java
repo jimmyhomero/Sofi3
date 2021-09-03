@@ -33,6 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -84,6 +85,7 @@ public class ProductosTempDao extends Coneccion {
             consulta = this.con.prepareStatement("INSERT INTO ProductosTemp (NombreI, NombreE, CodigoProductoI, CodigoProductoE,CodigoProveedor, costo, fechaCompra, "
                     + "NumeroFactura) VALUES(?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
               codigoThisProducto = procedimientoParaInsertarDatos(tarea, consulta);
+              ProgressBar.mostrarMensajeAzul("se guardo exitosamente");
         } catch (SQLException ex) {
             Logger.getLogger(ProductosTempDao.class.getName()).log(Level.SEVERE, null, ex);
             Deb.consola(ex);
@@ -121,7 +123,8 @@ public class ProductosTempDao extends Coneccion {
             String sql = st.toString();
             Deb.consola("Controlador.Usuarios.CUsuarios.modificar()" + sql);
             st.executeUpdate();
-            Principal.jProgressBar2.setString("eeeeeeeeeeeee");
+            ProgressBar.mostrarMensajeAzul("se ACTUALIZO exitosamente");
+         //   Principal.jProgressBar2.setString("eeeeeeeeeeeee");
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
         } catch (SQLException e) {
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error" + e + sql, "Error al modificar Registro" + e.toString()));

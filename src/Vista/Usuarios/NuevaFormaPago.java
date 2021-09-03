@@ -49,7 +49,7 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
     boolean _pvpaUsarselected = false;
     boolean _peridoCobranzaselected = false;
     boolean _sustentoTributarioSelected = false;
-    public static String comprasoVentas="";
+    public static String comprasoVentas = "";
 
     private List<SriFormaPago> listaFormasPagoSri = new ArrayList();
     private ArrayList<Precios> listaPrecios = new ArrayList();
@@ -61,8 +61,8 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
     Precios precioseleccionado = new Precios();
     SriFormaPago sriformaPagoSeleccionada = new SriFormaPago();
 
-    public NuevaFormaPago(){
-        initComponents();        
+    public NuevaFormaPago() {
+        initComponents();
         /////////////INICIALIZAR JTEXFIELD Y jTEXTaREA
         OperacionesForms.inicializarJtextFieldMyusculas(jTextArea1);
         OperacionesForms.inicializarJtextFieldMyusculas(txt_nombreFormaPago);
@@ -74,11 +74,11 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
         OperacionesForms.Inicializar_Combobox_Seleccione(jcb_sustentoTributario);
         jcb_formaPago.addItem(OperacionesForms._EFECTIVO_TEXT);
         jcb_formaPago.addItem(OperacionesForms._CREDITO_TEXT);
-        jcb_formaPago.addItem(OperacionesForms._PLAN_ACUMULATIVO_TEXT);        
+        jcb_formaPago.addItem(OperacionesForms._PLAN_ACUMULATIVO_TEXT);
         jcb_formaPago.addItem(OperacionesForms._CHEQUE_TEXT);
         OperacionesForms.Inicializar_Combobox_TamanoCero(jcb_tipoPVPUsar);
         OperacionesForms.inicializadPeriodosCObranza(jcb_cobranza);
-        
+
 ////////////tamanos
         dimensiooCredito.setSize(1153, 304);
         dimensiooOriginal.setSize(948, 304);
@@ -111,10 +111,10 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
         Deb.consola(jLabel7.getPreferredSize().toString() + "   -jcbx1");
 
         Deb.consola("SELECTED ITEM: " + jcb_tipoPVPUsar.getSelectedItem().toString());
-          Deb.consola("SELECTED ITEMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxaSDDDDDDDDDDDDDDDDDDDD: "+this.getTitle());
-        if(this.getTitle().equalsIgnoreCase(OperacionesForms._FORMA_PAGO_CXP_TEXT)){
-              
-        jcb_tipoPVPUsar.setVisible(false);
+        Deb.consola("SELECTED ITEMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxaSDDDDDDDDDDDDDDDDDDDD: " + this.getTitle());
+        if (this.getTitle().equalsIgnoreCase(OperacionesForms._FORMA_PAGO_CXP_TEXT)) {
+
+            jcb_tipoPVPUsar.setVisible(false);
         }
     }
 
@@ -674,18 +674,13 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
 
         if (!jcb_formaPago.getSelectedItem().toString().equals(OperacionesForms._COMBO_SELECCIONE_TEXT)) {
             _FormaPagoSelected = true;
-            if (jcb_formaPago.getSelectedItem().toString().equals(OperacionesForms._EFECTIVO_TEXT)) {
+            if (jcb_formaPago.getSelectedItem().toString().equals(OperacionesForms._EFECTIVO_TEXT) || jcb_formaPago.getSelectedItem().toString().equals(OperacionesForms._CHEQUE_TEXT)) {
                 jrb_afectaCaja.setSelected(true);
                 _afectaaCaja = true;
+                this.setSize(dimensiooOriginal);
             } else {
                 jrb_afectaCaja.setSelected(false);
                 _afectaaCaja = false;
-            }
-
-            if (jcb_formaPago.getSelectedItem().toString().equals(OperacionesForms._EFECTIVO_TEXT)) {
-                this.setSize(dimensiooOriginal);
-            } else {
-
                 this.setSize(dimensiooCredito);
                 txt_cuotas.setText("1");
                 txt_diasCredito.setText("30");
@@ -693,6 +688,16 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
                 jcb_cobranza.setSelectedItem(OperacionesForms._COMBO_SELECCIONE_TEXT);
             }
 
+//            if (jcb_formaPago.getSelectedItem().toString().equals(OperacionesForms._EFECTIVO_TEXT)) {
+//                this.setSize(dimensiooOriginal);
+//            } else {
+//
+//                this.setSize(dimensiooCredito);
+//                txt_cuotas.setText("1");
+//                txt_diasCredito.setText("30");
+//                txt_entrada.setText("0.0");
+//                jcb_cobranza.setSelectedItem(OperacionesForms._COMBO_SELECCIONE_TEXT);
+//            }
         } else {
             _FormaPagoSelected = false;
         }
@@ -701,7 +706,7 @@ public class NuevaFormaPago extends javax.swing.JInternalFrame {
     private void jrb_afectaCajaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jrb_afectaCajaItemStateChanged
         // TODO add your handling code here:
 
-        if (jcb_formaPago.getSelectedItem().toString().equals(OperacionesForms._EFECTIVO_TEXT)) {
+        if (jcb_formaPago.getSelectedItem().toString().equals(OperacionesForms._EFECTIVO_TEXT)||jcb_formaPago.getSelectedItem().toString().equals(OperacionesForms._CHEQUE_TEXT)) {
             jrb_afectaCaja.setSelected(true);
         } else {
             jrb_afectaCaja.setSelected(false);

@@ -280,6 +280,7 @@ FROM
 			</textField>
 			<image>
 				<reportElement x="0" y="2" width="135" height="77" uuid="9f2d4064-8a9c-470e-8954-d35195739b87"/>
+				<imageExpression><![CDATA["C:\\Sofi\\electronica\\logo.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement positionType="FixRelativeToBottom" x="5" y="110" width="80" height="21" uuid="a183a4fc-ecb6-41dc-9bd9-5898e959bd8f">
@@ -340,13 +341,13 @@ FROM
 				</textElement>
 				<textFieldExpression><![CDATA[$P{numeroFactura}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="328" y="15" width="100" height="20" uuid="60a906a0-8c2e-45f4-bc96-3ffe907a8383"/>
-				<textElement textAlignment="Right">
-					<font size="13" isBold="true" isUnderline="false"/>
+			<textField>
+				<reportElement x="330" y="15" width="100" height="20" uuid="9f8988b6-acc4-4b4c-9b9c-0dd2a1edfa8d"/>
+				<textElement>
+					<font size="13" isBold="true"/>
 				</textElement>
-				<text><![CDATA[FACTURA: ]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$F{facturas_tipo_documento}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>

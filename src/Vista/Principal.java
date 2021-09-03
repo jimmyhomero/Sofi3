@@ -7,11 +7,13 @@ package Vista;
 
 import AA_MainPruebas.Download;
 import ClasesAuxiliares.BackupBaseDatos.BackupMysql;
+import ClasesAuxiliares.BackupBaseDatos.Comprimir;
 import ClasesAuxiliares.Leertxt;
 import ClasesAuxiliares.debug.Deb;
 import ClasesAuxiliares.MaquinaDao;
 import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
 import ClasesAuxiliares.NewSql.updataesBDD;
+import ClasesAuxiliares.ObtenerFecha;
 import ClasesAuxiliares.Update;
 import ClasesAuxiliares.Variables;
 import ClasesAuxiliares.loadFromtxtoMysql.LoadDataFromtxtToMysql;
@@ -50,6 +52,7 @@ import Vista.Usuarios.Buscar_electronicas;
 import Vista.Usuarios.Crear_Usuarios;
 import Vista.Usuarios.Buscar_usuarios;
 import Vista.Usuarios.Configuracion;
+import static Vista.Usuarios.Configuracion.CargarConfigxEquipo;
 import static Vista.Usuarios.Configuracion.check_activarfacElectronica;
 import static Vista.Usuarios.Configuracion.check_preubas;
 import static Vista.Usuarios.Configuracion.check_producciona;
@@ -176,7 +179,7 @@ public class Principal extends javax.swing.JFrame {
     public static String editarDetalle_item_en_Facturacion;
     public static String soloFacturacionElectronica;
     public static Integer metodoValoracionInventario; //UEPS =1,PROMEDIO=2
-    public static Integer modoDesarrollo=1;    
+    public static Integer modoDesarrollo = 1;
     public static String facturatiriiasoGrande;
     public static String tickettiriiasoGrande;
     public static String proformatiriiasoFacturaGrande;
@@ -184,6 +187,7 @@ public class Principal extends javax.swing.JFrame {
     public static String ItemRepetidoEnFacturacionSumarCantidad;
     public static String VerImagenEnFacturacion;
     public static String EquipoServidordefacturacionELectronica;
+    public static String precioPredeterminadoenVenta;
 
     public static String obligaoSINO;
     public static String controlCambioEfectivoSINO;
@@ -437,15 +441,37 @@ t.start();
         //}
         tpane.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         //jPanel1.add(tpane);
+        respldarensergundoplano();
+    }
+
+    private void respldarensergundoplano() {
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                String file = "C://Sofi/temp/respaldos/resp-" + ObtenerFecha.getFechaNow() + ".zip";
+                BackupMysql.respaldar(file.replace("zip", "sql"), "mysql");
+                Comprimir.comprimir("C://Sofi/temp/respaldos/");
+            }
+        ;
+        };
+t.start();
     }
 
     public void configuracionsistemageneral() {
 
-///////inicia la venta de congivuracion en bacground 
-        Configuracion config = new Configuracion();
-        config.setVisible(false);
-        Configuracion.SetConfig();
+///////inicia la ventana de configuracion en background 
+        if (Configuracion.esteesequipoNuevo == 0) {
+
+            Configuracion config = new Configuracion();
+            config.setVisible(false);
+            Configuracion.SetConfig();
+            ////SE COMENTO SOLO PARA RPROABR
+            Configuracion.CargarConfigxEquipo();
+           // Configuracion.configPorEquipook();
+            
+        //    case "FORMA DE PAGO PREDETERMINADA EN COMPRA":
 ///////
+        }
         listConfig = confDao.listar();
         for (ConfigSofia c : listConfig) {
             switch (c.getNombre()) {
@@ -515,7 +541,7 @@ t.start();
                     Config.PKCS12_PASSWORD_DIR = c.getValor1();
                     break;
                 case "METODO DE VALORACION DE INVENTARIO":
-                    if (c.getValor1().equalsIgnoreCase("U.E.P.S")) {
+                    if (c.getValor1().equalsIgnoreCase(OperacionesForms._METODO_VALORACION_INVENTARIO_TEXT)) {
                         metodoValoracionInventario = 1;
                     }
                     if (c.getValor1().equalsIgnoreCase("PROMEDIO")) {
@@ -525,7 +551,7 @@ t.start();
                     break;
                 case "OBLIGADO":
                     this.obligaoSINO = c.getValor1();
-                    
+
                     break;
                 case "MODO DESARROLLO":
                     this.modoDesarrollo = Integer.parseInt(c.getValor1());
@@ -988,7 +1014,7 @@ t.start();
         helpMenu4.add(contentMenuItem4);
 
         aboutMenuItem4.setMnemonic('a');
-        aboutMenuItem4.setText("FORMAS PAGO");
+        aboutMenuItem4.setText("NUEVA FORMA DE PAGO");
         aboutMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutMenuItem4ActionPerformed(evt);
@@ -1012,7 +1038,7 @@ t.start();
         helpMenu5.add(contentMenuItem5);
 
         aboutMenuItem5.setMnemonic('a');
-        aboutMenuItem5.setText("Nueva Forma Pago");
+        aboutMenuItem5.setText("NUEVA FORMA DE PAGO");
         aboutMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutMenuItem5ActionPerformed(evt);
@@ -1311,8 +1337,8 @@ t.start();
     public static void elimiarBotonalCerrarVentanas(JInternalFrame f) {
         for (JButton b : Principal.listaDeBotones) {
             if (b.getName().equalsIgnoreCase(f.getName())) {
-             //   Principal.jPanel1.remove(b);
-             //   Principal.jPanel1.invalidate();
+                //   Principal.jPanel1.remove(b);
+                //   Principal.jPanel1.invalidate();
                 //   f.dispose();
                 // f.invalidate();
             }
@@ -1582,17 +1608,26 @@ t.start();
                         + "             PRIMARY KEY (`codigo`),                                                                     \n"
                         + "             KEY `FK_anticipos` (`clientes_codigo`),                                                     \n"
                         + "             CONSTRAINT `FK_anticipos` FOREIGN KEY (`clientes_codigo`) REFERENCES `clientes` (`codigo`)  \n"
-                        + "           ) ENGINE=INNODB DEFAULT CHARSET=latin1 "
-                            ,"ALTER TABLE .`cxc` ADD COLUMN `documento` VARCHAR(50) NULL AFTER `visible`"
-                            ,"ALTER TABLE `pagos` DROP FOREIGN KEY  `fk_pagosa_cxc1` ;"
-                            ,"ALTER TABLE retencion ADD CONSTRAINT FK_retencionCompras FOREIGN KEY (compras_codigo) REFERENCES compras (Codigo);"
-                            ,"ALTER TABLE retencion ADD CONSTRAINT FK_retencionfacturas FOREIGN KEY (compras_codigo) REFERENCES facturas (Codigo);"
-                            ,"CREATE TABLE `retencionv` ( PRIMARY KEY(`codigo`),UNIQUE `NewIndex1v`( `autorizacion` ), UNIQUE `NewIndex2v`( `proveedor_codigo` , `compra_secuencia` ), KEY `FK_retencionfacturasv`( `compras_codigo` ))ENGINE=INNODB COLLATE = latin1_swedish_ci COMMENT = '' SELECT `codigo`, `proveedor_codigo`, `compras_codigo`, `usuario_codigo`, `tipo_comprobante`, `autorizacion`, `compra_secuencia`, `secuencia`, `fechaIngreso`, `fecha`, `caducidad`, `total`, `concepto`, `sec1`, `sec2`, `sec3`, `estado`, `autorizado` FROM `retencion`;"
-                            ,"ALTER TABLE `retencionv` CHANGE `fechaIngreso` `fechaIngreso` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '' ;"
-                            ,"ALTER TABLE `retencionv` ADD CONSTRAINT `FK_retencionv_clientes` FOREIGN KEY (`proveedor_codigo`) REFERENCES `clientes` (`codigo`);"
-                            ,"ALTER TABLE `retencionv` ADD CONSTRAINT `FK_retencionv_facturas` FOREIGN KEY (`compras_codigo`) REFERENCES `facturas` (`Codigo`);"
-                            ,"CREATE TABLE `detalleretencionv` ( PRIMARY KEY(`codigo`,`Retencion_codigo`),KEY `fk_detalleRetencion_Retencion1_idx`( `Retencion_codigo` ))ENGINE=INNODB COLLATE = latin1_swedish_ci COMMENT = '' SELECT `codigo`, `ejercicio`, `base`, `impuesto`, `id`, `porcentaje`, `Retencion_codigo`, `retenido` FROM `detalleretencion` WHERE 1 = 0;"
-                            ,"ALTER TABLE `detalleretencionv` ADD CONSTRAINT `FK_detalleretencionv` FOREIGN KEY (`Retencion_codigo`) REFERENCES `retencionv` (`codigo`);"    
+                        + "           ) ENGINE=INNODB DEFAULT CHARSET=latin1 ",
+                        "ALTER TABLE .`cxc` ADD COLUMN `documento` VARCHAR(50) NULL AFTER `visible`",
+                        "ALTER TABLE `pagos` DROP FOREIGN KEY  `fk_pagosa_cxc1` ;",
+                        "ALTER TABLE retencion ADD CONSTRAINT FK_retencionCompras FOREIGN KEY (compras_codigo) REFERENCES compras (Codigo);",
+                        "ALTER TABLE retencion ADD CONSTRAINT FK_retencionfacturas FOREIGN KEY (compras_codigo) REFERENCES facturas (Codigo);",
+                        "CREATE TABLE `retencionv` ( PRIMARY KEY(`codigo`),UNIQUE `NewIndex1v`( `autorizacion` ), UNIQUE `NewIndex2v`( `proveedor_codigo` , `compra_secuencia` ), KEY `FK_retencionfacturasv`( `compras_codigo` ))ENGINE=INNODB COLLATE = latin1_swedish_ci COMMENT = '' SELECT `codigo`, `proveedor_codigo`, `compras_codigo`, `usuario_codigo`, `tipo_comprobante`, `autorizacion`, `compra_secuencia`, `secuencia`, `fechaIngreso`, `fecha`, `caducidad`, `total`, `concepto`, `sec1`, `sec2`, `sec3`, `estado`, `autorizado` FROM `retencion`;",
+                        "ALTER TABLE `retencionv` CHANGE `fechaIngreso` `fechaIngreso` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '' ;",
+                        "ALTER TABLE `retencionv` ADD CONSTRAINT `FK_retencionv_clientes` FOREIGN KEY (`proveedor_codigo`) REFERENCES `clientes` (`codigo`);",
+                        "ALTER TABLE `retencionv` ADD CONSTRAINT `FK_retencionv_facturas` FOREIGN KEY (`compras_codigo`) REFERENCES `facturas` (`Codigo`);",
+                        "CREATE TABLE `detalleretencionv` ( PRIMARY KEY(`codigo`,`Retencion_codigo`),KEY `fk_detalleRetencion_Retencion1_idx`( `Retencion_codigo` ))ENGINE=INNODB COLLATE = latin1_swedish_ci COMMENT = '' SELECT `codigo`, `ejercicio`, `base`, `impuesto`, `id`, `porcentaje`, `Retencion_codigo`, `retenido` FROM `detalleretencion` WHERE 1 = 0;",
+                        "ALTER TABLE `detalleretencionv` ADD CONSTRAINT `FK_detalleretencionv` FOREIGN KEY (`Retencion_codigo`) REFERENCES `retencionv` (`codigo`);",
+                        "ALTER TABLE `retencion` ADD COLUMN `equipo_codigo` INT NULL AFTER `autorizado`;",
+                        "CREATE TABLE `pagoscxp`( `codigo` INT NOT NULL AUTO_INCREMENT , `fecha` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `descripcion` VARCHAR(500) , `total` DOUBLE , `nota` VARCHAR(450) , `visible` INT DEFAULT '1' , `tipo` VARCHAR(45) , `cxp_codigo` INT , PRIMARY KEY (`codigo`));",
+                        "ALTER TABLE `pagoscxp` ADD CONSTRAINT `FK_pagoscxp` FOREIGN KEY (`cxp_codigo`) REFERENCES `cxp` (`codigo`);",
+                        "CREATE TABLE `PreciosProductos`( `codigo` INT NOT NULL , `producto_codigo` INT , `Precio_Codigo` INT , `costo` DOUBLE , `pvp` DOUBLE , `utilidad` DOUBLE , PRIMARY KEY (`codigo`))  ;",
+                        "ALTER TABLE `preciosproductos` ADD CONSTRAINT `FK_preciosproductos` FOREIGN KEY (`Precio_Codigo`) REFERENCES `precios` (`codigo`);",
+                        "ALTER TABLE `preciosproductos` ADD CONSTRAINT `FK_preciosproductos2` FOREIGN KEY (`producto_codigo`) REFERENCES `productos` (`Codigo`);",
+                        "ALTER TABLE productos` ADD COLUMN `airCodigo` INT NULL AFTER `p10`;",
+                        "ALTER TABLE `productos` ADD COLUMN `p8` DOUBLE DEFAULT '0' NULL AFTER `p7`;",
+                        "ALTER TABLE `productos` ADD COLUMN `b15` VARCHAR(45) DEFAULT '0' NULL AFTER `b14`;"
                     };
             for (int i = 0; i < sentencias.length; i++) {
                 String sql = sentencias[i];

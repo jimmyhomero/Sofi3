@@ -115,6 +115,7 @@ public class Variables {
     public static String _FILE_UPDATE = "Sofi3.jar"; //nombre del archivo destino
 //Directorio destino para las descargas
     public static String _DIR_DESTINO = "Sofi";
+    public static String _DIR_DESTINO_RESPALDO_BDD = "C://Sofi//temp";
     ////////////fina ctualizaciones
 
     public Variables() {

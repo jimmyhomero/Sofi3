@@ -6,6 +6,8 @@
 package ClasesAuxiliares;
 
 import java.net.InetAddress;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 //Importamos las librerias de Apache Commons
 
 //import org.apache.commons.net.ntp.NTPUDPClient;
@@ -50,5 +52,11 @@ public class ObtenerFecha {
         return fechaRecibida == null ? new Date() : fechaRecibida;
 
     }
+public static String getFechaNow(){
+DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
+      Date date = new Date();
+      System.out.println(dateFormat.format(date)); 
+      return dateFormat.format(date).replace("/", "-").replace(":", "_").replace(" ", "-");
+}
 }

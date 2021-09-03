@@ -123,7 +123,8 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
         return registros;
     }
 
-    public void guardar(DetalleRetencion tarea) {
+    public int guardar(DetalleRetencion tarea) {
+    int val=0;
         try {
             this.conectar();
             PreparedStatement consulta;
@@ -140,12 +141,15 @@ ProgressBar msg = new ProgressBar(1000, "Mensaje Inicial");
             
             Deb.consola("Controlador.CUsuarios.guardar()" + consulta);
             consulta.executeUpdate();
+            val=1;
         } catch (SQLException ex) {
+            val=0;
             //msg.setProgressBar_mensajae(ex.toString());
             Deb.consola("Controlador.CUsuarios.guardar()" + ex);
         } finally {
             this.cerrar();
         }
+        return val;
     }
     
     

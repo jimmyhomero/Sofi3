@@ -402,6 +402,7 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
         int col = table.getSelectedColumn();
         //obtengo el codigo del usuario
         String Valor = table.getValueAt(row, 0).toString();
+//        JOptionPane.showMessageDialog(null, "codifo producro: " + Valor);
         Deb.consola("VALOR CODIGO : " + Valor);
         if (evt.getClickCount() == 1) {
             ProductosDao objDao = new ProductosDao();
@@ -409,8 +410,7 @@ public class Buscar_Productos extends javax.swing.JInternalFrame {
         }
         if (evt.getClickCount() == 2) {
             acturlziarProductos(Valor);
-            //ProductosDao objDao = new ProductosDao();
-            //usuario1 = objDao.buscarConID(Integer.parseInt(Valor));
+            
         }
     }//GEN-LAST:event_jTable1MouseClicked
     private static Icon iconodefault() {

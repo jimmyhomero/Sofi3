@@ -378,7 +378,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="aboutMenuItem4">
               <Properties>
                 <Property name="mnemonic" type="int" value="97"/>
-                <Property name="text" type="java.lang.String" value="FORMAS PAGO"/>
+                <Property name="text" type="java.lang.String" value="NUEVA FORMA DE PAGO"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aboutMenuItem4ActionPerformed"/>
@@ -407,7 +407,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="aboutMenuItem5">
               <Properties>
                 <Property name="mnemonic" type="int" value="97"/>
-                <Property name="text" type="java.lang.String" value="Nueva Forma Pago"/>
+                <Property name="text" type="java.lang.String" value="NUEVA FORMA DE PAGO"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aboutMenuItem5ActionPerformed"/>

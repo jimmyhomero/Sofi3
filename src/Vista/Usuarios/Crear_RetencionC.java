@@ -6,16 +6,21 @@
 package Vista.Usuarios;
 
 import ClasesAuxiliares.FeCodigoNUmerico;
+import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
 import ClasesAuxiliares.Variables;
 import ClasesAuxiliares.debug.Deb;
 import Controlador.Usuarios.ComprasDao;
 import Controlador.Usuarios.DetalleRetencionDao;
 import Controlador.Usuarios.HoraFecha;
+import Controlador.Usuarios.PagoscxpDao;
 import Controlador.Usuarios.RetencionCDao;
 import Controlador.Usuarios.SeriesRetencionsDao;
+import Controlador.Usuarios.cxpDao;
 import Modelo.Clientes;
 import Modelo.Compras;
+import Modelo.Cxp;
 import Modelo.DetalleRetencion;
+import Modelo.Pagoscxp;
 import Modelo.Proveedores;
 import Modelo.Retencion_;
 import Modelo.SeriesRetencion;
@@ -50,7 +55,7 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
     public static Clientes proveerdor = new Clientes();
     public static Compras compra = new Compras();
     public static boolean isOpenfromCrearRetencion = false;
-
+    
     private String claveAcceso;
     private String tipoDocID;
 
@@ -65,6 +70,21 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
     public static String[] registros = new String[7];
 
     ////
+    private void generarClaveAcceso() {
+        HoraFecha ob2 = new HoraFecha();
+        jdfecha1.setDate(ob2.obtenerFecha());
+
+//////////
+        jdfechacaducidadFac.setDate(OperacionesForms.getFechaCaducidadDocumentoElectronico());
+        
+        claveAcceso = HoraFecha.fecha_ddmmaaa(jdfecha1.getDate().toString());
+        claveAcceso = claveAcceso + Variables.FE_FACTURA + login.rucEmpresa + Variables.FE_TIPO_AMBIENTE + tsec1.getText() + tsec2.getText() + tsec3.getText() + Variables.FE_CODIGO_NUMERICO + Variables.FE_TIPO_EMISION;
+        Variables.FE_DIGITO_VERIFICADOR = String.valueOf(FeCodigoNUmerico.obtenerSumaPorDigitosOK(FeCodigoNUmerico.invertirCadenaOK(claveAcceso)));
+        claveAcceso = claveAcceso + Variables.FE_DIGITO_VERIFICADOR;
+        t_ClaveAcceso.setText(claveAcceso);
+        
+    }
+    
     public Crear_RetencionC() {
         initComponents();
         modelo = new DefaultTableModel(null, titulos) {
@@ -79,31 +99,25 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
 //        jcbtipoDocumento.setSize(325, 22);
 //        jcbComceptoRtetencionFac.setSize(267,22);
         addOrDeleteRowTable(jTable1);
-
-        HoraFecha ob2 = new HoraFecha();
-        jdfecha1.setDate(ob2.obtenerFecha());
-        llenarSecuenciaFacura();
-        claveAcceso = HoraFecha.fecha_ddmmaaa(jdfecha1.getDate().toString());
-        claveAcceso = claveAcceso + Variables.FE_FACTURA + login.rucEmpresa + Variables.FE_TIPO_AMBIENTE + tsec1.getText() + tsec2.getText() + tsec3.getText() + Variables.FE_CODIGO_NUMERICO + Variables.FE_TIPO_EMISION;
-        Variables.FE_DIGITO_VERIFICADOR = String.valueOf(FeCodigoNUmerico.obtenerSumaPorDigitosOK(FeCodigoNUmerico.invertirCadenaOK(claveAcceso)));
-        claveAcceso = claveAcceso + Variables.FE_DIGITO_VERIFICADOR;
-        t_ClaveAcceso.setText(claveAcceso);
+        //llenarSecuenciaFacura();
+        getNuevonumeroRetencion();
+        generarClaveAcceso();
         ComprasDao cpDao = new ComprasDao();
-
+        
         listaTipoComporabante = cpDao.getlistaTipoComprobate();
         for (sri_tipocomprobante object : listaTipoComporabante) {
             jcbtipoDocumento.addItem(object.getId() + "-" + object.getTipocomprobante());
             tipoDocID = object.getId();
-
+            
         }
-
+        
     }
-
+    
     private void llenarSecuenciaFacura() {
         DecimalFormat formateador = new DecimalFormat("000000000");
         SeriesRetencion objSF = new SeriesRetencion();
         SeriesRetencionsDao objDaoSF = new SeriesRetencionsDao();
-
+        
         objSF = objDaoSF.getMaxNUumeroFactura(login.CodigoDelEquipo);
         if (objSF.getFac3() != null) {
             Integer nfac = Integer.parseInt(objSF.getFac3());
@@ -233,13 +247,52 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
         jLabel3.setText("Secuencial");
 
         tsec1.setText("001");
+        tsec1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tsec1FocusLost(evt);
+            }
+        });
+        tsec1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tsec1KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tsec1KeyReleased(evt);
+            }
+        });
 
         tsec2.setText("002");
+        tsec2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tsec2FocusLost(evt);
+            }
+        });
+        tsec2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tsec2KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tsec2KeyReleased(evt);
+            }
+        });
 
         tsec3.setText("000000009");
+        tsec3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tsec3FocusLost(evt);
+            }
+        });
         tsec3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tsec3ActionPerformed(evt);
+            }
+        });
+        tsec3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tsec3KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tsec3KeyReleased(evt);
             }
         });
 
@@ -271,10 +324,10 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
                                 .addComponent(tsec2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(tsec3, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jdfecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jdfecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -326,10 +379,10 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel6)
                                     .addComponent(txtSec1Compra, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jdfechacaducidadFac, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jdfechacaducidadFac, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5))))
                         .addContainerGap())
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel7)
@@ -342,10 +395,13 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jcbtipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(13, 13, 13))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtSec1Compra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jdfechacaducidadFac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -399,10 +455,7 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {},
-                {},
-                {},
-                {}
+
             },
             new String [] {
 
@@ -414,10 +467,10 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
             }
         });
         jTable1.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 jTable1InputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         jTable1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -437,7 +490,7 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(23, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -484,6 +537,7 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
 
         txtTotal.setBackground(new java.awt.Color(204, 255, 204));
         txtTotal.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTotal.setText("0.0");
         txtTotal.setEnabled(false);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
@@ -576,8 +630,8 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(23, 23, 23))
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -622,16 +676,16 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
         Principal.desktopPane.add(cc);
         cc.setVisible(true);
         indexnoselected = 10;
-
+        
 
     }//GEN-LAST:event_btnComprobanteActionPerformed
-
+    
     public static DefaultTableModel llenartableIva() {
-
+        
         RetencionCDao rtDao = new RetencionCDao();
-
+        
         listaporcentajesRetencion = rtDao.getlistaPorcentajesdeRetencion();
-
+        
         DefaultTableModel modelo = null;
         String[] titulos
                 = {"NUMERO", "ID", "PORCENTAJE", "TIPO", "DESCRIPCION"};
@@ -648,29 +702,29 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
             modelo.removeRow(0);
         }
         for (Sri_porcentajes_retencion P : listaporcentajesRetencion) {
-
+            
             if (P.getTipo().equalsIgnoreCase("IVA") && SelectPorcentajesRetencion.isChekiva) {
-
+                
                 registros[0] = P.getCodigo().toString();
                 registros[1] = P.getId();
                 registros[2] = P.getPorcentaje().toString();
                 registros[3] = P.getTipo();
                 registros[4] = P.getDescripcion();
                 modelo.addRow(registros);
-
+                
             }
-
+            
         }
-
+        
         return modelo;
     }
-
+    
     public static DefaultTableModel llenartableRENTA() {
-
+        
         RetencionCDao rtDao = new RetencionCDao();
-
+        
         listaporcentajesRetencion = rtDao.getlistaPorcentajesdeRetencion();
-
+        
         DefaultTableModel modelo = null;
         String[] titulos
                 = {"NUMERO", "ID", "PORCENTAJE", "TIPO", "DESCRIPCION"};
@@ -687,20 +741,20 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
             modelo.removeRow(0);
         }
         for (Sri_porcentajes_retencion P : listaporcentajesRetencion) {
-
+            
             if (P.getTipo().equalsIgnoreCase("RENTA") && SelectPorcentajesRetencion.isCheckrenta) {
-
+                
                 registros[0] = P.getCodigo().toString();
                 registros[1] = P.getId();
                 registros[2] = P.getPorcentaje().toString();
                 registros[3] = P.getTipo();
                 registros[4] = P.getDescripcion();
                 modelo.addRow(registros);
-
+                
             }
-
+            
         }
-
+        
         return modelo;
     }
 
@@ -710,11 +764,11 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
         Frame f = JOptionPane.getFrameForComponent(this);
         SelectPorcentajesRetencion dialog = new SelectPorcentajesRetencion(f, true);
         dialog.isChekiva = true;
-
+        
         dialog.jTable11.setModel(llenartableIva());
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
-
+        
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -727,15 +781,17 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
         dialog2.jTable11.setModel(llenartableRENTA());
         dialog2.setLocationRelativeTo(null);
         dialog2.setVisible(true);
-
+        //
+/////
+//////
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         if (evt.getClickCount() == 2) {
-
+            
             try {
-
+                
                 if (evt.getClickCount() == 2) {
                     if (jTable1.getSelectedRow() != -1) {
                         // remove selected row from the model
@@ -753,17 +809,17 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
                                 i++;
                             }
                         }
-
+                        
                     }
                 }
                 jTable1.setModel(modelo);
-
+                
             } catch (Exception e) {
                 Deb.consola("Vista.Usuarios.Crear_RetencionC.jTable1MouseClicked()" + e);
             }
         }
     }//GEN-LAST:event_jTable1MouseClicked
-
+    
     private void operacionesSumaColumnasOnJtablet() {
         Deb.consola("aaaaaaaaaaaaentraaaaaaaa");
         if (jTable1.getRowCount() > 0) {
@@ -773,11 +829,11 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
                 costo = costo + Double.valueOf(modelo.getValueAt(i + 1, 6).toString().replace(",", "."));
                 txtTotal.setText(String.valueOf(costo));
             }
-
+            
         }
-
+        
     }
-
+    
     private void addOrDeleteRowTable(JTable table) {
         table.getModel().addTableModelListener(new TableModelListener() {
             @Override
@@ -815,15 +871,15 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
                     operacionesSumaColumnasOnJtablet();
                 }
                 if (e.getType() == TableModelEvent.INSERT) {
-
+                    
                     operacionesSumaColumnasOnJtablet();
-
+                    
                 }
                 if (e.getType() == TableModelEvent.DELETE) {
                     operacionesSumaColumnasOnJtablet();
-
+                    
                 }
-
+                
             }
         });
 /// pongo numero de item en columna1 en cada evento depus de que  se hya realizado cuaaquier accion sea update
@@ -850,49 +906,122 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+    private void getNuevonumeroRetencion() {
+        RetencionCDao tdao = new RetencionCDao();
+        ArrayList<String> sec = new ArrayList<String>();
+        sec = tdao.getNextumeroDeRetencionbyEquipo(login.CodigoDelEquipo);
+        if (!sec.isEmpty()) {
+            
+            int i = 1;
+            Deb.consola("XXXXXXXXXXXXXXXXXXXXXX SECUENCIA ret: " + sec);
+            for (String partSecuencua : sec) {
+                
+                Deb.consola("XXXXXXXXXXXXXXXXXXXXXX SECUENCIA ret: " + partSecuencua);
+                if (i == 1) {
+                    tsec1.setText(partSecuencua);
+                }
+                if (i == 2) {
+                    tsec2.setText(partSecuencua);
+                }
+                if (i == 3) {
+                    Integer num = Integer.valueOf(partSecuencua);
+                    num = num + 1;
+                    DecimalFormat formateador = new DecimalFormat("000000000");
+                    String format = formateador.format(num);
+                    tsec3.setText(String.valueOf(format));
+                }
+                i++;
+            }
+        } else {
+//            tsec1.setText("001");
+//            tsec2.setText("001");
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        Retencion_ r = new Retencion_();
-        RetencionCDao rdao = new RetencionCDao();
-        r.setAutorizacion(t_ClaveAcceso.getText());
-        long d = jdfechacaducidadFac.getDate().getTime();
-        java.sql.Date fecha = new java.sql.Date(d);
-        r.setCaducidad(fecha);
-        long d2 = jdfecha1.getDate().getTime();
-        java.sql.Date fecha2 = new java.sql.Date(d2);
-        r.setFecha(fecha2);
-        r.setCompra_seceuncia(txtSec1Compra.getText());
-        r.setCompras_codigo(compra.getCodigo());
-        r.setConcepto(txtconcepto.getText());
-        r.setProveedor_codigo(compra.getProveedores_codigo());
-        r.setSecuencia(tsec1.getText().toString() + "-" + tsec2.getText().toString() + "-" + tsec3.getText().toString());
-        r.setTipo_comprobante(jcbtipoDocumento.getSelectedItem().toString());
-
-        r.setTotal(Double.parseDouble(txtTotal.getText()));
-        r.setUsuario_codigo(compra.getUsuarios_Codigo());
-        r.setSec1(tsec1.getText());
-        r.setSec2(tsec2.getText());
-        r.setSec3(tsec3.getText());
-
-        Integer codigoRetencion = rdao.guardar(r);
-
-        int rows = jTable1.getRowCount();
-        for (int i = 0; i < rows; i++) {
-
-            DetalleRetencion det = new DetalleRetencion();
-            DetalleRetencionDao detDao = new DetalleRetencionDao();
-            det.setBase(Double.parseDouble(jTable1.getValueAt(i, 2).toString()));
-            det.setEjercicio(Principal.periodo);
-            det.setId(jTable1.getValueAt(i, 4).toString());
-            det.setImpuesto(jTable1.getValueAt(i, 3).toString());
-
-            det.setPorcentaje(Integer.parseInt(jTable1.getValueAt(i, 5).toString()));
-            det.setRetencion_codigo(codigoRetencion);
-            det.setRetenido(Double.parseDouble(jTable1.getValueAt(i, 6).toString()));
-            detDao.guardar(det);
+            if (ValidaNUmeros.isOnlyNumbers(tsec3.getText())) {
+                tsec1.setText(OperacionesForms.validaNumeroFactura3(tsec1.getText()));
+                Integer num = Integer.valueOf(tsec3.getText());
+                num = num + 1;
+                DecimalFormat formateador = new DecimalFormat("000000000");
+                String format = formateador.format(num);
+                tsec3.setText(String.valueOf(format));
+                if (tsec3.getText().equals("000000000")) {
+                    tsec3.setText("000000001");
+                }
+                
+            }
         }
-    
+    }
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        if (jTable1.getRowCount() > 0) {
+//////////// CONSULTO SI EXISTE CXP, SI ES ASI, REGISTRAMOS ANTICIPO A OLA CXP
+            cxpDao cDao = new cxpDao();
+            Cxp c = new Cxp();
+            c = cDao.BuscarConNumeroDocumentoCompraID(compra.getCodigo());
+
+//////////////
+            Retencion_ r = new Retencion_();
+            RetencionCDao rdao = new RetencionCDao();
+            r.setAutorizacion(t_ClaveAcceso.getText());
+            long d = jdfechacaducidadFac.getDate().getTime();
+            java.sql.Date fecha = new java.sql.Date(d);
+            r.setCaducidad(fecha);
+            long d2 = jdfecha1.getDate().getTime();
+            java.sql.Date fecha2 = new java.sql.Date(d2);
+            r.setFecha(fecha2);
+            
+            r.setCompra_seceuncia(txtSec1Compra.getText());
+            r.setCompras_codigo(compra.getCodigo());
+            r.setConcepto(txtconcepto.getText());
+            r.setProveedor_codigo(compra.getProveedores_codigo());
+            r.setSecuencia(tsec1.getText().toString() + "-" + tsec2.getText().toString() + "-" + tsec3.getText().toString());
+            r.setTipo_comprobante(jcbtipoDocumento.getSelectedItem().toString());
+            
+            r.setTotal(Double.parseDouble(txtTotal.getText()));
+            r.setUsuario_codigo(compra.getUsuarios_Codigo());
+            r.setSec1(tsec1.getText());
+            r.setSec2(tsec2.getText());
+            r.setSec3(tsec3.getText());
+            r.setEquipo_codigo(login.CodigoDelEquipo);
+            getNuevonumeroRetencion();
+            Integer codigoRetencion = rdao.guardar(r);
+            
+            int rows = jTable1.getRowCount();
+            for (int i = 0; i < rows; i++) {
+                
+                DetalleRetencion det = new DetalleRetencion();
+                DetalleRetencionDao detDao = new DetalleRetencionDao();
+                det.setBase(Double.parseDouble(jTable1.getValueAt(i, 2).toString()));
+                det.setEjercicio(Principal.periodo);
+                det.setId(jTable1.getValueAt(i, 4).toString());
+                det.setImpuesto(jTable1.getValueAt(i, 3).toString());
+                
+                det.setPorcentaje(Integer.parseInt(jTable1.getValueAt(i, 5).toString()));
+                det.setRetencion_codigo(codigoRetencion);
+                det.setRetenido(Double.parseDouble(jTable1.getValueAt(i, 6).toString()));
+                detDao.guardar(det);
+            }
+            if (Double.parseDouble(c.getSaldo()) > 0.0) {
+                Pagoscxp p = new Pagoscxp();
+                PagoscxpDao pdao = new PagoscxpDao();
+                p.setCxp_codigo(c.getCodigo());
+                p.setDescripcion("REGISTRO DE PAGO DESDE " + login.nombreDelEquipo + " usuario: " + login.nombresUsuario + " POR RETENCION # " + tsec1.getText() + "-" + tsec2.getText() + "-" + tsec3.getText());
+                p.setTipo(OperacionesForms._RETENCION_TEXT);
+                p.setTotal(Double.parseDouble(txtTotal.getText()));
+                p.setVisible(1);
+                pdao.guardar(p);
+                Cxp cp = new Cxp();
+                cxpDao cpdao = new cxpDao();
+                Double saldo = Double.parseDouble(c.getSaldo());
+                Double nuevosaldo = saldo - Double.parseDouble(txtTotal.getText());
+                String tc = String.format("%.2f", nuevosaldo).replace(",", ".");
+                c.setSaldo(tc);
+                cpdao.modificar(c);
+            } else {
+                ///registrar anticipo a proveedor
+            }
+            this.dispose();
+        }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jcbtipoDocumentoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbtipoDocumentoItemStateChanged
@@ -904,6 +1033,63 @@ public class Crear_RetencionC extends javax.swing.JInternalFrame {
             tipoDocID = object.getId();
         }
     }//GEN-LAST:event_jcbtipoDocumentoItemStateChanged
+
+    private void tsec1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tsec1KeyPressed
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_tsec1KeyPressed
+
+    private void tsec2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tsec2KeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_tsec2KeyPressed
+
+    private void tsec3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tsec3KeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_tsec3KeyPressed
+
+    private void tsec1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tsec1KeyReleased
+        // TODO add your handling code here:
+        generarClaveAcceso();
+    }//GEN-LAST:event_tsec1KeyReleased
+
+    private void tsec2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tsec2KeyReleased
+        // TODO add your handling code here:
+        //getNuevonumeroRetencion();
+        tsec1.setText(OperacionesForms.validaNumeroFactura3(tsec1.getText()));
+        generarClaveAcceso();
+    }//GEN-LAST:event_tsec2KeyReleased
+
+    private void tsec3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tsec3KeyReleased
+        // TODO add your handling code here:
+        // getNuevonumeroRetencion();
+        tsec1.setText(OperacionesForms.validaNumeroFactura3(tsec1.getText()));
+        generarClaveAcceso();
+    }//GEN-LAST:event_tsec3KeyReleased
+
+    private void tsec1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tsec1FocusLost
+        // TODO add your handling code here:
+        tsec1.setText(OperacionesForms.validaNumeroFactura3(tsec1.getText()));
+        // getNuevonumeroRetencion();
+        generarClaveAcceso();
+
+    }//GEN-LAST:event_tsec1FocusLost
+
+    private void tsec2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tsec2FocusLost
+        // TODO add your handling code here:
+        tsec2.setText(OperacionesForms.validaNumeroFactura3(tsec2.getText()));
+        //getNuevonumeroRetencion();
+        generarClaveAcceso();
+    }//GEN-LAST:event_tsec2FocusLost
+
+    private void tsec3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tsec3FocusLost
+        // TODO add your handling code here:
+        tsec3.setText(OperacionesForms.validaNumeroFactura9(tsec3.getText()));
+        getNuevonumeroRetencion();
+        generarClaveAcceso();
+    }//GEN-LAST:event_tsec3FocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

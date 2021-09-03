@@ -70,6 +70,8 @@ public class cxpDao extends Coneccion {
         }
         return CodigoThisInsert;
     }
+    
+    
 
 //    public DefaultTableModel Buscar_table(String columna, String value) {
 //        DefaultTableModel modelo = null;
@@ -213,6 +215,42 @@ public class cxpDao extends Coneccion {
         return lista;
     }
 
+    public Cxp BuscarConNumeroDocumentoCompraID(Integer comprasCodigo) {
+        ResultSet rs;
+        Cxp c = new Cxp();
+        c.setSaldo("0.0");
+        try { 
+            this.conectar();
+            PreparedStatement st;
+            st = this.getCnx().prepareCall("Select * from " + tabla + " where compras_codigo = " + comprasCodigo + "");
+            rs = st.executeQuery();
+            //this.lista= new ArrayList();
+            while (rs.next()) {
+                Cxp per = new Cxp();
+                per.setCodigo(rs.getInt("Codigo"));
+                per.setTipo(rs.getString("tipo"));
+                per.setDescripcion(rs.getString("Descripcion"));
+                per.setFechaVencimiento(rs.getDate("fechaVencimiento")); 
+                per.setTotal(rs.getString("total"));
+                per.setAbono(rs.getString("abono"));
+                per.setSaldo(rs.getString("saldo"));
+                per.setCompras_codigo(rs.getInt("compras_codigo"));
+                per.setFormasPagoc_codigo(rs.getInt("formasPagoc_codigo"));
+
+               c= per;
+            }
+
+        } catch (Exception ex) {
+            msg.setMensaje(ex.toString());
+            //Deb.consola("Controlador.CUsuarios.listar()" + ex);
+        } finally {
+            this.cerrar();
+        }
+
+        return c;
+    }
+
+
     public ArrayList<Cxp> listar() {
         ResultSet rs;
         try {
@@ -304,5 +342,36 @@ public class cxpDao extends Coneccion {
         }
 
     }
+public void modificar(Cxp c) {
+        try {
+            this.conectar();
 
+            PreparedStatement st = this.con.prepareStatement("UPDATE " + tabla + " SET "
+                    + "Descripcion = ? ,"
+                    + "abono = ? ,"
+                    + "saldo = ? "
+                  
+                    + "where codigo = ?");
+
+            st.setString(1, c.getDescripcion());
+
+            st.setString(2, c.getAbono());
+            st.setString(3, c.getSaldo());
+           
+            st.setInt(4, c.getCodigo());
+
+
+            String sql = st.toString();
+
+            st.executeUpdate();
+
+            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
+        } catch (SQLException e) {
+            //msg.setProgressBar_mensajae(e.toString());
+            Deb.consola("Controlador.Usuarios.cxcDao.modificar(): errir modificar cxp: "+e.toString());
+        } finally {
+            this.cerrar();
+        }
+
+    }
 }

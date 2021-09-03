@@ -684,7 +684,7 @@ public class BuscarFacturas extends javax.swing.JInternalFrame {
                                     ProgressBar.mostrarMensajeAzul("LA FACTURA ESTA ANULADA");
                                 }
                             } else {
-                                
+
                                 ProgressBar.mostrarMensajeAzul("NO SE PERMITE REALIZAR NOTAS DE CREDITO A CONSUMIDOR FINAL");
                             }
 

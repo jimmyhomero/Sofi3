@@ -73,6 +73,7 @@ public class Productos {
     Double p8;
     Double p9;
     Double p10;
+    Integer airCodigo;
 
     Integer modelo_codigo;
     Integer modelos_marcas_codigo;
@@ -543,6 +544,15 @@ public class Productos {
         this.base = base;
     }
 
+    public Integer getAirCodigo() {
+        return airCodigo;
+    }
+
+    public void setAirCodigo(Integer airCodigo) {
+        this.airCodigo = airCodigo;
+    }
+
+    
     @Override
     public String toString() {
         String s = producto + "  Pvp: [" + pvp + "]   cant: (" + bodegaPredVenta + ")";

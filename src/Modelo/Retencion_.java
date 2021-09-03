@@ -29,6 +29,7 @@ public class Retencion_ {
     String sec3;
     Integer autorizado;
     int estado;
+    int equipo_codigo;
 
     public int getEstado() {
         return estado;
@@ -166,6 +167,14 @@ public class Retencion_ {
 
     public void setAutorizado(Integer autorizado) {
         this.autorizado = autorizado;
+    }
+
+    public int getEquipo_codigo() {
+        return equipo_codigo;
+    }
+
+    public void setEquipo_codigo(int equipo_codigo) {
+        this.equipo_codigo = equipo_codigo;
     }
     
 }

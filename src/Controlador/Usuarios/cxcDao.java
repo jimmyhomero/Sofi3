@@ -255,22 +255,7 @@ public class cxcDao extends Coneccion {
     public void modificar(Cxc c) {
         try {
             this.conectar();
-//            PreparedStatement st = this.con.prepareStatement("UPDATE " + tabla + " SET "
-//                    + "tipo = ?, "
-//                    + "Descripcion = ? "
-//                    + "total = ? "
-//                    + "abono = ? "
-//                    + "saldo = ? "
-//                    + "facturas_codigo = ? "
-//                    + "formasPagoV_codigo = ? "
-//                    + "fechaVencimiento = ? "
-//                    + "diasCredito = ? "
-//                    + "diasAtrazo = ? "
-//                    + "fecha = ? "
-//                    + "clientes_codigo = ? "
-//                    + "estado = ? "
-//                    + "visible = ? "
-//                    + "where codigo = ?");
+
             PreparedStatement st = this.con.prepareStatement("UPDATE " + tabla + " SET "
                     + "Descripcion = ? ,"
                     + "abono = ? ,"
@@ -286,17 +271,6 @@ public class cxcDao extends Coneccion {
             st.setString(4, c.getEstado());
             st.setInt(5, c.getVisible());
             st.setInt(6, c.getCodigo());
-//            st.setString(1, c.getTipo());
-//            st.setString(2, c.getDescripcion());
-//            st.setString(3, c.getTotal());
-//            st.setString(3, c.getAbono());
-//            st.setString(3, c.getSaldo());
-//            st.setInt(3, c.getFacturas_codigo());
-//            st.setInt(3, c.getFormasPagoV_codigo());
-//            st.setDate(3, (Date) c.getFechaVencimiento());
-//            st.setString(3, c.getDiasCredito());
-//            st.setString(3, c.getDiasAtrazo());
-            //st.setString(3, c.getFechaVencimiento());
 
             String sql = st.toString();
 
@@ -305,13 +279,14 @@ public class cxcDao extends Coneccion {
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito", " Registro Actualizado"));
         } catch (SQLException e) {
             //msg.setProgressBar_mensajae(e.toString());
-            Deb.consola("Controlador.Usuarios.cxcDao.modificar(): errir modificar: "+e.toString());
+            Deb.consola("Controlador.Usuarios.cxcDao.modificar(): errir modificar: " + e.toString());
         } finally {
             this.cerrar();
         }
 
     }
-public Cxc listarBuscarConCodigoFactura(Integer cod) {
+
+    public Cxc listarBuscarConCodigoFactura(Integer cod) {
         ResultSet rs;
         Cxc per2 = new Cxc();
         try {
@@ -347,6 +322,7 @@ public Cxc listarBuscarConCodigoFactura(Integer cod) {
 
         return per2;
     }
+
     public Cxc listarBuscarConCodigo(Integer cod) {
         ResultSet rs;
         Cxc per2 = new Cxc();
@@ -403,7 +379,7 @@ public Cxc listarBuscarConCodigoFactura(Integer cod) {
                 per.setSaldo(rs.getString("saldo"));
                 per.setFacturas_codigo(rs.getInt("facturas_codigo"));
                 per.setFormasPagoV_codigo(rs.getInt("formasPagoV_codigo"));
-per.setVisible(rs.getInt("visible"));
+                per.setVisible(rs.getInt("visible"));
                 per.setEstado(rs.getString("ESTADO"));
                 per.setDiasCredito(rs.getString("diasCredito"));
                 this.lista.add(per);

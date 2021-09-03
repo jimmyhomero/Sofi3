@@ -51,9 +51,10 @@ public class HoraFecha extends Coneccion {
 
         return t;
     }
-    public  Timestamp getFechaNowDateServer() {
+    public  String getFechaNowDateServer() {
         ResultSet rs;
-        java.sql.Timestamp t = null;
+        String t = null;
+        //java.sql.Timestamp t = null;
         try {
             this.conectar();
             PreparedStatement st;
@@ -62,8 +63,9 @@ public class HoraFecha extends Coneccion {
 
             //this.lista= new ArrayList();
             while (rs.next()) {
-                t = (rs.getTimestamp("fecha"));
+                t = (rs.getTimestamp("fecha").toString());
             }
+            
 
         } catch (Exception ex) {
             Deb.consola("Controlador.CUsuarios.BuscarConCedula()" + ex);
@@ -276,7 +278,7 @@ public class HoraFecha extends Coneccion {
                 break;
         }
         Fechasql = dia +"/" + mes +"/"+ ano;
-        Deb.consola("Controlador.Usuarios.HoraFecha.fecha(): " + Fechasql);
+        Deb.consola("Controlador.Usuarios.HoraFecha.fecha()kkkkkkk: " + Fechasql);
         return Fechasql;
     }
     
@@ -467,6 +469,28 @@ public static String fecha_aaMMdd_to_ddMMaa(String fecha) {
     }
 
     public  Date obtenerFecha() {
+        Date fecha = null;
+        ResultSet rs;
+
+        try {
+            this.conectar();
+            PreparedStatement st;
+            st = this.getCnx().prepareCall("select now()");
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                fecha = rs.getDate("now()");
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex + "objkkkk");
+        } finally {
+            this.cerrar();
+        }
+
+        return fecha;
+    }
+        public  Date obtenerFechamascienanos() {
         Date fecha = null;
         ResultSet rs;
 

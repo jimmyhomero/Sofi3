@@ -114,14 +114,14 @@ public class Crear_Usuarios extends javax.swing.JInternalFrame {
         rootPane.setDefaultButton(this.jButton1);
 
         SmenuDao_prueba s = new SmenuDao_prueba();
-        smenu ss= new smenu();
+        smenu ss = new smenu();
         ss.setCodigo(1);
         ss.setCodigo_menu(33);
         ss.setMenu("sdsdsdf");
         ss.setUrl("fsdfsdfsdfsdfsfdsdfsfd");
         ss.setVisible("sssssiiii");
         Object o;
-        o= (Object) ss;
+        o = (Object) ss;
         s.insertInto(ss);
         JOptionPane.showMessageDialog(null, "dsaaaaaaaaaaaaaaaaaaaaaaaa");
     }
@@ -512,37 +512,35 @@ public class Crear_Usuarios extends javax.swing.JInternalFrame {
         c = cDao.buscarConCedula(ruc);
         Deb.consola(" aaasdddd  :  " + c.getCedula());
         if (c.getCedula() == null) {
-            if (ruc.length() == 10) {
-                boolean ok = false;
+            boolean ok = false;
 
-                ok = ValidaCedula.validaRUC(ruc);
-                if (ok) {
-                    JSONObject myResponse;
-                    try {
-                        myResponse = ConsultaCedulas.getInfoRegistroCivil(ruc);
+            ok = ValidaCedula.validaRUC(ruc);
+            if (ok) {
+                JSONObject myResponse;
+                try {
+                    myResponse = ConsultaCedulas.getInfoRegistroCivil(ruc);
 //                        txtFechaNaciomiento.setText(myResponse.getString("dob"));
 //                        txt_nacionalidad.setText(myResponse.getString("nationality"));
-                        txt_dir.setText(myResponse.getString("streets"));
-                        txt_nombres.setText(myResponse.getString("name"));
+                    txt_dir.setText(myResponse.getString("streets"));
+                    txt_nombres.setText(myResponse.getString("name"));
 //                        txt_genero.setText(myResponse.getString("genre"));
 //                        txt_huella.setText(myResponse.getString("fingerprint"));
 //                        txt_estadoCivil.setText(myResponse.getString("civilstate"));
 //                        txt_provincia.setText(myResponse.getString("residence"));
-                        txt_cedula.setText(myResponse.getString("identity"));
-                        ok = false;
-                    } catch (Exception ex) {
-                        Logger.getLogger(Crear_Clientes.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
+                    txt_cedula.setText(myResponse.getString("identity"));
+                    ok = false;
+                } catch (Exception ex) {
+                    Logger.getLogger(Crear_Clientes.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }else{
-            JOptionPane.showMessageDialog(null, "Error de Cedula..");
+
             }
+
         } else {
-            JOptionPane.showMessageDialog(null, "El Cliente ya esta resgistrado..");
-        }    
-    return existeCliente ;
-}
+            ProgressBar.mostrarMensajeAzul("El Cliente ya esta resgistrado..");
+
+        }
+        return existeCliente;
+    }
     private void txt_cedulaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cedulaKeyReleased
         // TODO add your handling code here:
 

@@ -34,6 +34,7 @@ import Controlador.Usuarios.HoraFecha;
 import Controlador.Usuarios.ImpresionDao;
 import Controlador.Usuarios.KardexDao;
 import Controlador.Usuarios.PagosDao;
+import Controlador.Usuarios.PreciosDao;
 import Controlador.Usuarios.ProductosDao;
 import Controlador.Usuarios.cxcDao;
 import Controlador.Usuarios.ProformasDao;
@@ -51,6 +52,7 @@ import Modelo.Kardex;
 import Modelo.Cxc;
 import Modelo.FormasPagoCV;
 import Modelo.Pagos;
+import Modelo.Precios;
 import Modelo.Productos;
 import Modelo.Proformas;
 import Modelo.SeriesFacturas;
@@ -124,6 +126,8 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
      * Creates new form Crear_Facturas
      */
     //private ArrayList<Object> listaObjFacturacion = new ArrayList<Object>();
+    public static Precios precioSeleccionadoenJcb = new Precios();
+    
     private Facturas u = new Facturas();
     public static Cxc cxc = new Cxc();
     //private Factura f = new Factura();
@@ -164,7 +168,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
     Double subtotaliva12 = 0.0;
     Double subtotaliva0 = 0.0;
     Double iva = Double.valueOf(Principal.iva);
-
+    
     ProgressBar msg = new ProgressBar(3000, "Mensaje Inicial");
     public static String secuenciaFac = null;
     public static Integer codigFormaPagoSeleccionada = null;
@@ -176,6 +180,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
     ArrayList<Usuarios> listaU = new ArrayList<Usuarios>();
     ArrayList<Clientes> listaClientes = new ArrayList<Clientes>();
     ArrayList<FormasPagoCV> listaFormasDePago = new ArrayList<FormasPagoCV>();
+    ArrayList<Precios> listaPrecios = new ArrayList<Precios>();
     FormasPagoV objFormasdePago = new FormasPagoV();
     //   ArrayList<DetalleFactura> listaDetFac = new ArrayList<DetalleFactura>();
     Integer codigoUsuarioVendedorSeleccionadoJCB;
@@ -199,12 +204,12 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         }
         return claveAcceso;
     }
-
+    
     private void impresionEnTirillas(Facturas u) {
-
+        
         ServicioDeImpresion imprime = new ServicioDeImpresion();
         PrintService jb = imprime.getJobPrinter();
-
+        
         String nombreEm = imprime.centrarTexto(login.nombreEmpresa, 40);
         imprime.imprimirGenerico(nombreEm, jb);
         String tipo = imprime.centrarTexto(tipoDocumento, 40);
@@ -229,10 +234,10 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         imprime.imprimirGenerico("TELF: " + telef, jb);
         imprime.imprimirGenerico("---------------------------------------", jb);
         Deb.consola("numero de filas: " + jTable1.getRowCount());
-
+        
         int tamano = 25;
         String detalle = "";
-
+        
         for (int i = 0; i < jTable1.getRowCount(); i++) {
             String cantidad = jTable1.getValueAt(i, 4).toString();
             String pu = jTable1.getValueAt(i, 7).toString();
@@ -250,7 +255,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     + jTable1.getValueAt(i, 7).toString() + "  "
                     + jTable1.getValueAt(i, 8).toString(), jb);
         }
-
+        
         imprime.imprimirGenerico("---------------------------------------", jb);
         imprime.imprimirGenerico("SUBTOTAL:                      " + txt_subtotal_val.getText(), jb);
         imprime.imprimirGenerico("SUBTOTAL 12%:                  " + txt_subtotal_val.getText(), jb);
@@ -265,7 +270,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         imprime.imprimirGenerico("", jb);
         imprime.imprimirGenerico("", jb);
     }
-
+    
     private void limpiarIntefazVentas() {
         /*
                                     limpiamos la jtable                                                                        
@@ -274,10 +279,10 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             modelo.removeRow(0);
         }
     }
-
+    
     private void addOrDeleteRowTable(JTable table) {
         table.getModel().addTableModelListener(new TableModelListener() {
-
+            
             @Override
             public void tableChanged(TableModelEvent e) {
                 boolean esNUmero = false;
@@ -295,33 +300,33 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                         if (!ValidaNUmeros.isOnlyDouble(jTable1.getValueAt(fila, 7).toString())) {
                             Double precio = Double.valueOf(modelo.getValueAt(fila, 8).toString().replace(",", "."));
                             jTable1.setValueAt(precio, fila, 7);
-
+                            
                         }
-
+                        
                         operacionFacturauPDATEandAddRowrs();
                         jTable1.setValueAt(fila, fila, 1);
-
+                        
                     }
                 }
                 if (e.getType() == TableModelEvent.INSERT) {
-
+                    
                     operacionFacturauPDATEandAddRowrs();
-
+                    
                 }
                 if (e.getType() == TableModelEvent.DELETE) {
-
+                    
                 }
-
+                
             }
         });
-
+        
     }
-
+    
     private void cellEditJtableGuardaBDDMetodoUpdate(JTable table) {
         table.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-
+                    
                     int row = table.getSelectedRow();
                     int column = table.getSelectedColumn();
 
@@ -338,9 +343,27 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             }
         });
     }
-
+    
+    private void actualizarpreciounitarioalSeleccionarPVP() {
+        int rows = jTable1.getModel().getRowCount();
+        int cols = jTable1.getModel().getColumnCount();
+        Double procentaje = (precioSeleccionadoenJcb.getValor() / 100) + 1;
+        Double precioNUevo = 0.0;
+        for (int i = 0; i < rows; i++) {
+            
+            Deb.consola("PREUBAS ACTUALIZAR PRECIOS");
+            Productos p = new Productos();
+            p = new ProductosDao().buscarConID(Integer.parseInt(modelo.getValueAt(i, 2).toString()));
+            Double cantidad = Double.valueOf(modelo.getValueAt(i, 4).toString().replace(",", "."));
+            Double precio = Double.valueOf(p.getCosto());
+            precioNUevo = procentaje * precio;
+            precioNUevo = OperacionesForms.getNumeroenDoublecon2decimales(precioNUevo);
+            jTable1.setValueAt(precioNUevo, i, 7);
+        }
+    }
+    
     private void operacionFacturauPDATEandAddRowrs() {
-
+        
         Deb.consola("Vista.Usuarios.Crear_Facturas.operacionFacturauPDATEandAddRowrs() ddddddxxxxddddddddddddddddxxxxxxxxxx:   -------->");
         try {
             utilidad = 0.0;
@@ -362,16 +385,16 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                 Double costo = Double.valueOf(modelo.getValueAt(i, 0).toString().replace(",", "."));
                 Double Ptotal = precio * cantidad;
                 Double costoxFila = costo * cantidad;
-
+                
                 if (descuento > 0 && descuento <= 100) {
                     Ptotal = Ptotal - ((Ptotal * descuento) / 100);
                     //utilidad
                 } else {
-
+                    
                 }
-
+                
                 modelo.setValueAt(String.valueOf(String.format("%.3f", Ptotal)).replace(",", "."), i, 8);
-
+                
                 if (modelo.getValueAt(i, 10).toString().equalsIgnoreCase("0")) {
                     totaliva0 = totaliva0 + Double.valueOf(modelo.getValueAt(i, 8).toString().replace(",", "."));
                     subtotaliva0 = (totaliva0);
@@ -382,36 +405,36 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                 }
                 total = totaliva0 + totaliva12;
                 subtotal = subtotaliva0 + subtotaliva12;
-
+                
                 txt_total_val_grande.setText(String.valueOf(String.format("%.2f", total)).replace(",", "."));
                 txt_total_vAL_PEQ.setText(String.valueOf(String.format("%.2f", total)).replace(",", "."));
-
+                
                 utilidad = utilidad + (Double.valueOf(modelo.getValueAt(i, 8).toString().replace(",", ".")) - costoxFila);
                 txt_utilidad.setText(String.valueOf(String.format("%.2f", utilidad)).replace(",", "."));
                 txt_subtotal_val.setText(String.valueOf(String.format("%.2f", subtotal)).replace(",", "."));
                 txt_subtotalIvaValorCero0.setText(String.valueOf(String.format("%.2f", subtotaliva0)).replace(",", "."));
                 txt_subtotalIvaValor_conIva12.setText(String.valueOf(String.format("%.2f", subtotaliva12)).replace(",", "."));
                 txt_iva_valor.setText(String.valueOf(String.format("%.2f", (totaliva12 - subtotaliva12))).replace(",", "."));
-
+                
             }
-
+            
         } catch (Exception e) {
-
+            
             ProgressBar.mostrarMensajeAzul(e.toString());
             Deb.consola("Vista.Usuarios.Modal_CrearFacturas.operacionFacturauPDATEandAddRowrs()" + e.toString());
         }
     }
-
+    
     private Integer addDatosClienteonFactura(String cedula) {
         //Deb.consola("Vista.Usuarios.Crear_Facturas.txt_cedulaKeyTyped() Entrooo:  " + evt.getKeyCode());
         Integer codigoCliente = null;
         try {
-
+            
             Clientes obj = new Clientes();
             ClientesDao objDao = new ClientesDao();
             Usuarios objUsu = new Usuarios();
             UsuariosDao objUsuDao = new UsuariosDao();
-
+            
             obj = objDao.buscarConCedulaLike(cedula, 0);
             if (obj == null) {
                 ClientesDao objDao2 = new ClientesDao();
@@ -424,19 +447,19 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                 txt_cedula.setText(obj.getCedula());
                 txt_clienteCodigo.setVisible(false);
                 codigoCliente = obj.getCodigo();
-
+                
             }
 //  
 
         } catch (Exception e) {
             Deb.consola("Vista.Usuarios.Crear_Facturas.addDatosClienteonFactura(): vgb: " + e);
-
+            
         }
         return codigoCliente;
     }
-
+    
     public void setModeloColumnas(JTable tb, int valorClumnas) {
-
+        
         jTable1.getTableHeader().setDefaultRenderer(new DefaultHeaderRenderer());
         this.columnModel = tb.getColumnModel();
 
@@ -481,25 +504,25 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         this.columnModel.getColumn(8).setMaxWidth(valorClumnas * 145);
         this.columnModel.getColumn(8).setMinWidth(valorClumnas * 100);
 
-        this.columnModel.getColumn(9).setPreferredWidth(valorClumnas * 0);
-        this.columnModel.getColumn(9).setWidth(valorClumnas * 0);
-        this.columnModel.getColumn(10).setPreferredWidth(valorClumnas * 0);
-        this.columnModel.getColumn(10).setWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(9).setPreferredWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(9).setWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(10).setPreferredWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(10).setWidth(valorClumnas * 0);
+//        ////
+//        this.columnModel.getColumn(9).setPreferredWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(9).setWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(9).setMaxWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(9).setMinWidth(valorClumnas * 0);
         ////
-        this.columnModel.getColumn(9).setPreferredWidth(valorClumnas * 0);
-        this.columnModel.getColumn(9).setWidth(valorClumnas * 0);
-        this.columnModel.getColumn(9).setMaxWidth(valorClumnas * 0);
-        this.columnModel.getColumn(9).setMinWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(10).setPreferredWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(10).setWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(10).setMaxWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(10).setMinWidth(valorClumnas * 0);
         ////
-        this.columnModel.getColumn(10).setPreferredWidth(valorClumnas * 0);
-        this.columnModel.getColumn(10).setWidth(valorClumnas * 0);
-        this.columnModel.getColumn(10).setMaxWidth(valorClumnas * 0);
-        this.columnModel.getColumn(10).setMinWidth(valorClumnas * 0);
-        ////
-        this.columnModel.getColumn(11).setPreferredWidth(valorClumnas * 0);
-        this.columnModel.getColumn(11).setWidth(valorClumnas * 0);
-        this.columnModel.getColumn(11).setMaxWidth(valorClumnas * 0);
-        this.columnModel.getColumn(11).setMinWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(11).setPreferredWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(11).setWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(11).setMaxWidth(valorClumnas * 0);
+//        this.columnModel.getColumn(11).setMinWidth(valorClumnas * 0);
         Integer can = 0;
         for (int i = 0; i < this.columnModel.getColumnCount(); i++) {
             Deb.consola("*********  :  " + this.columnModel.getColumn(i).getWidth());
@@ -508,9 +531,9 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             Deb.consola(can);
         }
     }
-
+    
     private void datosPredeterminadosFacturas() {
-
+        
         txt_cedula.setText(OperacionesForms._OBJ_CONSUMIDOR_FINAL.getCedula());
         codigoClienteFactura = addDatosClienteonFactura(txt_cedula.getText());
         txt_cedula.setSelectionStart(0);
@@ -568,7 +591,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     txt_sec1.setVisible(false);
                     txt_sec2.setVisible(false);
                     tipoDocumento = "TICKET";
-
+                    
                     break;
                 case "PROFORMA":
                     getNuevonumeroProforma();
@@ -581,31 +604,31 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     break;
             }
         }
-
+        
     }
-
+    
     private void getNuevonumeroTicket() {
         FacturasDao tdao = new FacturasDao();
         String n = tdao.getNextumeroDeTicket();
         Integer num = Integer.valueOf(n);
-
+        
         DecimalFormat formateador = new DecimalFormat("000000000");
         String format = formateador.format(num);
         txt_secNUmFac.setText(String.valueOf(format));
         txt_sec1.setText("");
         txt_sec2.setText("");
     }
-
+    
     private void getNuevonumeroFactura() {
         FacturasDao tdao = new FacturasDao();
         ArrayList<String> sec = new ArrayList<String>();
         sec = tdao.getNextumeroDeFacturabyEquipo(login.CodigoDelEquipo);
         if (!sec.isEmpty()) {
-
+            
             int i = 1;
             Deb.consola("XXXXXXXXXXXXXXXXXXXXXX SECUENCIA fACTURA: " + sec);
             for (String partSecuencua : sec) {
-
+                
                 Deb.consola("XXXXXXXXXXXXXXXXXXXXXX SECUENCIA fACTURA: " + partSecuencua);
                 if (i == 1) {
                     txt_sec1.setText(partSecuencua);
@@ -632,17 +655,17 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             txt_secNUmFac.setText(String.valueOf(format));
         }
     }
-
+    
     private void getNuevonumeroNotaCredito() {
         FacturasDao tdao = new FacturasDao();
         ArrayList<String> sec = new ArrayList<String>();
         sec = tdao.getNextumeroDeNOtaCreditobyEquipo(login.CodigoDelEquipo);
         if (!sec.isEmpty()) {
-
+            
             int i = 1;
             Deb.consola("XXXXXXXXXXXXXXXXXXXXXX SECUENCIA fACTURA: " + sec);
             for (String partSecuencua : sec) {
-
+                
                 Deb.consola("XXXXXXXXXXXXXXXXXXXXXX SECUENCIA fACTURA: " + partSecuencua);
                 if (i == 1) {
                     txt_sec1.setText(partSecuencua);
@@ -669,7 +692,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             txt_secNUmFac.setText(String.valueOf(format));
         }
     }
-
+    
     private void UpdateNuevonumeroFactura() {
         FacturasDao fdao = new FacturasDao();
         String n = fdao.getNextumeroDeFacturaByEstablecimientoyPuntoEmision(txt_sec1.getText(), txt_sec2.getText(), "FACTURA");
@@ -678,9 +701,9 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         DecimalFormat formateador = new DecimalFormat("000000000");
         String format = formateador.format(num);
         txt_secNUmFac.setText(String.valueOf(format));
-
+        
     }
-
+    
     private void getNuevonumeroProforma() {
         FacturasDao tdao = new FacturasDao();
         String n = tdao.getNextumeroDeProformas();
@@ -692,20 +715,20 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         txt_sec1.setText("");
         txt_sec2.setText("");
     }
-
+    
     public Modal_CrearFacturas() {
         initComponents();
-
+        
         addComponentListener(new ComponentAdapter() {
             public void componentMoved(ComponentEvent ce) {
                 Deb.consola("x = " + getX() + ", y = " + getY());
             }
         });
-
+        
         String labels[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
-
+        
         clienteAutoCompleter = new TextAutoCompleter(txt_nombres, new AutoCompleterCallback() {
-
+            
             @Override
             public void callback(Object selectedItem) {
 
@@ -713,7 +736,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                 //     Object itemSelected = clienteAutoCompleter.getItemSelected();
                 Clientes c = new Clientes();
                 if (selectedItem instanceof Clientes) {
-
+                    
                     c = ((Clientes) selectedItem);
                     clienteseleccionadoAutocomplete = c;
                     txt_cedula.setText(c.getCedula());
@@ -721,7 +744,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     txt_clienteCodigo.setText(c.getCodigo().toString());
                     txt_dir.setText(c.getDireccion());
                     txt_nombres.setText(c.getNombre());
-
+                    
                     codigoClienteFactura = c.getCodigo();
 
                     //Deb.consola(((Clientes) selectedItem).getNombre() + " casas"); // Imprime 25
@@ -731,27 +754,27 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                 txt_nombres.setText(c.getNombre());
             }
         });
-
+        
         clienteAutoCompleter.setCaseSensitive(false);
         clienteAutoCompleter.setMode(0);
 
         //listaClientes = cd.buscarConNombresLike(txt_nombres.getText());
         jdfecha.setEnabled(false);
-
+        
         btn_nuevo.setVisible(
                 false);
         txt_iva_valor.setText(iva.toString());
         //Deb.consola("Iva: " + iva);
         datosPredeterminadosFacturas();
-
+        
         jTable1.putClientProperty(
                 "terminateEditOnFocusLost", Boolean.TRUE);
-
+        
         String[] titulos
                 = {"0costo", "1#", "2Codigo", "3ARTICULO", "4CANTIDAD",
                     "5DESCUENTO", "6BODEGA",
                     "7P. UNIT", "8P. TOTAL", "9cantidad", "10imp", "11C. ALTERNO"};
-
+        
         modelo = new DefaultTableModel(null, titulos) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -760,13 +783,13 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                 //  return false;
             }
         };
-
+        
         jTable1.setModel(modelo);
-
+        
         setModeloColumnas(jTable1, 1);
         HoraFecha ob = new HoraFecha();
         HoraFecha ob2 = new HoraFecha();
-
+        
         jdfecha.setDate(ob2.obtenerFecha());
 //        list2.setVisible(false);
         //      list1.setVisible(false);
@@ -781,7 +804,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         for (Usuarios usuarios : listaU) {
             jComboBox1.addItem(usuarios.getNombre());
         }
-
+        
         Deb.consola(
                 "Nombre de Usuario: " + login.nombresUsuario);
         jComboBox1.setSelectedItem(login.nombresUsuario);
@@ -794,12 +817,12 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             if (f.getEsCxcCxp().equalsIgnoreCase(OperacionesForms._FORMA_PAGO_CXC_TEXT)) {
                 jcbFormasPago.addItem(f.getFormaPago());
             }
-
+            
         }
-
+        
         jcbFormasPago.setSelectedItem(Principal.formadepagopredeterminadaVenta);
         txt_nombres.selectAll();
-
+        
         if (this.getTitle().equalsIgnoreCase(OperacionesForms._TITLE_FORM_NOTA_CREDITO)) {
             Deb.consola(OperacionesForms._TITLE_FORM_NOTA_CREDITO + "####################################");
         } else {
@@ -810,6 +833,24 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         Deb.consola("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj" + jTable1.getSize().height);
         Deb.consola(jTable1.getSize().width);
         Deb.consola(jTable1.getSize());
+        /*LLRNO JCOMBOBOX*/
+        OperacionesForms.seleccionarPVPS(jcbPVPs);
+        OperacionesForms.seleccionarFormasDePago(jcbFormasPago);
+
+        /*CARGAR PVPS*/
+        PreciosDao pdao = new PreciosDao();
+        listaPrecios = pdao.listar();
+        for (Precios f : listaPrecios) {
+            
+            jcbPVPs.addItem(f.getNombre());
+            Deb.consola("fpfff: " + Principal.precioPredeterminadoenVenta);
+            Deb.consola("xxxxyyyy : " + f.getNombre());
+            if (f.getNombre().equalsIgnoreCase(Principal.precioPredeterminadoenVenta)) {
+                jcbPVPs.setSelectedItem(f.getNombre());
+                precioSeleccionadoenJcb = f;
+            }
+        }
+        /*FIN CARGAR PVPS*/
     }
 
     /**
@@ -1236,6 +1277,18 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         jLabel3.setText("AGREGAR PRODUCTOS");
 
         txtbuscarx.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtbuscarx.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtbuscarxFocusGained(evt);
+            }
+        });
+        txtbuscarx.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                txtbuscarxInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
         txtbuscarx.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtbuscarxKeyPressed(evt);
@@ -1321,10 +1374,10 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             }
         });
         jTable1.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 jTable1InputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         jTable1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -1374,10 +1427,10 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jcbFormasPago, 0, 215, Short.MAX_VALUE)
-                    .addComponent(jcbPVPs, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jcbPVPs, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jcbFormasPago, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1626,7 +1679,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 832, Short.MAX_VALUE)
+                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 834, Short.MAX_VALUE)
                 .addGap(29, 29, 29)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1831,10 +1884,10 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
 //************************************
         Deb.consola("Vista.Usuarios.Crear_Facturas.txt_nombresKeyPressed()xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         String ruc = "";
-
+        
         if (ValidaNUmeros.isOnlyNumbers(txt_nombres.getText()) && KeyEvent.VK_ENTER == evt.getKeyCode()) {
             if ((txt_nombres.getText().length() == 10 || txt_nombres.getText().length() == 13)) {
-
+                
                 ruc = txt_nombres.getText();
                 //  JOptionPane.showMessageDialog(null, ruc);
                 Deb.consola("Vista.Usuarios.Crear_Facturas.txt_nombresKeyPressed()llllllllllllllllllllllllll");
@@ -1842,10 +1895,10 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     //  JOptionPane.showMessageDialog(null, ruc);
                     Crear_Clientes obj_crearC = new Crear_Clientes();
                     Principal.desktopPane.add(obj_crearC);
-
+                    
                     try {
                         obj_crearC.setSelected(true);
-
+                        
                     } catch (PropertyVetoException ex) {
                         Logger.getLogger(Modal_CrearFacturas.class
                                 .getName()).log(Level.SEVERE, null, ex);
@@ -1855,7 +1908,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                 }
                 //   btn_nuevo.setVisible(true);
             }
-
+            
         } else {
             Deb.consola("Vista.Usuarios.Crear_Facturas.txt_nombresKeyPressed()xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
             ClientesDao cd = new ClientesDao();
@@ -1883,9 +1936,9 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             if (usuarios.getNombre().equals(jComboBox1.getSelectedItem())) {
                 this.codigoUsuarioVendedorSeleccionadoJCB = usuarios.getCodigo();
                 txt_usuarioCodigo.setText(codigoUsuarioVendedorSeleccionadoJCB.toString());
-
+                
             }
-
+            
         }
         Deb.consola("Vista.Usuarios.Crear_Facturas.jComboBox1ItemStateChanged(): " + evt.getItem());
     }//GEN-LAST:event_jComboBox1ItemStateChanged
@@ -1894,7 +1947,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Crear_Clientes obj = new Crear_Clientes();
         OperacionesForms.nuevaVentanaInternalForm(obj, obj.getTitle(), false);
-
+        
 
     }//GEN-LAST:event_btn_nuevoActionPerformed
 
@@ -1975,10 +2028,10 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         int Rowclik = jTable1.getSelectedRow();
         int columclik = jTable1.getSelectedColumn();
-
+        
         if (evt.getButton() == MouseEvent.BUTTON1) {
             Deb.consola("BOTON 1");
-
+            
         }
         if (evt.getButton() == MouseEvent.BUTTON2) {
             Deb.consola("BOTON 2");
@@ -1987,7 +2040,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         if (evt.getButton() == MouseEvent.BUTTON3) {
             Deb.consola("BOTON 3");
         }
-
+        
         if (evt.getButton() == MouseEvent.BUTTON3 || evt.getButton() == MouseEvent.BUTTON1) {
             int colValUnitario = 7;
             int colpvpTotalrow = 8;
@@ -1999,15 +2052,15 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             int x = MouseInfo.getPointerInfo().getLocation().x;
             int y = MouseInfo.getPointerInfo().getLocation().y;
             Deb.consola("X  AND Y : " + x + " - " + y);
-
+            
             if (evt.getClickCount() == 1 && columclik == colValUnitario) {
                 if (jTable1.getSelectedRow() != -1) {
-
+                    
                     codigoProductoSeleccionadoClickonJTable = Integer.parseInt(jTable1.getValueAt(Rowclik, colCodigoProducto).toString());
                     Deb.consola("Vista.Usuarios.Crear_Facturas.jTable1MouseClicked()codigo prducto seleccionado L: " + codigoProductoSeleccionadoClickonJTable);
                     Frame frame = JOptionPane.getFrameForComponent(this);
                     PreciosProductos pcdialog = new PreciosProductos(frame, true);
-                    pcdialog._codigoProductoSeleccionadoClickonJTable = Integer.parseInt(jTable1.getValueAt(Rowclik, colCodigoProducto).toString());
+                    pcdialog._codigoProductoSeleccionadoClickonJTable = codigoProductoSeleccionadoClickonJTable;
                     pcdialog.txt_precio.setText(jTable1.getValueAt(Rowclik, colValUnitario).toString());
                     pcdialog.txt_nombreProductox.setText(jTable1.getValueAt(Rowclik, colNombreProducto).toString());
                     Deb.consola("X  AND Y : " + x + " - " + y);
@@ -2015,12 +2068,12 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     // pcdialog.setLocationRelativeTo(frame);
                     pcdialog.txt_precio.selectAll();
                     pcdialog.setVisible(true);
-
+                    
                     jTable1.setValueAt(pcdialog._precioProducto, Rowclik, colValUnitario);
-
+                    
                 }
             }
-
+            
             if (evt.getClickCount() == 1 && columclik == colpvpTotalrow) {
                 if (jTable1.getSelectedRow() != -1) {
                     codigoProductoSeleccionadoClickonJTable = Integer.parseInt(jTable1.getValueAt(Rowclik, colCodigoProducto).toString());
@@ -2032,7 +2085,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     pcdialog._pvpTotal = Double.parseDouble(jTable1.getValueAt(Rowclik, colpvpTotalrow).toString());
                     pcdialog._pvpUnitario = Double.parseDouble(jTable1.getValueAt(Rowclik, colValUnitario).toString());
                     pcdialog.txt_precio.setText(jTable1.getValueAt(Rowclik, colpvpTotalrow).toString());
-
+                    
                     pcdialog.txt_producto.setText(jTable1.getValueAt(Rowclik, colNombreProducto).toString());
                     Deb.consola("X  AND Y : " + x + " - " + y);
                     pcdialog.setLocation(x, y);
@@ -2043,10 +2096,10 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     jTable1.setValueAt(pcdialog._pvpUnitario, Rowclik, colValUnitario);
                 }
             }
-
+            
         }
         try {
-
+            
             if (evt.getClickCount() == 1) {
                 if (jTable1.getSelectedRow() != -1) {
 
@@ -2062,9 +2115,9 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                         int i = jTable1.getSelectedRow();
                         modelo.removeRow(i);
                         operacionFacturauPDATEandAddRowrs();
-
+                        
                     }
-
+                    
                 }
             }
             if (evt.getClickCount() == 2) {
@@ -2101,13 +2154,14 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
 
     private void jcbPVPsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbPVPsActionPerformed
         // TODO add your handling code here:
+        actualizarpreciounitarioalSeleccionarPVP();
     }//GEN-LAST:event_jcbPVPsActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    
     private void procesoFacturacion() {
         ValidaErrorVenta = false;
         if (jTable1.getRowCount() != 0) {
@@ -2127,18 +2181,18 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             }
             u.setFecha(date1);
             u.setIva(iva.toString());
-
+            
             if (check_Fac.isSelected()) {
                 secuenciaFac = txt_sec1.getText() + "-" + txt_sec2.getText() + "-" + txt_secNUmFac.getText();
                 u.setSecuencia(secuenciaFac);
                 u.setCalveAcceso(claveAcceso);
-
+                
             } else {
                 secuenciaFac = txt_secNUmFac.getText();
                 u.setSecuencia(secuenciaFac);
                 u.setCalveAcceso("N/A");
             }
-
+            
             u.setSubtotaI_con_iva(txt_subtotalIvaValor_conIva12.getText());
             u.setSubtotal_sin_iva(txt_subtotalIvaValorCero0.getText());
             u.setTipo_documento(tipoDocumento);
@@ -2149,12 +2203,12 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             String fechaInicio = HoraFecha.fecha_aa_mm_dd_HH_mm_ss(jdfecha.getDate().toString());
             u.setIva_valor(txt_iva_valor.getText());
             u.setFechain(fechaInicio);
-
+            
             u.setCodigo_doc_afectado_nc(0);
             u.setSecuencia_doc_afectado_nc("NA");
             u.setFecha_doc_afectado_nc("NA");
             u.setValorAfectadoxNCenFactura("0");
-
+            
             Deb.consola("Clave de ACCESO :  " + claveAcceso);
             //  JOptionPane.showMessageDialog(null, login.CodigoDelEquipo);
             u.setEquipos_codigo(login.CodigoDelEquipo);
@@ -2175,7 +2229,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             FacturasDao objFacDao = new FacturasDao();
             CajasDetalleDao cdDao = new CajasDetalleDao();
             Double Ptotal = 0.0;
-
+            
             int col = jTable1.getColumnCount();
             int row = jTable1.getRowCount();
             SeriesFacturas objSF = new SeriesFacturas();
@@ -2184,13 +2238,13 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             Map parametros = new HashMap();
             if (check_Fac.isSelected()) {
                 getNuevonumeroFactura();
-
+                
             } else if (check_tikets.isSelected()) {
                 getNuevonumeroTicket();
             } else if (check_proformas.isSelected()) {
                 getNuevonumeroProforma();
                 procedeVentaExitosa = true;
-
+                
             }
             formaPagoSeelccionada = jcbFormasPago.getSelectedItem().toString();
             u.setFormaPago(formaPagoSeelccionada);
@@ -2209,9 +2263,9 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     // f.getEsCxcCxp().equalsIgnoreCase(OperacionesForms._FORMA_PAGO_CXP_TEXT;
                 }
             }
-
+            
             switch (tipoFormaPago) {
-
+                
                 case "EFECTIVO":
                     /*
                     @param
@@ -2234,13 +2288,13 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                             Deb.consola("Vista.Usuarios.Modal_CrearFacturas.jButton1ActionPerformed()_: " + procedeVentaExitosa);
                         }
                     } else {
-
+                        
                         u.setEfectivo(0.0);
                         u.setCambio(0.0);
                         // RegistrodeEfectivoyCambioExitoso = true;
                         procedeVentaExitosa = true;
                     }
-
+                    
                     break;
                 case "CREDITO":
                     if (!tipoDocumento.equalsIgnoreCase("PROFORMA")) {
@@ -2249,28 +2303,28 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                         u.setFormaPago(formaPagoSeelccionada);
                         u.setEfectivo(0.00);
                         u.setCambio(0.00);
-
+                        
                         if (!check_proformas.isSelected()) {
-
+                            
                             if (!txt_nombres.getText().equalsIgnoreCase("CONSUMIDOR FINAL") && !txt_cedula.getText().equalsIgnoreCase("9999999999") && codigoClienteFactura != null) {
-
+                                
                                 Frame frame = JOptionPane.getFrameForComponent(this);
                                 PagoCredito pcdialog = new PagoCredito(frame, true);
                                 pcdialog.txt_total.setText(txt_total_val_grande.getText());
                                 pcdialog.txt_entrada.setText("0.0");
                                 formaPagoSeelccionada = jcbFormasPago.getSelectedItem().toString();
                                 pcdialog.txt_saldo.setText(txt_total_val_grande.getText());
-
+                                
                                 pcdialog.fac = u;
                                 pcdialog.fac.setEquipos_codigo(login.CodigoDelEquipo);
                                 pcdialog.setLocationRelativeTo(frame);
                                 pcdialog.setVisible(true);
-
+                                
                             } else {
                                 procedeVentaExitosa = false;
                                 ValidaErrorVenta = true;
                                 ProgressBar.mostrarMensajeAzul("CONSUMIDAR NO PUEDE REGISTRAR CREDITOS");
-
+                                
                             }
                         }
                     }
@@ -2292,11 +2346,11 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                             pcdialogc.txtPagueseAlaOrdenDe.setText("");
                             pcdialogc.formaPago = formaPagoSeelccionada;
                             pcdialogc.setVisible(true);
-
+                            
                             u.setFormaPago(formaPagoSeelccionada);
                             u.setEfectivo(0.00);
                             u.setCambio(0.00);
-
+                            
                             Deb.consola("que pasas hast aqui???  : " + RegistrodeChequeExitoso);
                         }
                     }
@@ -2304,7 +2358,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             }
             Deb.consola("Vista.Usuarios.Modal_CrearFacturas.jButton1ActionPerformed()Ñ :xx " + procedeVentaExitosa);
             if (procedeVentaExitosa) {
-
+                
                 cd.setCodigoDocuemnto(codigoFactura);
                 for (int i = 0; i < row; i++) {
                     Kardex k = new Kardex();
@@ -2330,10 +2384,10 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     Double valorUnitarioSinIVA = Double.valueOf(jTable1.getValueAt(i, 7).toString().replace(",", "."));
                     Double valorTotalSinIVA = Double.valueOf(jTable1.getValueAt(i, 8).toString().replace(",", "."));
                     if (jTable1.getValueAt(i, 10).toString().equalsIgnoreCase("0")) {
-
+                        
                         df.setTineIva("no");
                         df.setIva("0");
-
+                        
                     }
                     if (jTable1.getValueAt(i, 10).toString().contains(Principal.iva)) {
                         df.setTineIva("si");
@@ -2343,14 +2397,14 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                         valorUnitarioSinIVA = (valorUnitarioSinIVA / ivaDecimal);
                         valorTotalSinIVA = valorTotalSinIVA / ivaDecimal;
                     }
-
+                    
                     df.setDescuento(jTable1.getValueAt(i, 5).toString());
                     df.setValorUnitario(String.valueOf(String.format("%.2f", valorUnitarioSinIVA)).replace(",", "."));
                     df.setValorTotal(String.valueOf(String.format("%.2f", valorTotalSinIVA)).replace(",", "."));
                     df.setFactura_Codigo(codigoFactura);
                     //  JOptionPane.showMessageDialog(null,"cod ProdÑ : "+ jTable1.getValueAt(i, 2).toString());
                     df.setProductos_codigo(Integer.valueOf(jTable1.getValueAt(i, 2).toString()));
-
+                    
                     k.setBodega(jTable1.getValueAt(i, 6).toString());
                     k.setFecha(jdfecha.getDate());
                     k.setDetalle("SALIDA -- " + tipoDocumento + " " + secuenciaFac);
@@ -2360,7 +2414,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     k.setOutpvp(jTable1.getValueAt(i, 7).toString());
                     k.setIncosto("0");
                     k.setInpvp("0");
-
+                    
                     k.setProductos_Codigo(Integer.parseInt(jTable1.getValueAt(i, 2).toString()));
                     listaDetalleFactura.add(df);
                     listaKardex.add(k);
@@ -2372,11 +2426,11 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                 if (!tipoDocumento.equalsIgnoreCase("PROFORMA")) {
                     afectakardex = true;
                     afectacaja = true;
-
+                    
                 } else {
                     afectakardex = false;
                     afectacaja = false;
-
+                    
                 }
                 if (formaPagoSeelccionada.equalsIgnoreCase(OperacionesForms._CREDITO_TEXT)) {
                     Deb.consola(cxc.toString());
@@ -2385,19 +2439,18 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     //cofigFacok = cm.facturar(u, cd, listaDetalleFactura, listaKardex, afectacaja);
                     cofigFacok = cm.facturar(u, cd, listaDetalleFactura, listaKardex, afectacaja, afectakardex);
                 }
-
+                
                 if (cofigFacok == 0) {
-                    limpiarIntefazVentas();
-
+                    limpiarIntefazVentas();                    
                     ProgressBar.mostrarMensajeAzul(" VENTA NO REGISTRADA  ");
                 } else {
-
+                    
                     Pagos p = new Pagos();
                     //p.setCxc_codigo(0);
                     p.setDescripcion("PAGO REGISTRADOR POR : " + tipoDocumento + " - " + jcbFormasPago.getSelectedItem().toString() + " # " + secuenciaFac + " EN EQUIPO: " + login.nombreDelEquipo + " USUARIO: " + login.nombresUsuario);
                     p.setTipo(jcbFormasPago.getSelectedItem().toString());
                     p.setVisible(1);
-
+                    
                     if (formaPagoSeelccionada.equalsIgnoreCase(OperacionesForms._CREDITO_TEXT)) {
                         if (ValoeEntradaenventaaCredito > 0) {
                             p.setTipo(OperacionesForms._EFECTIVO_TEXT);
@@ -2406,24 +2459,24 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                             ccc = cccDao.listarBuscarConCodigoFactura(cofigFacok);
                             p.setTotal(ValoeEntradaenventaaCredito);
                             p.setCxc_codigo(ccc.getCodigo());
-
+                            
                             PagosDao pDao = new PagosDao();
                             pDao.guardar(p);
                             ValoeEntradaenventaaCredito = 0.0;
                         }
-
+                        
                     } else {
                         p.setTotal(total);
                         p.setCxc_codigo(0);
                         PagosDao pDao = new PagosDao();
                         pDao.guardar(p);
                     }
-
+                    
                     listaKardex.clear();
                     listaDetalleFactura.clear();
-
+                    
                     if (Principal.facturatiriiasoGrande.equalsIgnoreCase("ROLLO")) {
-
+                        
                         ImpresionDao impdao = new ImpresionDao();
                         impdao.impresionEnTirillasFaturas(secuenciaFac);
                         /////////////////codigo para zebra
@@ -2446,7 +2499,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                         //                            ////////////////fin codigo para zebra
 
                     } else {
-
+                        
                         String template = Variables.DIR_REPORTE_FACTURA;
                         rutaInforme = template; //getClass().getResource("/Reportes/facturaA5_preimpreso.jasper").toString();
                         Deb.consola("Ruta Archivo: " + template);
@@ -2458,11 +2511,11 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                         imp.impresionDontShowReport(parametros, rutaInforme);
                         // imp.impresionDontShowReport(parametros, rutaInforme);
                     }
-                    limpiarIntefazVentas();
+                    ///limpiarIntefazVentas();
                     if (!Variables.FE_OBLIGADO_CONTABILIDAD.equalsIgnoreCase("NO")) {
-
+                        
                     }
-
+                    limpiarIntefazVentas();
                     /* fincreacion facura electronica*/
                     u.setCodigo(cofigFacok);
                     FacturasDao fs = new FacturasDao();
@@ -2473,7 +2526,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                         com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
                         com.ws.localhost.Response resp = new com.ws.localhost.Response();
                         resp = wslocal.getWSElectroPort().receiptXMLIn(fa, "admin", "admin", "homer_loading@hotmail.com;homer.loading@gmail.com");
-
+                        
                     } catch (Exception e) {
                         Deb.consola("erro al enviar al WS: " + e);
                     }
@@ -2488,13 +2541,16 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                     //cosmo    r=ss.getWSElectroPort().receiptXMLIn(fa, "admin", "admin", "homer_loading@hotmail.com;homer.loading@gmail.com");
                     //        JOptionPane.showMessageDialogerror (null, "Respuesta: "+r.getResponse());
                 }
-
+                
                 if (check_tikets.isSelected()) {
-
+                    
                     Deb.consola("Numero de veces: " + Integer.parseInt(Principal.numerovecseimpresionFactura));
                     for (int i = 0; i < Integer.parseInt(Principal.numerovecseimpresionFactura); i++) {
                         if (Principal.tickettiriiasoGrande.equalsIgnoreCase("ROLLO")) {
-                            impresionEnTirillas(u);
+                            
+                            ImpresionDao impdao = new ImpresionDao();
+                            impdao.impresionEnTirillasFaturas(secuenciaFac);
+                            
                         } else {
                             rutaInforme = Variables.DIR_REPORTE_TICKET;
                             parametros.put("numeroFactura", secuenciaFac);
@@ -2511,10 +2567,10 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                 if (!ValidaErrorVenta) {
                     ProgressBar.mostrarMensajeAzul("No se puede registrar Errorxx");
                 }
-
+                
             }
         } else {
-
+            
             ProgressBar.mostrarMensajeAzul("NO EXISTEN ARTICULOS A FACTIRAR");
         }
     }
@@ -2524,11 +2580,11 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         ///verifico si el dato registardo en venta existe en niesta
         codigoClienteFactura = addDatosClienteonFactura(txt_cedula.getText());
         claveAcceso = getClaveAcceso();
-
+        
         if (jTable1.getRowCount() != 0) {
-
+            
             if (!txt_cedula.getText().isEmpty() && !txt_nombres.getText().isEmpty() && codigoClienteFactura != null) {
-
+                
                 if (txt_nombres.getText().equalsIgnoreCase(OperacionesForms._OBJ_CONSUMIDOR_FINAL.getNombre()) && Double.parseDouble(txt_total_val_grande.getText()) <= 200) {
                     procesoFacturacion();
                 } else {
@@ -2540,25 +2596,25 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                         }
                         ProgressBar.mostrarMensajeAzul("VENTA  a CONSUMIDOR FINAL DEBE SER MENOR A 200");
                     }
-
+                    
                 }
-
+                
             } else {
-
+                
                 ProgressBar.mostrarMensajeAzul("PRO FAVOR LLENAR CAMPOS OBLIGATORIOS");
             }
-
+            
         } else {
-
+            
             ProgressBar.mostrarMensajeAzul(" ** NO EXISTEN ARTICULOS A FACTIRAR");
         }
 
         ////LENAMOS LOS DATOS PREDETERMINADOS EN LA VENTA DE FACTURACION
         //enceramos la transcaccion anterior
         if (procedeVentaExitosa) {
-
+            
             datosPredeterminadosFacturas();
-
+            
             jcbFormasPago.setSelectedItem(Principal.formadepagopredeterminadaVenta);
 
             //JOptionPane.showMessageDialog(null, "Forma de pago predeterminadaxc: " + Principal.formadepagopredeterminada);
@@ -2577,6 +2633,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
 
     private void txtbuscarxKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtbuscarxKeyPressed
         // TODO add your handling code here:
+        Deb.consola("evet: "+evt.getKeyChar());
         if (evt.getKeyCode() == com.sun.glass.events.KeyEvent.VK_UP || evt.getKeyCode() == com.sun.glass.events.KeyEvent.VK_DOWN) {
             if (!listx.isFocusOwner()) {
                 listx.requestFocus();
@@ -2587,11 +2644,11 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             System.out.println("Vista.Usuarios.Modal_CrearFacturas.txtbuscarxKeyPressed()ccccccccccccccccccccccccccccccccccccccccccccfechas");
         } else {
             txtbuscarx.requestFocus();
-
+            
             ArrayList listax = new ArrayList();
-
+            
             DefaultListModel modelista = new DefaultListModel();
-
+            
             List<Productos> lista;
             String cadenainicial = "";
 
@@ -2603,7 +2660,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                 Deb.consola(cadenainicial);
                 ProductosDao pDao = new ProductosDao();
                 lista = pDao.listarLikeok(cadena);
-
+                
                 for (Productos p : lista) {
                     modelista.addElement(p.getCantidad() + ":" + p.getProducto());
                     //  listax.add(p.getProducto()+": <"+ p.getCantidad()+ "> ");
@@ -2614,14 +2671,16 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                 //modelista.addElement(listax);//
                 listx.setModel(modelista);
                 if (modelista.getSize() >= 1) {
-
+                    
                 }
+            }else if(evt.getKeyCode() == com.sun.glass.events.KeyEvent.VK_ENTER){
+            
             }
-
+            
         }
 
     }//GEN-LAST:event_txtbuscarxKeyPressed
-
+    
     private void calculosAlseleccionarProductodesdeJList(String nombrePruductoSeleccionado) {
         String nombre = nombrePruductoSeleccionado;
         Deb.consola("Vista.Usuarios.Modal_CrearFacturas.listxKeyPressed()" + nombre);
@@ -2635,13 +2694,17 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             // JOptionPane.showMessageDialog(null, Principal.bodegaPredeterminadaenVenta);
             registros = facDao.Buscar_registros(c.getProducto(), Principal.bodegaPredeterminadaenVenta.substring(0, 1));
             registros[1] = String.valueOf(jTable1.getRowCount() + 1);
+            Double aa=Double.parseDouble(registros[0].toString());
+            Double costo = Double.parseDouble(String.valueOf(String.format("%.2f",aa )).replace(",", "."));
+            Double porcentaje = (precioSeleccionadoenJcb.getValor() / 100) + 1;
+            registros[7] = OperacionesForms.getNumeroenString2decimales(costo * porcentaje);
             String stock = registros[9];
             Deb.consola("Vista.Usuarios.Modal_CrearFacturas.calculosAlseleccionarProductodesdeJList();;;stock:::::::: " + stock);
             stockok = Double.parseDouble(stock);
             boolean exiteProductoRepetido = false;
             if (Principal.permitirvendersinstock.equals("SI")) {
                 if (Principal.ItemRepetidoEnFacturacionSumarCantidad.equalsIgnoreCase("SI")) {
-
+                    
                     for (int i = 0; i < modelo.getRowCount(); i++) {
                         String productoname = modelo.getValueAt(i, 3).toString();
                         productoname = productoname.trim();
@@ -2664,15 +2727,15 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
                 if (Double.parseDouble(stock) > 0) {
                     modelo.addRow(registros);
                     jTable1.setModel(modelo);
-
+                    
                 } else {
-
+                    
                     ProgressBar.mostrarMensajeAzul("NO TIENE STOCK BODEGA: " + Principal.bodegaPredeterminadaenVenta);
 //                            modelo.addRow(registros);
 //                            jTable1.setModel(modelo);
                 }
             }
-
+            
             if (c.getImagen() != null) {
                 ImageIcon icon = new ImageIcon(c.getImagen());
                 Icon icono = new ImageIcon(icon.getImage().getScaledInstance(251, 205, Image.SCALE_DEFAULT));
@@ -2681,7 +2744,7 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
             } else {
                 foto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/producto.jpg")));
             }
-
+            
         } else {
             Deb.consola("El item es de un tipo desconocido");
         }
@@ -2690,14 +2753,10 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         String cad[] = listx.getSelectedValue().trim().split(":");
         if (evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_DOWN) {
-//            Productos p = new Productos();
-//            ProductosDao pDao = new ProductosDao();
-//            //JOptionPane.showMessageDialog(null, cad[1]);
-//            p = pDao.buscarPorNombre(cad[1]);
-//       
         } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-
+            
             calculosAlseleccionarProductodesdeJList(cad[1]);
+             txtbuscarx.requestFocus();
         } else {
             System.err.println("TEClasAS" + evt.getKeyChar() + " " + evt.getKeyCode());
             txtbuscarx.requestFocus();
@@ -2709,14 +2768,14 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
 //        listx.clearSelection();
         String cad[] = listx.getSelectedValue().trim().split(":");
         if (evt.getClickCount() == 1 && listx.getModel().getSize() >= 1) {
-
+            
         }
         if (evt.getClickCount() == 2 && listx.getModel().getSize() >= 1) {
             if (listx.locationToIndex(evt.getPoint()) != -1 && listx.locationToIndex(evt.getPoint()) == listx.getSelectedIndex()) {
                 calculosAlseleccionarProductodesdeJList(cad[1]);
-
+                
             }
-
+            
         }
     }//GEN-LAST:event_listxMouseClicked
 
@@ -2760,6 +2819,16 @@ public class Modal_CrearFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_formInternalFrameClosed
+
+    private void txtbuscarxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtbuscarxFocusGained
+        // TODO add your handling code here:
+        txtbuscarx.selectAll();
+    }//GEN-LAST:event_txtbuscarxFocusGained
+
+    private void txtbuscarxInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtbuscarxInputMethodTextChanged
+        // TODO add your handling code here:
+        System.out.println("Vista.Usuarios.Modal_CrearFacturas.txtbuscarxInputMethodTextChanged(): "+evt.toString());
+    }//GEN-LAST:event_txtbuscarxInputMethodTextChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

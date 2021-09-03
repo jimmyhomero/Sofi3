@@ -135,10 +135,10 @@ public class PreciosDao extends Coneccion {
 
             //this.lista= new ArrayList();
             //registros[0] = "0";
-            registros[0] = "P.V.P";           
-            registros[1] = String.format("%.2f", pvp);
-            registros[2] = String.format("%.0f", pvp-costo);
-            modelo.addRow(registros);
+//////            registros[0] = "P.V.P";           
+//////            registros[1] = String.format("%.2f", pvp);
+//////            registros[2] = String.format("%.0f", pvp-costo);
+//////            modelo.addRow(registros);
             while (rs.next()) {
                 
                 registros[0] = rs.getString("Nombre");
@@ -150,7 +150,7 @@ public class PreciosDao extends Coneccion {
             }
 
         } catch (Exception ex) {
-            ProgressBar.mostrarMensajeAzul("Error..!! " + ex);
+            ProgressBar.mostrarMensajeAzul("Errorggg geerer3..!! " + ex);
             //msg.setProgressBar_mensajae("Error..!! " + ex);
 
         } finally {
@@ -159,6 +159,7 @@ public class PreciosDao extends Coneccion {
 
         return modelo;
     }
+      
 
     public Cajas Buscar_Cajas_ID(Integer codigo) {
         DefaultTableModel modelo = null;

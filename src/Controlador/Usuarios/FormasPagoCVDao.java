@@ -5,6 +5,7 @@
  */
 package Controlador.Usuarios;
 
+import ClasesAuxiliares.NewSql.Forms.OperacionesForms;
 import ClasesAuxiliares.debug.Deb;
 import Controlador.Coneccion;
 import Modelo.FormasPagoCV;
@@ -174,7 +175,7 @@ public class FormasPagoCVDao extends Coneccion {
         PreparedStatement st;
         try {
             this.conectar();
-            st = this.getCnx().prepareCall("Select * from formaspagoc where  es_cxc_cxp = 'ventas' ");
+            st = this.getCnx().prepareCall("Select * from formaspagoc where  es_cxc_cxp = '"+OperacionesForms._FORMA_PAGO_CXC_TEXT+"' ");
             lista = setListar(st);
         } catch (SQLException ex) {
             ProgressBar.mostrarMensajeAzul("Error..!! " + ex);
@@ -186,7 +187,7 @@ public class FormasPagoCVDao extends Coneccion {
         PreparedStatement st;
         try {
             this.conectar();
-            st = this.getCnx().prepareCall("Select * from formaspagoc where  es_cxc_cxp = 'COMPRAS' ");
+            st = this.getCnx().prepareCall("Select * from formaspagoc where  es_cxc_cxp = '"+OperacionesForms._FORMA_PAGO_CXP_TEXT+"' ");
             lista = setListar(st);
         } catch (SQLException ex) {
             ProgressBar.mostrarMensajeAzul("Error..!! " + ex);
