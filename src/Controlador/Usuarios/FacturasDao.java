@@ -17,8 +17,8 @@ import Modelo.Facturas;
 import Vista.Principal;
 import static Vista.Usuarios.Modal_CrearNC.idFacturaSeleccionadaDesdeListadeFacturasParaNotaCredito;
 import Vlidaciones.ProgressBar;
-import com.ws.localhost.Respuesta;
-import com.ws.localhost.WSElectro_Service;
+//import com.ws.localhost.Respuesta;
+//import com.ws.localhost.WSElectro_Service;
 
 import ecx.unomas.elements.ArchivoUtil;
 import ecx.unomas.factura.Detalle;
@@ -77,19 +77,7 @@ public class FacturasDao extends Coneccion {
     private ArrayList<Facturas> listaFacNoAutorizadas = new ArrayList<>();
     private ArrayList<Facturas> listaFacEnviadaslawssinestadoAutorizadas = new ArrayList<>();
 
-    public void cabiaestadoFacturasDeEnviadastoAutorizadasEtado2(Facturas fac) {
-
-        WSElectro_Service Ws = new WSElectro_Service();
-        Respuesta r = new Respuesta();
-        r = Ws.getWSElectroPort().searchAuthorization(login.rucEmpresa, Variables.FE_FACTURA, fac.getEstablecimiento(), fac.getPtoEmision(), fac.getSecfactura(), "1");//.receiptXMLIn(facxx, "admin", "admin", cliente.getMail());
-        if (r.getEstado().equalsIgnoreCase("A")) {
-            UpdateEstadoAutorizado(fac.getCodigo(), 2, r.getFechaAutorizacion());
-
-        } else {
-            UpdateEstadoAutorizado(fac.getCodigo(), 2, r.getMensajeSri());
-        }
-    }
-
+//3
     public String creaxmlFacturaElectronica(Facturas fac) {
         String facxx = "";
 
@@ -720,47 +708,47 @@ public class FacturasDao extends Coneccion {
         return maxnumeroOrden;
     }
 
-    public Respuesta ConsultaEstadoDeDocumentoWS(String claveAcceso) {
-
-        ResultSet rs;
-        Respuesta estado = null;
-
-        try {
-            //  SSS
-            com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
-            com.ws.localhost.Respuesta resp = new com.ws.localhost.Respuesta();
-            //resp = wslocal.getWSElectroPort().getEstadoDocumento(facturas.getCalveAcceso());
-
-            //com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
-            ///com.ws.localhost.Respuesta resp = new com.ws.localhost.Respuesta();
-            estado = wslocal.getWSElectroPort().getEstadoDocumento(claveAcceso);
-
-        } catch (Exception e) {
-            Deb.consola("erro al enviar al WS: " + e);
-        }
-
-        try {
-            this.conectar();
-            PreparedStatement st = null;
-            if (estado.equals("A")) {
-                st = this.getCnx().prepareCall("UPDATE facturas SET autorizado=10 , DescripcionElectronica='autorizado'  WHERE calveAcceso = " + claveAcceso);
-            }
-            if (estado.equals("R")) {
-                st = this.getCnx().prepareCall("UPDATE facturas SET autorizado=10 , DescripcionElectronica='NO AUTORIZADO'  WHERE calveAcceso = " + claveAcceso);
-                //            st = this.getCnx().prepareCall("UPDATE facturas SET hora='"+fechaAut+"' , autorizado=" + estado + " WHERE codigo = " + id);
-            }
-
-            st.executeUpdate();
-
-            //this.lista= new ArrayList();
-        } catch (Exception ex) {
-            Deb.consola("Contrdfsfolador.CUsuarios.BuscarConCedula()sss" + ex);
-        } finally {
-            this.cerrar();
-        }
-
-        return estado;
-    }
+//    public Respuesta ConsultaEstadoDeDocumentoWS(String claveAcceso) {
+//
+//        ResultSet rs;
+//        Respuesta estado = null;
+//
+//        try {
+//            //  SSS
+//           // com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
+//           // com.ws.localhost.Respuesta resp = new com.ws.localhost.Respuesta();
+//            //resp = wslocal.getWSElectroPort().getEstadoDocumento(facturas.getCalveAcceso());
+//
+//            //com.ws.localhost.WSElectro_Service wslocal = new com.ws.localhost.WSElectro_Service();
+//            ///com.ws.localhost.Respuesta resp = new com.ws.localhost.Respuesta();
+//           // estado = wslocal.getWSElectroPort().getEstadoDocumento(claveAcceso);
+//
+//        } catch (Exception e) {
+//            Deb.consola("erro al enviar al WS: " + e);
+//        }
+//
+//        try {
+//            this.conectar();
+//            PreparedStatement st = null;
+//            if (estado.equals("A")) {
+//                st = this.getCnx().prepareCall("UPDATE facturas SET autorizado=10 , DescripcionElectronica='autorizado'  WHERE calveAcceso = " + claveAcceso);
+//            }
+//            if (estado.equals("R")) {
+//                st = this.getCnx().prepareCall("UPDATE facturas SET autorizado=10 , DescripcionElectronica='NO AUTORIZADO'  WHERE calveAcceso = " + claveAcceso);
+//                //            st = this.getCnx().prepareCall("UPDATE facturas SET hora='"+fechaAut+"' , autorizado=" + estado + " WHERE codigo = " + id);
+//            }
+//
+//            st.executeUpdate();
+//
+//            //this.lista= new ArrayList();
+//        } catch (Exception ex) {
+//            Deb.consola("Contrdfsfolador.CUsuarios.BuscarConCedula()sss" + ex);
+//        } finally {
+//            this.cerrar();
+//        }
+//
+//        return estado;
+//    }
 
     public boolean UpdateAnuladoComprobantedeVenta(Integer id) {
 

@@ -32,8 +32,8 @@ public class MainPruebas {
 ////      Fowiz f = new Fowiz();
 ////      f.sms();
 //getUrlFromGoogle.getImagesFromGoogle("casa");
-        FtpCliente ftp = new FtpCliente();
-        ftp.conect();
+//        FtpCliente ftp = new FtpCliente();
+//        ftp.conect();
         
         File f = new File("C://Sofi/temp/respaldos/resp-" + ObtenerFecha.getFechaNow() + ".zip");
         BackupMysql resp = new BackupMysql();
